@@ -1,12 +1,12 @@
 import React from "react";
 import { Box, Grid, Typography } from "@mui/material";
 import FormattedMessage from "theme/FormattedMessage";
-import LoginForm from "./LoginForm";
+import RegisterForm from "./RegisterForm";
 import messages from "./messages";
 import { BoxWrapper } from "./Styled";
 import ThemeSwitcher from "components/ThemeSwitch";
 
-const LoginScreen: React.FC = () => {
+const RegisterScreen: React.FC = () => {
   return (
     <Grid container>
       <Grid item xs={6} sx={{ display: { xs: "none", md: "block" } }}>
@@ -34,7 +34,7 @@ const LoginScreen: React.FC = () => {
               </Typography>
             </Box>
             <Box>
-              <LoginForm />
+              <RegisterForm />
             </Box>
           </Box>
         </BoxWrapper>
@@ -43,7 +43,7 @@ const LoginScreen: React.FC = () => {
   );
 };
 
-export default LoginScreen;
+export default RegisterScreen;
 
 // import { useState, useCallback } from "react";
 // import * as yup from "yup";

@@ -1,12 +1,4 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
-
-
+import { createContext, useCallback, useContext } from "react";
 import { useRouter } from "next/router";
 import { Box, CircularProgress } from "@mui/material";
 import { signOut as logout, signIn, useSession } from "next-auth/react";
@@ -19,6 +11,7 @@ interface AuthContextType {
   currentUser: any;
   signOut: () => void;
   signIn: (...args: any) => void;
+  signUp: (...args: any) => void;
 }
 
 interface AuthContextProps {
@@ -31,18 +24,19 @@ const AUTHENTICATION_PATH = [AUTH_LOGIN_URL];
 
 const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
   const { data: session, status } = useSession();
-  const [user, setUser] = useState(null);
   const loading = status === "loading";
   const router = useRouter();
 
   const signOut = useCallback(async () => {
     logout({ callbackUrl: "/" });
     router.replace(AUTHENTICATION_PATH[0]!);
-    localStorage.removeItem("user");
   }, [router]);
 
   const prevToken = getAuthenticationToken();
   const currToken: any = session?.accessToken;
+  const signUp = (email: string, password: string) => {
+    return console.log("Signed Up");
+  };
 
   if (currToken && prevToken !== `Bearer ${currToken}`) {
     setAuthenticationHeader(currToken);
@@ -62,6 +56,7 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
       </Box>
     );
   }
+
   if (
     !!process.browser &&
     !(AUTHENTICATION_PATH || "").includes(window?.location?.pathname) &&
@@ -82,7 +77,7 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
     const params: { pathname: string; query?: { redirectTo: string } } = {
       pathname:
         // @ts-ignore
-        "/",
+        "/fleet-management",
     };
     router.replace(params);
     return null;
@@ -91,9 +86,9 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
-        user,
         signIn,
         signOut,
+        signUp,
         currentUser: session?.user,
       }}
     >
