@@ -1178,6 +1178,13 @@
     teeny-request "^8.0.0"
     uuid "^8.0.0"
 
+"@gqless/react@^2.0.15":
+  version "2.0.15"
+  resolved "https://registry.yarnpkg.com/@gqless/react/-/react-2.0.15.tgz#e57173b8bebe3a6ccbd26dc5002e49928fc331a1"
+  integrity sha512-qI5O0wtCo9gv9DIiYFmo0aXNPLbtQ2Ee74YMevuhwMYBM71acbFukeJHq2qSetLJY4XYLu+F14uXzmRYbOEySQ==
+  dependencies:
+    react-ssr-prepass "^1.4.0"
+
 "@grpc/grpc-js@~1.7.0":
   version "1.7.3"
   resolved "https://registry.yarnpkg.com/@grpc/grpc-js/-/grpc-js-1.7.3.tgz#f2ea79f65e31622d7f86d4b4c9ae38f13ccab99a"
@@ -4895,6 +4902,11 @@ react-fast-compare@^2.0.1:
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-2.0.4.tgz#e84b4d455b0fec113e0402c329352715196f81f9"
   integrity sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==
 
+react-google-one-tap-login@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/react-google-one-tap-login/-/react-google-one-tap-login-0.1.1.tgz#12a61e63e19251622cf1575b601d79fd4d07847a"
+  integrity sha512-RCbOfR3Z7VcRae4AzrLoBfY/aqqdN24pkQeNz9CJ0W65C9SY3vAwF0Yp8mwpeFwsugaZ5b1HZsfhUYWtb3IMrw==
+
 react-intl@^5.23.0:
   version "5.25.1"
   resolved "https://registry.yarnpkg.com/react-intl/-/react-intl-5.25.1.tgz#68a73aefc485c9bf70062381ae7f6f4791680879"
@@ -4934,6 +4946,11 @@ react-query@^3.34.2:
     "@babel/runtime" "^7.5.5"
     broadcast-channel "^3.4.1"
     match-sorter "^6.0.2"
+
+react-ssr-prepass@^1.4.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/react-ssr-prepass/-/react-ssr-prepass-1.5.0.tgz#bc4ca7fcb52365e6aea11cc254a3d1bdcbd030c5"
+  integrity sha512-yFNHrlVEReVYKsLI5lF05tZoHveA5pGzjFbFJY/3pOqqjGOmMmqx83N4hIjN2n6E1AOa+eQEUxs3CgRnPmT0RQ==
 
 react-transition-group@^4.4.5:
   version "4.4.5"

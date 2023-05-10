@@ -3,12 +3,10 @@ import { useRouter } from "next/router";
 import {
   Alert,
   Box,
-  Checkbox,
   FormControl,
   FormControlLabel,
   FormGroup,
   FormHelperText,
-  Grid,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -16,9 +14,7 @@ import {
   MenuItem,
   OutlinedInput,
   Select,
-  SelectChangeEvent,
   Switch,
-  TextField,
   Zoom,
 } from "@mui/material";
 import { ArrowForward, Visibility, VisibilityOff } from "@mui/icons-material";
@@ -30,6 +26,9 @@ import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import messages from "./messages";
 import { ButtonWrapper } from "./Styled";
 import { LoadingButton } from "@mui/lab";
+import useOneTapSignin from "hooks/useOneTapSignin";
+import GoogleButton from "theme/GoogleButton";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
@@ -80,7 +79,6 @@ const LoginForm = () => {
     initialValues: {
       email: "",
       password: "",
-      roleSelect: "",
       rememberMe: false,
     },
     validationSchema,
@@ -95,133 +93,11 @@ const LoginForm = () => {
     handleSubmit,
     handleBlur,
   } = formik;
-
-  // const { handleChange, handleSubmit, handleBlur, errors, values, touched } =
-  //   useFormik({
-  //     initialValues: { email: "", password: "", userRole: "" },
-  //     validationSchema,
-  //     onSubmit: (values, { resetForm }) => {
-  //       console.log(values);
-  //       resetForm();
-  //     },
-  //   });
-
-  // // handleResetPass
-  // const handleResetPass = (email: string) => {};
-  // const handleSubmitHandler = (e) => {
-  //   e.preventDefault();
-  //   if (role === "teacher") {
-  //     router.push("/teacher");
-  //   } else if (role === "student") {
-  //     router.push("/student");
-  //   } else {
-  //     alert("Please select a role");
-  //   }
-  // };
-
   const emailPlaceholder = useFormattedMessage(messages.emailPlaceholder);
   const passwordPlaceholder = useFormattedMessage(messages.passwordPlaceholder);
   const userRolePlaceholder = useFormattedMessage(messages.userRolePlaceholder);
 
   return (
-    // <form onSubmit={handleSubmitHandler}>
-    //   <Grid container direction={"column"} spacing={5}>
-    //     <Grid item>
-    //       <TextField
-    //         id="email"
-    //         label={<FormattedMessage {...messages.emailLabel} />}
-    //         value={values.email}
-    //         onChange={handleChange}
-    //         onBlur={handleBlur}
-    //         type="text"
-    //         placeholder={emailPlaceholder}
-    //         error={touched.email && Boolean(errors.email)}
-    //         helperText={touched.email && errors.email}
-    //         autoComplete="off"
-    //       />
-    //     </Grid>
-
-    //     <Grid item>
-    //       <TextField
-    //         id="password"
-    //         label={<FormattedMessage {...messages.passwordLabel} />}
-    //         value={values.password}
-    //         onChange={handleChange}
-    //         onBlur={handleBlur}
-    //         type="password"
-    //         placeholder={passwordPlaceholder}
-    //         error={touched.password && Boolean(errors.password)}
-    //         helperText={touched.password && errors.password}
-    //         autoComplete="off"
-    //       />
-    //     </Grid>
-    //     <Grid item>
-    //       <InputLabel sx={{ color: "black" }} id="role">
-    //         Role
-    //       </InputLabel>
-    //       <Select
-    //         labelId="role"
-    //         id="roleSelect"
-    //         value={role}
-    //         label="Role"
-    //         onChange={(e) => setRole(e.target.value)}
-    //       >
-    //         <MenuItem value="teacher">Teacher</MenuItem>
-    //         <MenuItem value="student">Student</MenuItem>
-    //       </Select>
-    //     </Grid>
-    //   </Grid>
-
-    //   <Box
-    //     sx={{
-    //       display: "flex",
-    //       justifyContent: "space-between",
-    //       margin: "20px 0",
-    //     }}
-    //   >
-    //     <FormControlLabel
-    //       control={
-    //         <Checkbox
-    //           id="Remember"
-    //           name="fav_language"
-    //           value="Remember"
-    //           color="secondary"
-    //         />
-    //       }
-    //       label={<FormattedMessage {...messages.rememberLabel} />}
-    //     />
-    //     <Link
-    //       href="#"
-    //       underline="none"
-    //       color="secondary"
-    //       onClick={() => handleResetPass(values.email)}
-    //     >
-    //       <FormattedMessage {...messages.forgot} />
-    //     </Link>
-    //   </Box>
-
-    //   <Box>
-    //     <ButtonWrapper type="submit" variant="contained">
-    //       <FormattedMessage {...messages.signIn} />
-    //     </ButtonWrapper>
-    //   </Box>
-
-    //   <Box
-    //     sx={{
-    //       display: "flex",
-    //       justifyContent: "space-between",
-    //       margin: "20px 0",
-    //     }}
-    //   >
-    //     <Link href="#" underline="none">
-    //       <FormattedMessage {...messages.textSignUp} />
-    //     </Link>
-    //     <Link href="/register" underline="none">
-    //       <FormattedMessage {...messages.signUp} />
-    //     </Link>
-    //   </Box>
-    // </form>
-
     <>
       <form onSubmit={handleSubmit as any}>
         {error ? (
@@ -314,7 +190,7 @@ const LoginForm = () => {
           <Select
             labelId="role"
             id="roleSelect"
-            value={values.roleSelect}
+            value={role}
             label="Role"
             onChange={(e) => setRole(e.target.value)}
           >
@@ -337,6 +213,11 @@ const LoginForm = () => {
             label={rememberLabel}
           />
         </FormGroup>
+        <GoogleButton />
+        <div
+          id="oneTap"
+          style={{ position: "absolute", top: "50", right: "0" }}
+        />
         <Box sx={{ mt: 3, position: "relative" }}>
           <LoadingButton
             aria-label="login"
@@ -353,9 +234,6 @@ const LoginForm = () => {
           >
             <FormattedMessage {...messages.signIn} />
           </LoadingButton>
-          {/* <ButtonWrapper type="submit" variant="contained">
-            <FormattedMessage {...messages.signIn} />
-          </ButtonWrapper> */}
         </Box>
         <Box
           sx={{

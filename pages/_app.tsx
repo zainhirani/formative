@@ -1,4 +1,4 @@
-import React, { useContext,useState } from "react";
+import React, { useContext, useState } from "react";
 import App, { AppContext } from "next/app";
 import Head from "next/head";
 import { Router, useRouter } from "next/router";
@@ -85,9 +85,6 @@ class MyApp extends App<{
     loadSideEffects();
   }
 
-
-
-
   render() {
     const {
       Component,
@@ -106,21 +103,21 @@ class MyApp extends App<{
           <ThemeProvider>
             <IntlProvider locale={locale || "en"} messages={messages}>
               <SessionProvider session={session}>
-                {/* <AuthContextProvider> */}
-                <QueryClientProvider client={queryClient}>
-                  <SnackbarProvider
-                    anchorOrigin={{
-                      vertical: "top",
-                      horizontal: "right",
-                    }}
-                  >
-                    <Hydrate state={pageProps.dehydratedState}>
-                      <Component {...pageProps} />
-                    </Hydrate>
-                  </SnackbarProvider>
-                  <ReactQueryDevtools initialIsOpen={false} />
-                </QueryClientProvider>
-                {/* </AuthContextProvider> */}
+                <AuthContextProvider>
+                  <QueryClientProvider client={queryClient}>
+                    <SnackbarProvider
+                      anchorOrigin={{
+                        vertical: "top",
+                        horizontal: "right",
+                      }}
+                    >
+                      <Hydrate state={pageProps.dehydratedState}>
+                        <Component {...pageProps} />
+                      </Hydrate>
+                    </SnackbarProvider>
+                    <ReactQueryDevtools initialIsOpen={false} />
+                  </QueryClientProvider>
+                </AuthContextProvider>
               </SessionProvider>
             </IntlProvider>
           </ThemeProvider>
