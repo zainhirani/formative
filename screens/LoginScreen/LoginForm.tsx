@@ -26,9 +26,7 @@ import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import messages from "./messages";
 import { ButtonWrapper } from "./Styled";
 import { LoadingButton } from "@mui/lab";
-import useOneTapSignin from "hooks/useOneTapSignin";
 import GoogleButton from "theme/GoogleButton";
-import { useSession, signIn, signOut } from "next-auth/react";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),

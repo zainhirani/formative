@@ -24,6 +24,7 @@ import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import messages from "./messages";
 import { ButtonWrapper } from "./Styled";
 import { LoadingButton } from "@mui/lab";
+import GoogleButton from "theme/GoogleButton";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
@@ -254,6 +255,7 @@ const RegisterForm = () => {
             <MenuItem value="student">Student</MenuItem>
           </Select>
         </FormControl>
+        <GoogleButton />
         <Box sx={{ mt: 3, position: "relative" }}>
           <LoadingButton
             aria-label="login"

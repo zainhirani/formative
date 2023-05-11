@@ -22,19 +22,18 @@ export default NextAuth({
             email: credentials.email,
             password: credentials.password,
           });
-          // return Promise.resolve(
-          //   resp?.data?.idToken ? { jwtToken: resp.data.idToken } : {},
-          // ) as any;
-          return null;
+          const jwtToken = resp?.data?.idToken ? resp.data.idToken : "";
+          return { jwtToken };
         } catch (e: any) {
           return Promise.reject(new Error(e?.msg || "Something Wrong"));
         }
       },
     }),
     GoogleProvider({
-      clientId: process.env.GOOGLE_ID,
-      clientSecret: process.env.GOOGLE_SECRET,
-    }),
+      clientId: process.env.GOOGLE_ID || '',
+      clientSecret: process.env.GOOGLE_SECRET || '',
+    })
+
   ],
   secret: "test",
   pages: {

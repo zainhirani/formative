@@ -1,10 +1,15 @@
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
 
 const GoogleButton = () => {
+  const router = useRouter();
   return (
     <button
       className="flex w-full justify-center gap-5 rounded bg-white py-4 px-4 text-sm font-bold drop-shadow-md hover:bg-gray-50"
-      onClick={() => signIn("google")}
+      onClick={(e) => {
+        e.preventDefault();
+        signIn("google");
+      }}
       style={{
         alignItems: "center",
         width: "100%",
@@ -15,7 +20,11 @@ const GoogleButton = () => {
       }}
     >
       <GoogleLogo />
-      <div>Sign in with Google</div>
+      {router.pathname.includes("/login") ? (
+        <div>Sign in with Google</div>
+      ) : (
+        <div>Sign up with Google</div>
+      )}
     </button>
   );
 };
