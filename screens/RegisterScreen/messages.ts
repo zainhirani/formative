@@ -33,6 +33,10 @@ export default defineMessages({
     id: `${scope}.userRoleLabel`,
     defaultMessage: "Select Your Role",
   },
+ rememberLabel: {
+    id: `${scope}.rememberLabel`,
+    defaultMessage: "Remember Me",
+  },
   emailPlaceholder: {
     id: `${scope}.emailPlaceholder`,
     defaultMessage: "Enter your Mail",
