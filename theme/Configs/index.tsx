@@ -11,18 +11,18 @@ export let getDesignTokens = (mode: PaletteMode) => {
         ? {
             // palette values for light mode
             primary: {
-              main: "#0093E7",
+              main: "#8C2531",
               dark: "#404040",
               light: "#FFFFFF",
             },
             secondary: {
-              main: "#0076BB",
+              main: "#68151E",
               light: "#F4F4F4",
-              dark: "#FFFFFF",
+              dark: "#BFBFBF",
             },
             text: {
               primary: "#404040",
-              secondary: "#FFFFFF",
+              secondary: "#68151E",
             },
             background: {
               default: "#F4F4F4",
@@ -91,9 +91,8 @@ export let getDesignTokens = (mode: PaletteMode) => {
       borderRadius: 16,
     },
     shadow: {
-      boxShadow: "0px 4px 48px rgba(0, 0, 0, 0.2)",
+      boxShadow: "0px 4px 40px rgba(0, 0, 0, 0.1)",
     },
-    
   });
 
   theme = createTheme(theme, {
@@ -195,7 +194,6 @@ export let getDesignTokens = (mode: PaletteMode) => {
           },
         },
       },
-
     },
     typography: {
       h1: {

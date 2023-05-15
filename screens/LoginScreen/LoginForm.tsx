@@ -1,21 +1,14 @@
 import React, { useCallback, useEffect, useState } from "react";
 import {
   Box,
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
   Grid,
   IconButton,
-  InputAdornment,
   InputLabel,
   Link,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  Switch,
   TextField,
 } from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -27,10 +20,9 @@ import messages from "./messages";
 import { ButtonWrapper } from "./Styled";
 import { useAuthContext } from "contexts/AuthContext";
 import { useRouter } from "next/router";
-import GoogleButton from "theme/GoogleButton";
 
 const validationSchema = Yup.object().shape({
-  email: Yup.string().required().email().label("Email"),
+  user: Yup.string().required().label("User Name"),
   password: Yup.string().required().min(6).label("Password"),
 });
 
@@ -38,7 +30,6 @@ const LoginForm = () => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const { signIn } = useAuthContext();
-  const [role, setRole] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = useCallback(async (data: any) => {
@@ -58,11 +49,6 @@ const LoginForm = () => {
             variant: "error",
           });
         }
-        if (role === "teacher") {
-          router.push("/teacher");
-        } else if (role === "student") {
-          router.push("/student");
-        }
       })
       .catch((error: any) => {
         const errorCode = error.code;
@@ -75,116 +61,104 @@ const LoginForm = () => {
   }, []);
 
   // use formik
-  const {
-    handleChange,
-    handleSubmit,
-    handleBlur,
-    errors,
-    values,
-    touched,
-    setFieldValue,
-  } = useFormik({
-    initialValues: { email: "", password: "", rememberMe: false },
-    validationSchema,
-    onSubmit,
-  });
+  const { handleChange, handleSubmit, handleBlur, errors, values, touched } =
+    useFormik({
+      initialValues: { user: "", password: "" },
+      validationSchema,
+      onSubmit,
+    });
 
   // handleResetPass
-  const handleResetPass = (email: string) => {};
+  const handleResetPass = (user: string) => {};
 
-  const emailPlaceholder = useFormattedMessage(messages.emailPlaceholder);
+  const userPlaceholder = useFormattedMessage(messages.userPlaceholder);
   const passwordPlaceholder = useFormattedMessage(messages.passwordPlaceholder);
 
   return (
     <form onSubmit={handleSubmit}>
-      <Grid container direction={"column"} spacing={5}>
+      <Grid container direction={"column"} spacing={3}>
         <Grid item>
+          <InputLabel
+            sx={{ color: (theme) => theme.palette.text.primary }}
+            htmlFor="password"
+          >
+            <FormattedMessage {...messages.userLabel} />
+          </InputLabel>
           <TextField
-            id="email"
-            name="email"
-            label={<FormattedMessage {...messages.emailLabel} />}
-            value={values.email}
+            id="user"
+            name="user"
+            type="text"
+            value={values.user}
             onChange={handleChange}
             onBlur={handleBlur}
-            placeholder={emailPlaceholder}
-            error={touched.email && Boolean(errors.email)}
-            helperText={touched.email && errors.email}
+            placeholder={userPlaceholder}
+            error={touched.user && Boolean(errors.user)}
+            helperText={touched.user && errors.user}
             autoComplete="off"
+            variant="standard"
+            fullWidth
           />
         </Grid>
 
         <Grid item>
-          <TextField
-            id="password"
-            name="password"
-            label={<FormattedMessage {...messages.passwordLabel} />}
-            value={values.password}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            type={showPassword ? "text" : "password"}
-            placeholder={passwordPlaceholder}
-            error={touched.password && Boolean(errors.password)}
-            helperText={touched.password && errors.password}
-            autoComplete="off"
-          />
-        </Grid>
-        <Grid item>
-          <FormControl sx={{ width: "100%" }}>
-            <InputLabel
-              id="roleSelect"
-              sx={{ color: (theme) => theme.palette.primary.dark }}
+          <InputLabel
+            sx={{ color: (theme) => theme.palette.text.primary }}
+            htmlFor="password"
+          >
+            <FormattedMessage {...messages.passwordLabel} />
+          </InputLabel>
+          <Box display={"flex"} position={"relative"}>
+            <TextField
+              id="password"
+              name="password"
+              value={values.password}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              type={showPassword ? "text" : "password"}
+              placeholder={passwordPlaceholder}
+              error={touched.password && Boolean(errors.password)}
+              helperText={touched.password && errors.password}
+              autoComplete="off"
+              variant="standard"
+              fullWidth
+            />
+            <IconButton
+              aria-label="toggle password visibility"
+              onClick={() => setShowPassword(!showPassword)}
+              edge="end"
+              sx={{ position: "absolute", right: 0, top: "-10%",color:(theme)=>theme.palette.secondary.dark }}
             >
-              Role
-            </InputLabel>
-            <Select
-              labelId="role"
-              id="roleSelect"
-              value={role}
-              label="Role"
-              onChange={(e) => setRole(e.target.value)}
-            >
-              <MenuItem value="teacher">Teacher</MenuItem>
-              <MenuItem value="student">Student</MenuItem>
-            </Select>
-          </FormControl>
+              {showPassword ? <VisibilityOff /> : <Visibility />}
+            </IconButton>
+          </Box>
         </Grid>
       </Grid>
 
       <Box
         sx={{
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "end",
           margin: "20px 0",
         }}
       >
-        <FormControlLabel
-          control={
-            <Switch
-              id="rememberMe"
-              name="rememberMe"
-              checked={values.rememberMe}
-              onChange={(e) =>
-                setFieldValue("rememberMe", e.target.checked, true)
-              }
-            />
-          }
-          label={<FormattedMessage {...messages.rememberLabel} />}
-        />
         <Link
           href="#"
           underline="none"
-          color="secondary"
-          onClick={() => handleResetPass(values.email)}
+          color="#8C2531"
+          sx={{ textDecoration: "underline" }}
+          onClick={() => handleResetPass(values.user)}
         >
           <FormattedMessage {...messages.forgot} />
         </Link>
       </Box>
-      <Box sx={{ mb: 3 }}>
-        <GoogleButton />
-      </Box>
+      <Box sx={{ mb: 3 }}></Box>
       <Box>
-        <ButtonWrapper type="submit" variant="contained">
-          <FormattedMessage {...messages.signIn} />
+        <ButtonWrapper
+          disabled={(values.user && values.password) === ""}
+          type="submit"
+          variant="contained"
+        >
+          <FormattedMessage {...messages.logIn} />
         </ButtonWrapper>
       </Box>
 
@@ -192,14 +166,29 @@ const LoginForm = () => {
         sx={{
           display: "flex",
           justifyContent: "space-between",
-          margin: "20px 0",
+          margin: { md: "120px 0 20px", xs: "30px" },
         }}
       >
         <FormattedMessage {...messages.textSignUp} />
-        <Link href="/register" underline="none">
-          <FormattedMessage {...messages.signUp} />
-        </Link>
       </Box>
+      <ButtonWrapper
+        onClick={(e) => {
+          e.preventDefault;
+          router.push("/register");
+        }}
+        sx={{
+          color: (theme) => theme.palette.primary.main,
+          background: "none",
+          boxShadow: "none",
+          border: "1px solid #EAEAEA",
+          "&:hover": {
+            color: (theme) => theme.palette.primary.light,
+          },
+        }}
+        variant="contained"
+      >
+        <FormattedMessage {...messages.signUp} />
+      </ButtonWrapper>
     </form>
   );
 };

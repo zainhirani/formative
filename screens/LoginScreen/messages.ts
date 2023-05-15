@@ -11,27 +11,28 @@ export const scope = "app.screens.LoginScreen";
 export default defineMessages({
   title: {
     id: `${scope}.title`,
-    defaultMessage: "Hello",
+    defaultMessage: "Hello there!",
   },
   description: {
     id: `${scope}.description`,
-    defaultMessage: "This is the basic starter project for react",
+    defaultMessage: "Log in with your details to launch.",
   },
-  emailLabel: {
-    id: `${scope}.emailLabel`,
-    defaultMessage: "Enter your Email",
+  loginFooter: {
+    id: `${scope}.loginFooter`,
+    defaultMessage:
+      "© Rosalind Franklin University of Medicine and Science 2023",
+  },
+  userLabel: {
+    id: `${scope}.userLabel`,
+    defaultMessage: "User Name",
   },
   passwordLabel: {
     id: `${scope}.passwordLabel`,
-    defaultMessage: "Enter Password",
+    defaultMessage: "Password",
   },
-  userRoleLabel: {
-    id: `${scope}.userRoleLabel`,
-    defaultMessage: "Select Your Role",
-  },
-  emailPlaceholder: {
-    id: `${scope}.emailPlaceholder`,
-    defaultMessage: "Enter your Mail",
+  userPlaceholder: {
+    id: `${scope}.userPlaceholder`,
+    defaultMessage: "Enter your user name",
   },
   passwordPlaceholder: {
     id: `${scope}.passwordPlaceholder`,
@@ -41,19 +42,15 @@ export default defineMessages({
     id: `${scope}.userRolePlaceholder`,
     defaultMessage: "Please select your Role",
   },
-  rememberLabel: {
-    id: `${scope}.rememberLabel`,
-    defaultMessage: "Remember me",
-  },
 
   forgot: {
     id: `${scope}.forgot`,
     defaultMessage: "Forgot password?",
   },
 
-  signIn: {
-    id: `${scope}.signIn`,
-    defaultMessage: "Sign In",
+  logIn: {
+    id: `${scope}.logIn`,
+    defaultMessage: "Log In",
   },
 
   textSignUp: {
@@ -63,7 +60,7 @@ export default defineMessages({
 
   signUp: {
     id: `${scope}.signUp`,
-    defaultMessage: "Sign up now",
+    defaultMessage: "Sign up",
   },
   successMessage: {
     id: `${scope}.successMessage`,
