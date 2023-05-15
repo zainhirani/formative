@@ -6,11 +6,11 @@ export const BoxWrapper = styled(MuiBox)<BoxProps>(
   ({ theme }) =>
     ({
       display: "flex",
-      padding: theme.spacing(15, 0),
+      padding: theme.spacing(3, 5),
       alignItems: "center",
-      flexDirection: "row",
+      flexDirection: "column",
       height: "100vh", //theme.height.barHeight
-      justifyContent: "center",
+      justifyContent: "space-between",
     } as any),
 ) as (props: BoxProps) => JSX.Element;
 
@@ -19,7 +19,7 @@ export const ButtonWrapper = styled(Button)<ButtonProps>(
     ({
       display: "inline-block",
       fontSize: "16px",
-      fontWeight: "700",
+      fontWeight: "400",
       height: "60px",
       lineHeight: "60px",
       textAlign: "center",
@@ -27,68 +27,9 @@ export const ButtonWrapper = styled(Button)<ButtonProps>(
       position: "relative",
       zIndex: "1",
       overflow: "hidden",
-      borderRadius: theme.shape.borderRadius,
+      color: theme.palette.primary.light,
+      borderRadius: theme.borderRadius.radius1,
       textTransform: "capitalize",
       width: "100%",
     } as any),
 ) as (props: ButtonProps) => JSX.Element;
-
-// import MuiBox, { BoxProps } from "@mui/material/Box";
-// import MuiIconButton, { IconButtonProps } from "@mui/material/IconButton";
-// import { styled } from "@mui/material/styles";
-// import MuiTypography, { TypographyProps } from "@mui/material/Typography";
-
-// export const LoginBox = styled(MuiBox)<BoxProps>(
-//   ({ theme }) =>
-//     ({
-//       minHeight: 600,
-//       width: "480px",
-//       padding: "42px",
-//       maxWidth: "95%",
-//       margin: "25px auto",
-//       textAlign: "center",
-//       boxShadow: theme.shadow.boxShadow,
-//       borderRadius: theme.borderRadius.radius3,
-//       backgroundColor: theme.palette.primary.light,
-//       [theme.breakpoints.down("sm")]: {
-//         padding: "20px",
-//       },
-//     } as any),
-// ) as (props: BoxProps) => JSX.Element;
-
-// export const MainWrapper = styled(MuiBox)<BoxProps>(
-//   ({ theme }) =>
-//     ({
-//       width: "99%",
-//       height: "75vh",
-//       margin: "10px auto",
-//       position: "relative",
-//       borderRadius: theme.borderRadius.radius3,
-//       backgroundColor: theme.palette.primary.main,
-//     } as any),
-// ) as (props: BoxProps) => JSX.Element;
-
-// export const Description = styled(MuiTypography)<TypographyProps>(
-//   ({ theme }) =>
-//     ({
-//       paddingTop: 2,
-//       width: "700px",
-//       maxWidth: "90%",
-//       lineHeight: "30px",
-//       textAlign: "center",
-//       color: theme.palette.secondary.dark,
-//       fontWeight: theme.typography.fontWeightLight,
-//     } as any),
-// ) as (props: TypographyProps) => JSX.Element;
-
-// export const SocialButton = styled(MuiIconButton)<IconButtonProps>(
-//   ({ theme }) =>
-//     ({
-//       width: "64px",
-//       height: "64px",
-//       margin: "16px 0",
-//       boxShadow: theme.shadow.boxShadow,
-//       borderRadius: theme.borderRadius.radius2,
-//       backgroundColor: theme.palette.secondary.light,
-//     } as any),
-// ) as (props: IconButtonProps) => JSX.Element;

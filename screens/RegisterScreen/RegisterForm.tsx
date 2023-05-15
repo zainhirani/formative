@@ -24,7 +24,6 @@ import messages from "./messages";
 import { ButtonWrapper } from "./Styled";
 import { useAuthContext } from "contexts/AuthContext";
 import { useRouter } from "next/router";
-import GoogleButton from "theme/GoogleButton";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
@@ -185,9 +184,7 @@ const RegisterForm = () => {
           label={<FormattedMessage {...messages.rememberLabel} />}
         />
       </Box>
-      <Box sx={{ mb: 3 }}>
-        <GoogleButton />
-      </Box>
+      <Box sx={{ mb: 3 }}></Box>
       <Box>
         <ButtonWrapper type="submit" variant="contained">
           <FormattedMessage {...messages.signUp} />
