@@ -165,7 +165,8 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
     LocalStorage.clear();
   }, [router]);
   const signUp = (email: string, password: string) => {
-    return console.log("Signed Up");
+    console.log("Signed Up");
+    router.push("/login");
   };
 
   const prevToken = getAuthenticationToken();
