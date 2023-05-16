@@ -3,10 +3,13 @@ import {
   ButtonGroup,
   Card,
   CardContent,
+  FormControlLabel,
   FormHelperText,
   Grid,
   MenuItem,
   OutlinedInput,
+  Radio,
+  RadioGroup,
   Select,
   SelectChangeEvent,
   TextField,
@@ -24,7 +27,7 @@ import { genderSelect, programSelect } from "./data";
 import messages from "../messages";
 import { useState } from "react";
 
-export const StepOne: React.FC<RegisterProps> = ({
+export const StepTwo: React.FC<RegisterProps> = ({
   touched,
   values,
   errors,
@@ -33,27 +36,15 @@ export const StepOne: React.FC<RegisterProps> = ({
   setFieldValue,
   disable,
 }) => {
-  const firstNamePlaceholder = useFormattedMessage(
-    messages.firstNamePlaceholder,
-  );
-  const lastNamePlaceholder = useFormattedMessage(messages.lastNamePlaceholder);
-  const nickNamePlaceholder = useFormattedMessage(messages.nickNamePlaceholder);
-  const emailPlaceholder = useFormattedMessage(messages.emailPlaceholer);
-  const rfuIDPlaceholder = useFormattedMessage(messages.rfuPlaceholder);
-  const graduationPlaceholder = useFormattedMessage(
-    messages.graduationPlaceholder,
-  );
-  const birthPlaceholder = useFormattedMessage(messages.birthPlaceholder);
-  const userPlaceholder = useFormattedMessage(messages.userPlaceholder);
+  const dobPlaceholder = useFormattedMessage(messages.dobPlaceholder);
+  const pharmacyPlaceholder = useFormattedMessage(messages.pharmacyPlaceholder);
   const passwordPlaceholder = useFormattedMessage(messages.passwordPlaceholder);
-  const confirmPasswordPlaceholder = useFormattedMessage(
-    messages.confirmPasswordPlaceholder,
-  );
+  const hobbiesPlaceholder = useFormattedMessage(messages.hobbiesPlaceholder);
   const [year, setYear] = useState(2023);
   return (
     <>
       <CardHeaderWrapper
-        title={<FormattedMessage {...messages.stepOneTitle} />}
+        title={<FormattedMessage {...messages.stepTwoTitle} />}
       />
       <Typography sx={{ marginLeft: "15px" }}>
         <FormattedMessage {...messages.description} />
@@ -61,72 +52,71 @@ export const StepOne: React.FC<RegisterProps> = ({
       <CardContent>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
-            <InputLabelWrapper htmlFor="first-name">
-              <FormattedMessage {...messages.firstNameLabel} />
+            <InputLabelWrapper htmlFor="dob">
+              <FormattedMessage {...messages.dobLabel} />
             </InputLabelWrapper>
             <TextField
-              id="first-name"
-              name="firstName"
-              placeholder={firstNamePlaceholder}
+              id="dob"
+              name="dob"
+              placeholder={dobPlaceholder}
               fullWidth
-              value={values.firstName}
+              type="date"
+              value={values.dob}
               onBlur={handleBlur}
               onChange={handleChange}
-              error={Boolean(touched.firstName && errors.firstName)}
+              error={Boolean(touched.dob && errors.dob)}
               disabled={disable}
               variant="standard"
             />
-            {touched.firstName && errors.firstName && (
-              <FormHelperText error id="standard-weight-helper-text-firstName">
-                {errors.firstName}
+            {touched.dob && errors.dob && (
+              <FormHelperText error id="standard-weight-helper-text-dob">
+                {errors.dob}
               </FormHelperText>
             )}
           </Grid>
           <Grid item xs={12} md={6}>
-            <InputLabelWrapper htmlFor="last-name">
-              <FormattedMessage {...messages.lastNameLabel} />
+            <InputLabelWrapper htmlFor="pharmacy">
+              <FormattedMessage {...messages.pharmacyLabel} />
             </InputLabelWrapper>
             <TextField
-              id="last-name"
-              name="lastName"
-              placeholder={lastNamePlaceholder}
+              id="pharmacy"
+              name="pharmacy"
+              placeholder={pharmacyPlaceholder}
               fullWidth
-              value={values.lastName}
+              type="number"
+              value={values.pharmacy}
               onBlur={handleBlur}
               onChange={handleChange}
-              error={Boolean(touched.lastName && errors.lastName)}
+              error={Boolean(touched.pharmacy && errors.pharmacy)}
               disabled={disable}
               variant="standard"
             />
-            {touched.lastName && errors.lastName && (
-              <FormHelperText error id="standard-weight-helper-text-lastName">
-                {errors.lastName}
+            {touched.pharmacy && errors.pharmacy && (
+              <FormHelperText error id="standard-weight-helper-text-pharmacy">
+                {errors.pharmacy}
               </FormHelperText>
             )}
           </Grid>
           <Grid item xs={12} md={6}>
-            <InputLabelWrapper htmlFor="nick-name">
-              <FormattedMessage {...messages.nickNameLabel} />
+            <InputLabelWrapper htmlFor="part-time">
+              <FormattedMessage {...messages.partTimeLael} />
             </InputLabelWrapper>
-            <TextField
-              id="nick-name"
-              name="nickName"
-              placeholder={nickNamePlaceholder}
-              fullWidth
-              value={values.nickName}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              error={Boolean(touched.nickName && errors.nickName)}
-              disabled={disable}
-              variant="standard"
-            />
+            <RadioGroup
+              aria-labelledby="demo-radio-buttons-group-label"
+              defaultValue="yes"
+              name="radio-buttons-group"
+              row
+            >
+              <FormControlLabel value="yes" control={<Radio />} label="Yes" />
+              <FormControlLabel value="no" control={<Radio />} label="No" />
+            </RadioGroup>
             {touched.nickName && errors.nickName && (
               <FormHelperText error id="standard-weight-helper-text-nickName">
                 {errors.nickName}
               </FormHelperText>
             )}
           </Grid>
-          <Grid item xs={12} md={6}>
+          {/* <Grid item xs={12} md={6}>
             <InputLabelWrapper htmlFor="gender">
               <FormattedMessage {...messages.genderLabel} />
             </InputLabelWrapper>
@@ -224,7 +214,7 @@ export const StepOne: React.FC<RegisterProps> = ({
               fullWidth
             >
               {programSelect?.map((program) =>
-                program.id === 1 ? (
+                program.id === 0 ? (
                   <MenuItem selected value={program.name} key={program.id}>
                     {program.name}
                   </MenuItem>
@@ -351,7 +341,7 @@ export const StepOne: React.FC<RegisterProps> = ({
                 {errors.confirmPassword}
               </FormHelperText>
             )}
-          </Grid>
+          </Grid> */}
         </Grid>
       </CardContent>
     </>

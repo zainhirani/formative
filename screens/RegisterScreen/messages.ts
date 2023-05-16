@@ -143,7 +143,7 @@ export default defineMessages({
   },
   partTimeLael: {
     id: `${scope}.partTimeLael`,
-    defaultMessage: "Preferred (Nick) Name",
+    defaultMessage: "Are you working part time?",
   },
   bioLabel: {
     id: `${scope}.bioLabel`,

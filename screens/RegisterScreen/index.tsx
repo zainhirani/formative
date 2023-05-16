@@ -20,11 +20,34 @@ import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
 import { useFormik } from "formik";
 import { useAuthContext } from "contexts/AuthContext";
+import { StepTwo } from "./fields/Profile";
 
 const validationSchema = Yup.object().shape({
-  title: Yup.string().required().label("title"),
-  price: Yup.string().required().label("Regular Price"),
-  category: Yup.string().required().label("Category"),
+  firstName: Yup.string().required().label("FirstName"),
+  lastName: Yup.string().required().label("LastName"),
+  nickName: Yup.string().required().label("NickName"),
+  gender: Yup.string().required().label("Gender"),
+  email: Yup.string().required().email().label("Email"),
+  rfuID: Yup.string().required().label("RFU ID"),
+  program: Yup.string().required().label("Program"),
+  graduation: Yup.string().required().label("Graduation Year"),
+  birthPlace: Yup.string().required().label("Birth Place"),
+  userName: Yup.string().required().label("User Name"),
+  password: Yup.string().required().min(6).label("Password"),
+  confirmPassword: Yup.string()
+    .required("Please confirm your password")
+    .oneOf([Yup.ref("password")], "Passwords do not match"),
+  dob: Yup.string().required().label("Date of Birth"),
+  pharmacy: Yup.string().required().label("Pharmacy"),
+  partTime: Yup.string().required().label("Part Time"),
+  bioChemistry: Yup.string().required().label("Bio Chemistry"),
+  maths: Yup.string().required().label("Maths"),
+  learn: Yup.string().required().label("Learn"),
+  sequence: Yup.string().required().label("Sequence"),
+  study: Yup.string().required().label("Study"),
+  played: Yup.string().required().label("Played"),
+  volunteer: Yup.string().required().label("Volunteer"),
+  hobbies: Yup.string().required().label("Hobbies"),
 });
 
 const steps = [
@@ -38,11 +61,29 @@ const RegisterScreen: React.FC = () => {
   const router = useRouter();
   const { signUp } = useAuthContext();
   const [initial, setInitial] = useState({
-    title: "",
-    description: "",
-    price: 0,
-    category: "",
-    image: "",
+    firstName: "",
+    lastName: "",
+    nickName: "",
+    gender: "",
+    email: "",
+    rfuID: "",
+    program: "",
+    graduation: "",
+    birthPlace: "",
+    userName: "",
+    password: "",
+    confirmPassword: "",
+    dob: "",
+    pharmacy: "",
+    partTime: "",
+    bioChemistry: "",
+    maths: "",
+    learn: "",
+    sequence: "",
+    study: "",
+    played: "",
+    volunteer: "",
+    hobbies: "",
   });
 
   const onSubmit = useCallback(async (data: any) => {
@@ -133,18 +174,40 @@ const RegisterScreen: React.FC = () => {
               padding: "20px 30px",
               boxShadow: (theme) => theme.shadow.boxShadow,
               borderRadius: 0,
+              width: { md: 650, xs: "80%" },
             }}
           >
             {activeStep === steps.length - 1 ? (
               <React.Fragment>
                 <Typography sx={{ mt: 2, mb: 1 }}>
-                  All steps completed - you&apos;re finished
+                  <StepTwo
+                    handleChange={handleChange}
+                    handleBlur={handleBlur}
+                    errors={errors}
+                    values={values}
+                    touched={touched}
+                    setFieldValue={setFieldValue}
+                    disable={false}
+                  />
                 </Typography>
                 <ButtonWrapper
                   variant="contained"
                   sx={{ flex: "1 1 auto" }}
                   onClick={handleNext}
-                  disabled={(values.title && values.description) === ""}
+                  disabled={
+                    (values.dob &&
+                      values.pharmacy &&
+                      values.partTime &&
+                      values.bioChemistry &&
+                      values.maths &&
+                      values.learn &&
+                      values.program &&
+                      values.sequence &&
+                      values.study &&
+                      values.played &&
+                      values.volunteer &&
+                      values.hobbies) === ""
+                  }
                 >
                   <FormattedMessage {...messages.profile} />
                 </ButtonWrapper>
@@ -163,9 +226,22 @@ const RegisterScreen: React.FC = () => {
                 />
                 <ButtonWrapper
                   variant="contained"
-                  sx={{ flex: "1 1 auto" }}
+                  sx={{ flex: "1 1 auto", marginTop: "30px" }}
                   onClick={handleNext}
-                  disabled={(values.title && values.description) === ""}
+                  disabled={
+                    (values.firstName &&
+                      values.lastName &&
+                      values.nickName &&
+                      values.gender &&
+                      values.email &&
+                      values.rfuID &&
+                      values.program &&
+                      values.graduation &&
+                      values.birthPlace &&
+                      values.userName &&
+                      values.password &&
+                      values.confirmPassword) === ""
+                  }
                 >
                   <FormattedMessage {...messages.signUp} />
                 </ButtonWrapper>

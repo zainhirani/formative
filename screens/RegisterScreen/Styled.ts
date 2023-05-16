@@ -17,6 +17,8 @@ export const InputLabelWrapper = styled(InputLabel)<InputLabelProps>(
   ({ theme }) =>
     ({
       marginBottom: theme.spacing(1),
+      color: theme.palette.text.primary,
+      fontSize:"14px"
     } as any),
 ) as (props: InputLabelProps) => JSX.Element;
 
