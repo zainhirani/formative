@@ -1,42 +1,220 @@
-import React from "react";
-import { Box, Grid, Typography } from "@mui/material";
+import React, { useCallback, useState } from "react";
+import {
+  Box,
+  Grid,
+  Typography,
+  Stepper,
+  Step,
+  StepLabel,
+  Button,
+  Card,
+  Link,
+} from "@mui/material";
 import FormattedMessage from "theme/FormattedMessage";
 import RegisterForm from "./RegisterForm";
 import messages from "./messages";
-import { BoxWrapper } from "./Styled";
+import { BoxWrapper, ButtonWrapper } from "./Styled";
+import * as Yup from "yup";
+import { StepOne } from "./fields/Signup";
+import { useRouter } from "next/router";
+import { useSnackbar } from "notistack";
+import { useFormik } from "formik";
+import { useAuthContext } from "contexts/AuthContext";
+
+const validationSchema = Yup.object().shape({
+  title: Yup.string().required().label("title"),
+  price: Yup.string().required().label("Regular Price"),
+  category: Yup.string().required().label("Category"),
+});
+
+const steps = [
+  <FormattedMessage {...messages.stepOneTitle} />,
+  <FormattedMessage {...messages.stepTwoTitle} />,
+];
 
 const RegisterScreen: React.FC = () => {
+  const [activeStep, setActiveStep] = React.useState(0);
+  const { enqueueSnackbar } = useSnackbar();
+  const router = useRouter();
+  const { signUp } = useAuthContext();
+  const [initial, setInitial] = useState({
+    title: "",
+    description: "",
+    price: 0,
+    category: "",
+    image: "",
+  });
+
+  const onSubmit = useCallback(async (data: any) => {
+    await signUp(data.email, data.password)
+      .then((userCredential: any) => {
+        const user = userCredential.user;
+        if (user) {
+          enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
+            variant: "success",
+          });
+        } else if (userCredential.error) {
+          enqueueSnackbar(userCredential.error, {
+            variant: "error",
+          });
+        }
+      })
+      .catch((error: any) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+        enqueueSnackbar(errorMessage, {
+          variant: "error",
+        });
+      });
+  }, []);
+
+  // use formik
+  const {
+    handleChange,
+    handleSubmit,
+    handleBlur,
+    setFieldValue,
+    errors,
+    values,
+    touched,
+  } = useFormik({
+    initialValues: initial,
+    validationSchema,
+    onSubmit,
+  });
+
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+  const handleReset = () => {
+    setActiveStep(0);
+  };
+
   return (
-    <Grid container>
-      <Grid item xs={6} sx={{ display: { xs: "none", md: "block" } }}>
-        <BoxWrapper
-          sx={{ backgroundColor: (theme) => theme.palette.primary.main }}
+    <Box sx={{ width: "100%" }}>
+      <form onSubmit={handleSubmit}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+          }}
         >
-          <img
-            src="https://collax-react.netlify.app/assets/img/contact/login.png"
-            alt=""
-          />
-        </BoxWrapper>
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <BoxWrapper>
-          <Box sx={{ width: "80%" }}>
-            <Box sx={{ float: "right", mt: -4 }}></Box>
-            <Box sx={{ textAlign: "center" }}>
-              <Typography variant="h3" component="h3" mb={2}>
-                <FormattedMessage {...messages.title} />
-              </Typography>
-              <Typography variant="subtitle2" component="p" mb={5}>
-                <FormattedMessage {...messages.description} />
+          <Stepper
+            alternativeLabel
+            sx={{
+              justifyContent: "center",
+              padding: "30px 0 40px",
+              width: "350px",
+            }}
+            activeStep={activeStep}
+          >
+            {steps.map((label, index) => {
+              const stepProps: { completed?: boolean } = {};
+              const labelProps: {
+                optional?: React.ReactNode;
+              } = {};
+              return (
+                <Step key={index} {...stepProps}>
+                  <StepLabel {...labelProps}>{label}</StepLabel>
+                </Step>
+              );
+            })}
+          </Stepper>
+          <Card
+            sx={{
+              marginBottom: (theme) => theme.spacing(3),
+              padding: "20px 30px",
+              boxShadow: (theme) => theme.shadow.boxShadow,
+              borderRadius: 0,
+            }}
+          >
+            {activeStep === steps.length - 1 ? (
+              <React.Fragment>
+                <Typography sx={{ mt: 2, mb: 1 }}>
+                  All steps completed - you&apos;re finished
+                </Typography>
+                <ButtonWrapper
+                  variant="contained"
+                  sx={{ flex: "1 1 auto" }}
+                  onClick={handleNext}
+                  disabled={(values.title && values.description) === ""}
+                >
+                  <FormattedMessage {...messages.profile} />
+                </ButtonWrapper>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                {/* <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography> */}
+                <StepOne
+                  handleChange={handleChange}
+                  handleBlur={handleBlur}
+                  errors={errors}
+                  values={values}
+                  touched={touched}
+                  setFieldValue={setFieldValue}
+                  disable={false}
+                />
+                <ButtonWrapper
+                  variant="contained"
+                  sx={{ flex: "1 1 auto" }}
+                  onClick={handleNext}
+                  disabled={(values.title && values.description) === ""}
+                >
+                  <FormattedMessage {...messages.signUp} />
+                </ButtonWrapper>
+              </React.Fragment>
+            )}
+            <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+              <Typography
+                sx={{
+                  flex: "1 1 auto",
+                  textAlign: "center",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                {activeStep === steps.length - 1 ? (
+                  <FormattedMessage {...messages.finalStepText} />
+                ) : (
+                  <>
+                    <FormattedMessage {...messages.nextStepText} />
+                    <Button
+                      sx={{
+                        paddingLeft: "10px",
+                        padding: 0,
+                        textTransform: "capitalize",
+                        color: (theme) => theme.palette.primary.main,
+                      }}
+                      onClick={handleNext}
+                    >
+                      {<FormattedMessage {...messages.nextStep} />}
+                    </Button>
+                  </>
+                )}
               </Typography>
             </Box>
-            <Box>
-              <RegisterForm />
-            </Box>
+          </Card>
+          <Box sx={{ padding: "20px 0 40px" }}>
+            <Typography>
+              <FormattedMessage {...messages.textSignIn} />
+              <Link
+                href="/login"
+                sx={{ marginLeft: "5px", textDecoration: "none" }}
+              >
+                <FormattedMessage {...messages.signIn} />
+              </Link>
+            </Typography>
           </Box>
-        </BoxWrapper>
-      </Grid>
-    </Grid>
+        </Box>
+      </form>
+    </Box>
   );
 };
 
