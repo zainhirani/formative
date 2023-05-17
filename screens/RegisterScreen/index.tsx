@@ -9,11 +9,11 @@ import {
   Button,
   Card,
   Link,
+  StepConnector,
 } from "@mui/material";
 import FormattedMessage from "theme/FormattedMessage";
-import RegisterForm from "./RegisterForm";
 import messages from "./messages";
-import { BoxWrapper, ButtonWrapper } from "./Styled";
+import { BoxWrapper, ButtonWrapper, StepConnectorWrapper } from "./Styled";
 import * as Yup from "yup";
 import { StepOne } from "./fields/Signup";
 import { useRouter } from "next/router";
@@ -148,6 +148,11 @@ const RegisterScreen: React.FC = () => {
           }}
         >
           <Stepper
+            connector={
+              <StepConnectorWrapper
+              // sx={{ borderColor: (theme) => theme.palette.primary.main }}
+              />
+            }
             alternativeLabel
             sx={{
               justifyContent: "center",
@@ -174,7 +179,11 @@ const RegisterScreen: React.FC = () => {
               padding: "20px 30px",
               boxShadow: (theme) => theme.shadow.boxShadow,
               borderRadius: 0,
-              width: { md: 650, xs: "80%" },
+              // width: { md: 650, xs: "80%" },
+              width:
+                activeStep === steps.length - 1
+                  ? "80%"
+                  : { md: 650, xs: "80%" },
             }}
           >
             {activeStep === steps.length - 1 ? (
@@ -193,7 +202,8 @@ const RegisterScreen: React.FC = () => {
                 <ButtonWrapper
                   variant="contained"
                   sx={{ flex: "1 1 auto" }}
-                  onClick={handleNext}
+                  // onClick={handleNext}
+                  type="submit"
                   disabled={
                     (values.dob &&
                       values.pharmacy &&
@@ -201,7 +211,6 @@ const RegisterScreen: React.FC = () => {
                       values.bioChemistry &&
                       values.maths &&
                       values.learn &&
-                      values.program &&
                       values.sequence &&
                       values.study &&
                       values.played &&

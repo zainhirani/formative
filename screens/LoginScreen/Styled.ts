@@ -9,7 +9,6 @@ export const BoxWrapper = styled(MuiBox)<BoxProps>(
       padding: theme.spacing(3, 5),
       alignItems: "center",
       flexDirection: "column",
-      height: "100vh", //theme.height.barHeight
       justifyContent: "space-between",
     } as any),
 ) as (props: BoxProps) => JSX.Element;

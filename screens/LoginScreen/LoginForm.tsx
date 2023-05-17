@@ -166,7 +166,7 @@ const LoginForm = () => {
         sx={{
           display: "flex",
           justifyContent: "space-between",
-          margin: { md: "120px 0 20px", xs: "30px" },
+          margin: { md: "70px 0 20px", xs: "10px" },
         }}
       >
         <FormattedMessage {...messages.textSignUp} />

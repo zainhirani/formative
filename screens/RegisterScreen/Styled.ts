@@ -3,6 +3,12 @@ import InputLabel, { InputLabelProps } from "@mui/material/InputLabel";
 import { styled } from "@mui/material/styles";
 import MuiBox, { BoxProps } from "@mui/material/Box";
 import Button, { ButtonProps } from "@mui/material/Button";
+import {
+  StepConnector,
+  StepLabel,
+  stepConnectorClasses,
+  stepLabelClasses,
+} from "@mui/material";
 
 export const CardHeaderWrapper = styled(CardHeader)<CardHeaderProps>(
   ({ theme }) =>
@@ -18,7 +24,7 @@ export const InputLabelWrapper = styled(InputLabel)<InputLabelProps>(
     ({
       marginBottom: theme.spacing(1),
       color: theme.palette.text.primary,
-      fontSize:"14px"
+      fontSize: "14px",
     } as any),
 ) as (props: InputLabelProps) => JSX.Element;
 
@@ -53,3 +59,23 @@ export const ButtonWrapper = styled(Button)<ButtonProps>(
       width: "100%",
     } as any),
 ) as (props: ButtonProps) => JSX.Element;
+
+export const StepConnectorWrapper = styled(StepConnector)(({ theme }) => ({
+  [`&.${stepConnectorClasses.active}`]: {
+    [`& .${stepConnectorClasses.line}`]: {
+      backgroundColor: theme.palette.primary.main,
+    },
+  },
+  [`&.${stepConnectorClasses.completed}`]: {
+    [`& .${stepConnectorClasses.line}`]: {
+      backgroundColor: theme.palette.primary.main,
+    },
+  },
+  [`& .${stepConnectorClasses.line}`]: {
+    height: 2,
+    border: 0,
+    marginX: "-8px",
+    backgroundColor: theme.palette.secondary.dark,
+    borderRadius: 1,
+  },
+}));

@@ -3,6 +3,7 @@ import {
   ButtonGroup,
   Card,
   CardContent,
+  Checkbox,
   FormControlLabel,
   FormHelperText,
   Grid,
@@ -23,7 +24,14 @@ import {
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 
 import { RegisterProps } from "./formProps";
-import { genderSelect, programSelect } from "./data";
+import {
+  learnRadioGroup,
+  radioChoice,
+  sequenceRadioGroup,
+  studyRadioGroup,
+  playRadioGroup,
+  mathSkillsSelect,
+} from "./data";
 import messages from "../messages";
 import { useState } from "react";
 
@@ -40,7 +48,7 @@ export const StepTwo: React.FC<RegisterProps> = ({
   const pharmacyPlaceholder = useFormattedMessage(messages.pharmacyPlaceholder);
   const passwordPlaceholder = useFormattedMessage(messages.passwordPlaceholder);
   const hobbiesPlaceholder = useFormattedMessage(messages.hobbiesPlaceholder);
-  const [year, setYear] = useState(2023);
+  const [math, setMath] = useState("Select an option for the list");
   return (
     <>
       <CardHeaderWrapper
@@ -99,16 +107,34 @@ export const StepTwo: React.FC<RegisterProps> = ({
           </Grid>
           <Grid item xs={12} md={6}>
             <InputLabelWrapper htmlFor="part-time">
-              <FormattedMessage {...messages.partTimeLael} />
+              <FormattedMessage {...messages.partTimeLabel} />
             </InputLabelWrapper>
             <RadioGroup
-              aria-labelledby="demo-radio-buttons-group-label"
-              defaultValue="yes"
+              onChange={(e) => {
+                if (setFieldValue) {
+                  setFieldValue("partTime", e.target.value);
+                }
+              }}
               name="radio-buttons-group"
               row
             >
-              <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-              <FormControlLabel value="no" control={<Radio />} label="No" />
+              {radioChoice?.map((choice) => (
+                <FormControlLabel
+                  sx={{
+                    width: { md: "50%", xs: "100%" },
+                    marginRight: 0,
+                    borderBottom: "1px solid",
+                    color: (theme) => theme.palette.secondary.dark,
+                  }}
+                  value={choice.name}
+                  control={
+                    <Radio
+                      sx={{ color: (theme) => theme.palette.secondary.dark }}
+                    />
+                  }
+                  label={choice.name}
+                />
+              ))}
             </RadioGroup>
             {touched.nickName && errors.nickName && (
               <FormHelperText error id="standard-weight-helper-text-nickName">
@@ -116,232 +142,283 @@ export const StepTwo: React.FC<RegisterProps> = ({
               </FormHelperText>
             )}
           </Grid>
-          {/* <Grid item xs={12} md={6}>
-            <InputLabelWrapper htmlFor="gender">
-              <FormattedMessage {...messages.genderLabel} />
+          <Grid item xs={12} md={6}>
+            <InputLabelWrapper htmlFor="bio-chemistry">
+              <FormattedMessage {...messages.bioLabel} />
+            </InputLabelWrapper>
+            <RadioGroup
+              onChange={(e) => {
+                if (setFieldValue) {
+                  setFieldValue("bioChemistry", e.target.value);
+                }
+              }}
+              name="radio-buttons-group"
+              row
+            >
+              {radioChoice?.map((choice) => (
+                <FormControlLabel
+                  sx={{
+                    width: { md: "50%", xs: "100%" },
+                    marginRight: 0,
+                    borderBottom: "1px solid",
+                    color: (theme) => theme.palette.secondary.dark,
+                  }}
+                  value={choice.name}
+                  control={
+                    <Radio
+                      sx={{ color: (theme) => theme.palette.secondary.dark }}
+                    />
+                  }
+                  label={choice.name}
+                />
+              ))}
+            </RadioGroup>
+            {touched.nickName && errors.nickName && (
+              <FormHelperText error id="standard-weight-helper-text-nickName">
+                {errors.nickName}
+              </FormHelperText>
+            )}
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <InputLabelWrapper htmlFor="maths">
+              <FormattedMessage {...messages.mathLabel} />
             </InputLabelWrapper>
             <Select
               labelId="demo-simple-select-standard-label"
               id="demo-simple-select-standard"
-              value={values.gender}
+              value={math}
               onChange={(e) => {
                 if (setFieldValue) {
-                  setFieldValue("gender", e.target.value);
+                  setFieldValue("maths", e.target.value);
+                  setMath(e.target.value);
                 }
               }}
               disabled={disable}
               variant="standard"
               fullWidth
-            >
-              {genderSelect?.map((gender) =>
-                gender.id === 0 ? (
-                  <MenuItem
-                    selected={true}
-                    disabled
-                    value={gender.name}
-                    key={gender.id}
-                  >
-                    {gender.name}
-                  </MenuItem>
-                ) : (
-                  <MenuItem value={gender.name} key={gender.id}>
-                    {gender.name}
-                  </MenuItem>
-                ),
-              )}
-            </Select>
-          </Grid>
-          <Grid item xs={12}>
-            <InputLabelWrapper htmlFor="email">
-              <FormattedMessage {...messages.emailLabel} />
-            </InputLabelWrapper>
-            <TextField
-              id="email"
-              name="email"
-              placeholder={emailPlaceholder}
-              fullWidth
-              value={values.email}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              error={Boolean(touched.email && errors.email)}
-              disabled={disable}
-              variant="standard"
-            />
-            {touched.email && errors.email && (
-              <FormHelperText error id="standard-weight-helper-text-email">
-                {errors.email}
-              </FormHelperText>
-            )}
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <InputLabelWrapper htmlFor="rfuID">
-              <FormattedMessage {...messages.rfuLabel} />
-            </InputLabelWrapper>
-            <TextField
-              id="rfuID"
-              name="rfuID"
-              placeholder={rfuIDPlaceholder}
-              fullWidth
-              type="number"
-              value={values.rfuID}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              error={Boolean(touched.rfuID && errors.rfuID)}
-              disabled={disable}
-              variant="standard"
-            />
-            {touched.rfuID && errors.rfuID && (
-              <FormHelperText error id="standard-weight-helper-text-rfuID">
-                {errors.rfuID}
-              </FormHelperText>
-            )}
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <InputLabelWrapper htmlFor="program">
-              <FormattedMessage {...messages.programLabel} />
-            </InputLabelWrapper>
-            <Select
-              labelId="demo-simple-select-standard-label"
-              id="demo-simple-select-standard"
-              value={values.program}
-              onChange={(e) => {
-                if (setFieldValue) {
-                  setFieldValue("program", e.target.value);
-                }
+              sx={{
+                ".MuiSvgIcon-root ": {
+                  color: (theme) => theme.palette.primary.main,
+                },
               }}
-              disabled={disable}
-              variant="standard"
-              fullWidth
             >
-              {programSelect?.map((program) =>
-                program.id === 0 ? (
-                  <MenuItem selected value={program.name} key={program.id}>
-                    {program.name}
+              {mathSkillsSelect?.map((math) =>
+                math.id === 1 ? (
+                  <MenuItem disabled value={math.name} key={math.id}>
+                    {math.name}
                   </MenuItem>
                 ) : (
-                  <MenuItem value={program.name} key={program.id}>
-                    {program.name}
+                  <MenuItem value={math.name} key={math.id}>
+                    {math.name}
                   </MenuItem>
                 ),
               )}
             </Select>
           </Grid>
           <Grid item xs={12} md={6}>
-            <InputLabelWrapper htmlFor="graduation">
-              <FormattedMessage {...messages.graduationLabel} />
+            <InputLabelWrapper htmlFor="learn">
+              <FormattedMessage {...messages.learnLabel} />
             </InputLabelWrapper>
-            <TextField
-              id="graduation"
-              name="graduation"
-              placeholder={graduationPlaceholder}
-              fullWidth
-              type="number"
-              value={values.graduation}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              error={Boolean(touched.graduation && errors.graduation)}
-              disabled={disable}
-              variant="standard"
-            />
-            {touched.graduation && errors.graduation && (
-              <FormHelperText error id="standard-weight-helper-text-graduation">
-                {errors.graduation}
+            <RadioGroup
+              onChange={(e) => {
+                if (setFieldValue) {
+                  setFieldValue("learn", e.target.value);
+                }
+              }}
+              name="radio-buttons-group"
+              row
+            >
+              {learnRadioGroup?.map((learn) => (
+                <FormControlLabel
+                  sx={{
+                    width: { md: "50%", xs: "100%" },
+                    marginRight: 0,
+                    borderBottom: "1px solid",
+                    color: (theme) => theme.palette.secondary.dark,
+                  }}
+                  value={learn.name}
+                  control={
+                    <Radio
+                      sx={{ color: (theme) => theme.palette.secondary.dark }}
+                    />
+                  }
+                  label={learn.name}
+                />
+              ))}
+            </RadioGroup>
+            {touched.nickName && errors.nickName && (
+              <FormHelperText error id="standard-weight-helper-text-nickName">
+                {errors.nickName}
               </FormHelperText>
             )}
           </Grid>
           <Grid item xs={12} md={6}>
-            <InputLabelWrapper htmlFor="birth-place">
-              <FormattedMessage {...messages.birthLabel} />
+            <InputLabelWrapper htmlFor="sequence">
+              <FormattedMessage {...messages.sequenceLabel} />
             </InputLabelWrapper>
-            <TextField
-              id="birth-place"
-              name="birthPlace"
-              placeholder={birthPlaceholder}
-              fullWidth
-              value={values.birthPlace}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              error={Boolean(touched.birthPlace && errors.birthPlace)}
-              disabled={disable}
-              variant="standard"
-            />
-            {touched.birthPlace && errors.birthPlace && (
-              <FormHelperText error id="standard-weight-helper-text-birthPlace">
-                {errors.birthPlace}
-              </FormHelperText>
-            )}
-          </Grid>
-          <Grid item xs={12}>
-            <InputLabelWrapper htmlFor="user-name">
-              <FormattedMessage {...messages.userLabel} />
-            </InputLabelWrapper>
-            <TextField
-              id="user-name"
-              name="userName"
-              placeholder={userPlaceholder}
-              fullWidth
-              value={values.userName}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              error={Boolean(touched.userName && errors.userName)}
-              disabled={disable}
-              variant="standard"
-            />
-            {touched.userName && errors.userName && (
-              <FormHelperText error id="standard-weight-helper-text-userName">
-                {errors.userName}
+            <RadioGroup
+              onChange={(e) => {
+                if (setFieldValue) {
+                  setFieldValue("sequence", e.target.value);
+                }
+              }}
+              name="radio-buttons-group"
+              row
+            >
+              {sequenceRadioGroup?.map((sequence) => (
+                <FormControlLabel
+                  sx={{
+                    width: { md: "50%", xs: "100%" },
+                    marginRight: 0,
+                    borderBottom: "1px solid",
+                    color: (theme) => theme.palette.secondary.dark,
+                  }}
+                  value={sequence.name}
+                  control={
+                    <Radio
+                      sx={{ color: (theme) => theme.palette.secondary.dark }}
+                    />
+                  }
+                  label={sequence.name}
+                />
+              ))}
+            </RadioGroup>
+            {touched.nickName && errors.nickName && (
+              <FormHelperText error id="standard-weight-helper-text-nickName">
+                {errors.nickName}
               </FormHelperText>
             )}
           </Grid>
           <Grid item xs={12} md={6}>
-            <InputLabelWrapper htmlFor="password">
-              <FormattedMessage {...messages.passwordLabel} />
+            <InputLabelWrapper htmlFor="study">
+              <FormattedMessage {...messages.studyLabel} />
             </InputLabelWrapper>
-            <TextField
-              id="password"
-              name="password"
-              placeholder={passwordPlaceholder}
-              fullWidth
-              type="password"
-              value={values.password}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              error={Boolean(touched.password && errors.password)}
-              disabled={disable}
-              variant="standard"
-            />
-            {touched.password && errors.password && (
-              <FormHelperText error id="standard-weight-helper-text-password">
-                {errors.password}
+            <RadioGroup
+              onChange={(e) => {
+                if (setFieldValue) {
+                  setFieldValue("study", e.target.value);
+                }
+              }}
+              name="radio-buttons-group"
+              row
+            >
+              {studyRadioGroup?.map((study) => (
+                <FormControlLabel
+                  sx={{
+                    width: { md: "50%", xs: "100%" },
+                    marginRight: 0,
+                    borderBottom: "1px solid",
+                    color: (theme) => theme.palette.secondary.dark,
+                  }}
+                  value={study.name}
+                  control={
+                    <Radio
+                      sx={{ color: (theme) => theme.palette.secondary.dark }}
+                    />
+                  }
+                  label={study.name}
+                />
+              ))}
+            </RadioGroup>
+            {touched.nickName && errors.nickName && (
+              <FormHelperText error id="standard-weight-helper-text-nickName">
+                {errors.nickName}
+              </FormHelperText>
+            )}
+          </Grid>
+          <Grid item xs={12} md={15}>
+            <InputLabelWrapper htmlFor="play">
+              <FormattedMessage {...messages.playLabel} />
+            </InputLabelWrapper>
+            {playRadioGroup?.map((play) => (
+              <FormControlLabel
+                sx={{
+                  width: { md: "25%", xs: "100%" },
+                  marginRight: 0,
+                  borderBottom: "1px solid",
+                  marginBottom: 3,
+                  color: (theme) => theme.palette.secondary.dark,
+                }}
+                value={play.name}
+                control={
+                  <Checkbox
+                    sx={{ color: (theme) => theme.palette.secondary.dark }}
+                    onChange={(e) => {
+                      if (setFieldValue) {
+                        setFieldValue("played", e.target.value);
+                      }
+                    }}
+                  />
+                }
+                label={play.name}
+              />
+            ))}
+            {touched.nickName && errors.nickName && (
+              <FormHelperText error id="standard-weight-helper-text-nickName">
+                {errors.nickName}
               </FormHelperText>
             )}
           </Grid>
           <Grid item xs={12} md={6}>
-            <InputLabelWrapper htmlFor="confirmPassword">
-              <FormattedMessage {...messages.confirmPasswordLabel} />
+            <InputLabelWrapper htmlFor="volunteer">
+              <FormattedMessage {...messages.volunteerLabel} />
             </InputLabelWrapper>
-            <TextField
-              id="confirmPassword"
-              name="confirmPassword"
-              placeholder={confirmPasswordPlaceholder}
-              fullWidth
-              type="password"
-              value={values.confirmPassword}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              error={Boolean(touched.confirmPassword && errors.confirmPassword)}
-              disabled={disable}
-              variant="standard"
-            />
-            {touched.confirmPassword && errors.confirmPassword && (
-              <FormHelperText
-                error
-                id="standard-weight-helper-text-confirmPassword"
-              >
-                {errors.confirmPassword}
+            <RadioGroup
+              onChange={(e) => {
+                if (setFieldValue) {
+                  setFieldValue("volunteer", e.target.value);
+                }
+              }}
+              name="radio-buttons-group"
+              row
+            >
+              {radioChoice?.map((choice) => (
+                <FormControlLabel
+                  sx={{
+                    width: { md: "50%", xs: "100%" },
+                    marginRight: 0,
+                    borderBottom: "1px solid",
+                    color: (theme) => theme.palette.secondary.dark,
+                  }}
+                  value={choice.name}
+                  control={
+                    <Radio
+                      sx={{ color: (theme) => theme.palette.secondary.dark }}
+                    />
+                  }
+                  label={choice.name}
+                />
+              ))}
+            </RadioGroup>
+            {touched.nickName && errors.nickName && (
+              <FormHelperText error id="standard-weight-helper-text-nickName">
+                {errors.nickName}
               </FormHelperText>
             )}
-          </Grid> */}
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <InputLabelWrapper htmlFor="hobbies">
+              <FormattedMessage {...messages.hobbiesLabel} />
+            </InputLabelWrapper>
+            <TextField
+              id="hobbies"
+              name="hobbies"
+              placeholder={hobbiesPlaceholder}
+              fullWidth
+              value={values.hobbies}
+              onBlur={handleBlur}
+              onChange={handleChange}
+              error={Boolean(touched.hobbies && errors.hobbies)}
+              disabled={disable}
+              variant="standard"
+              sx={{ marginTop: "12px" }}
+            />
+            {touched.hobbies && errors.hobbies && (
+              <FormHelperText error id="standard-weight-helper-text-hobbies">
+                {errors.hobbies}
+              </FormHelperText>
+            )}
+          </Grid>
         </Grid>
       </CardContent>
     </>

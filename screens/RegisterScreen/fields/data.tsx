@@ -6,6 +6,7 @@ export const genderSelect = [
 ];
 
 export const programSelect = [
+  { id: 0, name: "Select from the list" },
   { id: 1, name: "COP" },
   { id: 2, name: "POD" },
 ];

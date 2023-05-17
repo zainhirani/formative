@@ -38,7 +38,7 @@ export const StepOne: React.FC<RegisterProps> = ({
   );
   const lastNamePlaceholder = useFormattedMessage(messages.lastNamePlaceholder);
   const nickNamePlaceholder = useFormattedMessage(messages.nickNamePlaceholder);
-  const emailPlaceholder = useFormattedMessage(messages.emailPlaceholer);
+  const emailPlaceholder = useFormattedMessage(messages.emailPlaceholder);
   const rfuIDPlaceholder = useFormattedMessage(messages.rfuPlaceholder);
   const graduationPlaceholder = useFormattedMessage(
     messages.graduationPlaceholder,
@@ -49,7 +49,9 @@ export const StepOne: React.FC<RegisterProps> = ({
   const confirmPasswordPlaceholder = useFormattedMessage(
     messages.confirmPasswordPlaceholder,
   );
-  const [year, setYear] = useState(2023);
+  const [genders, setGenders] = useState("Select from the list");
+  const [programs, setPrograms] = useState("Select from the list");
+  const [year, setYear] = useState(2000);
   return (
     <>
       <CardHeaderWrapper
@@ -133,24 +135,25 @@ export const StepOne: React.FC<RegisterProps> = ({
             <Select
               labelId="demo-simple-select-standard-label"
               id="demo-simple-select-standard"
-              value={values.gender}
+              value={genders}
               onChange={(e) => {
                 if (setFieldValue) {
                   setFieldValue("gender", e.target.value);
                 }
+                setGenders(e.target.value);
               }}
               disabled={disable}
               variant="standard"
               fullWidth
+              sx={{
+                ".MuiSvgIcon-root ": {
+                  color: (theme) => theme.palette.primary.main,
+                },
+              }}
             >
               {genderSelect?.map((gender) =>
                 gender.id === 0 ? (
-                  <MenuItem
-                    selected={true}
-                    disabled
-                    value={gender.name}
-                    key={gender.id}
-                  >
+                  <MenuItem disabled value={gender.name} key={gender.id}>
                     {gender.name}
                   </MenuItem>
                 ) : (
@@ -213,19 +216,25 @@ export const StepOne: React.FC<RegisterProps> = ({
             <Select
               labelId="demo-simple-select-standard-label"
               id="demo-simple-select-standard"
-              value={values.program}
+              value={programs}
               onChange={(e) => {
                 if (setFieldValue) {
                   setFieldValue("program", e.target.value);
+                  setPrograms(e.target.value);
                 }
               }}
+
               disabled={disable}
               variant="standard"
               fullWidth
+              sx={{
+                ".MuiSvgIcon-root ": {
+                  color: (theme) => theme.palette.primary.main,
+                }}}
             >
               {programSelect?.map((program) =>
-                program.id === 1 ? (
-                  <MenuItem selected value={program.name} key={program.id}>
+                program.id === 0 ? (
+                  <MenuItem disabled value={program.name} key={program.id}>
                     {program.name}
                   </MenuItem>
                 ) : (
@@ -246,7 +255,7 @@ export const StepOne: React.FC<RegisterProps> = ({
               placeholder={graduationPlaceholder}
               fullWidth
               type="number"
-              value={values.graduation}
+              value={year}
               onBlur={handleBlur}
               onChange={handleChange}
               error={Boolean(touched.graduation && errors.graduation)}

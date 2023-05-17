@@ -1,0 +1,9 @@
+pre-commit:
+  eslint:
+    files:
+      - \.(js|ts)$
+    run: eslint --ext .js,.ts .
+  prettier:
+    files:
+      - \.(js|ts)$
+    run: prettier --check .

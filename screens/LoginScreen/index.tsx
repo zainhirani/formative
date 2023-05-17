@@ -8,20 +8,34 @@ import { LOGINBG } from "configs";
 
 const LoginScreen: React.FC = () => {
   return (
-    <Grid sx={{ height: "100vh" }}>
-      <Grid
-        container
+    <Box
+      sx={{
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 0,
+      }}
+    >
+      <Box
         sx={{
-          padding: { xs: "30px", md: "150px 100px" },
+          width: "80%",
+          padding: 0,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: { xs: "column", md: "row" },
+          height: { md: "80vh", xs: "45vh" },
         }}
       >
-        <Grid item xs={12} md={6}>
+        <Box sx={{ width: { md: "50%", xs: "100%" }, height: "inherit" }}>
           <BoxWrapper
             sx={{
               backgroundImage: `url(${LOGINBG})`,
               backgroundRepeat: "no-repeat",
-              backgroundSize: "cover",
-              height: { xs: "450px", md: "660px" },
+              backgroundSize: "100% 100%",
+              // height: { xs: "450px", md: "660px" },
+              height: "inherit",
               position: "relative",
             }}
           >
@@ -60,19 +74,23 @@ const LoginScreen: React.FC = () => {
               </Typography>
             </Box>
           </BoxWrapper>
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          md={6}
+        </Box>
+        <Box
           sx={{
             background: (theme) => theme.palette.primary.light,
-            padding: { md: "60px 40px 60px 20px", xs: "20px 20px 20px 10px" },
-            height: { md: "660px", xs: "500px" },
+            padding: { md: "40px 40px 20px", xs: "20px 20px 20px 10px" },
+            width: { md: "50%", xs: "100%" },
+            height: "inherit",
             boxShadow: (theme) => theme.shadow.boxShadow,
           }}
         >
-          <BoxWrapper>
+          <BoxWrapper
+            sx={{
+              height: { xl: "inherit" },
+              alignItems: { xl: "center" },
+              justifyContent: { xl: "center" },
+            }}
+          >
             <Box sx={{ width: "100%" }}>
               <Box sx={{ float: "right", mt: -4 }}></Box>
               <Box sx={{ textAlign: "center" }}></Box>
@@ -81,9 +99,9 @@ const LoginScreen: React.FC = () => {
               </Box>
             </Box>
           </BoxWrapper>
-        </Grid>
-      </Grid>
-    </Grid>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

@@ -31,7 +31,7 @@ export default defineMessages({
     defaultMessage: "Family (Last) Name",
   },
   nickNameLabel: {
-    id: `${scope}.nickNameLael`,
+    id: `${scope}.nickNameLabel`,
     defaultMessage: "Preferred (Nick) Name",
   },
   genderLabel: {
@@ -82,8 +82,8 @@ export default defineMessages({
     id: `${scope}.nickNamePlaceholder`,
     defaultMessage: "Enter your nick name here",
   },
-  emailPlaceholer: {
-    id: `${scope}.emailPlaceholer`,
+  emailPlaceholder: {
+    id: `${scope}.emailPlaceholder`,
     defaultMessage: "Enter your valid email address here",
   },
   rfuPlaceholder: {
@@ -141,8 +141,8 @@ export default defineMessages({
     id: `${scope}.pharmacyLabel`,
     defaultMessage: "Years of Pharmacy Technician Experience (0-50)",
   },
-  partTimeLael: {
-    id: `${scope}.partTimeLael`,
+  partTimeLabel: {
+    id: `${scope}.partTimeLabel`,
     defaultMessage: "Are you working part time?",
   },
   bioLabel: {
