@@ -1,12 +1,12 @@
 import React from "react";
 import { Box, Grid, Typography } from "@mui/material";
 import FormattedMessage from "theme/FormattedMessage";
-import LoginForm from "./LoginForm";
+import ForgotForm from "./ForgotForm";
 import messages from "./messages";
 import { BoxWrapper } from "./Styled";
 import { LOGINBG } from "configs";
 
-const LoginScreen: React.FC = () => {
+const ForgotScreen: React.FC = () => {
   return (
     <Box
       sx={{
@@ -80,6 +80,9 @@ const LoginScreen: React.FC = () => {
             background: (theme) => theme.palette.primary.light,
             padding: { md: "40px 40px 20px", xs: "20px 20px 20px 10px" },
             width: { md: "50%", xs: "100%" },
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
             height: "inherit",
             boxShadow: (theme) => theme.shadow.boxShadow,
           }}
@@ -95,7 +98,7 @@ const LoginScreen: React.FC = () => {
               <Box sx={{ float: "right", mt: -4 }}></Box>
               <Box sx={{ textAlign: "center" }}></Box>
               <Box>
-                <LoginForm />
+                <ForgotForm />
               </Box>
             </Box>
           </BoxWrapper>
@@ -105,4 +108,4 @@ const LoginScreen: React.FC = () => {
   );
 };
 
-export default LoginScreen;
+export default ForgotScreen;

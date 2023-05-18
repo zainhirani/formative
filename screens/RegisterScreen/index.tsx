@@ -9,16 +9,16 @@ import {
   Button,
   Card,
   Link,
-  StepConnector,
 } from "@mui/material";
 import FormattedMessage from "theme/FormattedMessage";
 import messages from "./messages";
-import { BoxWrapper, ButtonWrapper, StepConnectorWrapper } from "./Styled";
+import { BoxWrapper, ButtonWrapper, IconButtonWrapper } from "./Styled";
 import * as Yup from "yup";
 import { StepOne } from "./fields/Signup";
 import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
 import { useFormik } from "formik";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useAuthContext } from "contexts/AuthContext";
 import { StepTwo } from "./fields/Profile";
 
@@ -56,7 +56,8 @@ const steps = [
 ];
 
 const RegisterScreen: React.FC = () => {
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = useState(0);
+  const [skipped, setSkipped] = useState(new Set<number>());
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
   const { signUp } = useAuthContext();
@@ -124,16 +125,26 @@ const RegisterScreen: React.FC = () => {
     validationSchema,
     onSubmit,
   });
+  const isStepOptional = (step: number) => {
+    return step === 1;
+  };
+  const handleSkip = () => {
+    if (!isStepOptional(activeStep)) {
+      // You probably want to guard against something like this,
+      // it should never occur unless someone's actively trying to break something.
+      throw new Error("You can't skip a step that isn't optional.");
+    }
+
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setSkipped((prevSkipped) => {
+      const newSkipped = new Set(prevSkipped.values());
+      newSkipped.add(activeStep);
+      return newSkipped;
+    });
+  };
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-  const handleReset = () => {
-    setActiveStep(0);
   };
 
   return (
@@ -145,41 +156,15 @@ const RegisterScreen: React.FC = () => {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
+            padding: { md: "80px 0", xs: "40px 0", lg: "45px" },
           }}
         >
-          <Stepper
-            connector={
-              <StepConnectorWrapper
-              // sx={{ borderColor: (theme) => theme.palette.primary.main }}
-              />
-            }
-            alternativeLabel
-            sx={{
-              justifyContent: "center",
-              padding: "30px 0 40px",
-              width: "350px",
-            }}
-            activeStep={activeStep}
-          >
-            {steps.map((label, index) => {
-              const stepProps: { completed?: boolean } = {};
-              const labelProps: {
-                optional?: React.ReactNode;
-              } = {};
-              return (
-                <Step key={index} {...stepProps}>
-                  <StepLabel {...labelProps}>{label}</StepLabel>
-                </Step>
-              );
-            })}
-          </Stepper>
           <Card
             sx={{
               marginBottom: (theme) => theme.spacing(3),
               padding: "20px 30px",
               boxShadow: (theme) => theme.shadow.boxShadow,
               borderRadius: 0,
-              // width: { md: 650, xs: "80%" },
               width:
                 activeStep === steps.length - 1
                   ? "80%"
@@ -188,42 +173,82 @@ const RegisterScreen: React.FC = () => {
           >
             {activeStep === steps.length - 1 ? (
               <React.Fragment>
-                <Typography sx={{ mt: 2, mb: 1 }}>
-                  <StepTwo
-                    handleChange={handleChange}
-                    handleBlur={handleBlur}
-                    errors={errors}
-                    values={values}
-                    touched={touched}
-                    setFieldValue={setFieldValue}
-                    disable={false}
-                  />
-                </Typography>
-                <ButtonWrapper
-                  variant="contained"
-                  sx={{ flex: "1 1 auto" }}
-                  // onClick={handleNext}
-                  type="submit"
-                  disabled={
-                    (values.dob &&
-                      values.pharmacy &&
-                      values.partTime &&
-                      values.bioChemistry &&
-                      values.maths &&
-                      values.learn &&
-                      values.sequence &&
-                      values.study &&
-                      values.played &&
-                      values.volunteer &&
-                      values.hobbies) === ""
-                  }
+                <StepTwo
+                  handleChange={handleChange}
+                  handleBlur={handleBlur}
+                  errors={errors}
+                  values={values}
+                  touched={touched}
+                  setFieldValue={setFieldValue}
+                  disable={false}
+                />
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: { md: "row", xs: "column" },
+                  }}
                 >
-                  <FormattedMessage {...messages.profile} />
-                </ButtonWrapper>
+                  <Box
+                    sx={{
+                      width: { md: "75%", xs: "100%" },
+                      display: "flex",
+                      mt: "10px",
+                      justifyContent: { xs: "center", md: "end" },
+                    }}
+                  >
+                    <ButtonWrapper
+                      variant="contained"
+                      type="submit"
+                      disabled={
+                        (values.dob &&
+                          values.pharmacy &&
+                          values.partTime &&
+                          values.bioChemistry &&
+                          values.maths &&
+                          values.learn &&
+                          values.sequence &&
+                          values.study &&
+                          values.played &&
+                          values.volunteer &&
+                          values.hobbies) === ""
+                      }
+                      sx={{ width: { xs: "100%", md: "500px" } }}
+                    >
+                      <FormattedMessage {...messages.profile} />
+                    </ButtonWrapper>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: { md: "end", xs: "center" },
+                      width: { md: "25%", xs: "100%" },
+                      mr: 1,
+                      mt: { xs: "10px", md: 0 },
+                    }}
+                  >
+                    <Button
+                      type="submit"
+                      onClick={() => {
+                        router.push("/login");
+                      }}
+                      sx={{
+                        textDecoration: "none",
+                        color: (theme) => theme.palette.primary.main,
+                        textTransform: "initial",
+                        fontWeight: "500",
+                      }}
+                    >
+                      <FormattedMessage {...messages.skip} />
+                      <IconButtonWrapper>
+                        <ArrowForwardIcon />
+                      </IconButtonWrapper>
+                    </Button>
+                  </Box>
+                </Box>
               </React.Fragment>
             ) : (
               <React.Fragment>
-                {/* <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography> */}
                 <StepOne
                   handleChange={handleChange}
                   handleBlur={handleBlur}
@@ -270,23 +295,16 @@ const RegisterScreen: React.FC = () => {
                 ) : (
                   <>
                     <FormattedMessage {...messages.nextStepText} />
-                    <Button
-                      sx={{
-                        paddingLeft: "10px",
-                        padding: 0,
-                        textTransform: "capitalize",
-                        color: (theme) => theme.palette.primary.main,
-                      }}
-                      onClick={handleNext}
-                    >
-                      {<FormattedMessage {...messages.nextStep} />}
-                    </Button>
+                    <Link sx={{ marginLeft: "5px", textDecoration: "none" }}>
+                      "<FormattedMessage {...messages.nextStep} />"
+                    </Link>
                   </>
                 )}
               </Typography>
             </Box>
           </Card>
-          <Box sx={{ padding: "20px 0 40px" }}>
+          {/* <Box sx={{ padding: "20px 0 40px" }}> */}
+          <Box>
             <Typography>
               <FormattedMessage {...messages.textSignIn} />
               <Link

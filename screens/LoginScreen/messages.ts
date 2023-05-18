@@ -52,12 +52,19 @@ export default defineMessages({
     id: `${scope}.logIn`,
     defaultMessage: "Log In",
   },
+  OR: {
+    id: `${scope}.OR`,
+    defaultMessage: "OR",
+  },
 
   textSignUp: {
     id: `${scope}.textSignUp`,
     defaultMessage: "Don’t have an account?",
   },
-
+  SSO: {
+    id: `${scope}.SSO`,
+    defaultMessage: "Log In via The Rosalind Franklin SSO",
+  },
   signUp: {
     id: `${scope}.signUp`,
     defaultMessage: "Sign up",

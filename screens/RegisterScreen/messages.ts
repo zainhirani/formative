@@ -15,7 +15,7 @@ export default defineMessages({
   },
   stepTwoTitle: {
     id: `${scope}.stepTwoTitle`,
-    defaultMessage: "Profile",
+    defaultMessage: "Profile (optional)",
   },
   //First Step Messages
   description: {
@@ -192,6 +192,10 @@ export default defineMessages({
   profile: {
     id: `${scope}.profile`,
     defaultMessage: "Save & Continue",
+  },
+  skip: {
+    id: `${scope}.skip`,
+    defaultMessage: "Skip for Now",
   },
   finalStepText: {
     id: `${scope}.nextStepText`,

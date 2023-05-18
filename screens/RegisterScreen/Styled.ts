@@ -3,12 +3,7 @@ import InputLabel, { InputLabelProps } from "@mui/material/InputLabel";
 import { styled } from "@mui/material/styles";
 import MuiBox, { BoxProps } from "@mui/material/Box";
 import Button, { ButtonProps } from "@mui/material/Button";
-import {
-  StepConnector,
-  StepLabel,
-  stepConnectorClasses,
-  stepLabelClasses,
-} from "@mui/material";
+import { IconButton, IconButtonProps } from "@mui/material";
 
 export const CardHeaderWrapper = styled(CardHeader)<CardHeaderProps>(
   ({ theme }) =>
@@ -60,22 +55,11 @@ export const ButtonWrapper = styled(Button)<ButtonProps>(
     } as any),
 ) as (props: ButtonProps) => JSX.Element;
 
-export const StepConnectorWrapper = styled(StepConnector)(({ theme }) => ({
-  [`&.${stepConnectorClasses.active}`]: {
-    [`& .${stepConnectorClasses.line}`]: {
-      backgroundColor: theme.palette.primary.main,
-    },
-  },
-  [`&.${stepConnectorClasses.completed}`]: {
-    [`& .${stepConnectorClasses.line}`]: {
-      backgroundColor: theme.palette.primary.main,
-    },
-  },
-  [`& .${stepConnectorClasses.line}`]: {
-    height: 2,
-    border: 0,
-    marginX: "-8px",
-    backgroundColor: theme.palette.secondary.dark,
-    borderRadius: 1,
-  },
-}));
+export const IconButtonWrapper = styled(IconButton)<IconButtonProps>(
+  ({ theme }) => ({
+    padding: 0,
+    margin: 0,
+    height: "12px",
+    color: theme.palette.primary.main,
+  }),
+) as (props: IconButtonProps) => JSX.Element;

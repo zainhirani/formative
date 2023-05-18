@@ -1,17 +1,15 @@
 import {
-  Button,
-  ButtonGroup,
-  Card,
+  Box,
   CardContent,
   FormHelperText,
   Grid,
+  IconButton,
   MenuItem,
-  OutlinedInput,
   Select,
-  SelectChangeEvent,
   TextField,
   Typography,
 } from "@mui/material";
+import { IconButtonWrapper } from "screens/RegisterScreen/Styled";
 
 import {
   CardHeaderWrapper,
@@ -23,6 +21,10 @@ import { RegisterProps } from "./formProps";
 import { genderSelect, programSelect } from "./data";
 import messages from "../messages";
 import { useState } from "react";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
+import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
+import ArrowDropUpOutlinedIcon from "@mui/icons-material/ArrowDropUpOutlined";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export const StepOne: React.FC<RegisterProps> = ({
   touched,
@@ -52,6 +54,20 @@ export const StepOne: React.FC<RegisterProps> = ({
   const [genders, setGenders] = useState("Select from the list");
   const [programs, setPrograms] = useState("Select from the list");
   const [year, setYear] = useState(2000);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const increment = () => {
+    if (year < 2200) {
+      setYear((year) => year + 1);
+    }
+  };
+
+  const decrement = () => {
+    if (year > 1950) {
+      setYear((year) => year - 1);
+    }
+  };
   return (
     <>
       <CardHeaderWrapper
@@ -145,6 +161,7 @@ export const StepOne: React.FC<RegisterProps> = ({
               disabled={disable}
               variant="standard"
               fullWidth
+              IconComponent={KeyboardArrowDownIcon}
               sx={{
                 ".MuiSvgIcon-root ": {
                   color: (theme) => theme.palette.primary.main,
@@ -217,20 +234,21 @@ export const StepOne: React.FC<RegisterProps> = ({
               labelId="demo-simple-select-standard-label"
               id="demo-simple-select-standard"
               value={programs}
+              IconComponent={KeyboardArrowDownIcon}
               onChange={(e) => {
                 if (setFieldValue) {
                   setFieldValue("program", e.target.value);
                   setPrograms(e.target.value);
                 }
               }}
-
               disabled={disable}
               variant="standard"
               fullWidth
               sx={{
                 ".MuiSvgIcon-root ": {
                   color: (theme) => theme.palette.primary.main,
-                }}}
+                },
+              }}
             >
               {programSelect?.map((program) =>
                 program.id === 0 ? (
@@ -245,7 +263,7 @@ export const StepOne: React.FC<RegisterProps> = ({
               )}
             </Select>
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid sx={{ position: "relative" }} item xs={12} md={6}>
             <InputLabelWrapper htmlFor="graduation">
               <FormattedMessage {...messages.graduationLabel} />
             </InputLabelWrapper>
@@ -262,6 +280,22 @@ export const StepOne: React.FC<RegisterProps> = ({
               disabled={disable}
               variant="standard"
             />
+            <Box
+              sx={{
+                position: "absolute",
+                display: "flex",
+                flexDirection: "column",
+                right: 0,
+                bottom: "10%",
+              }}
+            >
+              <IconButtonWrapper onClick={increment}>
+                <ArrowDropUpOutlinedIcon />
+              </IconButtonWrapper>
+              <IconButtonWrapper onClick={decrement}>
+                <ArrowDropDownOutlinedIcon />
+              </IconButtonWrapper>
+            </Box>
             {touched.graduation && errors.graduation && (
               <FormHelperText error id="standard-weight-helper-text-graduation">
                 {errors.graduation}
@@ -312,7 +346,7 @@ export const StepOne: React.FC<RegisterProps> = ({
               </FormHelperText>
             )}
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid sx={{ position: "relative" }} item xs={12} md={6}>
             <InputLabelWrapper htmlFor="password">
               <FormattedMessage {...messages.passwordLabel} />
             </InputLabelWrapper>
@@ -321,7 +355,7 @@ export const StepOne: React.FC<RegisterProps> = ({
               name="password"
               placeholder={passwordPlaceholder}
               fullWidth
-              type="password"
+              type={showPassword ? "text" : "password"}
               value={values.password}
               onBlur={handleBlur}
               onChange={handleChange}
@@ -329,13 +363,26 @@ export const StepOne: React.FC<RegisterProps> = ({
               disabled={disable}
               variant="standard"
             />
+            <IconButton
+              aria-label="toggle password visibility"
+              onClick={() => setShowPassword(!showPassword)}
+              edge="end"
+              sx={{
+                position: "absolute",
+                right: "3%",
+                bottom: 0,
+                color: (theme) => theme.palette.secondary.dark,
+              }}
+            >
+              {showPassword ? <VisibilityOff /> : <Visibility />}
+            </IconButton>
             {touched.password && errors.password && (
               <FormHelperText error id="standard-weight-helper-text-password">
                 {errors.password}
               </FormHelperText>
             )}
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid sx={{ position: "relative" }} item xs={12} md={6}>
             <InputLabelWrapper htmlFor="confirmPassword">
               <FormattedMessage {...messages.confirmPasswordLabel} />
             </InputLabelWrapper>
@@ -344,7 +391,7 @@ export const StepOne: React.FC<RegisterProps> = ({
               name="confirmPassword"
               placeholder={confirmPasswordPlaceholder}
               fullWidth
-              type="password"
+              type={showConfirmPassword ? "text" : "password"}
               value={values.confirmPassword}
               onBlur={handleBlur}
               onChange={handleChange}
@@ -352,6 +399,19 @@ export const StepOne: React.FC<RegisterProps> = ({
               disabled={disable}
               variant="standard"
             />
+            <IconButton
+              aria-label="toggle password visibility"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              edge="end"
+              sx={{
+                position: "absolute",
+                right: "3%",
+                bottom: 0,
+                color: (theme) => theme.palette.secondary.dark,
+              }}
+            >
+              {showPassword ? <VisibilityOff /> : <Visibility />}
+            </IconButton>
             {touched.confirmPassword && errors.confirmPassword && (
               <FormHelperText
                 error

@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   ButtonGroup,
   Card,
@@ -16,12 +17,16 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
+import ArrowDropUpOutlinedIcon from "@mui/icons-material/ArrowDropUpOutlined";
 
 import {
   CardHeaderWrapper,
+  IconButtonWrapper,
   InputLabelWrapper,
 } from "screens/RegisterScreen/Styled";
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 
 import { RegisterProps } from "./formProps";
 import {
@@ -49,6 +54,18 @@ export const StepTwo: React.FC<RegisterProps> = ({
   const passwordPlaceholder = useFormattedMessage(messages.passwordPlaceholder);
   const hobbiesPlaceholder = useFormattedMessage(messages.hobbiesPlaceholder);
   const [math, setMath] = useState("Select an option for the list");
+  const [experience, setExperience] = useState(0);
+  const increment = () => {
+    if (experience < 50) {
+      setExperience((experience) => experience + 1);
+    }
+  };
+
+  const decrement = () => {
+    if (experience > 0) {
+      setExperience((experience) => experience - 1);
+    }
+  };
   return (
     <>
       <CardHeaderWrapper
@@ -82,7 +99,7 @@ export const StepTwo: React.FC<RegisterProps> = ({
               </FormHelperText>
             )}
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid sx={{ position: "relative" }} item xs={12} md={6}>
             <InputLabelWrapper htmlFor="pharmacy">
               <FormattedMessage {...messages.pharmacyLabel} />
             </InputLabelWrapper>
@@ -92,13 +109,29 @@ export const StepTwo: React.FC<RegisterProps> = ({
               placeholder={pharmacyPlaceholder}
               fullWidth
               type="number"
-              value={values.pharmacy}
+              value={experience}
               onBlur={handleBlur}
               onChange={handleChange}
               error={Boolean(touched.pharmacy && errors.pharmacy)}
               disabled={disable}
               variant="standard"
             />
+            <Box
+              sx={{
+                position: "absolute",
+                display: "flex",
+                flexDirection: "column",
+                right: 0,
+                bottom: "10%",
+              }}
+            >
+              <IconButtonWrapper onClick={increment}>
+                <ArrowDropUpOutlinedIcon />
+              </IconButtonWrapper>
+              <IconButtonWrapper onClick={decrement}>
+                <ArrowDropDownOutlinedIcon />
+              </IconButtonWrapper>
+            </Box>
             {touched.pharmacy && errors.pharmacy && (
               <FormHelperText error id="standard-weight-helper-text-pharmacy">
                 {errors.pharmacy}
@@ -110,6 +143,7 @@ export const StepTwo: React.FC<RegisterProps> = ({
               <FormattedMessage {...messages.partTimeLabel} />
             </InputLabelWrapper>
             <RadioGroup
+              sx={{ gap: "20px" }}
               onChange={(e) => {
                 if (setFieldValue) {
                   setFieldValue("partTime", e.target.value);
@@ -147,6 +181,7 @@ export const StepTwo: React.FC<RegisterProps> = ({
               <FormattedMessage {...messages.bioLabel} />
             </InputLabelWrapper>
             <RadioGroup
+              sx={{ gap: "20px" }}
               onChange={(e) => {
                 if (setFieldValue) {
                   setFieldValue("bioChemistry", e.target.value);
@@ -187,6 +222,7 @@ export const StepTwo: React.FC<RegisterProps> = ({
               labelId="demo-simple-select-standard-label"
               id="demo-simple-select-standard"
               value={math}
+              IconComponent={KeyboardArrowDownIcon}
               onChange={(e) => {
                 if (setFieldValue) {
                   setFieldValue("maths", e.target.value);
@@ -200,6 +236,7 @@ export const StepTwo: React.FC<RegisterProps> = ({
                 ".MuiSvgIcon-root ": {
                   color: (theme) => theme.palette.primary.main,
                 },
+                marginTop: "7px",
               }}
             >
               {mathSkillsSelect?.map((math) =>
@@ -220,6 +257,7 @@ export const StepTwo: React.FC<RegisterProps> = ({
               <FormattedMessage {...messages.learnLabel} />
             </InputLabelWrapper>
             <RadioGroup
+              sx={{ gap: "20px" }}
               onChange={(e) => {
                 if (setFieldValue) {
                   setFieldValue("learn", e.target.value);
@@ -257,6 +295,7 @@ export const StepTwo: React.FC<RegisterProps> = ({
               <FormattedMessage {...messages.sequenceLabel} />
             </InputLabelWrapper>
             <RadioGroup
+              sx={{ gap: "20px" }}
               onChange={(e) => {
                 if (setFieldValue) {
                   setFieldValue("sequence", e.target.value);
@@ -294,6 +333,7 @@ export const StepTwo: React.FC<RegisterProps> = ({
               <FormattedMessage {...messages.studyLabel} />
             </InputLabelWrapper>
             <RadioGroup
+              sx={{ gap: "20px" }}
               onChange={(e) => {
                 if (setFieldValue) {
                   setFieldValue("study", e.target.value);
@@ -333,8 +373,8 @@ export const StepTwo: React.FC<RegisterProps> = ({
             {playRadioGroup?.map((play) => (
               <FormControlLabel
                 sx={{
-                  width: { md: "25%", xs: "100%" },
-                  marginRight: 0,
+                  width: { md: "23%", xs: "100%" },
+                  marginRight: { md: "30px", xs: 0 },
                   borderBottom: "1px solid",
                   marginBottom: 3,
                   color: (theme) => theme.palette.secondary.dark,
@@ -364,6 +404,7 @@ export const StepTwo: React.FC<RegisterProps> = ({
               <FormattedMessage {...messages.volunteerLabel} />
             </InputLabelWrapper>
             <RadioGroup
+              sx={{ gap: "20px" }}
               onChange={(e) => {
                 if (setFieldValue) {
                   setFieldValue("volunteer", e.target.value);
