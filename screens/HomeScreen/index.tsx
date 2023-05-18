@@ -1,5 +1,4 @@
 import Typography from "@mui/material/Typography";
-import ThemeSwitcher from "components/ThemeSwitch";
 import FormattedMessage from "theme/FormattedMessage";
 import { Button, Box } from "@mui/material";
 import { signOut } from "next-auth/react";
@@ -17,7 +16,6 @@ const HomeScreen: React.FC = () => {
           <FormattedMessage {...messages.title} />
         </Typography>
         <Box>
-          <ThemeSwitcher />
           <Button onClick={() => signOut()}>Logout</Button>
         </Box>
       </BoxWrapper>

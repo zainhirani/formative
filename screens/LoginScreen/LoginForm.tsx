@@ -1,11 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
 import {
   Box,
+  Divider,
   Grid,
   IconButton,
   InputLabel,
   Link,
   TextField,
+  Typography,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -126,7 +128,12 @@ const LoginForm = () => {
               aria-label="toggle password visibility"
               onClick={() => setShowPassword(!showPassword)}
               edge="end"
-              sx={{ position: "absolute", right: 0, top: "-10%",color:(theme)=>theme.palette.secondary.dark }}
+              sx={{
+                position: "absolute",
+                right: 0,
+                top: "-10%",
+                color: (theme) => theme.palette.secondary.dark,
+              }}
             >
               {showPassword ? <VisibilityOff /> : <Visibility />}
             </IconButton>
@@ -142,7 +149,7 @@ const LoginForm = () => {
         }}
       >
         <Link
-          href="#"
+          href="/forgot"
           underline="none"
           color="#8C2531"
           sx={{ textDecoration: "underline" }}
@@ -160,13 +167,39 @@ const LoginForm = () => {
         >
           <FormattedMessage {...messages.logIn} />
         </ButtonWrapper>
+        <Divider
+          sx={{
+            marginY: "20px",
+            color: (theme) => theme.palette.secondary.dark,
+          }}
+        >
+          <FormattedMessage {...messages.OR} />
+        </Divider>
+        <ButtonWrapper
+          onClick={(e) => {
+            e.preventDefault;
+            // router.push("/register");
+          }}
+          sx={{
+            color: (theme) => theme.palette.primary.main,
+            background: "none",
+            boxShadow: "none",
+            border: "1px solid #EAEAEA",
+            "&:hover": {
+              color: (theme) => theme.palette.primary.light,
+            },
+          }}
+          variant="contained"
+        >
+          <FormattedMessage {...messages.SSO} />
+        </ButtonWrapper>
       </Box>
 
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
-          margin: { md: "120px 0 20px", xs: "30px" },
+          marginY: "10px",
         }}
       >
         <FormattedMessage {...messages.textSignUp} />

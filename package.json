@@ -6,7 +6,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "type-check": "tsc --noEmit --pretty"
+    "type-check": "tsc --noEmit --pretty",
+    "prepare": "lefthook install"
   },
   "dependencies": {
     "@emotion/cache": "latest",
@@ -25,7 +26,7 @@
     "firebase-admin": "^11.0.1",
     "formik": "^2.2.9",
     "js-cookie": "^3.0.1",
-    "lefthook": "^1.2.7",
+    "lefthook": "^1.3.13",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",
     "ms": "^2.1.3",

@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import Typography from "@mui/material/Typography";
-import ThemeSwitcher from "components/ThemeSwitch";
 import { AuthContext } from "contexts/AuthContext";
 import FormattedMessage from "theme/FormattedMessage";
 import messages from "./messages";
@@ -17,7 +16,6 @@ const HomeScreen: React.FC = () => {
         <Typography>
           <FormattedMessage {...messages.title} />
         </Typography>
-        <ThemeSwitcher />
       </BoxWrapper>
       <Typography sx={{ ml: 4 }}>
         <FormattedMessage {...messages.description} />

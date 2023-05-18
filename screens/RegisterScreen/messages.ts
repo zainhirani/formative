@@ -15,13 +15,9 @@ export default defineMessages({
   },
   stepTwoTitle: {
     id: `${scope}.stepTwoTitle`,
-    defaultMessage: "Profile",
+    defaultMessage: "Profile (optional)",
   },
   //First Step Messages
-  title: {
-    id: `${scope}.title`,
-    defaultMessage: "Sign Up",
-  },
   description: {
     id: `${scope}.description`,
     defaultMessage: "Will you please fill out the form?",
@@ -34,8 +30,8 @@ export default defineMessages({
     id: `${scope}.lastNameLabel`,
     defaultMessage: "Family (Last) Name",
   },
-  nickNameLael: {
-    id: `${scope}.nickNameLael`,
+  nickNameLabel: {
+    id: `${scope}.nickNameLabel`,
     defaultMessage: "Preferred (Nick) Name",
   },
   genderLabel: {
@@ -86,8 +82,8 @@ export default defineMessages({
     id: `${scope}.nickNamePlaceholder`,
     defaultMessage: "Enter your nick name here",
   },
-  emailPlaceholer: {
-    id: `${scope}.emailPlaceholer`,
+  emailPlaceholder: {
+    id: `${scope}.emailPlaceholder`,
     defaultMessage: "Enter your valid email address here",
   },
   rfuPlaceholder: {
@@ -96,38 +92,116 @@ export default defineMessages({
   },
   graduationPlaceholder: {
     id: `${scope}.graduationPlaceholder`,
-    defaultMessage: "Enter your nick name here",
+    defaultMessage: "20xx",
   },
-  nickNamePlaceholder: {
-    id: `${scope}.nickNamePlaceholder`,
-    defaultMessage: "Enter your nick name here",
+  birthPlaceholder: {
+    id: `${scope}.birthPlaceholder`,
+    defaultMessage: "Enter birthplace here",
   },
-  nickNamePlaceholder: {
-    id: `${scope}.nickNamePlaceholder`,
-    defaultMessage: "Enter your nick name here",
+  userPlaceholder: {
+    id: `${scope}.userPlaceholder`,
+    defaultMessage: "Enter your unique user name",
   },
-  nickNamePlaceholder: {
-    id: `${scope}.nickNamePlaceholder`,
-    defaultMessage: "Enter your nick name here",
+  passwordPlaceholder: {
+    id: `${scope}.passwordPlaceholder`,
+    defaultMessage: "Enter your password",
   },
-  nickNamePlaceholder: {
-    id: `${scope}.nickNamePlaceholder`,
-    defaultMessage: "Enter your nick name here",
+  confirmPasswordPlaceholder: {
+    id: `${scope}.confirmPasswordPlaceholder`,
+    defaultMessage: "Re-enter your password",
   },
   signUp: {
     id: `${scope}.signUp`,
-    defaultMessage: "Sign Up",
+    defaultMessage: "Sign Up & Continue",
   },
-
+  nextStepText: {
+    id: `${scope}.nextStepText`,
+    defaultMessage: "Step 1/2. Next step",
+  },
+  nextStep: {
+    id: `${scope}.nextStep`,
+    defaultMessage: "Profile",
+  },
   textSignIn: {
     id: `${scope}.textSignIn`,
-    defaultMessage: "Already a member?",
+    defaultMessage: "Already have an account?",
   },
 
   signIn: {
     id: `${scope}.signIn`,
-    defaultMessage: "Sign In now",
+    defaultMessage: "Sign In",
   },
+
+  //Second Step Messages
+  dobLabel: {
+    id: `${scope}.dobLabel`,
+    defaultMessage: "Date of Birth",
+  },
+  pharmacyLabel: {
+    id: `${scope}.pharmacyLabel`,
+    defaultMessage: "Years of Pharmacy Technician Experience (0-50)",
+  },
+  partTimeLabel: {
+    id: `${scope}.partTimeLabel`,
+    defaultMessage: "Are you working part time?",
+  },
+  bioLabel: {
+    id: `${scope}.bioLabel`,
+    defaultMessage: "Have you taken a Biochemistry class before?",
+  },
+  mathLabel: {
+    id: `${scope}.mathLabel`,
+    defaultMessage: "My math skills are",
+  },
+  learnLabel: {
+    id: `${scope}.learnLabel`,
+    defaultMessage: "I prefer to learn about",
+  },
+  sequenceLabel: {
+    id: `${scope}.sequenceLabel`,
+    defaultMessage: "My preferred learning sequence is",
+  },
+  studyLabel: {
+    id: `${scope}.studyLabel`,
+    defaultMessage: "I prefer to study",
+  },
+  playLabel: {
+    id: `${scope}.playLabel`,
+    defaultMessage: "In high school, I played",
+  },
+  volunteerLabel: {
+    id: `${scope}.volunteerLabel`,
+    defaultMessage: "In the last year, did you volunteer more than 40 hours",
+  },
+  hobbiesLabel: {
+    id: `${scope}.hobbiesLabel`,
+    defaultMessage: "Hobbies",
+  },
+  dobPlaceholder: {
+    id: `${scope}.dobPlaceholder`,
+    defaultMessage: "YYYY MM DD",
+  },
+  pharmacyPlaceholder: {
+    id: `${scope}.pharmacyPlaceholder`,
+    defaultMessage: "Enter no. of years here",
+  },
+  hobbiesPlaceholder: {
+    id: `${scope}.hobbiesPlaceholder`,
+    defaultMessage: "Enter your hobbies",
+  },
+  profile: {
+    id: `${scope}.profile`,
+    defaultMessage: "Save & Continue",
+  },
+  skip: {
+    id: `${scope}.skip`,
+    defaultMessage: "Skip for Now",
+  },
+  finalStepText: {
+    id: `${scope}.nextStepText`,
+    defaultMessage: "Finish & Proceed to Dashboard",
+  },
+
   successMessage: {
     id: `${scope}.successMessage`,
     defaultMessage: "Signed Up Successfully!",

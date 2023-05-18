@@ -30,5 +30,6 @@ export const ButtonWrapper = styled(Button)<ButtonProps>(
       borderRadius: theme.borderRadius.radius1,
       textTransform: "capitalize",
       width: "100%",
+      marginTop: "20px",
     } as any),
 ) as (props: ButtonProps) => JSX.Element;

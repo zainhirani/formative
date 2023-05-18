@@ -38,21 +38,21 @@ export let getDesignTokens = (mode: PaletteMode) => {
         : {
             // palette values for dark mode
             primary: {
-              main: "#0093E7",
-              dark: "#FFFFFF",
-              light: "#404040",
+              main: "#8C2531",
+              dark: "#404040",
+              light: "#FFFFFF",
             },
             secondary: {
-              main: "#0076BB",
-              light: "#303030",
-              dark: "#FFFFFF",
+              main: "#68151E",
+              light: "#F4F4F4",
+              dark: "#BFBFBF",
             },
             text: {
-              primary: "#FFFFFF",
-              secondary: "#404040",
+              primary: "#404040",
+              secondary: "#68151E",
             },
             background: {
-              default: "#303030",
+              default: "#F4F4F4",
             },
             error: {
               main: "#ef5350",
@@ -74,8 +74,8 @@ export let getDesignTokens = (mode: PaletteMode) => {
         : {
             lightGrey: "#9EC6D8",
             primaryTranslucent: "#0093e766",
-            primaryBlack: "rgba(0, 0, 0, 0.24)",
-            secondryBlack: "rgba(0, 0, 0, 0.26)",
+            primaryBlack: "rgba(255, 255, 255, 1)",
+            secondryBlack: "rgba(0, 0, 0, 0.12)",
           }),
     },
     borderRadius: {
