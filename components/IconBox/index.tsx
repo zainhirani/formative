@@ -8,7 +8,6 @@ import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import { QUIZ } from "configs";
 import Image from "theme/Image";
-
 interface IconBoxProps {
   title: string;
   description: string;
@@ -29,9 +28,14 @@ const Iconbox = ({ title, description, image, url }: IconBoxProps) => {
         borderRadius: "6px",
         border: 1,
         borderColor: "transparent",
+        cursor: "pointer",
         "&:hover": {
           boxShadow: "0 0 40px rgb(0 0 0 / 10%)",
           borderColor: "#EAEAEA",
+          "&:hover .iconColorChange": {
+            background: (theme) => theme.palette.primary.main,
+            color: (theme) => theme.palette.primary.light,
+          },
         },
       }}
     >
@@ -56,6 +60,7 @@ const Iconbox = ({ title, description, image, url }: IconBoxProps) => {
       </CardContent>
       <CardActions>
         <Link
+          className="iconColorChange"
           href="#"
           underline="none"
           sx={{

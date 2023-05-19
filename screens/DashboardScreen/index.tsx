@@ -61,7 +61,7 @@ const DashboardScreen = () => {
                                 padding: 0,
                                 borderRadius: "none",
                                 boxShadow: "none",
-                                width: "49%",
+                                width: "48%",
                             }}
                         >
                             <Iconbox

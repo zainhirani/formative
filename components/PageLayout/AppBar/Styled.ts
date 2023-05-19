@@ -3,7 +3,7 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import MuiBox, { BoxProps } from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 
-const drawerWidth = 300;
+const drawerWidth = 220;
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }

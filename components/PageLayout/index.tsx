@@ -11,7 +11,7 @@ interface Props {
 }
 
 const PageLayout = (props: Props) => {
-  const primaryDrawerWidth = 300;
+  const primaryDrawerWidth = 220;
   const [open, setOpen] = React.useState(true);
 
   const handleDrawerOpen = () => {

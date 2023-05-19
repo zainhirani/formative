@@ -1,11 +1,15 @@
-import HomeIcon from "@mui/icons-material/Home";
-import PaidIcon from "@mui/icons-material/Paid";
+import AutoStoriesOutlinedIcon from "@mui/icons-material/AutoStoriesOutlined";
+import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
+import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
+import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
+import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 const MenuData = [
   {
     title: "Dashboard",
-    icon: <HomeIcon />,
+    icon: <DashboardOutlinedIcon />,
     link: "/dashboard",
   },
   {
@@ -15,27 +19,37 @@ const MenuData = [
   },
   {
     title: "Questions",
-    icon: <ShoppingCartIcon />,
+    icon: <HelpOutlineOutlinedIcon />,
     link: "",
   },
   {
     title: "Students",
-    icon: <PaidIcon />,
+    icon: <PeopleAltOutlinedIcon />,
     link: "",
   },
   {
     title: "Courses",
-    icon: <PaidIcon />,
+    icon: <AutoStoriesOutlinedIcon />,
     link: "",
   },
   {
     title: "Test Yourself",
-    icon: <PaidIcon />,
+    icon: <ReceiptLongOutlinedIcon />,
     link: "",
   },
   {
     title: "How am I doing",
-    icon: <PaidIcon />,
+    icon: <DescriptionOutlinedIcon />,
+    link: "",
+  },
+  {
+    title: "Profile",
+    icon: <PersonOutlineOutlinedIcon />,
+    link: "",
+  },
+  {
+    title: "Settings",
+    icon: <DescriptionOutlinedIcon />,
     link: "",
   },
 ];

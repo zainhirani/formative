@@ -42,7 +42,7 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
           />
         </Box>
         <IconButton onClick={clickHandler}>
-          <MenuIcon />
+          <MenuIcon sx={{ color: (theme) => theme.palette.primary.light }} />
         </IconButton>
       </DrawerHeader>
 

@@ -38,10 +38,23 @@ const AppBarComponent: React.FC<BarComponentProps> = ({
               edge="start"
               sx={{
                 marginRight: 5,
+                "&::before": {
+                  content: '""',
+                  background: (theme) => theme.palette.primary.main,
+                  width: 60,
+                  height: 66,
+                  position: "absolute",
+                  left: -8,
+                  top: -13,
+                  zIndex: -1,
+                },
                 ...(open && { display: "none" }),
+                ...(open && {}),
               }}
             >
-              <MenuIcon />
+              <MenuIcon
+                sx={{ color: (theme) => theme.palette.primary.light }}
+              />
             </IconButton>
             <Typography
               gutterBottom

@@ -12,3 +12,4 @@ localforage
 nextauth
 resp
 Iconbox
+SITELOGO
