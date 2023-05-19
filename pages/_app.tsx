@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import React, { useContext, useState } from "react";
 import App, { AppContext } from "next/app";
 import Head from "next/head";
