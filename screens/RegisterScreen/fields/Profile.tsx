@@ -68,12 +68,6 @@ export const StepTwo: React.FC<RegisterProps> = ({
   };
   return (
     <>
-      <CardHeaderWrapper
-        title={<FormattedMessage {...messages.stepTwoTitle} />}
-      />
-      <Typography sx={{ marginLeft: "15px" }}>
-        <FormattedMessage {...messages.description} />
-      </Typography>
       <CardContent>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
@@ -376,6 +370,7 @@ export const StepTwo: React.FC<RegisterProps> = ({
                   width: { md: "25%", xs: "100%" },
                   borderBottom: "1px solid",
                   marginBottom: 3,
+                  margin: 0,
                   color: (theme) => theme.palette.secondary.dark,
                 }}
                 value={play.name}
