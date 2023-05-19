@@ -16,3 +16,9 @@ export const AUTH_LOGIN_URL = process.env.NEXT_PUBLIC_AUTH_LOGIN_URL;
 
 export const PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
 export const LOGINBG = "/LoginBG.png";
+export const SITELOGO = "/websiteLogo.png";
+export const USERIMAGE = "/userImage.png";
+export const QUIZ = "/quiz.svg";
+export const COURSES = "/courses.svg";
+export const STUDENTS = "/students.svg";
+export const QUESTIONS = "/questions.svg";
