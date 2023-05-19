@@ -8,3 +8,4 @@ Signup
 secondry
 nocheck
 clsx
+localforage
