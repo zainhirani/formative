@@ -3,17 +3,20 @@ import { BottomNavigationActionTypeMap, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import Typography from "@mui/material/Typography";
 import RightMenu from "./RightMenu";
-import SearchField from "./Search Field";
 import { AppBar, BoxWrapper, Toolbar } from "./Styled";
 
 interface BarComponentProps {
   open?: boolean;
   clickHandler?: any;
+  title?: any;
+  icon?: any;
 }
 
 const AppBarComponent: React.FC<BarComponentProps> = ({
   open,
   clickHandler,
+  title,
+  icon,
 }) => {
   return (
     <>
@@ -50,7 +53,7 @@ const AppBarComponent: React.FC<BarComponentProps> = ({
                 fontWeight: "400",
               }}
             >
-              Dashboard
+              {title} <IconButton>{icon}</IconButton>
             </Typography>
           </BoxWrapper>
           <BoxWrapper>

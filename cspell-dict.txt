@@ -11,3 +11,4 @@ clsx
 localforage
 nextauth
 resp
+Iconbox

@@ -6,6 +6,8 @@ import DrawerContent from "./DrawerContent";
 import { DrawerHeader } from "./DrawerContent/Styled";
 interface Props {
   children?: JSX.Element;
+  title?: any;
+  icon?: any;
 }
 
 const PageLayout = (props: Props) => {
@@ -35,7 +37,12 @@ const PageLayout = (props: Props) => {
         </Drawer>
       </Box>
 
-      <AppBarComponent open={open} clickHandler={handleDrawerOpen} />
+      <AppBarComponent
+        title={props.title}
+        icon={props.icon}
+        open={open}
+        clickHandler={handleDrawerOpen}
+      />
       <Box
         component="main"
         sx={{

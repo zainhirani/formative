@@ -34,7 +34,7 @@ const boxContent = [
 
 const DashboardScreen = () => {
     return (
-        <PageLayout>
+        <PageLayout title={"Dashboard"} >
             <Box sx={{ flexGrow: 1 }}>
                 <Box>
                     <Typography
