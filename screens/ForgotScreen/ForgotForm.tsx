@@ -21,31 +21,31 @@ const ForgotForm = () => {
   const { signIn } = useAuthContext();
 
   const onSubmit = useCallback(async (data: any) => {
-    await signIn("credentials", {
-      ...data,
-      redirect: false,
-    })
-      .then((userCredential: any) => {
-        const user = userCredential.user;
+    // await signIn("credentials", {
+    //   ...data,
+    //   redirect: false,
+    // })
+    //   .then((userCredential: any) => {
+    //     const user = userCredential.user;
 
-        if (user) {
-          enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
-            variant: "success",
-          });
-        } else if (userCredential.error) {
-          enqueueSnackbar(userCredential.error, {
-            variant: "error",
-          });
-        }
-      })
-      .catch((error: any) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-        enqueueSnackbar(errorMessage, {
-          variant: "error",
-        });
-      });
+    //     if (user) {
+    //       enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
+    //         variant: "success",
+    //       });
+    //     } else if (userCredential.error) {
+    //       enqueueSnackbar(userCredential.error, {
+    //         variant: "error",
+    //       });
+    //     }
+    //   })
+    //   .catch((error: any) => {
+    //     const errorCode = error.code;
+    //     const errorMessage = error.message;
+    //     console.log(errorCode, errorMessage);
+    //     enqueueSnackbar(errorMessage, {
+    //       variant: "error",
+    //     });
+    //   });
   }, []);
 
   // use formik

@@ -21,6 +21,7 @@ import { useFormik } from "formik";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useAuthContext } from "contexts/AuthContext";
 import { StepTwo } from "./fields/Profile";
+import { log } from "console";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required().label("FirstName"),
@@ -88,27 +89,28 @@ const RegisterScreen: React.FC = () => {
   });
 
   const onSubmit = useCallback(async (data: any) => {
-    await signUp(data.email, data.password)
-      .then((userCredential: any) => {
-        const user = userCredential.user;
-        if (user) {
-          enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
-            variant: "success",
-          });
-        } else if (userCredential.error) {
-          enqueueSnackbar(userCredential.error, {
-            variant: "error",
-          });
-        }
-      })
-      .catch((error: any) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-        enqueueSnackbar(errorMessage, {
-          variant: "error",
-        });
-      });
+    // await signUp(data.email, data.password)
+    //   .then((userCredential: any) => {
+    //     const user = userCredential.user;
+    //     if (user) {
+    //       enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
+    //         variant: "success",
+    //       });
+    //     } else if (userCredential.error) {
+    //       enqueueSnackbar(userCredential.error, {
+    //         variant: "error",
+    //       });
+    //     }
+    //   })
+    //   .catch((error: any) => {
+    //     const errorCode = error.code;
+    //     const errorMessage = error.message;
+    //     console.log(errorCode, errorMessage);
+    //     enqueueSnackbar(errorMessage, {
+    //       variant: "error",
+    //     });
+    //   });
+    console.log(data);
   }, []);
 
   // use formik
