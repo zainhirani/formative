@@ -101,29 +101,29 @@ class MyApp extends App<{
           <title>Formative</title>
           <meta name="viewport" content="initial-scale=1, width=device-width" />
         </Head>
-        <ThemeContextProvider>
-          <ThemeProvider>
-            <IntlProvider locale={locale || "en"} messages={messages}>
-              <SessionProvider session={session}>
-                <AuthContextProvider>
-                  <QueryClientProvider client={queryClient}>
-                    <SnackbarProvider
-                      anchorOrigin={{
-                        vertical: "top",
-                        horizontal: "right",
-                      }}
-                    >
-                      <Hydrate state={pageProps.dehydratedState}>
-                        <Component {...pageProps} />
-                      </Hydrate>
-                    </SnackbarProvider>
-                    <ReactQueryDevtools initialIsOpen={false} />
-                  </QueryClientProvider>
-                </AuthContextProvider>
-              </SessionProvider>
-            </IntlProvider>
-          </ThemeProvider>
-        </ThemeContextProvider>
+        {/* <ThemeContextProvider> */}
+        <ThemeProvider>
+          <IntlProvider locale={locale || "en"} messages={messages}>
+            <SessionProvider session={session}>
+              <AuthContextProvider>
+                <QueryClientProvider client={queryClient}>
+                  <SnackbarProvider
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                  >
+                    <Hydrate state={pageProps.dehydratedState}>
+                      <Component {...pageProps} />
+                    </Hydrate>
+                  </SnackbarProvider>
+                  <ReactQueryDevtools initialIsOpen={false} />
+                </QueryClientProvider>
+              </AuthContextProvider>
+            </SessionProvider>
+          </IntlProvider>
+        </ThemeProvider>
+        {/* </ThemeContextProvider> */}
       </>
     );
   }
