@@ -9,3 +9,5 @@ secondry
 nocheck
 clsx
 localforage
+nextauth
+resp

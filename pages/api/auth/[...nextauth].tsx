@@ -1,6 +1,5 @@
 import NextAuth from "next-auth";
 import CredentialProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
 // import { useLoginUser } from "providers/Auth";
 import { login } from "services/auth";
 
@@ -22,16 +21,15 @@ export default NextAuth({
             email: credentials.email,
             password: credentials.password,
           });
-          const jwtToken = resp?.data?.idToken ? resp.data.idToken : "";
-          return { jwtToken };
+          return Promise.resolve(
+            resp?.data?.access_token
+              ? { jwtToken: resp.data.access_token }
+              : {},
+          ) as any;
         } catch (e: any) {
           return Promise.reject(new Error(e?.msg || "Something Wrong"));
         }
       },
-    }),
-    GoogleProvider({
-      clientId: process.env.GOOGLE_ID || "",
-      clientSecret: process.env.GOOGLE_SECRET || "",
     }),
   ],
   secret: "test",
