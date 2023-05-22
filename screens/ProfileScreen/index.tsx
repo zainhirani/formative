@@ -49,6 +49,7 @@ const validationSchema = Yup.object().shape({
   played: Yup.string().required().label("Played"),
   volunteer: Yup.string().required().label("Volunteer"),
   hobbies: Yup.string().required().label("Hobbies"),
+  currentPassword: Yup.string().required().min(6).label("Password"),
 });
 
 const ProfileScreen = () => {
@@ -76,6 +77,7 @@ const ProfileScreen = () => {
     played: "",
     volunteer: "",
     hobbies: "",
+    currentPassword: "",
   });
   const onSubmit = useCallback(async (data: any) => {
     console.log(data);
@@ -167,22 +169,28 @@ const ProfileScreen = () => {
               placeholder={passwordPlaceholder}
               fullWidth
               type={showPassword ? "text" : "password"}
-              value={values.password}
+              value={values.currentPassword}
               onBlur={handleBlur}
               onChange={handleChange}
-              error={Boolean(touched.password && errors.password)}
+              error={Boolean(touched.currentPassword && errors.currentPassword)}
               sx={{
                 background: (theme) => theme.palette.primary.light,
                 borderRadius: "0",
+                width: { md: "350px", xs: "250px" },
+                position: "relative",
                 ".MuiOutlinedInput-notchedOutline": {
-                  border: "none",
-                  width: "250px",
+                  borderRadius: 0,
+                  borderWidth: 0,
                 },
               }}
             />
-            {touched.password && errors.password && (
-              <FormHelperText error id="standard-weight-helper-text-password">
-                {errors.password}
+            {touched.currentPassword && errors.currentPassword && (
+              <FormHelperText
+                sx={{ position: "absolute", bottom: "-45%" }}
+                error
+                id="standard-weight-helper-text-currentPassword"
+              >
+                {errors.currentPassword}
               </FormHelperText>
             )}
             <ButtonWrapper

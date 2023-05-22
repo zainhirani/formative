@@ -19,7 +19,7 @@ export const ButtonWrapper = styled(Button)<ButtonProps>(
       display: "inline-block",
       fontSize: "16px",
       fontWeight: "400",
-      height: { md: "50px", xs: "max-content" },
+      height: "50px",
       lineHeight: { md: "50px", xs: "20px" },
       textAlign: "center",
       padding: { md: "0 50px", xs: "0 10px" },
