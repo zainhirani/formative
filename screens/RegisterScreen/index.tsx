@@ -12,7 +12,12 @@ import {
 } from "@mui/material";
 import FormattedMessage from "theme/FormattedMessage";
 import messages from "./messages";
-import { BoxWrapper, ButtonWrapper, IconButtonWrapper } from "./Styled";
+import {
+  BoxWrapper,
+  ButtonWrapper,
+  CardHeaderWrapper,
+  IconButtonWrapper,
+} from "./Styled";
 import * as Yup from "yup";
 import { StepOne } from "./fields/Signup";
 import { useRouter } from "next/router";
@@ -175,6 +180,12 @@ const RegisterScreen: React.FC = () => {
           >
             {activeStep === steps.length - 1 ? (
               <React.Fragment>
+                <CardHeaderWrapper
+                  title={<FormattedMessage {...messages.stepTwoTitle} />}
+                />
+                <Typography sx={{ marginLeft: "15px" }}>
+                  <FormattedMessage {...messages.description} />
+                </Typography>
                 <StepTwo
                   handleChange={handleChange}
                   handleBlur={handleBlur}
@@ -251,6 +262,12 @@ const RegisterScreen: React.FC = () => {
               </React.Fragment>
             ) : (
               <React.Fragment>
+                <CardHeaderWrapper
+                  title={<FormattedMessage {...messages.stepOneTitle} />}
+                />
+                <Typography sx={{ marginLeft: "15px" }}>
+                  <FormattedMessage {...messages.description} />
+                </Typography>
                 <StepOne
                   handleChange={handleChange}
                   handleBlur={handleBlur}

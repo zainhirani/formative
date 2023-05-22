@@ -45,7 +45,7 @@ const MenuData = [
   {
     title: "Profile",
     icon: <PersonOutlineOutlinedIcon />,
-    link: "",
+    link: "/profile",
   },
   {
     title: "Settings",

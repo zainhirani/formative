@@ -49,7 +49,7 @@ export let getDesignTokens = (mode: PaletteMode) => {
             },
             text: {
               primary: "#404040",
-              secondary: "#68151E",
+              secondary: "#7F7F7F",
             },
             background: {
               default: "#F4F4F4",
@@ -140,6 +140,19 @@ export let getDesignTokens = (mode: PaletteMode) => {
               {
                 backgroundColor: theme.palette.primary.dark,
               },
+            input: {
+              "&[type=number]": {
+                "-moz-appearance": "textfield",
+              },
+              "&::-webkit-outer-spin-button": {
+                "-webkit-appearance": "none",
+                margin: 0,
+              },
+              "&::-webkit-inner-spin-button": {
+                "-webkit-appearance": "none",
+                margin: 0,
+              },
+            },
           },
         },
       },
