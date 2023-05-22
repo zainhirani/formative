@@ -373,8 +373,7 @@ export const StepTwo: React.FC<RegisterProps> = ({
             {playRadioGroup?.map((play) => (
               <FormControlLabel
                 sx={{
-                  width: { md: "23%", xs: "100%" },
-                  marginRight: { md: "30px", xs: 0 },
+                  width: { md: "25%", xs: "100%" },
                   borderBottom: "1px solid",
                   marginBottom: 3,
                   color: (theme) => theme.palette.secondary.dark,

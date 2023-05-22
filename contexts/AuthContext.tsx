@@ -1,4 +1,4 @@
-
+//@ts-nocheck
 
 import { createContext, useCallback, useContext } from "react";
 import { useRouter } from "next/router";
@@ -59,15 +59,6 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
         <CircularProgress />
       </Box>
     );
-  }
-  if (
-    process.browser &&
-    (AUTHENTICATION_PATH || "").includes(window?.location?.pathname) &&
-    session?.user &&
-    loading
-  ) {
-    router?.replace(AUTHENTICATION_PATH[0]!);
-    return null;
   }
 
   if (

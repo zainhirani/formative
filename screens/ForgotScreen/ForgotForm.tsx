@@ -8,7 +8,7 @@ import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 
 import messages from "./messages";
 import { ButtonWrapper } from "./Styled";
-import { useAuthContext } from "contexts/AuthContext";
+// import { useAuthContext } from "contexts/AuthContext";
 import { useRouter } from "next/router";
 
 const validationSchema = Yup.object().shape({
@@ -18,7 +18,7 @@ const validationSchema = Yup.object().shape({
 const ForgotForm = () => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-  const { signIn } = useAuthContext();
+  // const { signIn } = useAuthContext();
 
   const onSubmit = useCallback(async (data: any) => {
     // await signIn("credentials", {

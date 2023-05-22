@@ -28,7 +28,7 @@ const LoginScreen: React.FC = () => {
           height: { md: "85vh", xs: "45vh" },
         }}
       >
-        <Box sx={{ width: { md: "50%", xs: "100%" }, height: "inherit" }}>
+        <Box sx={{ width: { md: "45%", xs: "100%" }, height: "inherit" }}>
           <BoxWrapper
             sx={{
               backgroundImage: `url(${LOGINBG})`,
@@ -79,8 +79,8 @@ const LoginScreen: React.FC = () => {
           sx={{
             background: (theme) => theme.palette.primary.light,
             padding: { md: "40px 40px 20px", xs: "20px 20px 20px 10px" },
-            width: { md: "50%", xs: "100%" },
-            height: "inherit",
+            width: { md: "55%", xs: "100%" },
+            height: { md: "inherit", xs: "max-content" },
             boxShadow: (theme) => theme.shadow.boxShadow,
           }}
         >
@@ -89,6 +89,7 @@ const LoginScreen: React.FC = () => {
               height: { xl: "inherit" },
               alignItems: { xl: "center" },
               justifyContent: { xl: "center" },
+              padding: { xs: "20px" },
             }}
           >
             <Box sx={{ width: "100%" }}>
