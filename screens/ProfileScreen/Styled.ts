@@ -27,18 +27,19 @@ export const BoxWrapper = styled(MuiBox)<BoxProps>(
   ({ theme }) =>
     ({
       display: "flex",
-      padding: theme.spacing(15, 0),
       alignItems: "center",
       flexDirection: "row",
-      height: "100vh", //theme.height.barHeight
       justifyContent: "center",
+      background: theme.palette.primary.light,
+      boxShadow: theme.shadow.boxShadow,
+      padding: "20px 30px",
     } as any),
 ) as (props: BoxProps) => JSX.Element;
 
 export const ButtonWrapper = styled(Button)<ButtonProps>(
   ({ theme }) =>
     ({
-      display: "inline-block",
+      display: "flex",
       fontSize: "16px",
       fontWeight: "400",
       height: "50px",
@@ -49,9 +50,9 @@ export const ButtonWrapper = styled(Button)<ButtonProps>(
       zIndex: "1",
       overflow: "hidden",
       color: theme.palette.primary.light,
-      borderRadius: theme.borderRadius.radius1,
+      borderRadius: 0,
       textTransform: "capitalize",
-      width: "100%",
+      width: "max-content",
     } as any),
 ) as (props: ButtonProps) => JSX.Element;
 

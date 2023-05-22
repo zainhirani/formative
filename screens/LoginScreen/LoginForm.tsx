@@ -2,10 +2,13 @@ import React, { useCallback, useEffect, useState } from "react";
 import {
   Box,
   Divider,
+  FormHelperText,
   Grid,
   IconButton,
+  InputAdornment,
   InputLabel,
   Link,
+  OutlinedInput,
   TextField,
   Typography,
 } from "@mui/material";
@@ -41,7 +44,6 @@ const LoginForm = () => {
     // })
     //   .then((userCredential: any) => {
     //     const user = userCredential.user;
-
     //     if (user) {
     //       enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
     //         variant: "success",
@@ -109,8 +111,8 @@ const LoginForm = () => {
           >
             <FormattedMessage {...messages.passwordLabel} />
           </InputLabel>
-          <Box display={"flex"} position={"relative"}>
-            <TextField
+          <Box display={"flex"} flexDirection={"column"} position={"relative"}>
+            <OutlinedInput
               id="password"
               name="password"
               value={values.password}
@@ -119,24 +121,35 @@ const LoginForm = () => {
               type={showPassword ? "text" : "password"}
               placeholder={passwordPlaceholder}
               error={touched.password && Boolean(errors.password)}
-              helperText={touched.password && errors.password}
               autoComplete="off"
-              variant="standard"
+              sx={{
+                "	.MuiOutlinedInput-notchedOutline": {
+                  borderWidth: "0 0 1px 0",
+                },
+                ".MuiOutlinedInput-input": {
+                  height: 0,
+                  paddingLeft: 0,
+                },
+                borderRadius: "0",
+              }}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() => setShowPassword(!showPassword)}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
               fullWidth
             />
-            <IconButton
-              aria-label="toggle password visibility"
-              onClick={() => setShowPassword(!showPassword)}
-              edge="end"
-              sx={{
-                position: "absolute",
-                right: 0,
-                top: "-10%",
-                color: (theme) => theme.palette.secondary.dark,
-              }}
-            >
-              {showPassword ? <VisibilityOff /> : <Visibility />}
-            </IconButton>
+            {touched.password && errors.password && (
+              <FormHelperText error id="standard-weight-helper-text-password">
+                {errors.password}
+              </FormHelperText>
+            )}
           </Box>
         </Grid>
       </Grid>

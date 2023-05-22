@@ -140,6 +140,19 @@ export let getDesignTokens = (mode: PaletteMode) => {
               {
                 backgroundColor: theme.palette.primary.dark,
               },
+            input: {
+              "&[type=number]": {
+                "-moz-appearance": "textfield",
+              },
+              "&::-webkit-outer-spin-button": {
+                "-webkit-appearance": "none",
+                margin: 0,
+              },
+              "&::-webkit-inner-spin-button": {
+                "-webkit-appearance": "none",
+                margin: 0,
+              },
+            },
           },
         },
       },

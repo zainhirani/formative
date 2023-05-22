@@ -66,7 +66,10 @@ const AppBarComponent: React.FC<BarComponentProps> = ({
                 fontWeight: "400",
               }}
             >
-              {title} <IconButton>{icon}</IconButton>
+              {title}
+              <IconButton sx={{ color: (theme) => theme.palette.primary.main }}>
+                {icon}
+              </IconButton>
             </Typography>
           </BoxWrapper>
           <BoxWrapper>

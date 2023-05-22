@@ -19,16 +19,17 @@ import {
 } from "screens/RegisterScreen/Styled";
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 
-import { RegisterProps } from "./formProps";
-import { genderSelect, programSelect } from "./data";
-import messages from "../messages";
+import { RegisterProps } from "../RegisterScreen/fields/formProps";
+import { genderSelect, programSelect } from "../RegisterScreen/fields/data";
+import messages from "./messages";
 import { useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import ArrowDropUpOutlinedIcon from "@mui/icons-material/ArrowDropUpOutlined";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { BoxWrapper } from "./Styled";
 
-export const StepOne: React.FC<RegisterProps> = ({
+export const GeneralInfo: React.FC<RegisterProps> = ({
   touched,
   values,
   errors,
@@ -72,9 +73,9 @@ export const StepOne: React.FC<RegisterProps> = ({
   };
   return (
     <>
-      <CardContent>
+      <BoxWrapper sx={{ padding: "40px 50px" }}>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={3}>
             <InputLabelWrapper htmlFor="first-name">
               <FormattedMessage {...messages.firstNameLabel} />
             </InputLabelWrapper>
@@ -96,7 +97,7 @@ export const StepOne: React.FC<RegisterProps> = ({
               </FormHelperText>
             )}
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={3}>
             <InputLabelWrapper htmlFor="last-name">
               <FormattedMessage {...messages.lastNameLabel} />
             </InputLabelWrapper>
@@ -118,7 +119,7 @@ export const StepOne: React.FC<RegisterProps> = ({
               </FormHelperText>
             )}
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={3}>
             <InputLabelWrapper htmlFor="nick-name">
               <FormattedMessage {...messages.nickNameLabel} />
             </InputLabelWrapper>
@@ -140,7 +141,7 @@ export const StepOne: React.FC<RegisterProps> = ({
               </FormHelperText>
             )}
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={3}>
             <InputLabelWrapper htmlFor="gender">
               <FormattedMessage {...messages.genderLabel} />
             </InputLabelWrapper>
@@ -177,7 +178,7 @@ export const StepOne: React.FC<RegisterProps> = ({
               )}
             </Select>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} md={6}>
             <InputLabelWrapper htmlFor="email">
               <FormattedMessage {...messages.emailLabel} />
             </InputLabelWrapper>
@@ -199,7 +200,7 @@ export const StepOne: React.FC<RegisterProps> = ({
               </FormHelperText>
             )}
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={3}>
             <InputLabelWrapper htmlFor="rfuID">
               <FormattedMessage {...messages.rfuLabel} />
             </InputLabelWrapper>
@@ -222,7 +223,7 @@ export const StepOne: React.FC<RegisterProps> = ({
               </FormHelperText>
             )}
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={3}>
             <InputLabelWrapper htmlFor="program">
               <FormattedMessage {...messages.programLabel} />
             </InputLabelWrapper>
@@ -259,7 +260,7 @@ export const StepOne: React.FC<RegisterProps> = ({
               )}
             </Select>
           </Grid>
-          <Grid sx={{ position: "relative" }} item xs={12} md={6}>
+          <Grid sx={{ position: "relative" }} item xs={12} md={3}>
             <InputLabelWrapper htmlFor="graduation">
               <FormattedMessage {...messages.graduationLabel} />
             </InputLabelWrapper>
@@ -303,7 +304,7 @@ export const StepOne: React.FC<RegisterProps> = ({
               </FormHelperText>
             )}
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={3}>
             <InputLabelWrapper htmlFor="birth-place">
               <FormattedMessage {...messages.birthLabel} />
             </InputLabelWrapper>
@@ -325,7 +326,7 @@ export const StepOne: React.FC<RegisterProps> = ({
               </FormHelperText>
             )}
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} md={6}>
             <InputLabelWrapper htmlFor="user-name">
               <FormattedMessage {...messages.userLabel} />
             </InputLabelWrapper>
@@ -347,85 +348,94 @@ export const StepOne: React.FC<RegisterProps> = ({
               </FormHelperText>
             )}
           </Grid>
-          <Grid sx={{ position: "relative" }} item xs={12} md={6}>
-            <InputLabelWrapper htmlFor="password">
-              <FormattedMessage {...messages.passwordLabel} />
-            </InputLabelWrapper>
-            <TextField
-              id="password"
-              name="password"
-              placeholder={passwordPlaceholder}
-              fullWidth
-              type={showPassword ? "text" : "password"}
-              value={values.password}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              error={Boolean(touched.password && errors.password)}
-              disabled={disable}
-              variant="standard"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={() => setShowPassword(!showPassword)}
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-            {touched.password && errors.password && (
-              <FormHelperText error id="standard-weight-helper-text-password">
-                {errors.password}
-              </FormHelperText>
-            )}
-          </Grid>
-          <Grid sx={{ position: "relative" }} item xs={12} md={6}>
-            <InputLabelWrapper htmlFor="confirmPassword">
-              <FormattedMessage {...messages.confirmPasswordLabel} />
-            </InputLabelWrapper>
-            <TextField
-              id="confirmPassword"
-              name="confirmPassword"
-              placeholder={confirmPasswordPlaceholder}
-              fullWidth
-              type={showConfirmPassword ? "text" : "password"}
-              value={values.confirmPassword}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              error={Boolean(touched.confirmPassword && errors.confirmPassword)}
-              disabled={disable}
-              variant="standard"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={() =>
-                        setShowConfirmPassword(!showConfirmPassword)
-                      }
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-            {touched.confirmPassword && errors.confirmPassword && (
-              <FormHelperText
-                error
-                id="standard-weight-helper-text-confirmPassword"
-              >
-                {errors.confirmPassword}
-              </FormHelperText>
-            )}
-          </Grid>
         </Grid>
-      </CardContent>
+      </BoxWrapper>
+      <BoxWrapper
+        sx={{
+          mt: "40px",
+          justifyContent: "start",
+          width: "max-content",
+          padding: "40px",
+          gap: "20px",
+        }}
+      >
+        <Grid item xs={12} md={3}>
+          <InputLabelWrapper htmlFor="password">
+            <FormattedMessage {...messages.passwordLabel} />
+          </InputLabelWrapper>
+          <TextField
+            id="password"
+            name="password"
+            placeholder={passwordPlaceholder}
+            fullWidth
+            type={showPassword ? "text" : "password"}
+            value={values.password}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            error={Boolean(touched.password && errors.password)}
+            disabled={disable}
+            variant="standard"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() => setShowPassword(!showPassword)}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+          {touched.password && errors.password && (
+            <FormHelperText error id="standard-weight-helper-text-password">
+              {errors.password}
+            </FormHelperText>
+          )}
+        </Grid>
+        <Grid item xs={12} md={3}>
+          <InputLabelWrapper htmlFor="confirmPassword">
+            <FormattedMessage {...messages.confirmPasswordLabel} />
+          </InputLabelWrapper>
+          <TextField
+            id="confirmPassword"
+            name="confirmPassword"
+            placeholder={confirmPasswordPlaceholder}
+            fullWidth
+            type={showConfirmPassword ? "text" : "password"}
+            value={values.confirmPassword}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            error={Boolean(touched.confirmPassword && errors.confirmPassword)}
+            disabled={disable}
+            variant="standard"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+          {touched.confirmPassword && errors.confirmPassword && (
+            <FormHelperText
+              error
+              id="standard-weight-helper-text-confirmPassword"
+            >
+              {errors.confirmPassword}
+            </FormHelperText>
+          )}
+        </Grid>
+        {/* </Grid> */}
+      </BoxWrapper>
     </>
   );
 };

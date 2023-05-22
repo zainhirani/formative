@@ -8,6 +8,7 @@ import {
   FormControlLabel,
   FormHelperText,
   Grid,
+  InputAdornment,
   MenuItem,
   OutlinedInput,
   Radio,
@@ -109,23 +110,28 @@ export const StepTwo: React.FC<RegisterProps> = ({
               error={Boolean(touched.pharmacy && errors.pharmacy)}
               disabled={disable}
               variant="standard"
-            />
-            <Box
-              sx={{
-                position: "absolute",
-                display: "flex",
-                flexDirection: "column",
-                right: 0,
-                bottom: "10%",
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      position: "absolute",
+                      right: 0,
+                      top: "20%",
+                    }}
+                    position="end"
+                  >
+                    <IconButtonWrapper onClick={increment}>
+                      <ArrowDropUpOutlinedIcon />
+                    </IconButtonWrapper>
+                    <IconButtonWrapper onClick={decrement}>
+                      <ArrowDropDownOutlinedIcon />
+                    </IconButtonWrapper>
+                  </InputAdornment>
+                ),
               }}
-            >
-              <IconButtonWrapper onClick={increment}>
-                <ArrowDropUpOutlinedIcon />
-              </IconButtonWrapper>
-              <IconButtonWrapper onClick={decrement}>
-                <ArrowDropDownOutlinedIcon />
-              </IconButtonWrapper>
-            </Box>
+            />
             {touched.pharmacy && errors.pharmacy && (
               <FormHelperText error id="standard-weight-helper-text-pharmacy">
                 {errors.pharmacy}
@@ -369,14 +375,16 @@ export const StepTwo: React.FC<RegisterProps> = ({
                 sx={{
                   width: { md: "25%", xs: "100%" },
                   borderBottom: "1px solid",
-                  marginBottom: 3,
                   margin: 0,
+                  mb: "20px",
                   color: (theme) => theme.palette.secondary.dark,
                 }}
                 value={play.name}
                 control={
                   <Checkbox
-                    sx={{ color: (theme) => theme.palette.secondary.dark }}
+                    sx={{
+                      color: (theme) => theme.palette.secondary.dark,
+                    }}
                     onChange={(e) => {
                       if (setFieldValue) {
                         setFieldValue("played", e.target.value);

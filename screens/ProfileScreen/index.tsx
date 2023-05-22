@@ -4,6 +4,9 @@ import {
   Tab,
   Tabs,
   TextField,
+  Box,
+  OutlinedInput,
+  InputAdornment,
 } from "@mui/material";
 import React, { useCallback, useState } from "react";
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
@@ -13,6 +16,12 @@ import { StepTwo } from "screens/RegisterScreen/fields/Profile";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import PageLayout from "components/PageLayout";
+import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
+import { BoxWrapper, ButtonWrapper } from "./Styled";
+import { GeneralInfo } from "./generalInfo";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required().label("FirstName"),
@@ -91,72 +100,112 @@ const ProfileScreen = () => {
     messages.currentPasswordPlaceholder,
   );
   return (
-    <div>
-      <TabContext value={value}>
-        <Tabs
-          value={value}
-          onChange={(event: React.SyntheticEvent, newValue: string) =>
-            setValue(newValue)
-          }
-          textColor="secondary"
-          indicatorColor="secondary"
-          aria-label="secondary tabs example"
-        >
-          <Tab
-            value="one"
-            label={<FormattedMessage {...messages.stepOneTitle} />}
-            sx={{ textTransform: "capitalize" }}
-          />
-          <Tab
-            value="two"
-            label={<FormattedMessage {...messages.stepTwoTitle} />}
-            sx={{ textTransform: "capitalize" }}
-          />
-        </Tabs>
-        <TabPanel value="one">Item One</TabPanel>
-        <TabPanel value="two">
-          <StepTwo
-            handleChange={handleChange}
-            handleBlur={handleBlur}
-            errors={errors}
-            values={values}
-            touched={touched}
-            setFieldValue={setFieldValue}
-            disable={false}
-          />
-        </TabPanel>
-      </TabContext>
-      <TextField
-        id="password"
-        name="password"
-        placeholder={passwordPlaceholder}
-        fullWidth
-        type={showPassword ? "text" : "password"}
-        value={values.password}
-        onBlur={handleBlur}
-        onChange={handleChange}
-        error={Boolean(touched.password && errors.password)}
-        variant="standard"
-      />
-      <IconButton
-        aria-label="toggle password visibility"
-        onClick={() => setShowPassword(!showPassword)}
-        edge="end"
-        sx={{
-          position: "absolute",
-          right: "3%",
-          bottom: 0,
-          color: (theme) => theme.palette.secondary.dark,
-        }}
-      >
-        {showPassword ? <VisibilityOff /> : <Visibility />}
-      </IconButton>
-      {touched.password && errors.password && (
-        <FormHelperText error id="standard-weight-helper-text-password">
-          {errors.password}
-        </FormHelperText>
-      )}
-    </div>
+    <>
+      <PageLayout title="Profile" icon={<HelpRoundedIcon />}>
+        <Box>
+          <TabContext value={value}>
+            <Tabs
+              value={value}
+              onChange={(event: React.SyntheticEvent, newValue: string) =>
+                setValue(newValue)
+              }
+              textColor="primary"
+              indicatorColor="secondary"
+              aria-label="secondary tabs example"
+            >
+              <Tab
+                value="one"
+                label={<FormattedMessage {...messages.stepOneTitle} />}
+                sx={{
+                  textTransform: "capitalize",
+                }}
+              />
+              <Tab
+                value="two"
+                label={<FormattedMessage {...messages.stepTwoTitle} />}
+                sx={{ textTransform: "capitalize" }}
+              />
+            </Tabs>
+            <TabPanel sx={{ px: 0 }} value="one">
+              <GeneralInfo
+                handleChange={handleChange}
+                handleBlur={handleBlur}
+                errors={errors}
+                values={values}
+                touched={touched}
+                setFieldValue={setFieldValue}
+                disable={false}
+              />
+            </TabPanel>
+            <TabPanel sx={{ px: 0 }} value="two">
+              <BoxWrapper>
+                <StepTwo
+                  handleChange={handleChange}
+                  handleBlur={handleBlur}
+                  errors={errors}
+                  values={values}
+                  touched={touched}
+                  setFieldValue={setFieldValue}
+                  disable={false}
+                />
+              </BoxWrapper>
+            </TabPanel>
+          </TabContext>
+          <Box
+            sx={{
+              boxShadow: (theme) => theme.shadow.boxShadow,
+              display: "flex",
+              alignItems: "center",
+              mt: "120px",
+              background: "transparent",
+              width: "max-content",
+            }}
+          >
+            <TextField
+              id="password"
+              name="password"
+              placeholder={passwordPlaceholder}
+              fullWidth
+              type={showPassword ? "text" : "password"}
+              value={values.password}
+              onBlur={handleBlur}
+              onChange={handleChange}
+              error={Boolean(touched.password && errors.password)}
+              sx={{
+                background: (theme) => theme.palette.primary.light,
+                borderRadius: "0",
+                ".MuiOutlinedInput-notchedOutline": {
+                  border: "none",
+                  width: "250px",
+                },
+              }}
+            />
+            {touched.password && errors.password && (
+              <FormHelperText error id="standard-weight-helper-text-password">
+                {errors.password}
+              </FormHelperText>
+            )}
+            <ButtonWrapper
+              startIcon={<ArrowCircleRightOutlinedIcon />}
+              variant="contained"
+              sx={{ background: (theme) => theme.palette.secondary.main }}
+            >
+              <FormattedMessage {...messages.submit} />
+            </ButtonWrapper>
+            <ButtonWrapper
+              sx={{
+                borderTopRightRadius: (theme) => theme.borderRadius.radius1,
+                borderBottomRightRadius: (theme) => theme.borderRadius.radius1,
+              }}
+              startIcon={<HighlightOffIcon />}
+              variant="contained"
+            >
+              <FormattedMessage {...messages.cancel} />
+            </ButtonWrapper>
+          </Box>
+        </Box>
+      </PageLayout>
+    </>
   );
 };
 

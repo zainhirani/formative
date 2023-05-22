@@ -178,14 +178,14 @@ const RegisterScreen: React.FC = () => {
                   : { md: 650, xs: "80%" },
             }}
           >
-            <CardHeaderWrapper
-              title={<FormattedMessage {...messages.stepTwoTitle} />}
-            />
-            <Typography sx={{ marginLeft: "15px" }}>
-              <FormattedMessage {...messages.description} />
-            </Typography>
             {activeStep === steps.length - 1 ? (
               <React.Fragment>
+                <CardHeaderWrapper
+                  title={<FormattedMessage {...messages.stepTwoTitle} />}
+                />
+                <Typography sx={{ marginLeft: "15px" }}>
+                  <FormattedMessage {...messages.description} />
+                </Typography>
                 <StepTwo
                   handleChange={handleChange}
                   handleBlur={handleBlur}
@@ -262,6 +262,12 @@ const RegisterScreen: React.FC = () => {
               </React.Fragment>
             ) : (
               <React.Fragment>
+                <CardHeaderWrapper
+                  title={<FormattedMessage {...messages.stepOneTitle} />}
+                />
+                <Typography sx={{ marginLeft: "15px" }}>
+                  <FormattedMessage {...messages.description} />
+                </Typography>
                 <StepOne
                   handleChange={handleChange}
                   handleBlur={handleBlur}

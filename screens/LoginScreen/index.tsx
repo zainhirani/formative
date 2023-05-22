@@ -28,15 +28,16 @@ const LoginScreen: React.FC = () => {
           height: { md: "85vh", xs: "45vh" },
         }}
       >
-        <Box sx={{ width: { md: "45%", xs: "100%" }, height: "inherit" }}>
+        <Box sx={{ width: { md: "48%", xs: "100%" }, height: "inherit" }}>
           <BoxWrapper
             sx={{
+              backgroundColor: (theme) => theme.palette.primary.main,
               backgroundImage: `url(${LOGINBG})`,
               backgroundRepeat: "no-repeat",
-              backgroundSize: "100% 100%",
-              // height: { xs: "450px", md: "660px" },
               height: "inherit",
               position: "relative",
+              backgroundPosition: "bottom center",
+              backgroundSize: "cover",
             }}
           >
             <Box minWidth={"100%"}>
@@ -79,9 +80,11 @@ const LoginScreen: React.FC = () => {
           sx={{
             background: (theme) => theme.palette.primary.light,
             padding: { md: "40px 40px 20px", xs: "20px 20px 20px 10px" },
-            width: { md: "55%", xs: "100%" },
+            width: { md: "52%", xs: "100%" },
             height: { md: "inherit", xs: "max-content" },
             boxShadow: (theme) => theme.shadow.boxShadow,
+            borderEndEndRadius: (theme) => theme.borderRadius.radius1,
+            borderStartEndRadius: (theme) => theme.borderRadius.radius1,
           }}
         >
           <BoxWrapper
