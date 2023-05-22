@@ -73,4 +73,8 @@ export default defineMessages({
     id: `${scope}.successMessage`,
     defaultMessage: "Signed in Successfully",
   },
+  welcomeTitle: {
+    id: `${scope}.welcomeTitle`,
+    defaultMessage: "Welcome Kevin B. Good Morning!",
+  },
 });

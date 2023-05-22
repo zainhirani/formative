@@ -1,4 +1,5 @@
 //@ts-nocheck
+
 import { createContext, useCallback, useContext } from "react";
 import { useRouter } from "next/router";
 import { Box, CircularProgress } from "@mui/material";
@@ -34,7 +35,7 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
   };
   const signOut = useCallback(async () => {
     logout({ callbackUrl: "/" });
-    router.replace(AUTHENTICATION_PATH[0]!);
+    router?.replace(AUTHENTICATION_PATH[0]!);
   }, [router]);
 
   const prevToken = getAuthenticationToken();
@@ -59,15 +60,6 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
       </Box>
     );
   }
-  // if (
-  //   !!process.browser &&
-  //   !(AUTHENTICATION_PATH || "").includes(window?.location?.pathname) &&
-  //   !session?.user &&
-  //   !loading
-  // ) {
-  //   router.replace(AUTHENTICATION_PATH[0]!);
-  //   return null;
-  // }
 
   if (
     !!process.browser &&
