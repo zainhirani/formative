@@ -58,6 +58,10 @@ export default defineMessages({
     id: `${scope}.userLabel`,
     defaultMessage: "User Name",
   },
+  changePassword: {
+    id: `${scope}.changePassword`,
+    defaultMessage: "Change Password",
+  },
   passwordLabel: {
     id: `${scope}.passwordLabel`,
     defaultMessage: "Password",

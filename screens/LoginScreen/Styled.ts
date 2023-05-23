@@ -30,5 +30,8 @@ export const ButtonWrapper = styled(Button)<ButtonProps>(
       borderRadius: theme.borderRadius.radius1,
       textTransform: "capitalize",
       width: "100%",
+      "&:hover": {
+        background: theme.palette.secondary.main,
+      },
     } as any),
 ) as (props: ButtonProps) => JSX.Element;

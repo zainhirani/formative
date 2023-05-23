@@ -112,7 +112,7 @@ const LoginForm = () => {
             <FormattedMessage {...messages.passwordLabel} />
           </InputLabel>
           <Box display={"flex"} flexDirection={"column"} position={"relative"}>
-            <OutlinedInput
+            <TextField
               id="password"
               name="password"
               value={values.password}
@@ -122,27 +122,20 @@ const LoginForm = () => {
               placeholder={passwordPlaceholder}
               error={touched.password && Boolean(errors.password)}
               autoComplete="off"
-              sx={{
-                "	.MuiOutlinedInput-notchedOutline": {
-                  borderWidth: "0 0 1px 0",
-                },
-                ".MuiOutlinedInput-input": {
-                  height: 0,
-                  paddingLeft: 0,
-                },
-                borderRadius: "0",
+              variant="standard"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
               }}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={() => setShowPassword(!showPassword)}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
               fullWidth
             />
             {touched.password && errors.password && (

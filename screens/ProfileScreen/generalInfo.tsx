@@ -284,7 +284,7 @@ export const GeneralInfo: React.FC<RegisterProps> = ({
                       flexDirection: "column",
                       position: "absolute",
                       right: 0,
-                      top: "20%",
+                      top: "5%",
                     }}
                     position="end"
                   >
@@ -357,84 +357,99 @@ export const GeneralInfo: React.FC<RegisterProps> = ({
           width: "max-content",
           padding: "40px",
           gap: "20px",
+          flexDirection: "column",
+          alignItems: "start",
         }}
       >
-        <Grid item xs={12} md={3}>
-          <InputLabelWrapper htmlFor="password">
-            <FormattedMessage {...messages.passwordLabel} />
-          </InputLabelWrapper>
-          <TextField
-            id="password"
-            name="password"
-            placeholder={passwordPlaceholder}
-            fullWidth
-            type={showPassword ? "text" : "password"}
-            value={values.password}
-            onBlur={handleBlur}
-            onChange={handleChange}
-            error={Boolean(touched.password && errors.password)}
-            disabled={disable}
-            variant="standard"
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={() => setShowPassword(!showPassword)}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-          {touched.password && errors.password && (
-            <FormHelperText error id="standard-weight-helper-text-password">
-              {errors.password}
-            </FormHelperText>
-          )}
-        </Grid>
-        <Grid item xs={12} md={3}>
-          <InputLabelWrapper htmlFor="confirmPassword">
-            <FormattedMessage {...messages.confirmPasswordLabel} />
-          </InputLabelWrapper>
-          <TextField
-            id="confirmPassword"
-            name="confirmPassword"
-            placeholder={confirmPasswordPlaceholder}
-            fullWidth
-            type={showConfirmPassword ? "text" : "password"}
-            value={values.confirmPassword}
-            onBlur={handleBlur}
-            onChange={handleChange}
-            error={Boolean(touched.confirmPassword && errors.confirmPassword)}
-            disabled={disable}
-            variant="standard"
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-          {touched.confirmPassword && errors.confirmPassword && (
-            <FormHelperText
-              error
-              id="standard-weight-helper-text-confirmPassword"
-            >
-              {errors.confirmPassword}
-            </FormHelperText>
-          )}
-        </Grid>
-        {/* </Grid> */}
+        <Box>
+          <Typography sx={{ fontSize: "18px" }}>
+            <FormattedMessage {...messages.changePassword} />
+          </Typography>
+        </Box>
+        <Box sx={{ display: "flex", gap: "20px" }}>
+          <Grid item xs={12} md={3}>
+            <InputLabelWrapper htmlFor="password">
+              <FormattedMessage {...messages.passwordLabel} />
+            </InputLabelWrapper>
+            <TextField
+              id="password"
+              name="password"
+              placeholder={passwordPlaceholder}
+              fullWidth
+              type={showPassword ? "text" : "password"}
+              value={values.password}
+              onBlur={handleBlur}
+              onChange={handleChange}
+              error={Boolean(touched.password && errors.password)}
+              disabled={disable}
+              variant="standard"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            {touched.password && errors.password && (
+              <FormHelperText
+                sx={{ mt: "10px" }}
+                error
+                id="standard-weight-helper-text-password"
+              >
+                {errors.password}
+              </FormHelperText>
+            )}
+          </Grid>
+          <Grid item xs={12} md={3}>
+            <InputLabelWrapper htmlFor="confirmPassword">
+              <FormattedMessage {...messages.confirmPasswordLabel} />
+            </InputLabelWrapper>
+            <TextField
+              id="confirmPassword"
+              name="confirmPassword"
+              placeholder={confirmPasswordPlaceholder}
+              fullWidth
+              type={showConfirmPassword ? "text" : "password"}
+              value={values.confirmPassword}
+              onBlur={handleBlur}
+              onChange={handleChange}
+              error={Boolean(touched.confirmPassword && errors.confirmPassword)}
+              disabled={disable}
+              variant="standard"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
+                      edge="end"
+                    >
+                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            {touched.confirmPassword && errors.confirmPassword && (
+              <FormHelperText
+                error
+                id="standard-weight-helper-text-confirmPassword"
+                sx={{mt:"10px"}}
+              >
+                {errors.confirmPassword}
+              </FormHelperText>
+            )}
+          </Grid>
+        </Box>
       </BoxWrapper>
     </>
   );
