@@ -20,34 +20,52 @@ export async function login({
   });
 }
 
-// Registration
-export async function register({
-  name,
-  email,
-  number,
-  password,
-  password_repeat,
-}: {
-  name: string;
-  email: string;
-  number: number;
-  password: string;
-  password_repeat: string;
-}) {
-  console.log("inside register");
-  return service({
-    method: "POST",
-    noAuth: true,
-    url: `/auth/register`,
-    body: {
-      name,
-      email,
-      number,
-      password,
-      password_repeat,
-    },
-  });
-}
+// // Registration
+// export async function register({
+//   email,
+//   password,
+//   username,
+//   first_name,
+//   last_name,
+//   nick_name,
+//   gender,
+//   rfu_id,
+//   year_of_graduation,
+//   program,
+//   birth_place,
+// }: {
+//   email: string;
+//   password: string;
+//   username: string;
+//   first_name: string;
+//   last_name: string;
+//   nick_name: string;
+//   gender: string;
+//   rfu_id: number | string;
+//   year_of_graduation: number | string;
+//   program: string;
+//   birth_place: string;
+// }) {
+//   console.log("inside register");
+//   return service({
+//     method: "POST",
+//     noAuth: true,
+//     url: `/auth/signup`,
+//     body: {
+//       email,
+//       password,
+//       username,
+//       first_name,
+//       last_name,
+//       nick_name,
+//       gender,
+//       rfu_id,
+//       year_of_graduation,
+//       program,
+//       birth_place,
+//     },
+//   });
+// }
 
 // Rfresh Token
 export async function refreshToken({

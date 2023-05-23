@@ -68,13 +68,13 @@ export let getDesignTokens = (mode: PaletteMode) => {
         ? {
             lightGrey: "#9EC6D8",
             primaryTranslucent: "#0093e766",
-            primaryBlack: "rgba(255, 255, 255, 1)",
+            primaryBlack: "rgba(0, 0, 0, 1)",
             secondryBlack: "rgba(0, 0, 0, 0.12)",
           }
         : {
             lightGrey: "#9EC6D8",
             primaryTranslucent: "#0093e766",
-            primaryBlack: "rgba(255, 255, 255, 1)",
+            primaryBlack: "rgba(0, 0, 0, 1)",
             secondryBlack: "rgba(0, 0, 0, 0.12)",
           }),
     },
@@ -155,66 +155,67 @@ export let getDesignTokens = (mode: PaletteMode) => {
             },
           },
         },
-      },
-      MuiTextField: {
-        styleOverrides: {
-          root: {
-            width: "100%",
-            "& label": {
-              color: theme.palette.text.primary,
-            },
-            "& label.Mui-focused": {
-              color: theme.palette.primary.dark,
-            },
-            "& .MuiOutlinedInput-root": {
-              borderRadius: "8px",
-              "& fieldset": {
-                borderColor: theme.palette.primary.dark,
-                borderRadius: "8px",
-              },
-              "&:hover fieldset": {
-                borderColor: theme.palette.primary.dark,
-                borderWidth: "0.12rem",
-              },
 
-              "&.Mui-error fieldset": {
-                borderColor: theme.palette.error.main,
+        MuiTextField: {
+          styleOverrides: {
+            root: {
+              width: "100%",
+              "& label": {
+                color: theme.palette.text.primary,
+              },
+              "& label.Mui-focused": {
+                color: theme.palette.primary.dark,
+              },
+              "& .MuiOutlinedInput-root": {
+                borderRadius: "8px",
+                "& fieldset": {
+                  borderColor: theme.palette.primary.dark,
+                  borderRadius: "8px",
+                },
+                "&:hover fieldset": {
+                  borderColor: theme.palette.primary.dark,
+                  borderWidth: "0.12rem",
+                },
+
+                "&.Mui-error fieldset": {
+                  borderColor: theme.palette.error.main,
+                },
+              },
+            },
+          },
+          defaultProps: {
+            variant: "outlined",
+          },
+        },
+        MuiOutlinedInput: {
+          styleOverrides: {
+            root: {
+              width: "100%",
+              marginBottom: "0px !important",
+              "& label": {
+                color: theme.palette.text.primary,
               },
             },
           },
         },
-        defaultProps: {
-          variant: "outlined",
-        },
-      },
-      MuiOutlinedInput: {
-        styleOverrides: {
-          root: {
-            width: "100%",
-            marginBottom: "0px !important",
-            "& label": {
-              color: theme.palette.text.primary,
+        MuiButton: {
+          styleOverrides: {
+            contained: {
+              "&:hover": {
+                backgroundColor: theme.palette.secondary.main,
+              },
             },
           },
         },
-      },
-      MuiButton: {
-        styleOverrides: {
-          contained: {
-            "&:hover": {
-              backgroundColor: theme.palette.secondary.main,
+        typography: {
+          h1: {
+            fontSize: "40px",
+            color: theme.palette.primary.main,
+            fontWeight: 400,
+            [theme.breakpoints.down("md")]: {
+              fontSize: "32px",
             },
           },
-        },
-      },
-    },
-    typography: {
-      h1: {
-        fontSize: "40px",
-        color: theme.palette.primary.main,
-        fontWeight: 400,
-        [theme.breakpoints.down("md")]: {
-          fontSize: "32px",
         },
       },
     },

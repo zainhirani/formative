@@ -6,6 +6,7 @@ import {
   CardContent,
   Checkbox,
   FormControlLabel,
+  FormControlLabelProps,
   FormHelperText,
   Grid,
   InputAdornment,
@@ -17,6 +18,8 @@ import {
   SelectChangeEvent,
   TextField,
   Typography,
+  styled,
+  useRadioGroup,
 } from "@mui/material";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import ArrowDropUpOutlinedIcon from "@mui/icons-material/ArrowDropUpOutlined";
@@ -67,6 +70,13 @@ export const StepTwo: React.FC<RegisterProps> = ({
       setExperience((experience) => experience - 1);
     }
   };
+
+  let checked = false;
+  const radioGroup = useRadioGroup();
+  if (radioGroup) {
+    checked = radioGroup.value;
+  }
+
   return (
     <>
       <CardContent>
@@ -118,7 +128,7 @@ export const StepTwo: React.FC<RegisterProps> = ({
                       flexDirection: "column",
                       position: "absolute",
                       right: 0,
-                      top: "20%",
+                      top: "5%",
                     }}
                     position="end"
                   >
@@ -143,7 +153,9 @@ export const StepTwo: React.FC<RegisterProps> = ({
               <FormattedMessage {...messages.partTimeLabel} />
             </InputLabelWrapper>
             <RadioGroup
-              sx={{ gap: "20px" }}
+              sx={{
+                gap: "20px",
+              }}
               onChange={(e) => {
                 if (setFieldValue) {
                   setFieldValue("partTime", e.target.value);
@@ -159,11 +171,19 @@ export const StepTwo: React.FC<RegisterProps> = ({
                     marginRight: 0,
                     borderBottom: "1px solid",
                     color: (theme) => theme.palette.secondary.dark,
+                    // ".MuiFormControlLabel-label": checked && {
+                    //   color: "red",
+                    // },
                   }}
                   value={choice.name}
                   control={
                     <Radio
-                      sx={{ color: (theme) => theme.palette.secondary.dark }}
+                      sx={{
+                        "&.Mui-checked": {
+                          color: (theme) =>
+                            theme.additionalColors?.primaryBlack,
+                        },
+                      }}
                     />
                   }
                   label={choice.name}
@@ -201,7 +221,13 @@ export const StepTwo: React.FC<RegisterProps> = ({
                   value={choice.name}
                   control={
                     <Radio
-                      sx={{ color: (theme) => theme.palette.secondary.dark }}
+                      sx={{
+                        color: (theme) => theme.palette.secondary.dark,
+                        "&.Mui-checked": {
+                          color: (theme) =>
+                            theme.additionalColors?.primaryBlack,
+                        },
+                      }}
                     />
                   }
                   label={choice.name}
@@ -236,7 +262,7 @@ export const StepTwo: React.FC<RegisterProps> = ({
                 ".MuiSvgIcon-root ": {
                   color: (theme) => theme.palette.primary.main,
                 },
-                marginTop: "7px",
+                marginTop: "10px",
               }}
             >
               {mathSkillsSelect?.map((math) =>
@@ -277,7 +303,12 @@ export const StepTwo: React.FC<RegisterProps> = ({
                   value={learn.name}
                   control={
                     <Radio
-                      sx={{ color: (theme) => theme.palette.secondary.dark }}
+                      sx={{
+                        "&.Mui-checked": {
+                          color: (theme) =>
+                            theme.additionalColors?.primaryBlack,
+                        },
+                      }}
                     />
                   }
                   label={learn.name}
@@ -315,7 +346,12 @@ export const StepTwo: React.FC<RegisterProps> = ({
                   value={sequence.name}
                   control={
                     <Radio
-                      sx={{ color: (theme) => theme.palette.secondary.dark }}
+                      sx={{
+                        "&.Mui-checked": {
+                          color: (theme) =>
+                            theme.additionalColors?.primaryBlack,
+                        },
+                      }}
                     />
                   }
                   label={sequence.name}
@@ -353,7 +389,12 @@ export const StepTwo: React.FC<RegisterProps> = ({
                   value={study.name}
                   control={
                     <Radio
-                      sx={{ color: (theme) => theme.palette.secondary.dark }}
+                      sx={{
+                        "&.Mui-checked": {
+                          color: (theme) =>
+                            theme.additionalColors?.primaryBlack,
+                        },
+                      }}
                     />
                   }
                   label={study.name}
@@ -422,11 +463,19 @@ export const StepTwo: React.FC<RegisterProps> = ({
                     marginRight: 0,
                     borderBottom: "1px solid",
                     color: (theme) => theme.palette.secondary.dark,
+                    // ".MuiFormControlLabel-label": checked && {
+                    //   color: (theme) => theme.palette.primary.main,
+                    // },
                   }}
                   value={choice.name}
                   control={
                     <Radio
-                      sx={{ color: (theme) => theme.palette.secondary.dark }}
+                      sx={{
+                        "&.Mui-checked": {
+                          color: (theme) =>
+                            theme.additionalColors?.primaryBlack,
+                        },
+                      }}
                     />
                   }
                   label={choice.name}

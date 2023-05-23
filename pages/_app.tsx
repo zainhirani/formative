@@ -110,7 +110,7 @@ class MyApp extends App<{
                   <SnackbarProvider
                     anchorOrigin={{
                       vertical: "top",
-                      horizontal: "right",
+                      horizontal: "center",
                     }}
                   >
                     <Hydrate state={pageProps.dehydratedState}>

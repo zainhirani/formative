@@ -6,6 +6,7 @@ import { Box, CircularProgress } from "@mui/material";
 import { signOut as logout, signIn, useSession } from "next-auth/react";
 import { AUTH_LOGIN_URL } from "configs";
 import { getAuthenticationToken, setAuthenticationHeader } from "services";
+import { register } from "services/auth";
 // import { FLEET_MANAGEMENT } from "constants/routes";
 // import OverlayLoader from "theme/Loader/OverlayLoader";
 
@@ -15,7 +16,6 @@ interface AuthContextType {
   signIn: (...args: any) => void;
   signUp: (...args: any) => void;
 }
-
 interface AuthContextProps {
   children?: any;
 }
@@ -29,9 +29,32 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
   const loading = status === "loading";
   const router = useRouter();
 
-  const signUp = (email: string, password: string) => {
-    console.log("Signed Up");
-    router.push("/login");
+  const signUp = (
+    email: string,
+    password: string,
+    username: string,
+    first_name: string,
+    last_name: string,
+    nick_name: string,
+    gender: string,
+    rfu_id: number,
+    year_of_graduation: number,
+    program: string,
+    birth_place: string,
+  ) => {
+    register({
+      email: email,
+      password: password,
+      username: username,
+      first_name: first_name,
+      last_name: last_name,
+      nick_name: nick_name,
+      gender: gender,
+      rfu_id: rfu_id,
+      year_of_graduation: year_of_graduation,
+      program: program,
+      birth_place: birth_place,
+    });
   };
   const signOut = useCallback(async () => {
     logout({ callbackUrl: "/" });
