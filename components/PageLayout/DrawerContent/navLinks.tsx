@@ -111,7 +111,9 @@ const MenuData = [
   },
   {
     title: "Profile",
-    icon:  <Image src={PROFILE_SMALL} lazyLoad={true} width={16} alt="Profile" />,
+    icon: (
+      <Image src={PROFILE_SMALL} lazyLoad={true} width={16} alt="Profile" />
+    ),
     link: "/profile",
   },
   {
