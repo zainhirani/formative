@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
+import { WidthFull } from "@mui/icons-material";
 import {
   Box,
+  Collapse,
   Divider,
   IconButton,
   List,
@@ -10,10 +12,13 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
 import MenuIcon from "@mui/icons-material/Menu";
 import { SITELOGO } from "configs";
 import Image from "theme/Image";
 import MenuData from "./navLinks";
+import { SidebarItemCollapse } from "./SidebarItemCollapse";
 import { DrawerHeader } from "./Styled";
 
 interface BarComponentProps {
@@ -31,7 +36,7 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
             display: "flex",
             position: "relative",
             width: "100%",
-            justifyContent: "start",
+            justifyContent: "center",
           }}
         >
           <Image
@@ -41,32 +46,71 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
             lazyLoad={true}
           />
         </Box>
-        <IconButton onClick={clickHandler}>
+        {/* <IconButton onClick={clickHandler}>
           <MenuIcon sx={{ color: (theme) => theme.palette.primary.light }} />
-        </IconButton>
+        </IconButton> */}
       </DrawerHeader>
 
-      <List>
-        {MenuData.map((item: any) => (
-          <Link href={item.link} key={item.title} passHref={true}>
-            <ListItem key={item.title} disablePadding>
-              <ListItemButton>
-                <ListItemIcon
-                  sx={{ color: (theme) => theme.palette.primary.light }}
-                >
-                  {item.icon}
-                </ListItemIcon>
-                <ListItemText
-                  primary={item.title}
+      <List sx={{ height: "100%" }}>
+        {MenuData.map((item: any, index) =>
+          item.subitems != null ? (
+            <SidebarItemCollapse item={item} key={index} />
+          ) : (
+            <ListItem
+              key={item.title}
+              disablePadding
+              sx={{
+                "&:last-of-type": {
+                  position: "absolute",
+                  bottom: "30px",
+                },
+                "&:nth-of-type(7)": {
+                  paddingBottom: "30px",
+                },
+              }}
+            >
+              <Link href={item.link} key={item.title} passHref={true}>
+                <ListItemButton>
+                  <ListItemIcon
+                    sx={{
+                      color: (theme) => theme.palette.primary.light,
+                      minWidth: "40px",
+                      "& .lazyload-wrapper": {
+                        display: "flex",
+                      },
+                    }}
+                  >
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={item.title}
+                    sx={{
+                      color: (theme) => theme.palette.primary.light,
+                      fontSize: "14px",
+                      "& span": {
+                        fontSize: "14px",
+                      },
+                    }}
+                  />
+                </ListItemButton>
+              </Link>
+              {index == 6 ? (
+                <Divider
                   sx={{
-                    color: (theme) => theme.palette.primary.light,
-                    fontSize: "14px",
+                    height: "1px",
+                    background: (theme) => theme.palette.primary.light,
+                    width: "82%",
+                    position: "absolute",
+                    left: "16px",
+                    bottom: "16px",
                   }}
                 />
-              </ListItemButton>
+              ) : (
+                ""
+              )}
             </ListItem>
-          </Link>
-        ))}
+          ),
+        )}
       </List>
     </>
   );
