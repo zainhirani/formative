@@ -12,7 +12,7 @@ import AddIcon from "@mui/icons-material/Add";
 
 export const UploadQuestions = () => {
   return (
-    <Box sx={{display:"flex"}}>
+    <Box sx={{ display: "flex" }}>
       <Box
         sx={{
           display: "flex",
