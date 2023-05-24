@@ -12,7 +12,7 @@ import Image from "theme/Image";
 const MenuData = [
   {
     title: "Dashboard",
-    icon: <Image src={DASHBOARD} lazyLoad={true} width={16} alt="dashboard" />,
+    icon: <Image src={DASHBOARD} lazyLoad={true} width={16} alt="Dashboard" />,
     link: "/dashboard",
   },
   {
