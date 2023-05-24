@@ -110,7 +110,7 @@ const MenuData = [
     title: "Settings",
     icon: <Image src={SETTINGS} lazyLoad={true} width={20} alt="Settings" />,
     link: "",
-  }
+  },
 ];
 
 export default MenuData;
