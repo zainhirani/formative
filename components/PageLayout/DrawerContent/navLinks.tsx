@@ -1,14 +1,4 @@
-import AutoStoriesOutlinedIcon from "@mui/icons-material/AutoStoriesOutlined";
-import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
-import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
-import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
-import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-import PowerSettingsNewOutlinedIcon from "@mui/icons-material/PowerSettingsNewOutlined";
-import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
-import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import { TEST_YOURSELF } from "configs";
-import { COURSES } from "configs";
 import { SMALL_QUIZ } from "configs";
 import { DASHBOARD } from "configs";
 import { QUESTIONS_SMALL } from "configs";
@@ -120,12 +110,7 @@ const MenuData = [
     title: "Settings",
     icon: <Image src={SETTINGS} lazyLoad={true} width={20} alt="Settings" />,
     link: "",
-  },
-  {
-    title: "Logout",
-    icon: <PowerSettingsNewOutlinedIcon />,
-    link: "",
-  },
+  }
 ];
 
 export default MenuData;
