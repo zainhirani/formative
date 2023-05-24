@@ -62,7 +62,7 @@ const MenuData = [
       {
         id: 1,
         title: "Create New",
-        link: "",
+        link: "/teacher/questions/add",
       },
       {
         id: 2,
