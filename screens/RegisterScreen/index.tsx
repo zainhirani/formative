@@ -67,7 +67,6 @@ const RegisterScreen: React.FC = () => {
   const [skipped, setSkipped] = useState(new Set<number>());
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
-  const { signUp } = useAuthContext();
   const [initial, setInitial] = useState({
     firstName: "",
     lastName: "",

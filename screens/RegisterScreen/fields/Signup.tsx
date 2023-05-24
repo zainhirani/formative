@@ -86,14 +86,35 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
       enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
         variant: "success",
       });
-      // localStorage.setItem("token", register?.data);
+      localStorage.setItem("token", register?.data.token);
       handleNext();
     }
-    // if (register.isError) {
-    //   enqueueSnackbar(register.error, {
-    //     variant: "error",
-    //   });
   }, [register.isSuccess]);
+
+  useEffect(() => {
+    if (register.isError) {
+      const errorMessage = register.error.message;
+      enqueueSnackbar(errorMessage, {
+        variant: "error",
+      });
+    }
+  }, [register.isError]);
+
+  const onSubmit = (data: any) => {
+    register.mutate({
+      email: data.email,
+      password: data.password,
+      username: data.userName,
+      first_name: data.firstName,
+      last_name: data.lastName,
+      nick_name: data.nickName,
+      gender: data.gender,
+      rfu_id: data.rfuID,
+      year_of_graduation: data.graduation,
+      program: data.program,
+      birth_place: data.birthPlace,
+    });
+  };
 
   const {
     handleChange,
@@ -119,21 +140,7 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
       confirmPassword: "",
     },
     validationSchema,
-    onSubmit: (data) => {
-      register.mutate({
-        email: data.email,
-        password: data.password,
-        username: data.userName,
-        first_name: data.firstName,
-        last_name: data.lastName,
-        nick_name: data.nickName,
-        gender: data.gender,
-        rfu_id: data.rfuID,
-        year_of_graduation: data.graduation,
-        program: data.program,
-        birth_place: data.birthPlace,
-      });
-    },
+    onSubmit,
   });
 
   const increment = () => {

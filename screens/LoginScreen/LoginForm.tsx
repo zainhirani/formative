@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { useSession, signIn, signOut } from "next-auth/react";
 import {
   Box,
   Divider,
@@ -27,7 +28,7 @@ import { useAuthContext } from "contexts/AuthContext";
 import { useRouter } from "next/router";
 
 const validationSchema = Yup.object().shape({
-  user: Yup.string().required().label("User Name"),
+  email: Yup.string().required().label("User Name"),
   password: Yup.string().required().min(6).label("Password"),
 });
 
@@ -37,43 +38,35 @@ const LoginForm = () => {
   const { signIn } = useAuthContext();
   const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmit = useCallback(async (data: any) => {
-    // await signIn("credentials", {
-    //   ...data,
-    //   redirect: false,
-    // })
-    //   .then((userCredential: any) => {
-    //     const user = userCredential.user;
-    //     if (user) {
-    //       enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
-    //         variant: "success",
-    //       });
-    //     } else if (userCredential.error) {
-    //       enqueueSnackbar(userCredential.error, {
-    //         variant: "error",
-    //       });
-    //     }
-    //   })
-    //   .catch((error: any) => {
-    //     const errorCode = error.code;
-    //     const errorMessage = error.message;
-    //     console.log(errorCode, errorMessage);
-    //     enqueueSnackbar(errorMessage, {
-    //       variant: "error",
-    //     });
-    //   });
-  }, []);
+  const onSubmit = async (data: any) => {
+    const resp = await signIn("credentials", {
+      ...data,
+      redirect: false,
+    })
+    try {
+      enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
+        variant: "success",
+      });
+    } catch (error: any) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorCode, errorMessage);
+      enqueueSnackbar(errorMessage, {
+        variant: "error",
+      });
+    }
+  };
 
   // use formik
   const { handleChange, handleSubmit, handleBlur, errors, values, touched } =
     useFormik({
-      initialValues: { user: "", password: "" },
+      initialValues: { email: "", password: "" },
       validationSchema,
       onSubmit,
     });
 
   // handleResetPass
-  const handleResetPass = (user: string) => {};
+  const handleResetPass = (email: string) => {};
 
   const userPlaceholder = useFormattedMessage(messages.userPlaceholder);
   const passwordPlaceholder = useFormattedMessage(messages.passwordPlaceholder);
@@ -89,15 +82,15 @@ const LoginForm = () => {
             <FormattedMessage {...messages.userLabel} />
           </InputLabel>
           <TextField
-            id="user"
-            name="user"
+            id="email"
+            name="email"
             type="text"
-            value={values.user}
+            value={values.email}
             onChange={handleChange}
             onBlur={handleBlur}
             placeholder={userPlaceholder}
-            error={touched.user && Boolean(errors.user)}
-            helperText={touched.user && errors.user}
+            error={touched.email && Boolean(errors.email)}
+            helperText={touched.email && errors.email}
             autoComplete="off"
             variant="standard"
             fullWidth
@@ -159,7 +152,6 @@ const LoginForm = () => {
           underline="none"
           color="#8C2531"
           sx={{ textDecoration: "underline" }}
-          onClick={() => handleResetPass(values.user)}
         >
           <FormattedMessage {...messages.forgot} />
         </Link>
@@ -167,7 +159,7 @@ const LoginForm = () => {
       <Box sx={{ mb: 3 }}></Box>
       <Box>
         <ButtonWrapper
-          disabled={(values.user && values.password) === ""}
+          disabled={(values.email && values.password) === ""}
           type="submit"
           variant="contained"
         >
