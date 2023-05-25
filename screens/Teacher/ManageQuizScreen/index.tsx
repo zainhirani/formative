@@ -7,11 +7,12 @@ import { Box } from '@mui/material';
 import dynamic from 'next/dynamic'
 import Loader from 'components/Loader';
 
-const ManageQuizScreen = () => {
-  const PageLayout = dynamic(() => import("components/PageLayout"), {
+const PageLayout = dynamic(() => import("components/PageLayout"), {
       ssr: false,
       loading: () => <Loader />,
-  });
+});
+
+const ManageQuizScreen = () => {
   return (
     <PageLayout title="All Quiz" icon={<HelpRoundedIcon />}>
       <Box>
