@@ -28,7 +28,7 @@ const MenuData = [
       {
         id: 2,
         title: "Manage Quiz",
-        link: "",
+        link: "/teacher/quiz",
       },
       {
         id: 3,
