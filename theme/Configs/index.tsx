@@ -194,6 +194,44 @@ export let getDesignTokens = (mode: PaletteMode) => {
           },
         },
       },
+      MuiDataGrid: {
+        styleOverrides: {
+          root: {    
+            borderRadius: "0px",
+            border:"none",
+            borderBottom: "1px solid #EAEAEA",
+            "& .MuiDataGrid-cell:focus-within, & .MuiDataGrid-colCell:focus-within,  & .MuiDataGrid-columnHeader:focus-within":
+              {
+                outline: 0,
+              },
+          },
+          columnHeader: {
+            color: theme.palette.primary.main,
+            padding: "0px 30px",
+          },          
+          headerCell: {
+            padding: "0px 30px",
+            background: "red",
+            fontWeight: "bold",
+            "& .MuiDataGrid-columnHeaderTitle": {
+              color: '#ffff',
+            }
+          },
+          row: {
+            "&.Mui-focused": {
+              outline: "none",
+              boxShadow: "none",
+            },
+          },
+          cell: {
+            padding: "0px 30px",
+            "&.Mui-focused": {
+              outline: "none",
+              boxShadow: "none",
+            },
+          },
+        },
+      },
     },
     typography: {
       h1: {
