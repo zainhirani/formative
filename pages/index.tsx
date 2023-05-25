@@ -6,9 +6,11 @@ import HomeScreen from "screens/HomeScreen";
 // import Image from "next/image";
 
 const Home: NextPage = () => {
-  return <>
-    <HomeScreen />
-  </>;
+  return (
+    <>
+      <HomeScreen />
+    </>
+  );
 };
 
 export default Home;
