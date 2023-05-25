@@ -26,7 +26,6 @@ import { useFormik } from "formik";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useAuthContext } from "contexts/AuthContext";
 import { StepTwo } from "./fields/Profile";
-import { log } from "console";
 // import { register } from "services/auth";
 
 const validationSchema = Yup.object().shape({
@@ -93,58 +92,7 @@ const RegisterScreen: React.FC = () => {
     hobbies: "",
   });
 
-  const onSubmit = useCallback(async (data: any) => {
-    // await register({
-    //   email: data.email,
-    //   password: data.password,
-    //   username: data.userName,
-    //   first_name: data.firstName,
-    //   last_name: data.lastName,
-    //   nick_name: data.nickName,
-    //   gender: data.gender,
-    //   rfu_id: data.rfuID,
-    //   year_of_graduation: data.graduation,
-    //   program: data.program,
-    //   birth_place: data.birthPlace,
-    // });
-    // await signUp(
-    //   data.email,
-    //   data.password,
-    //   data.userName,
-    //   data.firstName,
-    //   data.lastName,
-    //   data.nickName,
-    //   data.gender,
-    //   data.rfuID,
-    //   data.graduation,
-    //   data.program,
-    //   data.birthPlace,
-    // );
-    alert("Clicked");
-    console.log("Submitted", data);
-
-    // .then((userCredential: any) => {
-    //   const user = userCredential.user;
-    //   if (user) {
-    //     enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
-    //       variant: "success",
-    //     });
-    //   } else if (userCredential.error) {
-    //     enqueueSnackbar(userCredential.error, {
-    //       variant: "error",
-    //     });
-    //   }
-    // })
-    // .catch((error: any) => {
-    //   const errorCode = error.code;
-    //   const errorMessage = error.message;
-    //   console.log(errorCode, errorMessage);
-    //   enqueueSnackbar(errorMessage, {
-    //     variant: "error",
-    //   });
-    // });
-    console.log(data);
-  }, []);
+  const onSubmit = useCallback(async (data: any) => {}, []);
 
   // use formik
   const {

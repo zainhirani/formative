@@ -26,6 +26,7 @@ import messages from "./messages";
 import { ButtonWrapper } from "./Styled";
 import { useAuthContext } from "contexts/AuthContext";
 import { useRouter } from "next/router";
+import { TOKEN } from "configs";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().label("User Name"),
@@ -38,24 +39,27 @@ const LoginForm = () => {
   const { signIn } = useAuthContext();
   const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmit = async (data: any) => {
-    const resp = await signIn("credentials", {
-      ...data,
-      redirect: false,
-    })
+  const onSubmit = useCallback(async (data: any) => {
     try {
+      const response: any = await signIn("credentials", {
+        ...data,
+        redirect: false,
+      });
+      if (!response?.ok) {
+        throw new Error("Request failed");
+      }
       enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
         variant: "success",
       });
+      localStorage.setItem(TOKEN, response?.data.token);
     } catch (error: any) {
       const errorCode = error.code;
       const errorMessage = error.message;
-      console.log(errorCode, errorMessage);
       enqueueSnackbar(errorMessage, {
         variant: "error",
       });
     }
-  };
+  }, []);
 
   // use formik
   const { handleChange, handleSubmit, handleBlur, errors, values, touched } =

@@ -79,9 +79,7 @@ const ProfileScreen = () => {
     hobbies: "",
     currentPassword: "",
   });
-  const onSubmit = useCallback(async (data: any) => {
-    console.log(data);
-  }, []);
+  const onSubmit = useCallback(async (data: any) => {}, []);
   // use formik
   const {
     handleChange,

@@ -25,7 +25,7 @@ import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import { RegisterProps } from "./formProps";
 import { genderSelect, programSelect } from "./data";
 import messages from "../messages";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import ArrowDropUpOutlinedIcon from "@mui/icons-material/ArrowDropUpOutlined";
@@ -34,6 +34,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRegister } from "providers/Auth";
 import { useSnackbar } from "notistack";
+import { TOKEN } from "configs";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required().label("FirstName"),
@@ -86,7 +87,7 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
       enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
         variant: "success",
       });
-      localStorage.setItem("token", register?.data.token);
+      localStorage.setItem(TOKEN, register?.data.token);
       handleNext();
     }
   }, [register.isSuccess]);
@@ -100,7 +101,7 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
     }
   }, [register.isError]);
 
-  const onSubmit = (data: any) => {
+  const onSubmit = useCallback((data: any) => {
     register.mutate({
       email: data.email,
       password: data.password,
@@ -114,7 +115,23 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
       program: data.program,
       birth_place: data.birthPlace,
     });
-  };
+  }, []);
+
+  // const onSubmit = (data: any) => {
+  //   register.mutate({
+  //     email: data.email,
+  //     password: data.password,
+  //     username: data.userName,
+  //     first_name: data.firstName,
+  //     last_name: data.lastName,
+  //     nick_name: data.nickName,
+  //     gender: data.gender,
+  //     rfu_id: data.rfuID,
+  //     year_of_graduation: data.graduation,
+  //     program: data.program,
+  //     birth_place: data.birthPlace,
+  //   });
+  // };
 
   const {
     handleChange,

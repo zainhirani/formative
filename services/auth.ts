@@ -8,7 +8,6 @@ export async function login({
   email: string;
   password: string;
 }) {
-  console.log("inside loginc");
   return service({
     method: "POST",
     noAuth: true,

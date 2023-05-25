@@ -29,7 +29,8 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
   const router = useRouter();
 
   const signOut = useCallback(async () => {
-    logout({ callbackUrl: "/" });
+    logout({ callbackUrl: "/login" });
+    localStorage.clear();
     router?.replace(AUTHENTICATION_PATH[0]!);
   }, [router]);
 
