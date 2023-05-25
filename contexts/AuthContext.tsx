@@ -57,6 +57,14 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
     );
   }
 
+  if (!session?.user && router.pathname == "/") {
+    router.replace(AUTHENTICATION_PATH[0]!);
+    return null;
+  }
+  if (session?.user && ref.current == "/register") {
+    router.replace(AUTHENTICATION_PATH[0]!);
+  }
+
   if (
     !!process.browser &&
     (AUTHENTICATION_PATH || "").includes(window?.location?.pathname) &&
