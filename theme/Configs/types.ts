@@ -5,6 +5,10 @@ declare module "@mui/material/styles" {
       primaryBlack: string;
       secondryBlack: string;
       primaryTranslucent: string;
+      primaryGreen: string;
+      primaryYellow: string;
+      primaryBorderGrey: string;
+      primary999999: string;
     };
     borderRadius: {
       radius1: string;
