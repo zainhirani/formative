@@ -9,13 +9,13 @@ import { BoxWrapper } from "./Styled";
 import Loader from "components/Loader";
 import dynamic from 'next/dynamic'
 
-
-const HomeScreen: React.FC = () => {
-  const router = useRouter();
-  const PageLayout = dynamic(() => import("components/PageLayout"), {
+ const PageLayout = dynamic(() => import("components/PageLayout"), {
       ssr: false,
       loading: () => <Loader />,
   });
+const HomeScreen: React.FC = () => {
+  const router = useRouter();
+ 
   return (
     <>
       <PageLayout>
