@@ -12,6 +12,7 @@ import {
   RadioGroup,
   useRadioGroup,
 } from "@mui/material";
+import { LoadingButton, LoadingButtonProps } from "@mui/lab";
 
 export const CardHeaderWrapper = styled(CardHeader)<CardHeaderProps>(
   ({ theme }) =>
@@ -62,6 +63,26 @@ export const ButtonWrapper = styled(Button)<ButtonProps>(
       width: "100%",
     } as any),
 ) as (props: ButtonProps) => JSX.Element;
+
+export const LoadingButtonWrapper = styled(LoadingButton)<LoadingButtonProps>(
+  ({ theme }) =>
+    ({
+      display: "inline-block",
+      fontSize: "16px",
+      fontWeight: "400",
+      height: "50px",
+      lineHeight: "50px",
+      textAlign: "center",
+      padding: "0 50px",
+      position: "relative",
+      zIndex: "1",
+      overflow: "hidden",
+      color: theme.palette.primary.light,
+      borderRadius: theme.borderRadius.radius1,
+      textTransform: "capitalize",
+      width: "100%",
+    } as any),
+) as (props: LoadingButtonProps) => JSX.Element;
 
 export const IconButtonWrapper = styled(IconButton)<IconButtonProps>(
   ({ theme }) => ({

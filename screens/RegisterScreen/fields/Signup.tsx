@@ -14,6 +14,7 @@ import {
 import {
   ButtonWrapper,
   IconButtonWrapper,
+  LoadingButtonWrapper,
 } from "screens/RegisterScreen/Styled";
 
 import {
@@ -548,9 +549,11 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
             </Grid>
           </Grid>
         </CardContent>
-        <ButtonWrapper
+        <LoadingButtonWrapper
           variant="contained"
           type="submit"
+          loading={register.isLoading}
+          loadingPosition="start"
           sx={{ flex: "1 1 auto", marginTop: "30px" }}
           // onClick={handleNext}
           disabled={
@@ -569,7 +572,7 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
           }
         >
           <FormattedMessage {...messages.signUp} />
-        </ButtonWrapper>
+        </LoadingButtonWrapper>
       </form>
     </>
   );

@@ -1,3 +1,4 @@
+import { LoadingButton, LoadingButtonProps } from "@mui/lab";
 import MuiBox, { BoxProps } from "@mui/material/Box";
 import Button, { ButtonProps } from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
@@ -45,3 +46,36 @@ export const ButtonWrapper = styled(Button)<ButtonProps>(
       },
     } as any),
 ) as (props: ButtonProps) => JSX.Element;
+
+export const LoadingButtonWrapper = styled(LoadingButton)<LoadingButtonProps>(
+  ({ theme }) =>
+    ({
+      display: "inline-block",
+      fontSize: "16px",
+      fontWeight: "400",
+      [theme.breakpoints.down("md")]: {
+        height: "20px",
+      },
+      [theme.breakpoints.up("md")]: {
+        height: "50px",
+      },
+      [theme.breakpoints.down("md")]: {
+        lineHeight: "20px",
+      },
+      [theme.breakpoints.up("md")]: {
+        lineHeight: "35px",
+      },
+      textAlign: "center",
+      padding: { md: "0 50px", xs: "0 10px" },
+      position: "relative",
+      zIndex: "1",
+      overflow: "hidden",
+      color: theme.palette.primary.light,
+      borderRadius: theme.borderRadius.radius1,
+      textTransform: "capitalize",
+      width: "100%",
+      "&:hover": {
+        background: theme.palette.secondary.main,
+      },
+    } as any),
+) as (props: LoadingButtonProps) => JSX.Element;

@@ -23,7 +23,7 @@ import { useSnackbar } from "notistack";
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 
 import messages from "./messages";
-import { ButtonWrapper } from "./Styled";
+import { ButtonWrapper, LoadingButtonWrapper } from "./Styled";
 import { useAuthContext } from "contexts/AuthContext";
 import { useRouter } from "next/router";
 import { TOKEN } from "configs";
@@ -38,6 +38,7 @@ const LoginForm = () => {
   const { enqueueSnackbar } = useSnackbar();
   const { signIn } = useAuthContext();
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = useCallback(async (data: any) => {
     try {
@@ -45,9 +46,12 @@ const LoginForm = () => {
         ...data,
         redirect: false,
       });
+      setLoading(true);
       if (!response?.ok) {
+        setLoading(false);
         throw new Error("Request failed");
       }
+      // setLoading(false);
       enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
         variant: "success",
       });
@@ -162,13 +166,21 @@ const LoginForm = () => {
       </Box>
       <Box sx={{ mb: 3 }}></Box>
       <Box>
-        <ButtonWrapper
+        <LoadingButtonWrapper
           disabled={(values.email && values.password) === ""}
           type="submit"
           variant="contained"
+          loading={loading}
+          loadingPosition="start"
+          sx={{
+            ".MuiLoadingButton-loadingIndicator": {
+              top: "35%",
+              left: "35%",
+            },
+          }}
         >
           <FormattedMessage {...messages.logIn} />
-        </ButtonWrapper>
+        </LoadingButtonWrapper>
         <Divider
           sx={{
             marginY: "20px",
