@@ -1,13 +1,13 @@
 import { useRouter } from "next/router";
+import dynamic from 'next/dynamic'
 import { Box, Button } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { signOut } from "next-auth/react";
-import PageLayout from "components/PageLayout";
 import FormattedMessage from "theme/FormattedMessage";
 import messages from "./messages";
 import { BoxWrapper } from "./Styled";
 import Loader from "components/Loader";
-import dynamic from 'next/dynamic'
+
 
  const PageLayout = dynamic(() => import("components/PageLayout"), {
       ssr: false,
