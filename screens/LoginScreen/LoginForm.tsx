@@ -1,11 +1,15 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { useSession, signIn, signOut } from "next-auth/react";
 import {
   Box,
   Divider,
+  FormHelperText,
   Grid,
   IconButton,
+  InputAdornment,
   InputLabel,
   Link,
+  OutlinedInput,
   TextField,
   Typography,
 } from "@mui/material";
@@ -19,12 +23,13 @@ import { useSnackbar } from "notistack";
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 
 import messages from "./messages";
-import { ButtonWrapper } from "./Styled";
+import { ButtonWrapper, LoadingButtonWrapper } from "./Styled";
 import { useAuthContext } from "contexts/AuthContext";
 import { useRouter } from "next/router";
+import { TOKEN } from "configs";
 
 const validationSchema = Yup.object().shape({
-  user: Yup.string().required().label("User Name"),
+  email: Yup.string().required().label("User Name"),
   password: Yup.string().required().min(6).label("Password"),
 });
 
@@ -33,45 +38,43 @@ const LoginForm = () => {
   const { enqueueSnackbar } = useSnackbar();
   const { signIn } = useAuthContext();
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = useCallback(async (data: any) => {
-    // await signIn("credentials", {
-    //   ...data,
-    //   redirect: false,
-    // })
-    //   .then((userCredential: any) => {
-    //     const user = userCredential.user;
-
-    //     if (user) {
-    //       enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
-    //         variant: "success",
-    //       });
-    //     } else if (userCredential.error) {
-    //       enqueueSnackbar(userCredential.error, {
-    //         variant: "error",
-    //       });
-    //     }
-    //   })
-    //   .catch((error: any) => {
-    //     const errorCode = error.code;
-    //     const errorMessage = error.message;
-    //     console.log(errorCode, errorMessage);
-    //     enqueueSnackbar(errorMessage, {
-    //       variant: "error",
-    //     });
-    //   });
+    try {
+      const response: any = await signIn("credentials", {
+        ...data,
+        redirect: false,
+      });
+      setLoading(true);
+      if (!response?.ok) {
+        setLoading(false);
+        throw new Error("Request failed");
+      }
+      // setLoading(false);
+      enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
+        variant: "success",
+      });
+      localStorage.setItem(TOKEN, response?.data.token);
+    } catch (error: any) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      enqueueSnackbar(errorMessage, {
+        variant: "error",
+      });
+    }
   }, []);
 
   // use formik
   const { handleChange, handleSubmit, handleBlur, errors, values, touched } =
     useFormik({
-      initialValues: { user: "", password: "" },
+      initialValues: { email: "", password: "" },
       validationSchema,
       onSubmit,
     });
 
   // handleResetPass
-  const handleResetPass = (user: string) => {};
+  const handleResetPass = (email: string) => {};
 
   const userPlaceholder = useFormattedMessage(messages.userPlaceholder);
   const passwordPlaceholder = useFormattedMessage(messages.passwordPlaceholder);
@@ -87,15 +90,15 @@ const LoginForm = () => {
             <FormattedMessage {...messages.userLabel} />
           </InputLabel>
           <TextField
-            id="user"
-            name="user"
+            id="email"
+            name="email"
             type="text"
-            value={values.user}
+            value={values.email}
             onChange={handleChange}
             onBlur={handleBlur}
             placeholder={userPlaceholder}
-            error={touched.user && Boolean(errors.user)}
-            helperText={touched.user && errors.user}
+            error={touched.email && Boolean(errors.email)}
+            helperText={touched.email && errors.email}
             autoComplete="off"
             variant="standard"
             fullWidth
@@ -109,7 +112,7 @@ const LoginForm = () => {
           >
             <FormattedMessage {...messages.passwordLabel} />
           </InputLabel>
-          <Box display={"flex"} position={"relative"}>
+          <Box display={"flex"} flexDirection={"column"} position={"relative"}>
             <TextField
               id="password"
               name="password"
@@ -119,24 +122,28 @@ const LoginForm = () => {
               type={showPassword ? "text" : "password"}
               placeholder={passwordPlaceholder}
               error={touched.password && Boolean(errors.password)}
-              helperText={touched.password && errors.password}
               autoComplete="off"
               variant="standard"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
               fullWidth
             />
-            <IconButton
-              aria-label="toggle password visibility"
-              onClick={() => setShowPassword(!showPassword)}
-              edge="end"
-              sx={{
-                position: "absolute",
-                right: 0,
-                top: "-10%",
-                color: (theme) => theme.palette.secondary.dark,
-              }}
-            >
-              {showPassword ? <VisibilityOff /> : <Visibility />}
-            </IconButton>
+            {touched.password && errors.password && (
+              <FormHelperText error id="standard-weight-helper-text-password">
+                {errors.password}
+              </FormHelperText>
+            )}
           </Box>
         </Grid>
       </Grid>
@@ -153,20 +160,27 @@ const LoginForm = () => {
           underline="none"
           color="#8C2531"
           sx={{ textDecoration: "underline" }}
-          onClick={() => handleResetPass(values.user)}
         >
           <FormattedMessage {...messages.forgot} />
         </Link>
       </Box>
       <Box sx={{ mb: 3 }}></Box>
       <Box>
-        <ButtonWrapper
-          disabled={(values.user && values.password) === ""}
+        <LoadingButtonWrapper
+          disabled={(values.email && values.password) === ""}
           type="submit"
           variant="contained"
+          loading={loading}
+          loadingPosition="start"
+          sx={{
+            ".MuiLoadingButton-loadingIndicator": {
+              top: "35%",
+              left: "35%",
+            },
+          }}
         >
           <FormattedMessage {...messages.logIn} />
-        </ButtonWrapper>
+        </LoadingButtonWrapper>
         <Divider
           sx={{
             marginY: "20px",

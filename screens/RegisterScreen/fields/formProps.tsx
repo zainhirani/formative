@@ -25,6 +25,7 @@ interface RegisterInputProps {
   played?: string;
   volunteer?: string;
   hobbies?: string;
+  currentPassword?: string;
 }
 
 export interface RegisterProps {
