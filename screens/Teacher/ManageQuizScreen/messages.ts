@@ -1,17 +1,17 @@
 /*
- * LoginScreen Messages
+ * ManageQuizScreen Messages
  *
- * This contains all the text for the LoginScreen
+ * This contains all the text for the ManageQuizScreen
  */
 
 import { defineMessages } from "react-intl";
 
-export const scope = "app.screens.LoginScreen";
+export const scope = "app.screens.ManageQuizScreen";
 
 export default defineMessages({
   searchQuiz: {
     id: `${scope}.searchQuiz`,
-    defaultMessage: "Search Quiz",
+    defaultMessage: "Search quiz",
   },
   selectCourse: {
     id: `${scope}.selectCourse`,
@@ -28,5 +28,13 @@ export default defineMessages({
   createNew: {
     id: `${scope}.createNew`,
     defaultMessage: "Create New",
+  },
+  statusCompleted: {
+    id: `${scope}.statusCompleted`,
+    defaultMessage: "Completed",
+  },
+  statusDraft: {
+    id: `${scope}.statusDraft`,
+    defaultMessage: "Draft",
   },
 });

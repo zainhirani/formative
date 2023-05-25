@@ -1,3 +1,4 @@
+import { BorderColor } from "@mui/icons-material";
 import { TextFieldProps,TextField, Select, SelectProps } from "@mui/material";
 import MuiBox, { BoxProps } from "@mui/material/Box";
 import Button, { ButtonProps } from "@mui/material/Button";
@@ -11,7 +12,8 @@ export const BoxWrapper = styled(MuiBox)<BoxProps>(
       marginTop: "20px",
       marginBottom: "20px",
       borderRadius: "6px",
-      border: "1px solid #EAEAEA"
+      border: "1px solid",
+      borderColor: theme?.additionalColors?.primaryBorderGrey
     } as any),
 ) as (props: BoxProps) => JSX.Element;
 
@@ -28,11 +30,11 @@ export const BoxPaginate = styled(MuiBox)<BoxProps>(
         "button": {
           border: '0px',
           borderRadius: '6px',
-          background: "#BFBFBF"
+          background: theme.palette.secondary.dark
         },
         'button.Mui-selected': {
-          color: "#fff",
-          background: "#8C2531"
+          color: theme.palette.primary.light,
+          background: theme.palette.primary.main
         }
       },
       '.showing-text': {
@@ -53,7 +55,7 @@ export const TextFieldStyled = styled(TextField)<TextFieldProps>(
       border: "0px",
       ".MuiOutlinedInput-notchedOutline":{
         border:"none",
-        color: '#999999',
+        color: theme.additionalColors?.primary999999,
       }
     } as any),
 ) as (props: TextFieldProps) => JSX.Element;
@@ -61,26 +63,12 @@ export const TextFieldStyled = styled(TextField)<TextFieldProps>(
 export const SelectStyled = styled(Select)<SelectProps>(
   ({ theme }) =>
     ({
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: '#CACACA'
-      },
-      '&:hover fieldset': {
-        borderColor: '#007AFF'
-      },
-      '&.Mui-focused hover': {
-        borderColor: '#007AFF'
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: '007AFF'
-      }
-    },
       "fieldset":{
         borderWidth: "0px",
-        borderLeft: '1px solid #EAEAEA',
+        borderLeft: "1px solid",
+        borderColor: theme?.additionalColors?.primaryBorderGrey,
         borderRadius: '0px',
         paddingRight: '10px',
-        // '.MuiOutlinedInput-notchedOutline': { border: 0 } ,
         "&:hover":{
           borderWidth: "0px",
         }
@@ -89,7 +77,8 @@ export const SelectStyled = styled(Select)<SelectProps>(
         border: 0,
       } ,
       '#demo-simple-select': {
-        borderLeft: '1px solid #EAEAEA',
+        borderLeft: "1px solid",
+        borderColor: theme?.additionalColors?.primaryBorderGrey,
         borderRadius: '0px',
       }
     } as any),

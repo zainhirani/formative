@@ -49,7 +49,7 @@ export let getDesignTokens = (mode: PaletteMode) => {
             },
             text: {
               primary: "#404040",
-              secondary: "#68151E",
+              secondary: "#7F7F7F",
             },
             background: {
               default: "#F4F4F4",
@@ -70,12 +70,20 @@ export let getDesignTokens = (mode: PaletteMode) => {
             primaryTranslucent: "#0093e766",
             primaryBlack: "rgba(255, 255, 255, 1)",
             secondryBlack: "rgba(0, 0, 0, 0.12)",
+            primaryGreen: "#225A41",
+            primaryYellow: "#D88A00",
+            primaryBorderGrey: "#EAEAEA",
+            primary999999: "#999999",
           }
         : {
             lightGrey: "#9EC6D8",
             primaryTranslucent: "#0093e766",
             primaryBlack: "rgba(255, 255, 255, 1)",
             secondryBlack: "rgba(0, 0, 0, 0.12)",
+            primaryGreen: "#225A41",
+            primaryYellow: "#D88A00",
+            primaryBorderGrey: "#EAEAEA",
+            primary999999: "#999999",
           }),
     },
     borderRadius: {
@@ -213,9 +221,6 @@ export let getDesignTokens = (mode: PaletteMode) => {
             padding: "0px 30px",
             background: "red",
             fontWeight: "bold",
-            "& .MuiDataGrid-columnHeaderTitle": {
-              color: '#ffff',
-            }
           },
           row: {
             "&.Mui-focused": {

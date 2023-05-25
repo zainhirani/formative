@@ -1,23 +1,24 @@
 import React from 'react'
-import { Box, FormControl, IconButton, InputAdornment, InputLabel,Grid } from '@mui/material';
+import { Box, FormControl, IconButton, InputAdornment, InputLabel } from '@mui/material';
 import {  MenuItem } from '@mui/material';
 import { Search } from '@mui/icons-material';
 import { BoxWrapper, ButtonWrapper, SelectStyled, TextFieldStyled } from './Styled';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import ArrowDropDownCircleOutlinedIcon from '@mui/icons-material/ArrowDropDownCircleOutlined';
-import FormattedMessage from "theme/FormattedMessage";
+import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import messages from "./messages";
+import { selectCourseOption, selectFolderOption, selectStatusOption } from './data';
 
 const SearchSection = () => {
-    return (
+  const searchQuiz = useFormattedMessage(
+    messages.searchQuiz,
+  );
+  return (
         <BoxWrapper display="grid" gridTemplateColumns="repeat(12, 1fr)">
           <Box gridColumn="span 3">
             <TextFieldStyled
-              placeholder='Search'
+              placeholder={searchQuiz}
               variant="outlined"
-              sx={{
-               
-              }}
               InputProps={{
                 style: { border: 'none',outline: '0px' },
                   endAdornment: (
@@ -35,65 +36,73 @@ const SearchSection = () => {
         </Box>
         <Box gridColumn="span 2">
           <FormControl fullWidth>
-            <InputLabel shrink={false} id="demo-simple-select-label" sx={{
-                color: '#7F7F7F',
-              }}>Select Course</InputLabel>
+            <InputLabel shrink={false} sx={{color: (theme) => theme.palette.text.secondary,}}>
+                <FormattedMessage {...messages.selectCourse} />
+            </InputLabel>
             <SelectStyled
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              label="Select Course"
+              label={<FormattedMessage {...messages.selectCourse} />}
               placeholder='Search'
               variant="outlined"
               IconComponent={ArrowDropDownCircleOutlinedIcon}
             >
-              <MenuItem value={10}>Cannabis 2023</MenuItem>
-              <MenuItem value={20}>Cannabis 2024</MenuItem>
-              <MenuItem value={30}>Cannabis 2025</MenuItem>
+              {selectCourseOption?.map((course) =>
+                  <MenuItem value={course.name} key={course.id}>
+                    {course.name}
+                  </MenuItem>
+              )}
             </SelectStyled>
           </FormControl>
         </Box>
         <Box gridColumn="span 2">
           <FormControl fullWidth>
-            <InputLabel shrink={false} htmlFor="my-select" id="demo-simple-select-label" sx={{
-                color: '#7F7F7F',
-              }}>Select Folder</InputLabel>
+            <InputLabel shrink={false} htmlFor="my-select" sx={{color: (theme) => theme.palette.text.secondary,}}>
+              <FormattedMessage {...messages.selectFolder} />
+            </InputLabel>
             <SelectStyled
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              label="Select Folder"
+              label={<FormattedMessage {...messages.selectFolder} />}
               IconComponent={ArrowDropDownCircleOutlinedIcon}
             >
-              <MenuItem value={10}>/ Daily 1</MenuItem>
-              <MenuItem value={20}>/ Daily 2</MenuItem>
-              <MenuItem value={30}>/ Daily 3</MenuItem>
+              
+              {selectFolderOption?.map((folder) =>
+                  <MenuItem value={folder.name} key={folder.id}>
+                    {folder.name}
+                  </MenuItem>
+              )}
             </SelectStyled>
           </FormControl>
         </Box>
         <Box gridColumn="span 2">
           <FormControl fullWidth>
-            <InputLabel shrink={false} id="demo-simple-select-label" sx={{
-                color: '#7F7F7F',
-              }}>Select Status</InputLabel>
+            <InputLabel shrink={false} sx={{color: (theme) => theme.palette.text.secondary,}}>
+              <FormattedMessage {...messages.selectStatus} />
+            </InputLabel>
             <SelectStyled
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              label="Select Status"
+              label={<FormattedMessage {...messages.selectStatus} />}
               IconComponent={ArrowDropDownCircleOutlinedIcon}
             >
-              <MenuItem value={10}>Completed</MenuItem>
-              <MenuItem value={20}>Draft</MenuItem>
+              {selectStatusOption?.map((status) =>
+                  <MenuItem value={status.name} key={status.id}>
+                    {status.name}
+                  </MenuItem>
+              )}
             </SelectStyled>
           </FormControl>
         </Box>
         <Box gridColumn="span 3">
-           <ButtonWrapper
-                startIcon={<AddCircleOutlineRoundedIcon />}
-                variant="contained"
-              >
-                <FormattedMessage {...messages.createNew} />
-              </ButtonWrapper>
+            <ButtonWrapper
+              startIcon={<AddCircleOutlineRoundedIcon />}
+              variant="contained"
+            >
+              <FormattedMessage {...messages.createNew} />
+            </ButtonWrapper>
         </Box>
-        </BoxWrapper>
+      </BoxWrapper>
     )
 }
 

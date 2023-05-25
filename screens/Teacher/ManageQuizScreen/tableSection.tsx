@@ -1,5 +1,5 @@
 import React, { useState  } from 'react'
-import { Pagination,Grid,IconButton  } from '@mui/material';
+import { Pagination,Grid,IconButton,Box  } from '@mui/material';
 import { DataGrid,GridColDef } from '@mui/x-data-grid'
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import Image from 'next/image';
@@ -10,6 +10,8 @@ import trashSvg from '../../../public/quiz/trash.svg';
 import { BoxPaginate, BoxWrapper } from './Styled';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import SaveAsIcon from '@mui/icons-material/SaveAs';
+import FormattedMessage from 'theme/FormattedMessage';
+import messages from './messages';
 
 
 const columns: GridColDef[] = [
@@ -24,16 +26,16 @@ const columns: GridColDef[] = [
       return (
         <Grid container spacing={3} alignItems="center">
             <Grid item xs>
-              <div style={{
+              <Box sx={{
                 display: "flex",
                 alignItems: 'center',
                 gap: '2px',
-                color: '#404040',
+                color: (theme) => theme.palette.text.primary,
                 fontWeight: '700'
 
               }}>
                 {num} <ArrowForwardRoundedIcon style={{fontSize: '20px'}} />
-              </div>
+              </Box>
             </Grid>
         </Grid>
         
@@ -69,27 +71,25 @@ const columns: GridColDef[] = [
         <Grid container spacing={3} alignItems="center">
           {status == 'Draft'? (
             <Grid item xs>
-              <div style={{
-              display: "flex",
-              alignItems: 'center',
-              gap: '2px',
-              color: '#D88A00',
-
-            }}>
-                <SaveAsIcon  style={{fontSize: '20px'}}/> Draft
-                </div>
+              <Box sx={{
+                display: "flex",
+                alignItems: 'center',
+                gap: '2px',
+                color: (theme) => theme.additionalColors?.primaryYellow,
+              }}>
+                <SaveAsIcon  style={{fontSize: '20px'}}/> <FormattedMessage {...messages.statusDraft} />
+                </Box>
             </Grid>
           ) : (
             <Grid item xs>
-              <div style={{
-              display: "flex",
-              alignItems: 'center',
-              gap: '2px',
-              color: '#225A41',
-
-            }}>
-                <CheckCircleIcon  style={{fontSize: '20px'}}/> Completed
-                </div>
+              <Box sx={{
+                display: "flex",
+                alignItems: 'center',
+                gap: '2px',
+                color: (theme) => theme.additionalColors?.primaryGreen,
+              }}>
+                <CheckCircleIcon  style={{fontSize: '20px'}}/> <FormattedMessage {...messages.statusCompleted} />
+                </Box>
             </Grid>
           )}
         </Grid>
@@ -148,7 +148,6 @@ const columns: GridColDef[] = [
       );
     },
   },
-  
 ];
 
 const rows = [
