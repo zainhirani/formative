@@ -1,14 +1,4 @@
-import AutoStoriesOutlinedIcon from "@mui/icons-material/AutoStoriesOutlined";
-import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
-import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
-import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
-import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-import PowerSettingsNewOutlinedIcon from "@mui/icons-material/PowerSettingsNewOutlined";
-import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
-import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import { TEST_YOURSELF } from "configs";
-import { COURSES } from "configs";
 import { SMALL_QUIZ } from "configs";
 import { DASHBOARD } from "configs";
 import { QUESTIONS_SMALL } from "configs";
@@ -22,7 +12,7 @@ import Image from "theme/Image";
 const MenuData = [
   {
     title: "Dashboard",
-    icon: <Image src={DASHBOARD} lazyLoad={true} width={16} alt="dashboard" />,
+    icon: <Image src={DASHBOARD} lazyLoad={true} width={16} alt="Dashboard" />,
     link: "/dashboard",
   },
   {
@@ -38,7 +28,7 @@ const MenuData = [
       {
         id: 2,
         title: "Manage Quiz",
-        link: "",
+        link: "/teacher/quiz",
       },
       {
         id: 3,
@@ -119,11 +109,6 @@ const MenuData = [
   {
     title: "Settings",
     icon: <Image src={SETTINGS} lazyLoad={true} width={20} alt="Settings" />,
-    link: "",
-  },
-  {
-    title: "Logout",
-    icon: <PowerSettingsNewOutlinedIcon />,
     link: "",
   },
 ];
