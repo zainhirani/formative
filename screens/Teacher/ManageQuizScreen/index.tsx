@@ -1,5 +1,4 @@
-import React from 'react'
-import PageLayout from 'components/PageLayout'
+import React from 'react';
 import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
 import SearchSection from './searchSection';
 import TableSection from './tableSection';
