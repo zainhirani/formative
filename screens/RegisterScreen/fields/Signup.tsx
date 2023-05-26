@@ -118,21 +118,6 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
     });
   }, []);
 
-  // const onSubmit = (data: any) => {
-  //   register.mutate({
-  //     email: data.email,
-  //     password: data.password,
-  //     username: data.userName,
-  //     first_name: data.firstName,
-  //     last_name: data.lastName,
-  //     nick_name: data.nickName,
-  //     gender: data.gender,
-  //     rfu_id: data.rfuID,
-  //     year_of_graduation: data.graduation,
-  //     program: data.program,
-  //     birth_place: data.birthPlace,
-  //   });
-  // };
 
   const {
     handleChange,
@@ -554,7 +539,14 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
           type="submit"
           loading={register.isLoading}
           loadingPosition="start"
-          sx={{ flex: "1 1 auto", marginTop: "30px" }}
+          sx={{
+            flex: "1 1 auto",
+            marginTop: "30px",
+            ".MuiLoadingButton-loadingIndicator": {
+              top: "35%",
+              left: "35%",
+            },
+          }}
           // onClick={handleNext}
           disabled={
             (values.firstName &&
