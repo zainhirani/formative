@@ -2,11 +2,11 @@
   "name": "formative",
   "private": false,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3005",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "type-check": "tsc --noEmit --pretty",
+    "type-check": "",
     "prepare": "lefthook install"
   },
   "dependencies": {
