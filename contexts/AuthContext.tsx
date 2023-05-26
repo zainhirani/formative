@@ -28,6 +28,16 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
   const loading = status === "loading";
   const router = useRouter();
 
+  useEffect(() => {
+    if (!session?.user) {
+      router.replace(AUTHENTICATION_PATH[0]!);
+      return null;
+    }
+    if (session?.user && ref.current == "/register") {
+      router.replace(AUTHENTICATION_PATH[0]!);
+    }
+  }, []);
+
   const signOut = useCallback(async () => {
     logout({ callbackUrl: "/login" });
     localStorage.clear();
@@ -55,14 +65,6 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
         <CircularProgress />
       </Box>
     );
-  }
-
-  if (!session?.user && router.pathname == "/") {
-    router.replace(AUTHENTICATION_PATH[0]!);
-    return null;
-  }
-  if (session?.user && ref.current == "/register") {
-    router.replace(AUTHENTICATION_PATH[0]!);
   }
 
   if (
