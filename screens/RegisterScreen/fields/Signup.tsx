@@ -14,6 +14,7 @@ import {
 import {
   ButtonWrapper,
   IconButtonWrapper,
+  LoadingButtonWrapper,
 } from "screens/RegisterScreen/Styled";
 
 import {
@@ -25,7 +26,7 @@ import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import { RegisterProps } from "./formProps";
 import { genderSelect, programSelect } from "./data";
 import messages from "../messages";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import ArrowDropUpOutlinedIcon from "@mui/icons-material/ArrowDropUpOutlined";
@@ -34,6 +35,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRegister } from "providers/Auth";
 import { useSnackbar } from "notistack";
+import { TOKEN } from "configs";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required().label("FirstName"),
@@ -86,14 +88,51 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
       enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
         variant: "success",
       });
-      // localStorage.setItem("token", register?.data);
+      localStorage.setItem(TOKEN, register?.data.token);
       handleNext();
     }
-    // if (register.isError) {
-    //   enqueueSnackbar(register.error, {
-    //     variant: "error",
-    //   });
   }, [register.isSuccess]);
+
+  useEffect(() => {
+    if (register.isError) {
+      const errorMessage = register.error.message;
+      enqueueSnackbar(errorMessage, {
+        variant: "error",
+      });
+    }
+  }, [register.isError]);
+
+  const onSubmit = useCallback((data: any) => {
+    register.mutate({
+      email: data.email,
+      password: data.password,
+      username: data.userName,
+      first_name: data.firstName,
+      last_name: data.lastName,
+      nick_name: data.nickName,
+      gender: data.gender,
+      rfu_id: data.rfuID,
+      year_of_graduation: data.graduation,
+      program: data.program,
+      birth_place: data.birthPlace,
+    });
+  }, []);
+
+  // const onSubmit = (data: any) => {
+  //   register.mutate({
+  //     email: data.email,
+  //     password: data.password,
+  //     username: data.userName,
+  //     first_name: data.firstName,
+  //     last_name: data.lastName,
+  //     nick_name: data.nickName,
+  //     gender: data.gender,
+  //     rfu_id: data.rfuID,
+  //     year_of_graduation: data.graduation,
+  //     program: data.program,
+  //     birth_place: data.birthPlace,
+  //   });
+  // };
 
   const {
     handleChange,
@@ -119,21 +158,7 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
       confirmPassword: "",
     },
     validationSchema,
-    onSubmit: (data) => {
-      register.mutate({
-        email: data.email,
-        password: data.password,
-        username: data.userName,
-        first_name: data.firstName,
-        last_name: data.lastName,
-        nick_name: data.nickName,
-        gender: data.gender,
-        rfu_id: data.rfuID,
-        year_of_graduation: data.graduation,
-        program: data.program,
-        birth_place: data.birthPlace,
-      });
-    },
+    onSubmit,
   });
 
   const increment = () => {
@@ -524,9 +549,11 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
             </Grid>
           </Grid>
         </CardContent>
-        <ButtonWrapper
+        <LoadingButtonWrapper
           variant="contained"
           type="submit"
+          loading={register.isLoading}
+          loadingPosition="start"
           sx={{ flex: "1 1 auto", marginTop: "30px" }}
           // onClick={handleNext}
           disabled={
@@ -545,7 +572,7 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
           }
         >
           <FormattedMessage {...messages.signUp} />
-        </ButtonWrapper>
+        </LoadingButtonWrapper>
       </form>
     </>
   );

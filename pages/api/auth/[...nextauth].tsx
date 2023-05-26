@@ -22,9 +22,7 @@ export default NextAuth({
             password: credentials.password,
           });
           return Promise.resolve(
-            resp?.data?.access_token
-              ? { jwtToken: resp.data.access_token }
-              : {},
+            resp?.data?.token ? { jwtToken: resp.data.token } : {},
           ) as any;
         } catch (e: any) {
           return Promise.reject(new Error(e?.msg || "Something Wrong"));

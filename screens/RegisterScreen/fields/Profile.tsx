@@ -44,6 +44,30 @@ import {
 import messages from "../messages";
 import { useState } from "react";
 
+interface StyledFormControlLabelProps extends FormControlLabelProps {
+  checked: boolean;
+}
+
+const StyledFormControlLabel = styled((props: StyledFormControlLabelProps) => (
+  <FormControlLabel {...props} />
+))(({ theme, checked }) => ({
+  ".MuiFormControlLabel-label": checked && {
+    color: theme.additionalColors?.primaryBlack,
+  },
+}));
+
+function MyFormControlLabel(props: FormControlLabelProps) {
+  const radioGroup = useRadioGroup();
+
+  let checked = false;
+
+  if (radioGroup) {
+    checked = radioGroup.value === props.value;
+  }
+
+  return <StyledFormControlLabel checked={checked} {...props} />;
+}
+
 export const StepTwo: React.FC<RegisterProps> = ({
   touched,
   values,
@@ -59,6 +83,7 @@ export const StepTwo: React.FC<RegisterProps> = ({
   const hobbiesPlaceholder = useFormattedMessage(messages.hobbiesPlaceholder);
   const [math, setMath] = useState("Select an option for the list");
   const [experience, setExperience] = useState(0);
+
   const increment = () => {
     if (experience < 50) {
       setExperience((experience) => experience + 1);
@@ -165,7 +190,7 @@ export const StepTwo: React.FC<RegisterProps> = ({
               row
             >
               {radioChoice?.map((choice) => (
-                <FormControlLabel
+                <MyFormControlLabel
                   sx={{
                     width: { md: "50%", xs: "100%" },
                     marginRight: 0,
@@ -211,7 +236,7 @@ export const StepTwo: React.FC<RegisterProps> = ({
               row
             >
               {radioChoice?.map((choice) => (
-                <FormControlLabel
+                <MyFormControlLabel
                   sx={{
                     width: { md: "50%", xs: "100%" },
                     marginRight: 0,
@@ -293,7 +318,7 @@ export const StepTwo: React.FC<RegisterProps> = ({
               row
             >
               {learnRadioGroup?.map((learn) => (
-                <FormControlLabel
+                <MyFormControlLabel
                   sx={{
                     width: { md: "50%", xs: "100%" },
                     marginRight: 0,
@@ -336,7 +361,7 @@ export const StepTwo: React.FC<RegisterProps> = ({
               row
             >
               {sequenceRadioGroup?.map((sequence) => (
-                <FormControlLabel
+                <MyFormControlLabel
                   sx={{
                     width: { md: "50%", xs: "100%" },
                     marginRight: 0,
@@ -379,7 +404,7 @@ export const StepTwo: React.FC<RegisterProps> = ({
               row
             >
               {studyRadioGroup?.map((study) => (
-                <FormControlLabel
+                <MyFormControlLabel
                   sx={{
                     width: { md: "50%", xs: "100%" },
                     marginRight: 0,
@@ -425,6 +450,16 @@ export const StepTwo: React.FC<RegisterProps> = ({
                   <Checkbox
                     sx={{
                       color: (theme) => theme.palette.secondary.dark,
+                      ".MuiFormControlLabel-label": {
+                        color: (theme) => theme.additionalColors?.primaryBlack,
+                      },
+                      "&.Mui-checked": {
+                        ".MuiSvgIcon-root": {
+                          background: (theme) =>
+                            theme.additionalColors?.primaryBlack,
+                          color: (theme) => theme.palette.primary.light,
+                        },
+                      },
                     }}
                     onChange={(e) => {
                       if (setFieldValue) {
@@ -434,6 +469,13 @@ export const StepTwo: React.FC<RegisterProps> = ({
                   />
                 }
                 label={play.name}
+                // sx={{
+                //   color: Object.values(checkedItems).some(
+                //     (isChecked) => isChecked,
+                //   )
+                //     ? (theme) => theme.additionalColors?.primaryBlack
+                //     : (theme) => theme.palette.secondary.dark,
+                // }}
               />
             ))}
             {touched.nickName && errors.nickName && (
@@ -457,7 +499,7 @@ export const StepTwo: React.FC<RegisterProps> = ({
               row
             >
               {radioChoice?.map((choice) => (
-                <FormControlLabel
+                <MyFormControlLabel
                   sx={{
                     width: { md: "50%", xs: "100%" },
                     marginRight: 0,
