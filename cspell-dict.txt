@@ -16,3 +16,5 @@ SITELOGO
 lazyload
 sitem
 USERIMAGE
+Printshop
+Biochem

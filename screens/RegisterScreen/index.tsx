@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Box,
   Grid,
@@ -17,6 +17,7 @@ import {
   ButtonWrapper,
   CardHeaderWrapper,
   IconButtonWrapper,
+  LoadingButtonWrapper,
 } from "./Styled";
 import * as Yup from "yup";
 import StepOne from "./fields/Signup";
@@ -26,6 +27,7 @@ import { useFormik } from "formik";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useAuthContext } from "contexts/AuthContext";
 import { StepTwo } from "./fields/Profile";
+import { useProfile } from "providers/Auth";
 // import { register } from "services/auth";
 
 const validationSchema = Yup.object().shape({
@@ -62,6 +64,7 @@ const steps = [
 ];
 
 const RegisterScreen: React.FC = () => {
+  const profile = useProfile();
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set<number>());
   const { enqueueSnackbar } = useSnackbar();
@@ -92,7 +95,41 @@ const RegisterScreen: React.FC = () => {
     hobbies: "",
   });
 
-  const onSubmit = useCallback(async (data: any) => {}, []);
+  useEffect(() => {
+    if (profile.isSuccess) {
+      enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
+        variant: "success",
+      });
+      // localStorage.setItem(TOKEN, profile?.data.token);
+      handleNext();
+    }
+  }, [profile.isSuccess]);
+
+  useEffect(() => {
+    if (profile.isError) {
+      const errorMessage = profile.error.message;
+      enqueueSnackbar(errorMessage, {
+        variant: "error",
+      });
+    }
+  }, [profile.isError]);
+
+  // const onSubmit = useCallback(async (data: any) => {}, []);
+  const onSubmit = useCallback((data: any) => {
+    profile.mutate({
+      date_of_birth: data.dob,
+      experience: data.pharmacy,
+      working_part_time: data.partTime,
+      athlete: data.played,
+      concept: data.learn,
+      hobbies: data.hobbies,
+      learning_sequence: data.sequence,
+      math_skills: data.maths,
+      study_prefer: data.study,
+      taken_biochemistry: data.bioChemistry,
+      volunteer: data.volunteer,
+    });
+  }, []);
 
   // use formik
   const {
@@ -161,78 +198,86 @@ const RegisterScreen: React.FC = () => {
                 <FormattedMessage {...messages.description} />
               </Typography>
               {/* <form onSubmit={handleSubmit}> */}
-              <StepTwo
-                handleChange={handleChange}
-                handleBlur={handleBlur}
-                errors={errors}
-                values={values}
-                touched={touched}
-                setFieldValue={setFieldValue}
-                disable={false}
-              />
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: { md: "row", xs: "column" },
-                }}
-              >
-                <Box
-                  sx={{
-                    width: { md: "75%", xs: "100%" },
-                    display: "flex",
-                    mt: "10px",
-                    justifyContent: { xs: "center", md: "end" },
-                  }}
-                >
-                  <ButtonWrapper
-                    variant="contained"
-                    // type="submit"
-                    disabled={
-                      (values.dob &&
-                        values.pharmacy &&
-                        values.partTime &&
-                        values.bioChemistry &&
-                        values.maths &&
-                        values.learn &&
-                        values.sequence &&
-                        values.study &&
-                        values.played &&
-                        values.volunteer &&
-                        values.hobbies) === ""
-                    }
-                    sx={{ width: { xs: "100%", md: "500px" } }}
-                  >
-                    <FormattedMessage {...messages.profile} />
-                  </ButtonWrapper>
-                </Box>
-                <Box
+                <StepTwo
+                  // handleChange={handleChange}
+                  // handleBlur={handleBlur}
+                  // errors={errors}
+                  // values={values}
+                  // touched={touched}
+                  // setFieldValue={setFieldValue}
+                  // disable={false}
+                />
+                {/* <Box
                   sx={{
                     display: "flex",
-                    alignItems: "center",
-                    justifyContent: { md: "end", xs: "center" },
-                    width: { md: "25%", xs: "100%" },
-                    mr: 1,
-                    mt: { xs: "10px", md: 0 },
+                    flexDirection: { md: "row", xs: "column" },
                   }}
                 >
-                  <Button
-                    onClick={() => {
-                      router.push("/");
-                    }}
+                  <Box
                     sx={{
-                      textDecoration: "none",
-                      color: (theme) => theme.palette.primary.main,
-                      textTransform: "initial",
-                      fontWeight: "500",
+                      width: { md: "75%", xs: "100%", xl: "65%" },
+                      display: "flex",
+                      mt: "10px",
+                      justifyContent: { xs: "center", md: "end" },
                     }}
                   >
-                    <FormattedMessage {...messages.skip} />
-                    <IconButtonWrapper>
-                      <ArrowForwardIcon />
-                    </IconButtonWrapper>
-                  </Button>
-                </Box>
-              </Box>
+                    <LoadingButtonWrapper
+                      variant="contained"
+                      type="submit"
+                      disabled={
+                        (values.dob &&
+                          values.pharmacy &&
+                          values.partTime &&
+                          values.bioChemistry &&
+                          values.maths &&
+                          values.learn &&
+                          values.sequence &&
+                          values.study &&
+                          values.played &&
+                          values.volunteer &&
+                          values.hobbies) === ""
+                      }
+                      loading={profile.isLoading}
+                      loadingPosition="start"
+                      sx={{
+                        width: { xs: "100%", md: "500px" },
+                        ".MuiLoadingButton-loadingIndicator": {
+                          top: "35%",
+                          left: "35%",
+                        },
+                      }}
+                    >
+                      <FormattedMessage {...messages.profile} />
+                    </LoadingButtonWrapper>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: { md: "end", xs: "center" },
+                      width: { md: "25%", xs: "100%", xl: "35%" },
+                      mr: 1,
+                      mt: { xs: "10px", md: 0 },
+                    }}
+                  >
+                    <Button
+                      onClick={() => {
+                        router.push("/");
+                      }}
+                      sx={{
+                        textDecoration: "none",
+                        color: (theme) => theme.palette.primary.main,
+                        textTransform: "initial",
+                        fontWeight: "500",
+                      }}
+                    >
+                      <FormattedMessage {...messages.skip} />
+                      <IconButtonWrapper>
+                        <ArrowForwardIcon />
+                      </IconButtonWrapper>
+                    </Button>
+                  </Box>
+                </Box> */}
               {/* </form> */}
             </React.Fragment>
           ) : (

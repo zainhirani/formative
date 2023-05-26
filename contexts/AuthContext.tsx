@@ -1,10 +1,16 @@
 //@ts-nocheck
 
-import { createContext, useCallback, useContext } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+} from "react";
 import { useRouter } from "next/router";
 import { Box, CircularProgress } from "@mui/material";
 import { signOut as logout, signIn, useSession } from "next-auth/react";
-import { AUTH_LOGIN_URL } from "configs";
+import { AUTH_LOGIN_URL, TOKEN } from "configs";
 import { getAuthenticationToken, setAuthenticationHeader } from "services";
 import { register } from "services/auth";
 // import { FLEET_MANAGEMENT } from "constants/routes";
@@ -27,16 +33,24 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
   const { data: session, status } = useSession();
   const loading = status === "loading";
   const router = useRouter();
+  const ref = useRef();
 
-  useEffect(() => {
-    if (!session?.user) {
-      router.replace(AUTHENTICATION_PATH[0]!);
-      return null;
-    }
-    if (session?.user && ref.current == "/register") {
-      router.replace(AUTHENTICATION_PATH[0]!);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!session?.user && !localStorage.getItem(TOKEN)) {
+  //     router.replace(AUTHENTICATION_PATH[0]!);
+  //     return null;
+  //   }
+  //   if (
+  //     (session?.user || localStorage.getItem(TOKEN)) &&
+  //     (router.pathname.includes("/login") || router.pathname.includes("/"))
+  //   ) {
+  //     router.replace("/");
+  //     return null;
+  //   }
+  //   if (session?.user && router.pathname.includes("/register")) {
+  //     router.replace("/register");
+  //   }
+  // }, []);
 
   const signOut = useCallback(async () => {
     logout({ callbackUrl: "/login" });
@@ -48,8 +62,14 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
   //@ts-ignore
   const currToken: any = session?.accessToken;
 
+  async function getTokenFunction() {
+    if (typeof window !== "undefined") {
+      const getToken = localStorage.getItem(TOKEN);
+      setAuthenticationHeader(getToken);
+    }
+  }
+  getTokenFunction();
   if (currToken && prevToken !== `Bearer ${currToken}`) {
-    setAuthenticationHeader(currToken);
   }
 
   if (loading) {
@@ -65,22 +85,6 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
         <CircularProgress />
       </Box>
     );
-  }
-
-  if (
-    !!process.browser &&
-    (AUTHENTICATION_PATH || "").includes(window?.location?.pathname) &&
-    session &&
-    session.user &&
-    !loading
-  ) {
-    const params: { pathname: string; query?: { redirectTo: string } } = {
-      pathname:
-        // @ts-ignore
-        "/",
-    };
-    router.replace(params);
-    return null;
   }
 
   return (

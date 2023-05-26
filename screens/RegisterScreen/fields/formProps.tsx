@@ -16,14 +16,14 @@ interface RegisterInputProps {
   confirmPassword?: string;
   dob?: string;
   pharmacy?: string;
-  partTime?: string;
-  bioChemistry?: string;
+  partTime?: boolean;
+  bioChemistry?: boolean;
   maths?: string;
   learn?: string;
   sequence?: string;
   study?: string;
   played?: string;
-  volunteer?: string;
+  volunteer?: boolean;
   hobbies?: string;
   currentPassword?: string;
 }

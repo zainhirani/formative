@@ -1,6 +1,6 @@
 import omit from "lodash/omit";
 import qs from "query-string";
-import { PUBLIC_API_URL } from "configs";
+import { PUBLIC_API_URL, TOKEN } from "configs";
 
 // import { logSuccess } from 'utils/logger';
 
