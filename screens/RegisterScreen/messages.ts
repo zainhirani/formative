@@ -206,4 +206,8 @@ export default defineMessages({
     id: `${scope}.successMessage`,
     defaultMessage: "Signed Up Successfully!",
   },
+  profileSuccessMessage: {
+    id: `${scope}.profileSuccessMessage`,
+    defaultMessage: "Profile Created Successfully!",
+  },
 });
