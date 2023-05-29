@@ -1,77 +1,25 @@
 import service from "services";
-import { Users } from "./types";
+import { Profile } from "./types";
 
-// // Create Bulk
-// export async function createBulk(
-//   props: Users.CreateBulkAPIPayload,
-// ): Promise<Users.CreateBulkResponse> {
-//   return service({
-//     method: "POST",
-//     url: `/users/create/bulk`,
-//     body: props.data,
-//   });
-// }
+//Profile API Integration
 
-// // Create
-// export async function create(
-//   props: Users.CreateAPIPayload,
-// ): Promise<Users.CreateResponse> {
-//   return service({
-//     method: "POST",
-//     url: `/users`,
-//     body: props.data,
-//   });
-// }
+// profile Create/update
+export async function createProfile(
+    props: Profile.CreateAPIPayload,
+  ): Promise<Profile.CreateResponse> {
+    return service({
+      method: "POST",
+      url: `/user/profile`,
+      body: props.data,
+    });
+  }
 
-// // Fetch
-// export async function fetch(
-//   props: Users.ListingAPIPayload,
-// ): Promise<Users.ListingResponse> {
-//   return service({
-//     method: "GET",
-//     url: `/users`,
-//     queryParams: props,
-//   });
-// }
-
-// // Detail
-// export async function detail(
-//   props: Users.DetailAPIPayload,
-// ): Promise<Users.DetailResponse> {
-//   return service({
-//     method: "GET",
-//     url: `/users/${props.id}`,
-//   });
-// }
-
-// // Update
-// export async function update(
-//   props: Users.UpdateAPIPayload,
-// ): Promise<Users.UpdateResponse> {
-//   return service({
-//     method: "PATCH",
-//     url: `/users/${props.id}`,
-//     body: props.data,
-//   });
-// }
-
-// // Remove
-// export async function remove(
-//   props: Users.RemoveAPIPayload,
-// ): Promise<Users.RemoveResponse> {
-//   return service({
-//     method: "DELETE",
-//     url: `/users/${props.id}`,
-//   });
-// }
-
-// // Remove Bulk
-// export async function removeBulk(
-//   props: Users.RemoveBulkAPIPayload,
-// ): Promise<Users.RemoveBulkResponse> {
-//   return service({
-//     method: "POST",
-//     url: `/users/delete/bulk`,
-//     body: props.data,
-//   });
-// }
+  // profile Detail
+  export async function detailProfile(
+    props?: Profile.DetailAPIPayload,
+  ): Promise<Profile.DetailResponse> {
+    return service({
+      method: "GET",
+      url: `/user/profile`,
+    });
+  }

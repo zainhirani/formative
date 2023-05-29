@@ -33,7 +33,7 @@ import {
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import * as Yup from "yup";
-import { RegisterProps } from "./formProps";
+// import { RegisterProps } from "./formProps";
 import {
   learnRadioGroup,
   radioChoice,
@@ -41,14 +41,16 @@ import {
   studyRadioGroup,
   playRadioGroup,
   mathSkillsSelect,
-} from "./data";
-import messages from "../messages";
+} from "../RegisterScreen/fields/data";
+import messages from "./messages";
 import { useEffect, useState, useCallback } from "react";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
-import { useProfile } from "providers/Users";
+import { useProfile, useProfileDetail } from "providers/Users";
 import { useSnackbar } from "notistack";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
+import { ButtonWrapper } from "./Styled";
 
 interface StyledFormControlLabelProps extends FormControlLabelProps {
   checked: boolean;
@@ -86,9 +88,10 @@ const validationSchema = Yup.object().shape({
   played: Yup.string().required().label("Played"),
   volunteer: Yup.string().required().label("Volunteer"),
   hobbies: Yup.string().required().label("Hobbies"),
+  currentPassword: Yup.string().required().min(6).label("Password"),
 });
 
-export const StepTwo = ({}) => {
+export const ProfileTab = ({}) => {
   const dobPlaceholder = useFormattedMessage(messages.dobPlaceholder);
   const pharmacyPlaceholder = useFormattedMessage(messages.pharmacyPlaceholder);
   const passwordPlaceholder = useFormattedMessage(messages.passwordPlaceholder);
@@ -96,6 +99,7 @@ export const StepTwo = ({}) => {
   const [math, setMath] = useState("Select an option for the list");
   const [experience, setExperience] = useState(0);
   const profile = useProfile();
+  const profileDetail = useProfileDetail();
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -125,9 +129,6 @@ export const StepTwo = ({}) => {
           variant: "success",
         },
       );
-      router.replace("/");
-      // localStorage.setItem(TOKEN, profile?.data.token);
-      // handleNext();
     }
   }, [profile.isSuccess]);
 
@@ -139,6 +140,7 @@ export const StepTwo = ({}) => {
       });
     }
   }, [profile.isError]);
+  console.log(profileDetail, "profileDetail");
 
   const onSubmit = useCallback((data: any) => {
     profile.mutate({
@@ -166,19 +168,21 @@ export const StepTwo = ({}) => {
     setFieldValue,
   } = useFormik({
     initialValues: {
-      dob: "",
-      pharmacy: "",
-      partTime: false,
-      bioChemistry: false,
-      maths: "",
-      learn: "",
-      sequence: "",
-      study: "",
-      played: "",
-      volunteer: false,
-      hobbies: "",
+      dob: profileDetail.data?.date_of_birth || "",
+      pharmacy: profileDetail.data?.experience || "",
+      partTime: profileDetail.data?.working_part_time || false,
+      bioChemistry: profileDetail.data?.taken_biochemistry || false,
+      maths: profileDetail.data?.math_skills || "",
+      learn: profileDetail.data?.concept || "",
+      sequence: profileDetail.data?.learning_sequence || "",
+      study: profileDetail.data?.study_prefer || "",
+      played: profileDetail.data?.athlete || "",
+      volunteer: profileDetail.data?.volunteer || false,
+      hobbies: profileDetail.data?.hobbies || "",
+      currentPassword: "",
     },
     validationSchema,
+    enableReinitialize: true,
     onSubmit,
   });
 
@@ -684,33 +688,69 @@ export const StepTwo = ({}) => {
               <FormattedMessage {...messages.profile} />
             </LoadingButtonWrapper>
           </Box>
-          <Box
+        </Box>
+        <Box
+          sx={{
+            boxShadow: (theme) => theme.shadow.boxShadow,
+            display: "flex",
+            alignItems: "center",
+            mt: "120px",
+            background: "transparent",
+            width: "max-content",
+            position: "relative",
+          }}
+        >
+          <TextField
+            id="currentPassword"
+            name="currentPassword"
+            placeholder={passwordPlaceholder}
+            fullWidth
+            type="password"
+            value={values.currentPassword}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            variant="standard"
+            error={Boolean(touched.currentPassword && errors.currentPassword)}
             sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: { md: "end", xs: "center" },
-              width: { md: "25%", xs: "100%", xl: "35%" },
-              mr: 1,
-              mt: { xs: "10px", md: 0 },
+              background: (theme) => theme.palette.primary.light,
+              borderRadius: "0",
+              width: { md: "350px", xs: "250px" },
+              position: "relative",
+              px: "10px",
+              ".MuiInputBase-root": {
+                "&::before": {
+                  borderWidth: 0,
+                },
+              },
             }}
-          >
-            <Button
-              onClick={() => {
-                router.push("/");
-              }}
-              sx={{
-                textDecoration: "none",
-                color: (theme) => theme.palette.primary.main,
-                textTransform: "initial",
-                fontWeight: "500",
-              }}
+          />
+          {touched.currentPassword && errors.currentPassword && (
+            <FormHelperText
+              sx={{ position: "absolute", bottom: "-45%" }}
+              error
+              id="standard-weight-helper-text-currentPassword"
             >
-              <FormattedMessage {...messages.skip} />
-              <IconButtonWrapper>
-                <ArrowForwardIcon />
-              </IconButtonWrapper>
-            </Button>
-          </Box>
+              {errors.currentPassword}
+            </FormHelperText>
+          )}
+          <ButtonWrapper
+            startIcon={<ArrowCircleRightOutlinedIcon />}
+            variant="contained"
+            type="submit"
+            sx={{ background: (theme) => theme.palette.secondary.main }}
+          >
+            <FormattedMessage {...messages.submit} />
+          </ButtonWrapper>
+          <ButtonWrapper
+            sx={{
+              borderTopRightRadius: (theme) => theme.borderRadius.radius1,
+              borderBottomRightRadius: (theme) => theme.borderRadius.radius1,
+            }}
+            startIcon={<HighlightOffIcon />}
+            variant="contained"
+          >
+            <FormattedMessage {...messages.cancel} />
+          </ButtonWrapper>
         </Box>
       </form>
     </>

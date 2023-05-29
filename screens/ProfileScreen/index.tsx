@@ -22,6 +22,7 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import { BoxWrapper, ButtonWrapper } from "./Styled";
 import { GeneralInfo } from "./generalInfo";
+import { ProfileTab } from "./ProfileTab";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required().label("FirstName"),
@@ -104,55 +105,55 @@ const ProfileScreen = () => {
       <PageLayout title="Profile" icon={<HelpRoundedIcon />}>
         <Box>
           {/* <form> */}
-            <TabContext value={value}>
-              <Tabs
-                value={value}
-                onChange={(event: React.SyntheticEvent, newValue: string) =>
-                  setValue(newValue)
-                }
-                textColor="primary"
-                indicatorColor="secondary"
-                aria-label="secondary tabs example"
-              >
-                <Tab
-                  value="one"
-                  label={<FormattedMessage {...messages.stepOneTitle} />}
-                  sx={{
-                    textTransform: "capitalize",
-                  }}
+          <TabContext value={value}>
+            <Tabs
+              value={value}
+              onChange={(event: React.SyntheticEvent, newValue: string) =>
+                setValue(newValue)
+              }
+              textColor="primary"
+              indicatorColor="secondary"
+              aria-label="secondary tabs example"
+            >
+              <Tab
+                value="one"
+                label={<FormattedMessage {...messages.stepOneTitle} />}
+                sx={{
+                  textTransform: "capitalize",
+                }}
+              />
+              <Tab
+                value="two"
+                label={<FormattedMessage {...messages.stepTwoTitle} />}
+                sx={{ textTransform: "capitalize" }}
+              />
+            </Tabs>
+            <TabPanel sx={{ px: 0 }} value="one">
+              <GeneralInfo
+              // handleChange={handleChange}
+              // handleBlur={handleBlur}
+              // errors={errors}
+              // values={values}
+              // touched={touched}
+              // setFieldValue={setFieldValue}
+              // disable={false}
+              />
+            </TabPanel>
+            <TabPanel sx={{ px: 0 }} value="two">
+              <BoxWrapper>
+                <ProfileTab
+                // handleChange={handleChange}
+                // handleBlur={handleBlur}
+                // errors={errors}
+                // values={values}
+                // touched={touched}
+                // setFieldValue={setFieldValue}
+                // disable={false}
                 />
-                <Tab
-                  value="two"
-                  label={<FormattedMessage {...messages.stepTwoTitle} />}
-                  sx={{ textTransform: "capitalize" }}
-                />
-              </Tabs>
-              <TabPanel sx={{ px: 0 }} value="one">
-                <GeneralInfo
-                  // handleChange={handleChange}
-                  // handleBlur={handleBlur}
-                  // errors={errors}
-                  // values={values}
-                  // touched={touched}
-                  // setFieldValue={setFieldValue}
-                  // disable={false}
-                />
-              </TabPanel>
-              <TabPanel sx={{ px: 0 }} value="two">
-                <BoxWrapper>
-                  <StepTwo
-                    // handleChange={handleChange}
-                    // handleBlur={handleBlur}
-                    // errors={errors}
-                    // values={values}
-                    // touched={touched}
-                    // setFieldValue={setFieldValue}
-                    // disable={false}
-                  />
-                </BoxWrapper>
-              </TabPanel>
-            </TabContext>
-            <Box
+              </BoxWrapper>
+            </TabPanel>
+          </TabContext>
+          {/* <Box
               sx={{
                 boxShadow: (theme) => theme.shadow.boxShadow,
                 display: "flex",
@@ -216,7 +217,7 @@ const ProfileScreen = () => {
               >
                 <FormattedMessage {...messages.cancel} />
               </ButtonWrapper>
-            </Box>
+            </Box> */}
           {/* </form> */}
         </Box>
       </PageLayout>
