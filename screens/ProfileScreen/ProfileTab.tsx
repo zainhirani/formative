@@ -1,9 +1,5 @@
 import {
   Box,
-  Button,
-  ButtonGroup,
-  Card,
-  CardContent,
   Checkbox,
   FormControlLabel,
   FormControlLabelProps,
@@ -11,29 +7,24 @@ import {
   Grid,
   InputAdornment,
   MenuItem,
-  OutlinedInput,
   Radio,
   RadioGroup,
   Select,
-  SelectChangeEvent,
   TextField,
-  Typography,
   styled,
   useRadioGroup,
 } from "@mui/material";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import ArrowDropUpOutlinedIcon from "@mui/icons-material/ArrowDropUpOutlined";
-
-import {
-  CardHeaderWrapper,
-  IconButtonWrapper,
-  InputLabelWrapper,
-  LoadingButtonWrapper,
-} from "screens/RegisterScreen/Styled";
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import * as Yup from "yup";
-// import { RegisterProps } from "./formProps";
+import {
+  LoadingButtonWrapper,
+  CardHeaderWrapper,
+  IconButtonWrapper,
+  InputLabelWrapper,
+} from "./Styled";
 import {
   learnRadioGroup,
   radioChoice,
@@ -50,7 +41,7 @@ import { useProfile, useProfileDetail } from "providers/Users";
 import { useSnackbar } from "notistack";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
-import { ButtonWrapper } from "./Styled";
+import { BoxWrapper, ButtonWrapper } from "./Styled";
 
 interface StyledFormControlLabelProps extends FormControlLabelProps {
   checked: boolean;
@@ -92,16 +83,29 @@ const validationSchema = Yup.object().shape({
 });
 
 export const ProfileTab = ({}) => {
+  const profileDetail = useProfileDetail();
   const dobPlaceholder = useFormattedMessage(messages.dobPlaceholder);
   const pharmacyPlaceholder = useFormattedMessage(messages.pharmacyPlaceholder);
   const passwordPlaceholder = useFormattedMessage(messages.passwordPlaceholder);
   const hobbiesPlaceholder = useFormattedMessage(messages.hobbiesPlaceholder);
   const [math, setMath] = useState("Select an option for the list");
-  const [experience, setExperience] = useState(0);
+  const [experience, setExperience] = useState(
+    profileDetail.data?.experience || 0,
+  );
   const profile = useProfile();
-  const profileDetail = useProfileDetail();
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
+
+  function formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.getMonth() + 1; // Month starts from 0, so we add 1
+    const year = date.getFullYear();
+
+    return `${year}-${month.toString().padStart(2, "0")}-${day
+      .toString()
+      .padStart(2, "0")}`;
+  }
 
   const increment = () => {
     if (experience < 50) {
@@ -129,6 +133,7 @@ export const ProfileTab = ({}) => {
           variant: "success",
         },
       );
+      router.push("/dashboard");
     }
   }, [profile.isSuccess]);
 
@@ -140,7 +145,6 @@ export const ProfileTab = ({}) => {
       });
     }
   }, [profile.isError]);
-  console.log(profileDetail, "profileDetail");
 
   const onSubmit = useCallback((data: any) => {
     profile.mutate({
@@ -168,16 +172,21 @@ export const ProfileTab = ({}) => {
     setFieldValue,
   } = useFormik({
     initialValues: {
-      dob: profileDetail.data?.date_of_birth || "",
+      dob: formatDate(profileDetail.data?.date_of_birth || "") || "",
       pharmacy: profileDetail.data?.experience || "",
-      partTime: profileDetail.data?.working_part_time || false,
-      bioChemistry: profileDetail.data?.taken_biochemistry || false,
+      partTime:
+        (profileDetail.data?.working_part_time === true ? "Yes" : "No") ||
+        false,
+      bioChemistry:
+        (profileDetail.data?.taken_biochemistry === true ? "Yes" : "No") ||
+        false,
       maths: profileDetail.data?.math_skills || "",
       learn: profileDetail.data?.concept || "",
       sequence: profileDetail.data?.learning_sequence || "",
       study: profileDetail.data?.study_prefer || "",
       played: profileDetail.data?.athlete || "",
-      volunteer: profileDetail.data?.volunteer || false,
+      volunteer:
+        (profileDetail.data?.volunteer === true ? "Yes" : "No") || false,
       hobbies: profileDetail.data?.hobbies || "",
       currentPassword: "",
     },
@@ -189,7 +198,7 @@ export const ProfileTab = ({}) => {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <CardContent>
+        <BoxWrapper>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
               <InputLabelWrapper htmlFor="dob">
@@ -223,7 +232,7 @@ export const ProfileTab = ({}) => {
                 placeholder={pharmacyPlaceholder}
                 fullWidth
                 type="number"
-                value={experience}
+                value={values.pharmacy}
                 onBlur={handleBlur}
                 onChange={handleChange}
                 error={Boolean(touched.pharmacy && errors.pharmacy)}
@@ -269,6 +278,7 @@ export const ProfileTab = ({}) => {
                     setFieldValue("partTime", e.target.value);
                   }
                 }}
+                value={values.partTime}
                 name="radio-buttons-group"
                 row
                 id="partTime"
@@ -316,6 +326,7 @@ export const ProfileTab = ({}) => {
                     setFieldValue("bioChemistry", e.target.value);
                   }
                 }}
+                value={values.bioChemistry}
                 name="radio-buttons-group"
                 row
                 id="bioChemistry"
@@ -360,7 +371,7 @@ export const ProfileTab = ({}) => {
               <Select
                 labelId="demo-simple-select-standard-label"
                 id="demo-simple-select-standard"
-                value={math}
+                value={values.maths}
                 IconComponent={KeyboardArrowDownIcon}
                 onChange={(e) => {
                   if (setFieldValue) {
@@ -401,6 +412,7 @@ export const ProfileTab = ({}) => {
                     setFieldValue("learn", e.target.value);
                   }
                 }}
+                value={values.learn}
                 name="radio-buttons-group"
                 row
               >
@@ -444,6 +456,7 @@ export const ProfileTab = ({}) => {
                     setFieldValue("sequence", e.target.value);
                   }
                 }}
+                value={values.sequence}
                 name="radio-buttons-group"
                 row
               >
@@ -487,6 +500,7 @@ export const ProfileTab = ({}) => {
                     setFieldValue("study", e.target.value);
                   }
                 }}
+                value={values.study}
                 name="radio-buttons-group"
                 row
               >
@@ -554,6 +568,8 @@ export const ProfileTab = ({}) => {
                           setFieldValue("played", e.target.value);
                         }
                       }}
+                      checked={values.played === play.name}
+                      // value={values.played}
                     />
                   }
                   label={play.name}
@@ -583,6 +599,7 @@ export const ProfileTab = ({}) => {
                     setFieldValue("volunteer", e.target.value);
                   }
                 }}
+                value={values.volunteer}
                 name="radio-buttons-group"
                 row
               >
@@ -644,51 +661,7 @@ export const ProfileTab = ({}) => {
               )}
             </Grid>
           </Grid>
-        </CardContent>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: { md: "row", xs: "column" },
-          }}
-        >
-          <Box
-            sx={{
-              width: { md: "75%", xs: "100%", xl: "65%" },
-              display: "flex",
-              mt: "10px",
-              justifyContent: { xs: "center", md: "end" },
-            }}
-          >
-            <LoadingButtonWrapper
-              variant="contained"
-              type="submit"
-              disabled={
-                (values.dob &&
-                  values.pharmacy &&
-                  values.partTime &&
-                  values.bioChemistry &&
-                  values.maths &&
-                  values.learn &&
-                  values.sequence &&
-                  values.study &&
-                  values.played &&
-                  values.volunteer &&
-                  values.hobbies) === ""
-              }
-              loading={profile.isLoading}
-              loadingPosition="start"
-              sx={{
-                width: { xs: "100%", md: "500px" },
-                ".MuiLoadingButton-loadingIndicator": {
-                  top: "35%",
-                  left: "35%",
-                },
-              }}
-            >
-              <FormattedMessage {...messages.profile} />
-            </LoadingButtonWrapper>
-          </Box>
-        </Box>
+        </BoxWrapper>
         <Box
           sx={{
             boxShadow: (theme) => theme.shadow.boxShadow,
@@ -733,14 +706,22 @@ export const ProfileTab = ({}) => {
               {errors.currentPassword}
             </FormHelperText>
           )}
-          <ButtonWrapper
+          <LoadingButtonWrapper
             startIcon={<ArrowCircleRightOutlinedIcon />}
             variant="contained"
             type="submit"
-            sx={{ background: (theme) => theme.palette.secondary.main }}
+            loading={profile.isLoading}
+            loadingPosition="start"
+            sx={{
+              width: { xs: "100%", md: "max-content" },
+              ".MuiLoadingButton-loadingIndicator": {
+                top: "35%",
+                left: "30%",
+              },
+            }}
           >
             <FormattedMessage {...messages.submit} />
-          </ButtonWrapper>
+          </LoadingButtonWrapper>
           <ButtonWrapper
             sx={{
               borderTopRightRadius: (theme) => theme.borderRadius.radius1,
@@ -748,6 +729,7 @@ export const ProfileTab = ({}) => {
             }}
             startIcon={<HighlightOffIcon />}
             variant="contained"
+            onClick={()=>router.push("/dashboard")}
           >
             <FormattedMessage {...messages.cancel} />
           </ButtonWrapper>

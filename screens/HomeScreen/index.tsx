@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import dynamic from 'next/dynamic'
+import dynamic from "next/dynamic";
 import { Box, Button } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import FormattedMessage from "theme/FormattedMessage";
@@ -8,15 +8,14 @@ import { BoxWrapper } from "./Styled";
 import Loader from "components/Loader";
 import { useAuthContext } from "contexts/AuthContext";
 
-
- const PageLayout = dynamic(() => import("components/PageLayout"), {
-      ssr: false,
-      loading: () => <Loader />,
-  });
+const PageLayout = dynamic(() => import("components/PageLayout"), {
+  ssr: false,
+  loading: () => <Loader />,
+});
 const HomeScreen: React.FC = () => {
   const signOut = useAuthContext();
   const router = useRouter();
- 
+
   return (
     <>
       <PageLayout>
@@ -29,6 +28,8 @@ const HomeScreen: React.FC = () => {
               <Button
                 onClick={() => {
                   signOut;
+                  router.push("/login");
+                  localStorage.clear();
                 }}
               >
                 Logout

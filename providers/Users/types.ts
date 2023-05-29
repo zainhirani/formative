@@ -1,7 +1,7 @@
 export namespace Profile {
   export type Fields = {
     date_of_birth: string;
-    experience: number | string;
+    experience: number;
     working_part_time: boolean;
     athlete: string;
     concept: string;
@@ -21,7 +21,7 @@ export namespace Profile {
   };
   export type CreateMutationPayload = {
     date_of_birth: string;
-    experience: number | string;
+    experience: number;
     working_part_time: boolean;
     athlete: string;
     concept: string;

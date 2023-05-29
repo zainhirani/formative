@@ -42,13 +42,11 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
     }
     if (
       (session?.user || localStorage.getItem(TOKEN)) &&
-      (router.pathname.includes("/login") || router.pathname.includes("/"))
+      (router.pathname.includes("/login") ||
+        router.pathname.includes("/register"))
     ) {
       router.replace("/");
       return null;
-    }
-    if (session?.user && router.pathname.includes("/register")) {
-      router.replace("/register");
     }
   }, []);
 
@@ -68,7 +66,13 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
       setAuthenticationHeader(getToken);
     }
   }
+  if (router.pathname.includes("register")) {
+    setInterval(() => {
+      getTokenFunction();
+    }, 3000);
+  }
   getTokenFunction();
+
   if (currToken && prevToken !== `Bearer ${currToken}`) {
   }
 

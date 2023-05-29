@@ -1,25 +1,21 @@
 import {
   Box,
-  CardContent,
   FormHelperText,
   Grid,
   IconButton,
   InputAdornment,
   MenuItem,
-  OutlinedInput,
   Select,
   TextField,
   Typography,
 } from "@mui/material";
-import { IconButtonWrapper } from "screens/RegisterScreen/Styled";
-
 import {
   CardHeaderWrapper,
   InputLabelWrapper,
-} from "screens/RegisterScreen/Styled";
+  IconButtonWrapper,
+  LoadingButtonWrapper,
+} from "./Styled";
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
-
-import { RegisterProps } from "../RegisterScreen/fields/formProps";
 import { genderSelect, programSelect } from "../RegisterScreen/fields/data";
 import messages from "./messages";
 import { useState, useEffect, useCallback } from "react";
@@ -30,15 +26,11 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { BoxWrapper, ButtonWrapper } from "./Styled";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import {
-  useRegister,
-  useRegisterDetail,
-  useRegisterUpdate,
-} from "providers/Auth";
+import { useRegisterDetail, useRegisterUpdate } from "providers/Auth";
 import { useSnackbar } from "notistack";
-import { TOKEN } from "configs";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
+import { useRouter } from "next/router";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required().label("FirstName"),
@@ -83,6 +75,7 @@ export const GeneralInfo = () => {
   const [year, setYear] = useState(
     registerDetail.data?.year_of_graduation || 2000,
   );
+  const router = useRouter();
 
   useEffect(() => {
     if (registerUpdate.isSuccess) {
@@ -587,14 +580,25 @@ export const GeneralInfo = () => {
               {errors.currentPassword}
             </FormHelperText>
           )}
-          <ButtonWrapper
+          <LoadingButtonWrapper
             startIcon={<ArrowCircleRightOutlinedIcon />}
             variant="contained"
             type="submit"
-            sx={{ background: (theme) => theme.palette.secondary.main }}
+            loading={registerUpdate.isLoading}
+            loadingPosition="start"
+            sx={{
+              background: (theme) => theme.palette.secondary.main,
+              width: { xs: "100%", md: "max-content" },
+              display: "flex",
+              borderRadius: "none",
+              ".MuiLoadingButton-loadingIndicator": {
+                top: "35%",
+                left: "30%",
+              },
+            }}
           >
             <FormattedMessage {...messages.submit} />
-          </ButtonWrapper>
+          </LoadingButtonWrapper>
           <ButtonWrapper
             sx={{
               borderTopRightRadius: (theme) => theme.borderRadius.radius1,
@@ -602,6 +606,7 @@ export const GeneralInfo = () => {
             }}
             startIcon={<HighlightOffIcon />}
             variant="contained"
+            onClick={() => router.push("/dashboard")}
           >
             <FormattedMessage {...messages.cancel} />
           </ButtonWrapper>
