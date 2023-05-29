@@ -21,7 +21,7 @@ const columns: GridColDef[] = [
     headerName: 'Quiz No. sort',
     minWidth: 180,
     flex: 1,
-    renderCell: (params) => {
+    renderCell: (params: any) => {
       const num = params.formattedValue;
       return (
         <Grid container spacing={3} alignItems="center">
@@ -65,7 +65,7 @@ const columns: GridColDef[] = [
     headerName: 'Status',
      minWidth: 150,
     flex: 1,
-    renderCell: (params) => {
+    renderCell: (params: any ) => {
       const status = params.formattedValue;
       return (
         <Grid container spacing={3} alignItems="center">
@@ -114,7 +114,7 @@ const columns: GridColDef[] = [
     headerName: 'Quick Actions',
     width: 200,
     headerClassName: 'super-app-theme--header',
-    renderCell: (params) => {
+    renderCell: (params: any) => {
       return (
         <Grid container spacing={3}>
           <Grid item xs>
