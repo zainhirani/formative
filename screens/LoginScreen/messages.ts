@@ -24,7 +24,7 @@ export default defineMessages({
   },
   userLabel: {
     id: `${scope}.userLabel`,
-    defaultMessage: "User Name",
+    defaultMessage: "Email",
   },
   passwordLabel: {
     id: `${scope}.passwordLabel`,

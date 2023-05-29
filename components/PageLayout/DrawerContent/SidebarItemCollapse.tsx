@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import {
   Collapse,
@@ -8,12 +9,21 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
+import Link from "next/link";
 
 export const SidebarItemCollapse = ({ item }: any) => {
+  console.log(
+    "🚀 ~ file: SidebarItemCollapse.tsx:14 ~ SidebarItemCollapse ~ item:",
+    item,
+  );
   const [itemName, setItemName] = useState({
     toggle: false,
     title: "",
   });
+  const router = useRouter();
+  const isActiveRoute = (route: string) => {
+    return router.pathname === route;
+  };
 
   return (
     <ListItem
@@ -29,10 +39,18 @@ export const SidebarItemCollapse = ({ item }: any) => {
       sx={{
         background:
           itemName?.title === item.title && itemName.toggle ? "#68151E" : "",
+        "&:hover": {
+          background: "#68151E",
+        },
       }}
     >
       {/* <Link href={item.link} key={item.title} passHref={true}> */}
-      <ListItemButton sx={{ flexWrap: "wrap" }}>
+      <ListItemButton
+        sx={{
+          flexWrap: "wrap",
+          backgroundColor: isActiveRoute(item.link) ? "#68151E" : "initial",
+        }}
+      >
         <ListItemIcon
           sx={{
             color: (theme) => theme.palette.primary.light,

@@ -79,9 +79,13 @@ const LoginScreen: React.FC = () => {
         <Box
           sx={{
             background: (theme) => theme.palette.primary.light,
-            padding: { md: "40px 40px 20px", xs: "20px 20px 20px 10px" },
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            padding: { md: "0px 40px", xs: "20px 20px 20px 10px" },
             width: { md: "52%", xs: "100%" },
             height: { md: "inherit", xs: "max-content" },
+
             boxShadow: (theme) => theme.shadow.boxShadow,
             borderEndEndRadius: (theme) => theme.borderRadius.radius1,
             borderStartEndRadius: (theme) => theme.borderRadius.radius1,

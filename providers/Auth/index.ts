@@ -1,3 +1,5 @@
+//Register API Integration
+
 import {
   UseMutationResult,
   UseQueryResult,
@@ -6,7 +8,7 @@ import {
   useQueryClient,
 } from "react-query";
 import * as api from "./api";
-import { Register } from "./types";
+import { Register, Profile } from "./types";
 
 const KEY = "Register";
 
@@ -49,4 +51,43 @@ export function useRegister(
     },
     retry: 0,
   });
+}
+
+// Detail
+export function useRegisterDetail(
+  props: Register.DetailProps,
+): UseQueryResult<Register.DetailResponse> {
+  return useQuery(getKeyFromProps(props, "DETAIL"), () => api.detail(props));
+}
+
+//Profile API Integration
+
+//Create
+export function useProfile(props: Profile.CreateProps = {}): UseMutationResult<
+  Profile.CreateResponse,
+  {
+    message?: string;
+  },
+  Profile.CreateMutationPayload
+> {
+  const queryClient = useQueryClient();
+  return useMutation(
+    (payload) => api.createProfile({ ...props, data: payload }),
+    {
+      mutationKey: `${KEY}|Create`,
+      onSuccess: () => {
+        queryClient.invalidateQueries(getKeyFromProps(props, "LISTING"));
+      },
+      retry: 0,
+    },
+  );
+}
+
+// Detail
+export function useProfileDetail(
+  props: Profile.DetailProps,
+): UseQueryResult<Profile.DetailResponse> {
+  return useQuery(getKeyFromProps(props, "DETAIL"), () =>
+    api.detailProfile(props),
+  );
 }
