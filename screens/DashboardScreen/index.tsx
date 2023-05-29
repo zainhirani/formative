@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
@@ -8,6 +8,7 @@ import DataTable from "components/DataTable";
 import FormattedMessage from "theme/FormattedMessage";
 import { QUIZ, COURSES, STUDENTS, QUESTIONS } from "configs";
 import messages from "./messages";
+import SideDrawer from "components/Drawer";
 
 const boxContent = [
   {
@@ -157,10 +158,30 @@ const DashboardScreen = () => {
     },
   ];
 
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const handleDrawerOpen = () => {
+    setDrawerOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setDrawerOpen(false);
+  };
+
   return (
     <PageLayout title={"Dashboard"}>
       <Box sx={{ flexGrow: 1 }}>
-        <DataTable data={collegesData} config={config} />
+        {/* <DataTable data={collegesData} config={config} /> */}
+
+        <div>
+          <button onClick={handleDrawerOpen}>Open Drawer</button>
+          <SideDrawer open={drawerOpen} onClose={handleDrawerClose}>
+            {/* Your content goes here */}
+            <h1>Drawer Content</h1>
+            <p>This is the content of the drawer.</p>
+          </SideDrawer>
+        </div>
+
         <Box>
           <Typography
             gutterBottom

@@ -103,7 +103,7 @@ const ProfileScreen = () => {
     <>
       <PageLayout title="Profile" icon={<HelpRoundedIcon />}>
         <Box>
-          <form>
+          {/* <form> */}
             <TabContext value={value}>
               <Tabs
                 value={value}
@@ -129,25 +129,25 @@ const ProfileScreen = () => {
               </Tabs>
               <TabPanel sx={{ px: 0 }} value="one">
                 <GeneralInfo
-                  handleChange={handleChange}
-                  handleBlur={handleBlur}
-                  errors={errors}
-                  values={values}
-                  touched={touched}
-                  setFieldValue={setFieldValue}
-                  disable={false}
+                  // handleChange={handleChange}
+                  // handleBlur={handleBlur}
+                  // errors={errors}
+                  // values={values}
+                  // touched={touched}
+                  // setFieldValue={setFieldValue}
+                  // disable={false}
                 />
               </TabPanel>
               <TabPanel sx={{ px: 0 }} value="two">
                 <BoxWrapper>
                   <StepTwo
-                    handleChange={handleChange}
-                    handleBlur={handleBlur}
-                    errors={errors}
-                    values={values}
-                    touched={touched}
-                    setFieldValue={setFieldValue}
-                    disable={false}
+                    // handleChange={handleChange}
+                    // handleBlur={handleBlur}
+                    // errors={errors}
+                    // values={values}
+                    // touched={touched}
+                    // setFieldValue={setFieldValue}
+                    // disable={false}
                   />
                 </BoxWrapper>
               </TabPanel>
@@ -217,7 +217,7 @@ const ProfileScreen = () => {
                 <FormattedMessage {...messages.cancel} />
               </ButtonWrapper>
             </Box>
-          </form>
+          {/* </form> */}
         </Box>
       </PageLayout>
     </>

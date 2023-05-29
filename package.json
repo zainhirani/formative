@@ -6,7 +6,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "type-check": "",
+    "type-check": "tsc --noEmit --pretty",
     "prepare": "lefthook install"
   },
   "dependencies": {
@@ -44,6 +44,7 @@
     "react-intl": "^5.23.0",
     "react-lazyload": "^3.2.0",
     "react-query": "^3.34.2",
+    "react-select": "^5.7.3",
     "react-window": "^1.8.6",
     "uuid": "^8.3.2",
     "yup": "^0.32.11"

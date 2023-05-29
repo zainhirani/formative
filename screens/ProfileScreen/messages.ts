@@ -179,4 +179,9 @@ export default defineMessages({
     id: `${scope}.hobbiesPlaceholder`,
     defaultMessage: "Enter your hobbies",
   },
+
+  successMessage: {
+    id: `${scope}.successMessage`,
+    defaultMessage: "General Information Updated Successfully!",
+  },
 });

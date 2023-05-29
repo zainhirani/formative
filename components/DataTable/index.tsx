@@ -50,13 +50,9 @@ const DataTable: React.FC<DataTableProps> = ({ config = [], data = [] }) => {
                 <TableCell
                   key={index}
                   align="center"
-                  onClick={(evt) => configItem.onCellClick?.(evt) || null}
+                  onClick={(evt) => configItem.onCellClick?.(evt)}
                 >
-                  <div
-                    onClick={() =>
-                      configItem.handleClick(dataSourceItem) || null
-                    }
-                  >
+                  <div onClick={() => configItem.handleClick(dataSourceItem)}>
                     {configItem.render(dataSourceItem)}
                   </div>
                 </TableCell>
