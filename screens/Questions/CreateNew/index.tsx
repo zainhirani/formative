@@ -8,7 +8,7 @@ import FormattedMessage from "theme/FormattedMessage";
 import addImage from "./addImage";
 
 import messages from "./messages";
-import Editor from './Editor'
+import Editor from "./Editor";
 
 const CreateNewScreen = () => {
   return (
@@ -163,9 +163,7 @@ const CreateNewScreen = () => {
             <Box>
               <Editor />
             </Box>
-            <Box>
-              {/* <addImage /> */}
-            </Box>
+            <Box>{/* <addImage /> */}</Box>
             <Box>3</Box>
           </Box>
         </Box>

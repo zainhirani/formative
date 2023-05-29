@@ -14,7 +14,7 @@ export const Editor = () => {
       <ReactQuill
         theme="snow"
         value={state.value}
-        onChange={handleChange}
+        // onChange={handleChange}
         placeholder={"Start typing your question detail here ..."}
         modules={modules}
         formats={formats}
