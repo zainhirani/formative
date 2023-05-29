@@ -8,7 +8,7 @@ export const DrawerWrapper = styled(Drawer)<DrawerProps>(
   ({ theme }) =>
     ({
       // width: isMobile ? "100%" : drawerWidth,
-      width:drawerWidth,
+      width: drawerWidth,
       flexShrink: 0,
       "& .MuiDrawer-paper": {
         width: drawerWidth,
