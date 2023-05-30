@@ -35,22 +35,20 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
   const router = useRouter();
   const ref = useRef();
 
-  // useEffect(() => {
-  //   if (!session?.user && !localStorage.getItem(TOKEN)) {
-  //     router.replace(AUTHENTICATION_PATH[0]!);
-  //     return null;
-  //   }
-  //   if (
-  //     (session?.user || localStorage.getItem(TOKEN)) &&
-  //     (router.pathname.includes("/login") || router.pathname.includes("/"))
-  //   ) {
-  //     router.replace("/");
-  //     return null;
-  //   }
-  //   if (session?.user && router.pathname.includes("/register")) {
-  //     router.replace("/register");
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (!session?.user && !localStorage.getItem(TOKEN)) {
+      router.replace(AUTHENTICATION_PATH[0]!);
+      return null;
+    }
+    if (
+      (session?.user || localStorage.getItem(TOKEN)) &&
+      (router.pathname.includes("/login") ||
+        router.pathname.includes("/register"))
+    ) {
+      router.replace("/");
+      return null;
+    }
+  }, []);
 
   const signOut = useCallback(async () => {
     logout({ callbackUrl: "/login" });
@@ -68,7 +66,13 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
       setAuthenticationHeader(getToken);
     }
   }
+  if (router.pathname.includes("register")) {
+    setInterval(() => {
+      getTokenFunction();
+    }, 3000);
+  }
   getTokenFunction();
+
   if (currToken && prevToken !== `Bearer ${currToken}`) {
   }
 

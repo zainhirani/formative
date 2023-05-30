@@ -8,13 +8,13 @@ import {
   useQueryClient,
 } from "react-query";
 import * as api from "./api";
-import { Register, Profile } from "./types";
+import { Register } from "./types";
 
 const KEY = "Register";
 
 export function getKeyFromProps(
   props: any,
-  type: "LISTING" | "DETAIL",
+  type: "LISTING" | "DETAIL" | "test",
 ): string[] {
   const key = [KEY, type];
   key.push(props);
@@ -33,7 +33,7 @@ export function getFormProviderKey(
   throw new Error("Function not implemented.");
 }
 
-//Create
+//user Create
 export function useRegister(
   props: Register.CreateProps = {},
 ): UseMutationResult<
@@ -53,26 +53,19 @@ export function useRegister(
   });
 }
 
-// Detail
-export function useRegisterDetail(
-  props: Register.DetailProps,
-): UseQueryResult<Register.DetailResponse> {
-  return useQuery(getKeyFromProps(props, "DETAIL"), () => api.detail(props));
-}
-
-//Profile API Integration
-
-//Create
-export function useProfile(props: Profile.CreateProps = {}): UseMutationResult<
-  Profile.CreateResponse,
+// user update
+export function useRegisterUpdate(
+  props: Register.CreateProps = {},
+): UseMutationResult<
+  Register.CreateResponse,
   {
     message?: string;
   },
-  Profile.CreateMutationPayload
+  Register.CreateMutationPayload
 > {
   const queryClient = useQueryClient();
   return useMutation(
-    (payload) => api.createProfile({ ...props, data: payload }),
+    (payload) => api.registerUpdate({ ...props, data: payload }),
     {
       mutationKey: `${KEY}|Create`,
       onSuccess: () => {
@@ -83,11 +76,9 @@ export function useProfile(props: Profile.CreateProps = {}): UseMutationResult<
   );
 }
 
-// Detail
-export function useProfileDetail(
-  props: Profile.DetailProps,
-): UseQueryResult<Profile.DetailResponse> {
-  return useQuery(getKeyFromProps(props, "DETAIL"), () =>
-    api.detailProfile(props),
-  );
+// user Detail
+export function useRegisterDetail(
+  props?: Register.DetailAPIPayload,
+): UseQueryResult<Register.DetailResponse> {
+  return useQuery(getKeyFromProps(props, "DETAIL"), () => api.detail(props));
 }
