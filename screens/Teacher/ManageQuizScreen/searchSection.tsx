@@ -23,10 +23,17 @@ import {
   selectFolderOption,
   selectStatusOption,
 } from "./data";
+import AutoComplete from "components/AutoComplete";
 // import AutoComplete from "components/AutoComplete";
 
 const SearchSection = () => {
   const searchQuiz = useFormattedMessage(messages.searchQuiz);
+
+  const options = [
+    { value: "chocolate", label: "Chocolate" },
+    { value: "strawberry", label: "Strawberry" },
+    { value: "vanilla", label: "Vanilla" },
+  ];
   return (
     <BoxWrapper display="grid" gridTemplateColumns="repeat(12, 1fr)">
       <Box gridColumn="span 3">
@@ -46,6 +53,7 @@ const SearchSection = () => {
         />
       </Box>
       <Box gridColumn="span 2">
+        {/* <AutoComplete  /> */}
         <FormControl fullWidth>
           <InputLabel
             shrink={false}

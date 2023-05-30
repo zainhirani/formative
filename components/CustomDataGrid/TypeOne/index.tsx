@@ -1,27 +1,21 @@
 import React, { useState } from "react";
-import { Pagination, Grid } from "@mui/material";
-import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-import { BoxPaginate } from "./Styled";
+import { Box, Grid, Pagination } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
+import { BoxPaginate, ButtonWrapper, ShowingBox } from "./Styled";
+import { ButtonConfig, TableColumn, TableRow } from "../type";
 
-interface TableRow {
-  id: number;
-  [key: string]: string | number;
-}
-
-interface TableColumn extends Omit<GridColDef, "renderCell"> {
-  renderCell?: (params: GridRenderCellParams) => React.ReactNode;
-}
-
-interface DataGridWithPaginationProps {
+interface TypeOneProps {
   pageSizeData: number;
   rows: TableRow[];
   columns: TableColumn[];
+  buttonArray?: ButtonConfig[];
 }
 
-const DataGridWithPagination: React.FC<DataGridWithPaginationProps> = ({
+const TypeOne: React.FC<TypeOneProps> = ({
   pageSizeData,
   rows,
   columns,
+  buttonArray,
 }) => {
   const [page, setPage] = useState(1);
 
@@ -72,7 +66,21 @@ const DataGridWithPagination: React.FC<DataGridWithPaginationProps> = ({
             />
           </Grid>
           <Grid item xs={6} className="showing-text">
-            Showing {paginatedRows.length} of {rows.length}
+            <ShowingBox>
+              Showing {paginatedRows.length} of {rows.length}
+            </ShowingBox>
+            {buttonArray?.map((button) => {
+              return (
+                <ButtonWrapper
+                  key={button?.key}
+                  onClick={button?.onClick}
+                  startIcon={button?.startIcon}
+                  className={`print_arrow_btn ${button?.customClass}`}
+                >
+                  {button?.render()}
+                </ButtonWrapper>
+              );
+            })}
           </Grid>
         </BoxPaginate>
       </Grid>
@@ -80,4 +88,4 @@ const DataGridWithPagination: React.FC<DataGridWithPaginationProps> = ({
   );
 };
 
-export default DataGridWithPagination;
+export default TypeOne;
