@@ -70,12 +70,20 @@ export let getDesignTokens = (mode: PaletteMode) => {
             primaryTranslucent: "#0093e766",
             primaryBlack: "rgba(0, 0, 0, 1)",
             secondryBlack: "rgba(0, 0, 0, 0.12)",
+            primaryGreen: "#225A41",
+            primaryYellow: "#D88A00",
+            primaryBorderGrey: "#EAEAEA",
+            primary999999: "#999999",
           }
         : {
             lightGrey: "#9EC6D8",
             primaryTranslucent: "#0093e766",
             primaryBlack: "rgba(0, 0, 0, 1)",
             secondryBlack: "rgba(0, 0, 0, 0.12)",
+            primaryGreen: "#225A41",
+            primaryYellow: "#D88A00",
+            primaryBorderGrey: "#EAEAEA",
+            primary999999: "#999999",
           }),
     },
     borderRadius: {
@@ -214,6 +222,41 @@ export let getDesignTokens = (mode: PaletteMode) => {
             fontWeight: 400,
             [theme.breakpoints.down("md")]: {
               fontSize: "32px",
+            },
+          },
+        },
+      },
+      MuiDataGrid: {
+        styleOverrides: {
+          root: {    
+            borderRadius: "0px",
+            border:"none",
+            borderBottom: "1px solid #EAEAEA",
+            "& .MuiDataGrid-cell:focus-within, & .MuiDataGrid-colCell:focus-within,  & .MuiDataGrid-columnHeader:focus-within":
+              {
+                outline: 0,
+              },
+          },
+          columnHeader: {
+            color: theme.palette.primary.main,
+            padding: "0px 30px",
+          },          
+          headerCell: {
+            padding: "0px 30px",
+            background: "red",
+            fontWeight: "bold",
+          },
+          row: {
+            "&.Mui-focused": {
+              outline: "none",
+              boxShadow: "none",
+            },
+          },
+          cell: {
+            padding: "0px 30px",
+            "&.Mui-focused": {
+              outline: "none",
+              boxShadow: "none",
             },
           },
         },

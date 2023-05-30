@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
-import { WidthFull } from "@mui/icons-material";
+import { useRouter } from "next/router";
 import {
   Box,
   Collapse,
@@ -12,9 +12,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-import MenuIcon from "@mui/icons-material/Menu";
+import PowerSettingsNewOutlinedIcon from "@mui/icons-material/PowerSettingsNewOutlined";
 import { SITELOGO } from "configs";
 import Image from "theme/Image";
 import MenuData from "./navLinks";
@@ -27,6 +25,12 @@ interface BarComponentProps {
 }
 
 const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
+  const router = useRouter();
+
+  // Define a helper function to determine if a given route is active
+  const isActiveRoute = (route: string) => {
+    return router.pathname === route;
+  };
   return (
     <>
       <DrawerHeader>
@@ -60,12 +64,14 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
               key={item.title}
               disablePadding
               sx={{
-                "&:last-of-type": {
-                  position: "absolute",
-                  bottom: "30px",
-                },
+                backgroundColor: isActiveRoute(item.link)
+                  ? "#68151E"
+                  : "initial",
                 "&:nth-of-type(7)": {
-                  paddingBottom: "30px",
+                  marginBottom: "60px",
+                },
+                "&:hover": {
+                  background: "#68151E",
                 },
               }}
             >
@@ -102,7 +108,7 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
                     width: "82%",
                     position: "absolute",
                     left: "16px",
-                    bottom: "16px",
+                    bottom: "-30px",
                   }}
                 />
               ) : (
@@ -111,6 +117,35 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
             </ListItem>
           ),
         )}
+      </List>
+      <List>
+        <ListItem disablePadding>
+          <Link href="#" passHref={true}>
+            <ListItemButton>
+              <ListItemIcon
+                sx={{
+                  color: (theme) => theme.palette.primary.light,
+                  minWidth: "40px",
+                  "& .lazyload-wrapper": {
+                    display: "flex",
+                  },
+                }}
+              >
+                <PowerSettingsNewOutlinedIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary="Logout"
+                sx={{
+                  color: (theme) => theme.palette.primary.light,
+                  fontSize: "14px",
+                  "& span": {
+                    fontSize: "14px",
+                  },
+                }}
+              />
+            </ListItemButton>
+          </Link>
+        </ListItem>
       </List>
     </>
   );
