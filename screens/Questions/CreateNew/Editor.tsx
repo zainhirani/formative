@@ -1,7 +1,7 @@
 import React from "react";
-import ReactQuill from "react-quill";
-import { modules, formats, EditorToolbar } from "./EditorToolbar";
-import 'react-quill/dist/quill.snow.css'
+// import ReactQuill from "react-quill";
+// import { modules, formats, EditorToolbar } from "./EditorToolbar";
+import "react-quill/dist/quill.snow.css";
 
 export const Editor = () => {
   const [state, setState] = React.useState({ value: undefined });
@@ -10,7 +10,7 @@ export const Editor = () => {
   };
   return (
     <div className="text-editor">
-      <EditorToolbar />
+      {/* <EditorToolbar />
       <ReactQuill
         theme="snow"
         value={state.value}
@@ -18,7 +18,7 @@ export const Editor = () => {
         placeholder={"Start typing your question detail here ..."}
         modules={modules}
         formats={formats}
-      />
+      /> */}
     </div>
   );
 };

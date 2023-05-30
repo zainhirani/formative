@@ -1,8 +1,8 @@
 import React from "react";
-import TypeOne from "./TypeOne";
-import TypeTwo from "./TypeTwo";
 import { ButtonConfig, TableColumn, TableRow } from "./type";
+import TypeOne from "./TypeOne";
 import TypeThree from "./TypeThree";
+import TypeTwo from "./TypeTwo";
 
 interface CustomDataGridProps {
   pageSizeData: number;
