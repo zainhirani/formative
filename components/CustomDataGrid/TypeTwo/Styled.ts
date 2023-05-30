@@ -5,20 +5,17 @@ import { styled } from "@mui/material/styles";
 export const QuizDetailBox = styled(MuiBox)<BoxProps>(
   ({ theme }) =>
     ({
-      ".table_row_btn":{
-        textAlign:"right",
+      ".table_row_btn": {
+        textAlign: "right",
       },
-      ".print_arrow_btn":{
-        ".print_arrow":{
-          color: theme.palette.primary.main,            
-          
+      ".print_arrow_btn": {
+        ".print_arrow": {
+          color: theme.palette.primary.main,
         },
         "&:hover .print_arrow": {
           color: theme.palette.primary.light,
         },
-        
-      }
-      
+      },
     } as any),
 ) as (props: BoxProps) => JSX.Element;
 
@@ -41,7 +38,6 @@ export const ButtonWrapper = styled(Button)<ButtonProps>(
     } as any),
 ) as (props: ButtonProps) => JSX.Element;
 
-
 export const Showed = styled(MuiBox)<BoxProps>(
   ({ theme }) =>
     ({
@@ -50,41 +46,36 @@ export const Showed = styled(MuiBox)<BoxProps>(
       lineHeight: "16px",
       fontWeight: "600",
       display: "flex",
-      alignItems: 'center',
+      alignItems: "center",
       height: "100%",
       paddingLeft: "30px",
-
     } as any),
 ) as (props: BoxProps) => JSX.Element;
-
 
 export const TableBox = styled(MuiBox)<BoxProps>(
   ({ theme }) =>
     ({
-      ".table_row_btn":{
-        textAlign:"right",
+      ".table_row_btn": {
+        textAlign: "right",
       },
-      ".print_arrow_btn":{
+      ".print_arrow_btn": {
         padding: "5px 30px",
         marginTop: "-1px",
-        height: 'auto',
+        height: "auto",
         color: theme.palette.primary.main,
         background: "none",
         boxShadow: "none",
         border: "1px solid #EAEAEA",
         "&:hover": {
           background: theme.palette.primary.light,
-          color: theme.palette.primary.main,  
+          color: theme.palette.primary.main,
         },
-        ".print_arrow":{
-          color: theme.palette.primary.main,            
-          
+        ".print_arrow": {
+          color: theme.palette.primary.main,
         },
-      }
-      
+      },
     } as any),
 ) as (props: BoxProps) => JSX.Element;
-
 
 export const BoxWrapper = styled(MuiBox)<BoxProps>(
   ({ theme }) =>
@@ -99,13 +90,12 @@ export const BoxWrapper = styled(MuiBox)<BoxProps>(
     } as any),
 ) as (props: BoxProps) => JSX.Element;
 
-
 export const BoxMatrixDropDownWrapper = styled(MuiBox)<BoxProps>(
   ({ theme }) =>
     ({
       width: "100%",
       padding: "15px 20px",
-      borderBottom:" 1px solid",
+      borderBottom: " 1px solid",
       borderColor: theme?.additionalColors?.primaryBorderGrey,
     } as any),
 ) as (props: BoxProps) => JSX.Element;
@@ -115,10 +105,10 @@ export const BoxScoringWrapper = styled(MuiBox)<BoxProps>(
     ({
       width: "100%",
       padding: "0px 20px",
-      "& .customBorder":{
-        borderBottom:"1px solid",
+      "& .customBorder": {
+        borderBottom: "1px solid",
         borderColor: theme?.additionalColors?.primaryBorderGrey,
-      }
+      },
     } as any),
 ) as (props: BoxProps) => JSX.Element;
 
@@ -126,15 +116,15 @@ export const BoxMatrixWrapper = styled(MuiBox)<BoxProps>(
   ({ theme }) =>
     ({
       width: "100%",
-      display: 'flex',
-      alignItems: 'center',
+      display: "flex",
+      alignItems: "center",
       padding: "20px 0px",
-      "& .boxMatrix-b":{
+      "& .boxMatrix-b": {
         // borderRight:"1px solid",
         borderColor: theme?.additionalColors?.primaryBorderGrey,
-        "&:last-child":{
+        "&:last-child": {
           borderRight: "none",
-        }
+        },
       },
     } as any),
 ) as (props: BoxProps) => JSX.Element;
@@ -143,35 +133,31 @@ export const BoxMatrix = styled(MuiBox)<BoxProps>(
   ({ theme }) =>
     ({
       width: "100%",
-      display: 'flex',
-      alignItems: 'center',    
-      gap: '15px',
-      "& h2":{
+      display: "flex",
+      alignItems: "center",
+      gap: "15px",
+      "& h2": {
         fontWeight: "600",
         fontSize: "15px",
         lineHeight: "18px",
         color: theme.palette.primary.main,
       },
-      "& p":{
+      "& p": {
         fontSize: "14px",
         lineHeight: "16px",
         display: "flex",
         alignItems: "center",
-        gap: '40px',
-        color:theme.palette.text.secondary,
-        wordSpacing: "20px"
+        gap: "40px",
+        color: theme.palette.text.secondary,
+        wordSpacing: "20px",
       },
-      
     } as any),
 ) as (props: BoxProps) => JSX.Element;
-
 
 export const BoxButtonWrapper = styled(MuiBox)<BoxProps>(
   ({ theme }) =>
     ({
-      display: 'flex',
-      justifyContent: 'space-between'
+      display: "flex",
+      justifyContent: "space-between",
     } as any),
 ) as (props: BoxProps) => JSX.Element;
-
-
