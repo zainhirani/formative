@@ -46,7 +46,21 @@ export const InputLabelWrapper = styled(InputLabel)<InputLabelProps>(
   ({ theme }) =>
     ({
       color: theme.palette.text.secondary,
-      fontSize: "14px",
+      fontSize: "16px",
       width: "40%",
     } as any),
 ) as (props: InputLabelProps) => JSX.Element;
+
+export const SelectWrapper = styled(Select)<SelectProps>(
+  ({ theme }) =>
+    ({
+      ".MuiInputBase-root": {
+        "&::before": {
+          display: "none",
+        },
+        "&::after": {
+          display: "none",
+        },
+      },
+    } as any),
+) as (props: SelectProps) => JSX.Element;

@@ -101,4 +101,20 @@ export default defineMessages({
     id: `${scope}.addImageText`,
     defaultMessage: `No image attached. Click on "Add" to add image`,
   },
+  optionPlaceholder: {
+    id: `${scope}.optionPlaceholder`,
+    defaultMessage: `Type your details here`,
+  },
+  correctCheck: {
+    id: `${scope}.correctCheck`,
+    defaultMessage: `Correct`,
+  },
+  lockCheck: {
+    id: `${scope}.lockCheck`,
+    defaultMessage: `Lock`,
+  },
+  deleteButton: {
+    id: `${scope}.deleteButton`,
+    defaultMessage: `Delete`,
+  },
 });

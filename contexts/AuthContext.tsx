@@ -35,11 +35,6 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
   const router = useRouter();
   const ref = useRef();
 
-  // useEffect(() => {
-  //   if (!session?.user && !localStorage.getItem(TOKEN)) {
-  //     router.replace(AUTHENTICATION_PATH[0]!);
-  //     return null;
-  //   }
   //   if (
   //     (session?.user || localStorage.getItem(TOKEN)) &&
   //     (router.pathname.includes("/login") || router.pathname.includes("/"))
