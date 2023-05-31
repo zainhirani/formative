@@ -1,41 +1,40 @@
-import { styled } from "@mui/material/styles";
 import MuiBox, { BoxProps } from "@mui/material/Box";
+import { styled } from "@mui/material/styles";
 
 export const SelectBoxWrapper = styled(MuiBox)<BoxProps>(
-({ theme }) =>
+  ({ theme }) =>
     ({
-        color:theme.palette.text.secondary
+      color: theme.palette.text.secondary,
     } as any),
 ) as (props: BoxProps) => JSX.Element;
 
-    
 export const SelectPlaceholderWrapper = styled(MuiBox)<BoxProps>(
-({ theme }) =>
+  ({ theme }) =>
     ({
-        color:theme.palette.text.secondary,
-        height: '100%',
+      color: theme.palette.text.secondary,
+      height: "100%",
     } as any),
 ) as (props: BoxProps) => JSX.Element;
 
 export const BoxWrapper = styled(MuiBox)<BoxProps>(
-({ theme }) =>
+  ({ theme }) =>
     ({
-    display: "flex",
-    alignItems: 'center',
-    height: '100%',
-    "&.react-select__dropdown-indicator svg ":{
-        opacity: "1 !important"
-    },
-    "& .custom-select": {
-        width: '100%',
-        height: '100%',
+      display: "flex",
+      alignItems: "center",
+      height: "100%",
+      "&.react-select__dropdown-indicator svg ": {
+        opacity: "1 !important",
+      },
+      "& .custom-select": {
+        width: "100%",
+        height: "100%",
         color: "black",
         placeholder: {
-            color: 'red',
-          },
-        '& svg':{
-            color: theme.palette.text.secondary
+          color: "red",
         },
-    },
+        "& svg": {
+          color: theme.palette.text.secondary,
+        },
+      },
     } as any),
 ) as (props: BoxProps) => JSX.Element;
