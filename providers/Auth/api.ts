@@ -1,9 +1,9 @@
 //Register API Integration
 
 import service from "services";
-import { Register, Profile } from "./types";
+import { Register } from "./types";
 
-// Create
+// signup Create
 export async function create(
   props: Register.CreateAPIPayload,
 ): Promise<Register.CreateResponse> {
@@ -14,9 +14,9 @@ export async function create(
   });
 }
 
-// Detail
+// user Detail
 export async function detail(
-  props: Register.DetailAPIPayload,
+  props?: Register.DetailAPIPayload,
 ): Promise<Register.DetailResponse> {
   return service({
     method: "GET",
@@ -24,25 +24,13 @@ export async function detail(
   });
 }
 
-//Profile API Integration
-
-// Create
-export async function createProfile(
-  props: Profile.CreateAPIPayload,
-): Promise<Profile.CreateResponse> {
+// User Update
+export async function registerUpdate(
+  props: Register.CreateAPIPayload,
+): Promise<Register.CreateResponse> {
   return service({
     method: "POST",
-    url: `/user/profile`,
+    url: `/user`,
     body: props.data,
-  });
-}
-
-// Detail
-export async function detailProfile(
-  props: Profile.DetailAPIPayload,
-): Promise<Profile.DetailResponse> {
-  return service({
-    method: "GET",
-    url: `/user/profile`,
   });
 }

@@ -1,7 +1,11 @@
 import React, { FocusEvent, Ref } from "react";
-import Select from "react-select";
+import Select, { components } from "react-select";
 import Animated from "react-select/animated";
 
+interface CustomComponents {
+  DropdownIndicator?: typeof components.DropdownIndicator;
+  Control?: React.ComponentType<any>;
+}
 interface AutoCompleteProps {
   className?: string;
   options: any[];
@@ -21,6 +25,7 @@ interface AutoCompleteProps {
   isOptionDisabled?: (option: any) => boolean;
   isDisabled?: boolean;
   closeMenuOnSelect?: boolean;
+  customComponents?: CustomComponents;
 }
 
 const AutoComplete: React.FC<AutoCompleteProps> = ({
@@ -42,9 +47,15 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
   isOptionDisabled = undefined,
   isDisabled,
   closeMenuOnSelect = true,
+  customComponents,
   ...rest
 }) => {
-  // const selectStyles = customStyles ? customStyles : styles;
+  const style = {
+    control: (provided: any, state: any) => ({
+      ...provided,
+    }),
+  };
+  const selectStyles = customStyles ? customStyles : style;
 
   return (
     <Select
@@ -57,7 +68,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
       options={options}
       onInputChange={onInputChange}
       onChange={onChange}
-      // styles={selectStyles}
+      styles={selectStyles}
       maxMenuHeight={maxMenuHeight}
       isClearable={isClearable}
       placeholder={placeholder}
@@ -66,7 +77,8 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
       value={value}
       isOptionDisabled={isOptionDisabled}
       isMulti={isMulti}
-      components={Animated()}
+      components={customComponents}
+      // components={Animated()}
       {...rest}
     />
   );

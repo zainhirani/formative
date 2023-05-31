@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Grid, Pagination } from "@mui/material";
+import { Grid, Pagination } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { BoxPaginate, ButtonWrapper, ShowingBox } from "./Styled";
 import { ButtonConfig, TableColumn, TableRow } from "../type";
@@ -9,6 +9,7 @@ interface TypeOneProps {
   rows: TableRow[];
   columns: TableColumn[];
   buttonArray?: ButtonConfig[];
+  checkboxSelection?: boolean;
 }
 
 const TypeOne: React.FC<TypeOneProps> = ({
@@ -16,6 +17,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
   rows,
   columns,
   buttonArray,
+  ...props
 }) => {
   const [page, setPage] = useState(1);
 
@@ -52,6 +54,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
             disableColumnSelector
             disableDensitySelector
             disableRowSelectionOnClick
+            {...props}
           />
         </Grid>
         <BoxPaginate>

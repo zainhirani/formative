@@ -27,7 +27,7 @@ import { useFormik } from "formik";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useAuthContext } from "contexts/AuthContext";
 import { StepTwo } from "./fields/Profile";
-import { useProfile } from "providers/Auth";
+import { useProfile } from "providers/Users";
 // import { register } from "services/auth";
 
 const validationSchema = Yup.object().shape({

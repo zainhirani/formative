@@ -10,10 +10,11 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
 import FormattedMessage from "theme/FormattedMessage";
 import messages from "screens/Teacher/ManageQuizScreen/messages";
+import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 
 export const pageSizeManageQuiz = 12;
 
-export const columnsManageQuiz = [
+export const columnsManageQuiz: GridColDef[] = [
   {
     field: "quizNoSort",
     headerName: "Quiz No. sort",

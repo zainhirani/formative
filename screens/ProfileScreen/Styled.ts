@@ -4,6 +4,7 @@ import { styled } from "@mui/material/styles";
 import MuiBox, { BoxProps } from "@mui/material/Box";
 import Button, { ButtonProps } from "@mui/material/Button";
 import { IconButton, IconButtonProps } from "@mui/material";
+import { LoadingButton, LoadingButtonProps } from "@mui/lab";
 
 export const CardHeaderWrapper = styled(CardHeader)<CardHeaderProps>(
   ({ theme }) =>
@@ -64,3 +65,24 @@ export const IconButtonWrapper = styled(IconButton)<IconButtonProps>(
     color: theme.palette.primary.main,
   }),
 ) as (props: IconButtonProps) => JSX.Element;
+
+export const LoadingButtonWrapper = styled(LoadingButton)<LoadingButtonProps>(
+  ({ theme }) =>
+    ({
+      fontSize: "16px",
+      fontWeight: "400",
+      height: "50px",
+      lineHeight: "50px",
+      textAlign: "center",
+      padding: "0 50px",
+      position: "relative",
+      zIndex: "1",
+      overflow: "hidden",
+      color: theme.palette.primary.light,
+      background: theme.palette.secondary.main,
+      textTransform: "capitalize",
+      width: "100%",
+      display: "flex",
+      borderRadius: "0",
+    } as any),
+) as (props: LoadingButtonProps) => JSX.Element;

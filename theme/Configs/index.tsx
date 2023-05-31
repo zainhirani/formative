@@ -228,10 +228,13 @@ export let getDesignTokens = (mode: PaletteMode) => {
       },
       MuiDataGrid: {
         styleOverrides: {
-          root: {    
+          root: {
             borderRadius: "0px",
-            border:"none",
+            border: "none",
             borderBottom: "1px solid #EAEAEA",
+            "& .MuiDataGrid-columnHeaderCheckbox": {
+              display: "inline-grid",
+            },
             "& .MuiDataGrid-cell:focus-within, & .MuiDataGrid-colCell:focus-within,  & .MuiDataGrid-columnHeader:focus-within":
               {
                 outline: 0,
@@ -240,7 +243,7 @@ export let getDesignTokens = (mode: PaletteMode) => {
           columnHeader: {
             color: theme.palette.primary.main,
             padding: "0px 30px",
-          },          
+          },
           headerCell: {
             padding: "0px 30px",
             background: "red",

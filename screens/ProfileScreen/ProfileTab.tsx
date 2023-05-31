@@ -1,9 +1,5 @@
 import {
   Box,
-  Button,
-  ButtonGroup,
-  Card,
-  CardContent,
   Checkbox,
   FormControlLabel,
   FormControlLabelProps,
@@ -11,29 +7,24 @@ import {
   Grid,
   InputAdornment,
   MenuItem,
-  OutlinedInput,
   Radio,
   RadioGroup,
   Select,
-  SelectChangeEvent,
   TextField,
-  Typography,
   styled,
   useRadioGroup,
 } from "@mui/material";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import ArrowDropUpOutlinedIcon from "@mui/icons-material/ArrowDropUpOutlined";
-
-import {
-  CardHeaderWrapper,
-  IconButtonWrapper,
-  InputLabelWrapper,
-  LoadingButtonWrapper,
-} from "screens/RegisterScreen/Styled";
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import * as Yup from "yup";
-import { RegisterProps } from "./formProps";
+import {
+  LoadingButtonWrapper,
+  CardHeaderWrapper,
+  IconButtonWrapper,
+  InputLabelWrapper,
+} from "./Styled";
 import {
   learnRadioGroup,
   radioChoice,
@@ -41,14 +32,16 @@ import {
   studyRadioGroup,
   playRadioGroup,
   mathSkillsSelect,
-} from "./data";
-import messages from "../messages";
+} from "../RegisterScreen/fields/data";
+import messages from "./messages";
 import { useEffect, useState, useCallback } from "react";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
-import { useProfile } from "providers/Users";
+import { useProfile, useProfileDetail } from "providers/Users";
 import { useSnackbar } from "notistack";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
+import { BoxWrapper, ButtonWrapper } from "./Styled";
 
 interface StyledFormControlLabelProps extends FormControlLabelProps {
   checked: boolean;
@@ -86,18 +79,33 @@ const validationSchema = Yup.object().shape({
   played: Yup.string().required().label("Played"),
   volunteer: Yup.string().required().label("Volunteer"),
   hobbies: Yup.string().required().label("Hobbies"),
+  currentPassword: Yup.string().required().min(6).label("Password"),
 });
 
-export const StepTwo = ({}) => {
+export const ProfileTab = ({}) => {
+  const profileDetail = useProfileDetail();
   const dobPlaceholder = useFormattedMessage(messages.dobPlaceholder);
   const pharmacyPlaceholder = useFormattedMessage(messages.pharmacyPlaceholder);
   const passwordPlaceholder = useFormattedMessage(messages.passwordPlaceholder);
   const hobbiesPlaceholder = useFormattedMessage(messages.hobbiesPlaceholder);
   const [math, setMath] = useState("Select an option for the list");
-  const [experience, setExperience] = useState(0);
+  const [experience, setExperience] = useState(
+    profileDetail.data?.experience || 0,
+  );
   const profile = useProfile();
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
+
+  function formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.getMonth() + 1; // Month starts from 0, so we add 1
+    const year = date.getFullYear();
+
+    return `${year}-${month.toString().padStart(2, "0")}-${day
+      .toString()
+      .padStart(2, "0")}`;
+  }
 
   const increment = () => {
     if (experience < 50) {
@@ -125,9 +133,7 @@ export const StepTwo = ({}) => {
           variant: "success",
         },
       );
-      router.replace("/");
-      // localStorage.setItem(TOKEN, profile?.data.token);
-      // handleNext();
+      router.push("/dashboard");
     }
   }, [profile.isSuccess]);
 
@@ -166,26 +172,33 @@ export const StepTwo = ({}) => {
     setFieldValue,
   } = useFormik({
     initialValues: {
-      dob: "",
-      pharmacy: "",
-      partTime: false,
-      bioChemistry: false,
-      maths: "",
-      learn: "",
-      sequence: "",
-      study: "",
-      played: "",
-      volunteer: false,
-      hobbies: "",
+      dob: formatDate(profileDetail.data?.date_of_birth || "") || "",
+      pharmacy: profileDetail.data?.experience || "",
+      partTime:
+        (profileDetail.data?.working_part_time === true ? "Yes" : "No") ||
+        false,
+      bioChemistry:
+        (profileDetail.data?.taken_biochemistry === true ? "Yes" : "No") ||
+        false,
+      maths: profileDetail.data?.math_skills || "",
+      learn: profileDetail.data?.concept || "",
+      sequence: profileDetail.data?.learning_sequence || "",
+      study: profileDetail.data?.study_prefer || "",
+      played: profileDetail.data?.athlete || "",
+      volunteer:
+        (profileDetail.data?.volunteer === true ? "Yes" : "No") || false,
+      hobbies: profileDetail.data?.hobbies || "",
+      currentPassword: "",
     },
     validationSchema,
+    enableReinitialize: true,
     onSubmit,
   });
 
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <CardContent>
+        <BoxWrapper>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
               <InputLabelWrapper htmlFor="dob">
@@ -219,7 +232,7 @@ export const StepTwo = ({}) => {
                 placeholder={pharmacyPlaceholder}
                 fullWidth
                 type="number"
-                value={experience}
+                value={values.pharmacy}
                 onBlur={handleBlur}
                 onChange={handleChange}
                 error={Boolean(touched.pharmacy && errors.pharmacy)}
@@ -265,6 +278,7 @@ export const StepTwo = ({}) => {
                     setFieldValue("partTime", e.target.value);
                   }
                 }}
+                value={values.partTime}
                 name="radio-buttons-group"
                 row
                 id="partTime"
@@ -312,6 +326,7 @@ export const StepTwo = ({}) => {
                     setFieldValue("bioChemistry", e.target.value);
                   }
                 }}
+                value={values.bioChemistry}
                 name="radio-buttons-group"
                 row
                 id="bioChemistry"
@@ -356,7 +371,7 @@ export const StepTwo = ({}) => {
               <Select
                 labelId="demo-simple-select-standard-label"
                 id="demo-simple-select-standard"
-                value={math}
+                value={values.maths}
                 IconComponent={KeyboardArrowDownIcon}
                 onChange={(e) => {
                   if (setFieldValue) {
@@ -397,6 +412,7 @@ export const StepTwo = ({}) => {
                     setFieldValue("learn", e.target.value);
                   }
                 }}
+                value={values.learn}
                 name="radio-buttons-group"
                 row
               >
@@ -440,6 +456,7 @@ export const StepTwo = ({}) => {
                     setFieldValue("sequence", e.target.value);
                   }
                 }}
+                value={values.sequence}
                 name="radio-buttons-group"
                 row
               >
@@ -483,6 +500,7 @@ export const StepTwo = ({}) => {
                     setFieldValue("study", e.target.value);
                   }
                 }}
+                value={values.study}
                 name="radio-buttons-group"
                 row
               >
@@ -550,6 +568,8 @@ export const StepTwo = ({}) => {
                           setFieldValue("played", e.target.value);
                         }
                       }}
+                      checked={values.played === play.name}
+                      // value={values.played}
                     />
                   }
                   label={play.name}
@@ -579,6 +599,7 @@ export const StepTwo = ({}) => {
                     setFieldValue("volunteer", e.target.value);
                   }
                 }}
+                value={values.volunteer}
                 name="radio-buttons-group"
                 row
               >
@@ -640,77 +661,78 @@ export const StepTwo = ({}) => {
               )}
             </Grid>
           </Grid>
-        </CardContent>
+        </BoxWrapper>
         <Box
           sx={{
+            boxShadow: (theme) => theme.shadow.boxShadow,
             display: "flex",
-            flexDirection: { md: "row", xs: "column" },
+            alignItems: "center",
+            mt: "120px",
+            background: "transparent",
+            width: "max-content",
+            position: "relative",
           }}
         >
-          <Box
+          <TextField
+            id="currentPassword"
+            name="currentPassword"
+            placeholder={passwordPlaceholder}
+            fullWidth
+            type="password"
+            value={values.currentPassword}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            variant="standard"
+            error={Boolean(touched.currentPassword && errors.currentPassword)}
             sx={{
-              width: { md: "75%", xs: "100%", xl: "65%" },
-              display: "flex",
-              mt: "10px",
-              justifyContent: { xs: "center", md: "end" },
-            }}
-          >
-            <LoadingButtonWrapper
-              variant="contained"
-              type="submit"
-              disabled={
-                (values.dob &&
-                  values.pharmacy &&
-                  values.partTime &&
-                  values.bioChemistry &&
-                  values.maths &&
-                  values.learn &&
-                  values.sequence &&
-                  values.study &&
-                  values.played &&
-                  values.volunteer &&
-                  values.hobbies) === ""
-              }
-              loading={profile.isLoading}
-              loadingPosition="start"
-              sx={{
-                width: { xs: "100%", md: "500px" },
-                ".MuiLoadingButton-loadingIndicator": {
-                  top: "35%",
-                  left: "35%",
+              background: (theme) => theme.palette.primary.light,
+              borderRadius: "0",
+              width: { md: "350px", xs: "250px" },
+              position: "relative",
+              px: "10px",
+              ".MuiInputBase-root": {
+                "&::before": {
+                  borderWidth: 0,
                 },
-              }}
+              },
+            }}
+          />
+          {touched.currentPassword && errors.currentPassword && (
+            <FormHelperText
+              sx={{ position: "absolute", bottom: "-45%" }}
+              error
+              id="standard-weight-helper-text-currentPassword"
             >
-              <FormattedMessage {...messages.profile} />
-            </LoadingButtonWrapper>
-          </Box>
-          <Box
+              {errors.currentPassword}
+            </FormHelperText>
+          )}
+          <LoadingButtonWrapper
+            startIcon={<ArrowCircleRightOutlinedIcon />}
+            variant="contained"
+            type="submit"
+            loading={profile.isLoading}
+            loadingPosition="start"
             sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: { md: "end", xs: "center" },
-              width: { md: "25%", xs: "100%", xl: "35%" },
-              mr: 1,
-              mt: { xs: "10px", md: 0 },
+              width: { xs: "100%", md: "max-content" },
+              ".MuiLoadingButton-loadingIndicator": {
+                top: "35%",
+                left: "30%",
+              },
             }}
           >
-            <Button
-              onClick={() => {
-                router.push("/");
-              }}
-              sx={{
-                textDecoration: "none",
-                color: (theme) => theme.palette.primary.main,
-                textTransform: "initial",
-                fontWeight: "500",
-              }}
-            >
-              <FormattedMessage {...messages.skip} />
-              <IconButtonWrapper>
-                <ArrowForwardIcon />
-              </IconButtonWrapper>
-            </Button>
-          </Box>
+            <FormattedMessage {...messages.submit} />
+          </LoadingButtonWrapper>
+          <ButtonWrapper
+            sx={{
+              borderTopRightRadius: (theme) => theme.borderRadius.radius1,
+              borderBottomRightRadius: (theme) => theme.borderRadius.radius1,
+            }}
+            startIcon={<HighlightOffIcon />}
+            variant="contained"
+            onClick={()=>router.push("/dashboard")}
+          >
+            <FormattedMessage {...messages.cancel} />
+          </ButtonWrapper>
         </Box>
       </form>
     </>

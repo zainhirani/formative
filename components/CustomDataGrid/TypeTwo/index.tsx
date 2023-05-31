@@ -9,6 +9,7 @@ interface TypeTwoProps {
   rows: TableRow[];
   columns: TableColumn[];
   buttonArray?: ButtonConfig[];
+  checkboxSelection?: boolean;
 }
 
 const TypeTwo: React.FC<TypeTwoProps> = ({
@@ -16,6 +17,7 @@ const TypeTwo: React.FC<TypeTwoProps> = ({
   rows,
   columns,
   buttonArray,
+  ...props
 }) => {
   return (
     <>
@@ -36,6 +38,7 @@ const TypeTwo: React.FC<TypeTwoProps> = ({
                   disableColumnSelector
                   disableDensitySelector
                   disableRowSelectionOnClick
+                  {...props}
                 />
               </Box>
             </Grid>
