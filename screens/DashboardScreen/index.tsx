@@ -175,7 +175,12 @@ const DashboardScreen = () => {
 
         <div>
           <button onClick={handleDrawerOpen}>Open Drawer</button>
-          <SideDrawer open={drawerOpen} onClose={handleDrawerClose}>
+          <SideDrawer
+            title="Dr. Kevin B. this is how Question 10/2 appears to student"
+            open={drawerOpen}
+            onClose={handleDrawerClose}
+            isHelp={true}
+          >
             {/* Your content goes here */}
             <h1>Drawer Content</h1>
             <p>This is the content of the drawer.</p>

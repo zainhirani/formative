@@ -53,7 +53,7 @@ const SearchSection = () => {
       <Box gridColumn="span 2">
         <CustomSelect
           placeholder="Test Select Course"
-          controlText="Select Course:"
+          // controlText="Select Course:"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={options}
         />

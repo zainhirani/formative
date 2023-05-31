@@ -1,20 +1,29 @@
 import React, { ReactNode } from "react";
 import Image from "next/image";
-import { DrawerProps } from "@mui/material";
+import { Box, DrawerProps, Typography } from "@mui/material";
+import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { DrawerWrapper, IconButtonWrapper } from "./Styled";
-
+import {
+  CloseIconWrapper,
+  DrawerWrapper,
+  HeaderWrapper,
+  IconButtonWrapper,
+} from "./Styled";
 interface SideDrawerProps extends DrawerProps {
   open: boolean;
   onClose: () => void;
   children: ReactNode;
+  title: string;
+  isHelp?: boolean;
 }
 
 const SideDrawer: React.FC<SideDrawerProps> = ({
   open,
   onClose,
   children,
+  title,
+  isHelp,
   ...rest
 }) => {
   const theme = useTheme();
@@ -28,9 +37,21 @@ const SideDrawer: React.FC<SideDrawerProps> = ({
       // isMobile={isMobile}
       {...rest}
     >
-      <IconButtonWrapper onClick={onClose}>
-        <Image src="/close-cancel.svg" width={20} height={20} />
-      </IconButtonWrapper>
+      <HeaderWrapper>
+        <Typography className="text">{title}</Typography>
+        <CloseIconWrapper>
+          {isHelp ? (
+            <Typography className="help-text">
+              <HelpOutlineOutlinedIcon className="icon-help" /> Help
+            </Typography>
+          ) : (
+            ""
+          )}
+          <IconButtonWrapper onClick={onClose}>
+            <Image src="/close-cancel.svg" width={20} height={20} />
+          </IconButtonWrapper>
+        </CloseIconWrapper>
+      </HeaderWrapper>
       {children}
     </DrawerWrapper>
   );
