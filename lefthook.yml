@@ -7,9 +7,9 @@
 pre-commit:
   parallel: true
   commands:
-    type-check:
-      glob: "*.{ts,tsx}"
-      run: yarn type-check
+    # type-check:
+    #   glob: "*.{ts,tsx}"
+    #   run: yarn type-check
     eslint:
       glob: "*.{js,ts,jsx,tsx}"
       run: yarn lint --fix

@@ -37,4 +37,8 @@ export default defineMessages({
     id: `${scope}.statusDraft`,
     defaultMessage: "Draft",
   },
+  successMessage: {
+    id: `${scope}.successMessage`,
+    defaultMessage: "All selected students are enrolled in the selected course.",
+  },
 });

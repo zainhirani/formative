@@ -11,7 +11,8 @@ import LocalPrintshopOutlinedIcon from "@mui/icons-material/LocalPrintshopOutlin
 import CachedIcon from "@mui/icons-material/Cached";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
-const TableSection = () => {
+const TableSection = (props: any) => {
+  const {setChecked} = props;
   const configManageQuiz = [
     {
       key: "print",
@@ -77,6 +78,7 @@ const TableSection = () => {
         pageSizeData={pageSizeManageQuiz}
         type={"1"}
         isCheckbox={true}
+        setChecked={setChecked}
       />
     </BoxWrapper>
   );

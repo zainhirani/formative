@@ -1,4 +1,4 @@
-import React, { useState,useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { Grid, Pagination } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { BoxPaginate, ButtonWrapper, ShowingBox } from "./Styled";
@@ -10,6 +10,9 @@ interface TypeOneProps {
   columns: TableColumn[];
   buttonArray?: ButtonConfig[];
   checkboxSelection?: boolean;
+  // setChecked?:  ((value: string) => void) | undefined;
+  setChecked: any;
+
   // isChecked?:
 }
 
@@ -18,25 +21,24 @@ const TypeOne: React.FC<TypeOneProps> = ({
   rows,
   columns,
   buttonArray,
+  setChecked,
   ...props
 }) => {
   const [page, setPage] = useState(1);
-  const [checked, setChecked] = useState(false)
+  // const [checked, setChecked] = useState(false);
 
-  console.log(checked,'checked')
+  // console.log(checked, "checked");
 
   const totalRows = rows.length;
   const totalPages = Math.ceil(totalRows / pageSizeData);
 
-
-  const handleCheck = useCallback((e) => {
-    if(e.length){
-      setChecked(true)
+  const handleCheck = useCallback((e: any) => {
+    if (e.length) {
+      setChecked(true);
+    } else {
+      setChecked(false);
     }
-    else {
-      setChecked(false)
-    }
-  },[])
+  }, []);
 
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
@@ -68,7 +70,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
             disableColumnSelector
             disableDensitySelector
             disableRowSelectionOnClick
-            onRowSelectionModelChange={(e) => handleCheck(e) }
+            onRowSelectionModelChange={(e) => handleCheck(e)}
             {...props}
           />
         </Grid>

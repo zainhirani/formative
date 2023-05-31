@@ -5,7 +5,6 @@ import {
   IconButton,
   InputAdornment,
   InputLabel,
-  DatePicker
 } from "@mui/material";
 import { MenuItem } from "@mui/material";
 import { Search } from "@mui/icons-material";
@@ -19,15 +18,14 @@ import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRou
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import messages from "./messages";
-import {
-  selectCourseOption,
-  selectFolderOption,
-  selectProgram,
-} from "./data";
+import { selectCourseOption, selectFolderOption, selectProgram } from "./data";
 import AutoComplete from "components/AutoComplete";
 // import AutoComplete from "components/AutoComplete";
+import { useSnackbar } from "notistack";
 
-const SearchSection = () => {
+const SearchSection = (props: any) => {
+  const { enqueueSnackbar } = useSnackbar();
+  const { checked } = props;
   const searchCourse = useFormattedMessage(messages.searchCourse);
 
   const options = [
@@ -128,7 +126,12 @@ const SearchSection = () => {
         <ButtonWrapper
           startIcon={<AddCircleOutlineRoundedIcon />}
           variant="contained"
-          disabled
+          disabled={checked ? false : true}
+          onClick={() => {
+            enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
+              variant: "success",
+            });
+          }}
         >
           <FormattedMessage {...messages.enrollStudent} />
         </ButtonWrapper>
