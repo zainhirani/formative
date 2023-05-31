@@ -18,22 +18,20 @@ import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRou
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import messages from "./messages";
-import {
-  selectCourseOption,
-  selectFolderOption,
-  selectStatusOption,
-} from "./data";
-import AutoComplete from "components/AutoComplete";
-// import AutoComplete from "components/AutoComplete";
+import { selectFolderOption, selectStatusOption } from "./data";
+import CustomSelect from "components/CustomSelect/CustomSelect";
 
 const SearchSection = () => {
   const searchQuiz = useFormattedMessage(messages.searchQuiz);
 
   const options = [
-    { value: "chocolate", label: "Chocolate" },
+    { value: "Test", label: "test" },
     { value: "strawberry", label: "Strawberry" },
     { value: "vanilla", label: "Vanilla" },
+    { value: "vanilla1", label: "Vanilla" },
   ];
+  const onChange = () => {};
+
   return (
     <BoxWrapper display="grid" gridTemplateColumns="repeat(12, 1fr)">
       <Box gridColumn="span 3">
@@ -53,29 +51,12 @@ const SearchSection = () => {
         />
       </Box>
       <Box gridColumn="span 2">
-        {/* <AutoComplete  /> */}
-        <FormControl fullWidth>
-          <InputLabel
-            shrink={false}
-            sx={{ color: (theme) => theme.palette.text.secondary }}
-          >
-            <FormattedMessage {...messages.selectCourse} />
-          </InputLabel>
-          <SelectStyled
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            label={<FormattedMessage {...messages.selectCourse} />}
-            placeholder="Search"
-            variant="outlined"
-            IconComponent={ArrowDropDownCircleOutlinedIcon}
-          >
-            {selectCourseOption?.map((course) => (
-              <MenuItem value={course.name} key={course.id}>
-                {course.name}
-              </MenuItem>
-            ))}
-          </SelectStyled>
-        </FormControl>
+        <CustomSelect
+          placeholder="Test Select Course"
+          controlText="Working Fine:"
+          dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
+          options={options}
+        />
       </Box>
       <Box gridColumn="span 2">
         <FormControl fullWidth>

@@ -5,7 +5,6 @@ import Animated from "react-select/animated";
 interface CustomComponents {
   DropdownIndicator?: typeof components.DropdownIndicator;
   Control?: React.ComponentType<any>;
-  // Add more custom components here if needed
 }
 interface AutoCompleteProps {
   className?: string;
@@ -51,35 +50,13 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
   customComponents,
   ...rest
 }) => {
-  // const selectStyles = customStyles ? customStyles : styles;
   const style = {
     control: (provided: any, state: any) => ({
       ...provided,
-      boxShadow: "none",
-      border: "none",
-    }),
-    menu: (provided: any, state: any) => ({
-      ...provided,
-      border: "none",
-      boxShadow: "none",
-    }),
-    // option: (provided: any, state: any) => ({
-    //   ...provided,
-    //   backgroundColor: state.isFocused && "#8c2531",
-    //   color: state.isFocused && "#fff",
-    // }),
-    option: (provided: any, state: any) => ({
-      ...provided,
-      backgroundColor: state.isSelected
-        ? "#fcb150"
-        : state.isFocused
-        ? "#ffe57b"
-        : provided.backgroundColor,
-      "&:hover": {
-        backgroundColor: state.isSelected ? "#fcb150" : "#ffe57b",
-      },
     }),
   };
+  const selectStyles = customStyles ? customStyles : style;
+
   return (
     <Select
       isDisabled={isDisabled}
@@ -91,7 +68,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
       options={options}
       onInputChange={onInputChange}
       onChange={onChange}
-      // styles={selectStyles}
+      styles={selectStyles}
       maxMenuHeight={maxMenuHeight}
       isClearable={isClearable}
       placeholder={placeholder}
@@ -101,16 +78,6 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
       isOptionDisabled={isOptionDisabled}
       isMulti={isMulti}
       components={customComponents}
-      // theme={(theme) => ({
-      //   ...theme,
-      //   borderRadius: 0,
-      //   colors: {
-      //     ...theme.colors,
-      //     primary25: 'hotpink',
-      //     primary: 'black',
-      //   },
-      // })}
-      styles={style}
       // components={Animated()}
       {...rest}
     />
