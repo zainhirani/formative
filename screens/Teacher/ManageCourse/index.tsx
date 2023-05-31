@@ -11,8 +11,12 @@ import { ButtonConfig } from "components/GroupedButton/types";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import RestoreFromTrashOutlinedIcon from '@mui/icons-material/RestoreFromTrashOutlined';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import CustomDataGrid from 'components/CustomDataGrid';
+import { columnsManageCourse, pageSizeManageCourse, rowsManageCourse } from 'mock-data/Teacher/ManageCourse';
+import { useSnackbar } from "notistack";
 
 const ManageCourseScreen = () => {
+  const { enqueueSnackbar } = useSnackbar();
     const config: ButtonConfig[] = [
         {
           key: "addStudents",
@@ -22,6 +26,9 @@ const ManageCourseScreen = () => {
           },
           onClick: () => {
             // console.log("Add Students");
+              enqueueSnackbar("hello World", {
+                variant: "success",
+              });
           },
         },
         {
@@ -42,6 +49,9 @@ const ManageCourseScreen = () => {
           },
           onClick: () => {
             // console.log("Duplicate");
+            enqueueSnackbar("Delete World", {
+              variant: "error",
+            });
           },
         }
     ];
@@ -49,7 +59,12 @@ const ManageCourseScreen = () => {
     <PageLayout title="Courses"  icon={<HelpRoundedIcon />}>
         <Box>
             <SearchSection />
-            <TableSection />
+            <CustomDataGrid
+              rows={rowsManageCourse}
+              columns={columnsManageCourse}
+              pageSizeData={pageSizeManageCourse}
+              type={"1"}
+            />
             <Box sx={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
                 <BoxWrapper display="grid" gridTemplateColumns="repeat(5, 1fr)">
                     <Box gridColumn="span 3">
