@@ -1,6 +1,7 @@
 import MuiBox, { BoxProps } from "@mui/material/Box";
 import Button, { ButtonProps } from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
+import { TextFieldProps,TextField, Select, SelectProps } from "@mui/material";
 
 export const QuizDetailBox = styled(MuiBox)<BoxProps>(
   ({ theme }) =>
@@ -98,7 +99,9 @@ export const BoxMatrixDropDownWrapper = styled(MuiBox)<BoxProps>(
   ({ theme }) =>
     ({
       width: "100%",
-      padding: "15px 20px",
+      display: 'flex',
+      alignItems: 'center',
+      padding: "0px 20px",
       borderBottom:" 1px solid",
       borderColor: theme?.additionalColors?.primaryBorderGrey,
     } as any),
@@ -167,5 +170,71 @@ export const BoxButtonWrapper = styled(MuiBox)<BoxProps>(
       justifyContent: 'space-between'
     } as any),
 ) as (props: BoxProps) => JSX.Element;
+
+
+export const QuizNoBoxWrapper = styled(MuiBox)<BoxProps>(
+  ({ theme }) =>
+    ({
+      display: 'flex',
+      alignItems: 'center',
+      height: '100%',
+      gap: '5px',
+      "& .custom-name": {
+        margin: '0px',
+        color: theme.palette.text.secondary,
+      },
+      "& .custom-name-2": {
+        margin: '0px',
+        color: theme.palette.text.primary
+      }
+    } as any),
+) as (props: BoxProps) => JSX.Element;
+
+
+export const InputBoxWrapper = styled(MuiBox)<BoxProps>(
+  ({ theme }) =>
+    ({
+      display: 'flex',
+      alignItems: 'center',
+      paddingLeft: '20px',
+      "& .custom-name": {
+        margin: '0px',
+        color: theme.palette.text.secondary,
+      }
+    } as any),
+) as (props: BoxProps) => JSX.Element;
+
+export const SelectBoxWrapper = styled(MuiBox)<BoxProps>(
+  ({ theme }) =>
+    ({
+      padding: '0px 5px 0px 15px',
+      borderLeft: "1px solid",
+      borderColor: theme?.additionalColors?.primaryBorderGrey
+    } as any),
+) as (props: BoxProps) => JSX.Element;
+
+export const SchemeBoxWrapper = styled(MuiBox)<BoxProps>(
+  ({ theme }) =>
+    ({
+      padding: '10px 5px 10px 15px',
+      borderLeft: "1px solid",
+      borderColor: theme?.additionalColors?.primaryBorderGrey
+    } as any),
+) as (props: BoxProps) => JSX.Element;
+
+
+export const TextFieldStyled = styled(TextField)<TextFieldProps>(
+  ({ theme }) =>
+    ({
+      width: "100%",
+      borderWidth: "0px",
+      borderRadius: "0px",
+      border: "0px",
+      ".MuiOutlinedInput-notchedOutline":{
+        border:"none",
+        color: theme.additionalColors?.primary999999,
+      }
+    } as any),
+) as (props: TextFieldProps) => JSX.Element;
 
 

@@ -5,10 +5,25 @@ import {
   BoxMatrixWrapper,
   BoxScoringWrapper,
   BoxWrapper,
+  SchemeBoxWrapper,
+  SelectBoxWrapper,
 } from "./Styled";
-import { Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Checkbox,
+  FormControlLabel,
+  Grid,
+  Typography,
+} from "@mui/material";
+import CustomSelect from "components/CustomSelect/CustomSelect";
+import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
 
 const CusQuizDetails = () => {
+  const optionsScheme = [
+    { value: "Bonus Test (ave=3.75)", label: "Bonus Test (ave=3.75)" },
+    { value: "1Bonus Test (ave=3.75)", label: "Bonus Test (ave=3.75)" },
+    { value: "2Bonus Test (ave=3.75)", label: "Bonus Test (ave=3.75)" },
+  ];
   return (
     <BoxWrapper>
       <BoxMatrixDropDownWrapper>
@@ -17,13 +32,35 @@ const CusQuizDetails = () => {
             <Typography>Scoring Matrix</Typography>
           </Grid>
           <Grid item md={3}>
-            Select
+            <SchemeBoxWrapper gridColumn="span 2">
+              <CustomSelect
+                placeholder="Bonus Test (ave=3.75)"
+                controlText="Scheme:"
+                dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
+                options={optionsScheme}
+              />
+            </SchemeBoxWrapper>
           </Grid>
           <Grid item md={3}>
-            Select
+            <SchemeBoxWrapper gridColumn="span 2">
+              <CustomSelect
+                placeholder="120"
+                controlText="Time Limit per response (sec):"
+                dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
+                options={optionsScheme}
+              />
+            </SchemeBoxWrapper>
           </Grid>
           <Grid item md={2}>
-            Select
+            <SchemeBoxWrapper gridColumn="span 2">
+              <FormControlLabel
+                value="Reviewable:"
+                control={<Checkbox />}
+                label="Reviewable:"
+                labelPlacement="start"
+                style={{ padding: 0 }}
+              />
+            </SchemeBoxWrapper>
           </Grid>
         </Grid>
       </BoxMatrixDropDownWrapper>
