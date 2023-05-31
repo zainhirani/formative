@@ -1,8 +1,8 @@
 import type { NextPage } from "next";
-import ManageStudents from "screens/Teacher/ManageStudent/manage";
+import Manage from "screens/Teacher/ManageStudent/index";
 
-const StudentManage: NextPage = () => {
-  return <ManageStudents />;
+const StudentInfo: NextPage = () => {
+  return <Manage />;
 };
 
-export default StudentManage;
+export default StudentInfo;

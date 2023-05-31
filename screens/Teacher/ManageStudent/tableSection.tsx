@@ -3,8 +3,8 @@ import { BoxWrapper } from "./Styled";
 import {
   columnsManageQuiz,
   pageSizeManageQuiz,
-  rowsManageQuiz,
-} from "mock-data/Teacher/ManageQuiz";
+  rowsManageStudent,
+} from "mock-data/Teacher/ManageStudent";
 import CustomDataGrid from "components/CustomDataGrid";
 import { Box } from "@mui/material";
 import LocalPrintshopOutlinedIcon from "@mui/icons-material/LocalPrintshopOutlined";
@@ -72,7 +72,7 @@ const TableSection = () => {
   return (
     <BoxWrapper>
       <CustomDataGrid      
-        rows={rowsManageQuiz}
+        rows={rowsManageStudent}
         columns={columnsManageQuiz}
         pageSizeData={pageSizeManageQuiz}
         type={"1"}

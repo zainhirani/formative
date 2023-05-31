@@ -1,12 +1,14 @@
 import PageLayout from 'components/PageLayout'
-import React from 'react'
+import TableSection from './tableSection'
+import SearchSection from './searchSection'
 
 
 const ManageStudents = () => {
   return (
     <>
         <PageLayout>
-            <h1>hello World</h1>
+            <SearchSection />
+            <TableSection />
         </PageLayout>
     </>
   )
