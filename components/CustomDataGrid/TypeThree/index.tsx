@@ -1,7 +1,6 @@
-import React, { useState } from "react";
-import { Box, Grid, Pagination } from "@mui/material";
+import React from "react";
+import { Grid } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { BoxPaginate, ButtonWrapper, ShowingBox } from "./Styled";
 import { ButtonConfig, TableColumn, TableRow } from "../type";
 
 interface TypeThreeProps {
@@ -9,12 +8,14 @@ interface TypeThreeProps {
   rows: TableRow[];
   columns: TableColumn[];
   buttonArray?: ButtonConfig[];
+  checkboxSelection?: boolean;
 }
 
 const TypeThree: React.FC<TypeThreeProps> = ({
   rows,
   columns,
   buttonArray,
+  ...props
 }) => {
   const getRowHeight = () => {
     return 50;
@@ -34,6 +35,7 @@ const TypeThree: React.FC<TypeThreeProps> = ({
             disableColumnSelector
             disableDensitySelector
             disableRowSelectionOnClick
+            {...props}
           />
         </Grid>
       </Grid>
