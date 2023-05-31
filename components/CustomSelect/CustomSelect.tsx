@@ -1,6 +1,6 @@
 import React, { FC, ReactNode } from "react";
-import AutoComplete from "components/AutoComplete";
 import { components } from "react-select";
+import AutoComplete from "components/AutoComplete";
 import { BoxWrapper, SelectBoxWrapper } from "./Styled";
 
 interface CustomSelectProps {
