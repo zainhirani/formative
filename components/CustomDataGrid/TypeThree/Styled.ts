@@ -1,4 +1,10 @@
-import { Box, Select, SelectProps, TextField, TextFieldProps } from "@mui/material";
+import {
+  Box,
+  Select,
+  SelectProps,
+  TextField,
+  TextFieldProps,
+} from "@mui/material";
 import MuiBox, { BoxProps } from "@mui/material/Box";
 import Button, { ButtonProps } from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
@@ -9,7 +15,7 @@ export const BoxPaginate = styled(MuiBox)<BoxProps>(
       display: "flex",
       alignItems: "center",
       width: "100%",
-      minHeight: '65px',
+      minHeight: "65px",
       background:
         "linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 45%, rgba(255,255,255,0) 100%)",
       ".customPagination": {
@@ -97,6 +103,6 @@ export const ButtonWrapper = styled(Button)<ButtonProps>(
         color: theme.palette.primary.light,
         background: theme.palette.primary.main,
         borderColor: theme.palette.primary.main,
-      }
+      },
     } as any),
 ) as (props: ButtonProps) => JSX.Element;

@@ -18,6 +18,7 @@ import { TextFieldWrapper } from "./Styled";
 import messages from "./messages";
 
 interface ListItemData {
+  id: string;
   text: string;
   correct: boolean;
   locked: boolean;
@@ -25,34 +26,53 @@ interface ListItemData {
 }
 
 const initialItems: ListItemData[] = [
-  { text: "Option A", correct: false, locked: false, inputText: "" },
-  { text: "Option B", correct: false, locked: false, inputText: "" },
-  { text: "Option C", correct: false, locked: false, inputText: "" },
+  { id: "1", text: "Option A", correct: false, locked: false, inputText: "" },
+  { id: "2", text: "Option B", correct: false, locked: false, inputText: "" },
+  { id: "3", text: "Option C", correct: false, locked: false, inputText: "" },
+  { id: "4", text: "Option D", correct: false, locked: false, inputText: "" },
 ];
 
 const QuestionListSection = () => {
   const [items, setItems] = useState<ListItemData[]>(initialItems);
   const [counter, setCounter] = useState(initialItems.length + 1);
 
-  const handleToggleCheckbox = (index: number, option: string) => {
-    const updatedItems = [...items];
-    if (option === "correct") {
-      updatedItems[index].correct = !updatedItems[index].correct;
-    } else if (option === "lock") {
-      updatedItems[index].locked = !updatedItems[index].locked;
-    }
+  const getNextOptionText = () => {
+    const lastOption = items[items.length - 1];
+    const lastOptionText = lastOption.text;
+    const lastOptionLetter = lastOptionText.charAt(lastOptionText.length - 1);
+    const nextOptionLetter = String.fromCharCode(
+      lastOptionLetter.charCodeAt(0) + 1,
+    );
+    return `Option ${nextOptionLetter}`;
+  };
+
+  const handleToggleCheckbox = (id: string, option: string) => {
+    const updatedItems = items.map((item) => {
+      if (item.id === id) {
+        if (option === "correct") {
+          return { ...item, correct: !item.correct };
+        } else if (option === "lock") {
+          return { ...item, locked: !item.locked };
+        }
+      }
+      return item;
+    });
     setItems(updatedItems);
   };
 
-  const handleInputChange = (index: number, value: string) => {
-    const updatedItems = [...items];
-    updatedItems[index].inputText = value;
+  const handleInputChange = (id: string, value: string) => {
+    const updatedItems = items.map((item) => {
+      if (item.id === id) {
+        return { ...item, inputText: value };
+      }
+      return item;
+    });
     setItems(updatedItems);
   };
-
   const handleAddItem = () => {
     const newItem: ListItemData = {
-      text: `Option ${String.fromCharCode(64 + counter)}`,
+      id: counter.toString(),
+      text: getNextOptionText(),
       correct: false,
       locked: false,
       inputText: "",
@@ -61,16 +81,20 @@ const QuestionListSection = () => {
     setCounter(counter + 1);
   };
 
-  const handleRemoveItem = (index: number) => {
-    const updatedItems = items.filter((_, i) => i !== index);
-    setItems(updatedItems);
+  const handleRemoveItem = (id: string) => {
+    const updatedItems = items.filter((item) => item.id !== id);
+    const reassignIds = updatedItems.map((item, index) => ({
+      ...item,
+      id: (index + 1).toString(),
+    }));
+    setItems(reassignIds);
   };
   return (
     <>
       <List>
-        {items.map((item, index) => (
+        {items.map((item) => (
           <ListItem
-            key={index}
+            key={item.id}
             sx={{
               borderBottom: ` 1px solid #EAEAEA `,
               flexDirection: "column",
@@ -90,7 +114,7 @@ const QuestionListSection = () => {
                 control={
                   <Checkbox
                     checked={item.correct}
-                    onChange={() => handleToggleCheckbox(index, "correct")}
+                    onChange={() => handleToggleCheckbox(item.id, "correct")}
                     color="primary"
                     sx={{
                       ".MuiSvgIcon-root": {
@@ -116,7 +140,7 @@ const QuestionListSection = () => {
                 control={
                   <Checkbox
                     checked={item.locked}
-                    onChange={() => handleToggleCheckbox(index, "lock")}
+                    onChange={() => handleToggleCheckbox(item.id, "lock")}
                     color="primary"
                     disabled
                   />
@@ -127,7 +151,7 @@ const QuestionListSection = () => {
                 <Button
                   sx={{ textTransform: "capitalize", fontWeight: 500 }}
                   startIcon={<Delete />}
-                  onClick={() => handleRemoveItem(index)}
+                  onClick={() => handleRemoveItem(item.id)}
                 >
                   <FormattedMessage {...messages.deleteButton} />
                 </Button>
@@ -135,7 +159,7 @@ const QuestionListSection = () => {
             </Box>
             <TextFieldWrapper
               value={item.inputText}
-              onChange={(e) => handleInputChange(index, e.target.value)}
+              onChange={(e) => handleInputChange(item.id, e.target.value)}
               placeholder="Type your details here"
               variant="standard"
             />
