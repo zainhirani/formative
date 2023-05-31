@@ -5,6 +5,7 @@ import {
   IconButton,
   InputAdornment,
   InputLabel,
+  DatePicker
 } from "@mui/material";
 import { MenuItem } from "@mui/material";
 import { Search } from "@mui/icons-material";
@@ -21,13 +22,13 @@ import messages from "./messages";
 import {
   selectCourseOption,
   selectFolderOption,
-  selectStatusOption,
+  selectProgram,
 } from "./data";
 import AutoComplete from "components/AutoComplete";
 // import AutoComplete from "components/AutoComplete";
 
 const SearchSection = () => {
-  const searchQuiz = useFormattedMessage(messages.searchQuiz);
+  const searchCourse = useFormattedMessage(messages.searchCourse);
 
   const options = [
     { value: "chocolate", label: "Chocolate" },
@@ -38,18 +39,18 @@ const SearchSection = () => {
     <BoxWrapper display="grid" gridTemplateColumns="repeat(12, 1fr)">
       <Box gridColumn="span 3">
         <TextFieldStyled
-          placeholder={searchQuiz}
+          placeholder={searchCourse}
           variant="outlined"
-          InputProps={{
-            style: { border: "none", outline: "0px" },
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton aria-label="visibility" edge="end">
-                  <Search />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
+          // InputProps={{
+          //   style: { border: "none", outline: "0px" },
+          //   endAdornment: (
+          //     <InputAdornment position="end">
+          //       <IconButton aria-label="visibility" edge="end">
+          //         <Search />
+          //       </IconButton>
+          //     </InputAdornment>
+          //   ),
+          // }}
         />
       </Box>
       <Box gridColumn="span 2">
@@ -59,12 +60,12 @@ const SearchSection = () => {
             shrink={false}
             sx={{ color: (theme) => theme.palette.text.secondary }}
           >
-            <FormattedMessage {...messages.selectCourse} />
+            <FormattedMessage {...messages.newCourse} />
           </InputLabel>
           <SelectStyled
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            label={<FormattedMessage {...messages.selectCourse} />}
+            label={<FormattedMessage {...messages.newCourse} />}
             placeholder="Search"
             variant="outlined"
             IconComponent={ArrowDropDownCircleOutlinedIcon}
@@ -84,12 +85,12 @@ const SearchSection = () => {
             htmlFor="my-select"
             sx={{ color: (theme) => theme.palette.text.secondary }}
           >
-            <FormattedMessage {...messages.selectFolder} />
+            <FormattedMessage {...messages.graduationYear} />
           </InputLabel>
           <SelectStyled
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            label={<FormattedMessage {...messages.selectFolder} />}
+            label={<FormattedMessage {...messages.graduationYear} />}
             IconComponent={ArrowDropDownCircleOutlinedIcon}
           >
             {selectFolderOption?.map((folder) => (
@@ -97,6 +98,7 @@ const SearchSection = () => {
                 {folder.name}
               </MenuItem>
             ))}
+            {/* <DatePicker label={'"year"'} openTo="year" /> */}
           </SelectStyled>
         </FormControl>
       </Box>
@@ -106,15 +108,15 @@ const SearchSection = () => {
             shrink={false}
             sx={{ color: (theme) => theme.palette.text.secondary }}
           >
-            <FormattedMessage {...messages.selectStatus} />
+            <FormattedMessage {...messages.program} />
           </InputLabel>
           <SelectStyled
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            label={<FormattedMessage {...messages.selectStatus} />}
+            label={<FormattedMessage {...messages.program} />}
             IconComponent={ArrowDropDownCircleOutlinedIcon}
           >
-            {selectStatusOption?.map((status) => (
+            {selectProgram?.map((status) => (
               <MenuItem value={status.name} key={status.id}>
                 {status.name}
               </MenuItem>
@@ -126,8 +128,9 @@ const SearchSection = () => {
         <ButtonWrapper
           startIcon={<AddCircleOutlineRoundedIcon />}
           variant="contained"
+          disabled
         >
-          <FormattedMessage {...messages.createNew} />
+          <FormattedMessage {...messages.enrollStudent} />
         </ButtonWrapper>
       </Box>
     </BoxWrapper>

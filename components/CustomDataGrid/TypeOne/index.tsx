@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Box, Grid, Pagination } from "@mui/material";
+import React, { useState,useCallback } from "react";
+import { Grid, Pagination } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { BoxPaginate, ButtonWrapper, ShowingBox } from "./Styled";
 import { ButtonConfig, TableColumn, TableRow } from "../type";
@@ -9,6 +9,8 @@ interface TypeOneProps {
   rows: TableRow[];
   columns: TableColumn[];
   buttonArray?: ButtonConfig[];
+  checkboxSelection?: boolean;
+  // isChecked?:
 }
 
 const TypeOne: React.FC<TypeOneProps> = ({
@@ -16,11 +18,25 @@ const TypeOne: React.FC<TypeOneProps> = ({
   rows,
   columns,
   buttonArray,
+  ...props
 }) => {
   const [page, setPage] = useState(1);
+  const [checked, setChecked] = useState(false)
+
+  console.log(checked,'checked')
 
   const totalRows = rows.length;
   const totalPages = Math.ceil(totalRows / pageSizeData);
+
+
+  const handleCheck = useCallback((e) => {
+    if(e.length){
+      setChecked(true)
+    }
+    else {
+      setChecked(false)
+    }
+  },[])
 
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
@@ -52,6 +68,8 @@ const TypeOne: React.FC<TypeOneProps> = ({
             disableColumnSelector
             disableDensitySelector
             disableRowSelectionOnClick
+            onRowSelectionModelChange={(e) => handleCheck(e) }
+            {...props}
           />
         </Grid>
         <BoxPaginate>

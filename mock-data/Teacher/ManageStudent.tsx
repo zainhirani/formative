@@ -42,22 +42,22 @@ export const columnsManageQuiz = [
   //     );
   //   },
   // },
-  {
-    field: "checkBox",
-    headerName: "Check Box",
-    minWidth: 180,
-    flex: 1,
-    renderCell: (params: any) => {
-      const num = params.formattedValue;
-      return (
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <CheckBox  color="primary"/>
-          </Grid>
-        </Grid>
-      );
-    },
-  },
+  // {
+  //   field: "checkBox",
+  //   headerName: "Check Box",
+  //   minWidth: 180,
+  //   flex: 1,
+  //   renderCell: (params: any) => {
+  //     const num = params.formattedValue;
+  //     return (
+  //       <Grid container spacing={2}>
+  //         <Grid item xs={12}>
+  //           <CheckBox  color="primary"/>
+  //         </Grid>
+  //       </Grid>
+  //     );
+  //   },
+  // },
   {
     field: "lastName",
     headerName: "Last Name",

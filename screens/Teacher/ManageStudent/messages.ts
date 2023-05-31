@@ -9,25 +9,25 @@ import { defineMessages } from "react-intl";
 export const scope = "app.screens.ManageQuizScreen";
 
 export default defineMessages({
-  searchQuiz: {
-    id: `${scope}.searchQuiz`,
-    defaultMessage: "Search quiz",
+  searchCourse: {
+    id: `${scope}.searchCourse`,
+    defaultMessage: "Enter new course name ...",
   },
-  selectCourse: {
-    id: `${scope}.selectCourse`,
-    defaultMessage: "Select Course",
+  newCourse: {
+    id: `${scope}.newCourse`,
+    defaultMessage: "New Course",
   },
-  selectFolder: {
-    id: `${scope}.selectFolder`,
-    defaultMessage: "Select Folder",
+  graduationYear: {
+    id: `${scope}.graduationYear`,
+    defaultMessage: "Year of Graduation: 2004",
   },
-  selectStatus: {
-    id: `${scope}.selectStatus`,
-    defaultMessage: "Select Status",
+  program: {
+    id: `${scope}.program`,
+    defaultMessage: "School/Program: COP",
   },
-  createNew: {
+  enrollStudent: {
     id: `${scope}.createNew`,
-    defaultMessage: "Create New",
+    defaultMessage: "Enroll Students",
   },
   statusCompleted: {
     id: `${scope}.statusCompleted`,

@@ -1,7 +1,12 @@
 import React, { FocusEvent, Ref } from "react";
-import Select from "react-select";
+import Select, { components } from "react-select";
 import Animated from "react-select/animated";
 
+interface CustomComponents {
+  DropdownIndicator?: typeof components.DropdownIndicator;
+  Control?: React.ComponentType<any>;
+  // Add more custom components here if needed
+}
 interface AutoCompleteProps {
   className?: string;
   options: any[];
@@ -21,6 +26,7 @@ interface AutoCompleteProps {
   isOptionDisabled?: (option: any) => boolean;
   isDisabled?: boolean;
   closeMenuOnSelect?: boolean;
+  customComponents?: CustomComponents;
 }
 
 const AutoComplete: React.FC<AutoCompleteProps> = ({
@@ -42,10 +48,38 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
   isOptionDisabled = undefined,
   isDisabled,
   closeMenuOnSelect = true,
+  customComponents,
   ...rest
 }) => {
   // const selectStyles = customStyles ? customStyles : styles;
-
+  const style = {
+    control: (provided: any, state: any) => ({
+      ...provided,
+      boxShadow: "none",
+      border: "none",
+    }),
+    menu: (provided: any, state: any) => ({
+      ...provided,
+      border: "none",
+      boxShadow: "none",
+    }),
+    // option: (provided: any, state: any) => ({
+    //   ...provided,
+    //   backgroundColor: state.isFocused && "#8c2531",
+    //   color: state.isFocused && "#fff",
+    // }),
+    option: (provided: any, state: any) => ({
+      ...provided,
+      backgroundColor: state.isSelected
+        ? "#fcb150"
+        : state.isFocused
+        ? "#ffe57b"
+        : provided.backgroundColor,
+      "&:hover": {
+        backgroundColor: state.isSelected ? "#fcb150" : "#ffe57b",
+      },
+    }),
+  };
   return (
     <Select
       isDisabled={isDisabled}
@@ -66,7 +100,18 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
       value={value}
       isOptionDisabled={isOptionDisabled}
       isMulti={isMulti}
-      components={Animated()}
+      components={customComponents}
+      // theme={(theme) => ({
+      //   ...theme,
+      //   borderRadius: 0,
+      //   colors: {
+      //     ...theme.colors,
+      //     primary25: 'hotpink',
+      //     primary: 'black',
+      //   },
+      // })}
+      styles={style}
+      // components={Animated()}
       {...rest}
     />
   );

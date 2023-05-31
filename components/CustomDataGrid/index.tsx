@@ -10,6 +10,7 @@ interface CustomDataGridProps {
   columns: TableColumn[];
   type: string;
   buttonArray?: ButtonConfig[];
+  isCheckbox?: boolean;
 }
 
 const CustomDataGrid: React.FC<CustomDataGridProps> = ({
@@ -18,6 +19,8 @@ const CustomDataGrid: React.FC<CustomDataGridProps> = ({
   columns,
   type,
   buttonArray,
+  isCheckbox,
+  ...props
 }) => {
   return (
     <>
@@ -27,6 +30,8 @@ const CustomDataGrid: React.FC<CustomDataGridProps> = ({
           columns={columns}
           pageSizeData={pageSizeData}
           buttonArray={buttonArray}
+          checkboxSelection={isCheckbox}
+          {...props}
         />
       ) : type == "2" ? (
         <TypeTwo
@@ -34,9 +39,15 @@ const CustomDataGrid: React.FC<CustomDataGridProps> = ({
           columns={columns}
           pageSizeData={pageSizeData}
           buttonArray={buttonArray}
+          checkboxSelection={isCheckbox}
         />
       ) : type == "3" ? (
-        <TypeThree rows={rows} columns={columns} pageSizeData={pageSizeData} />
+        <TypeThree
+          rows={rows}
+          columns={columns}
+          pageSizeData={pageSizeData}
+          checkboxSelection={isCheckbox}
+        />
       ) : (
         ""
       )}

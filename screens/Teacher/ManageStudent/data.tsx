@@ -10,7 +10,8 @@ export const selectFolderOption = [
   { id: 2, name: "/ Daily 2" },
   { id: 3, name: "/ Daily 3" },
 ];
-export const selectStatusOption = [
-  { id: 0, name: "Completed" },
-  { id: 1, name: "Draft" },
+export const selectProgram = [
+  { id: 0, name: "COP" },
+  { id: 1, name: "COP" },
+  { id: 1, name: "COP" },
 ];
