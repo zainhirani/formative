@@ -1,6 +1,4 @@
 import React from "react";
-import { Box, IconButton, InputAdornment } from "@mui/material";
-import { Search } from "@mui/icons-material";
 import {
   BoxWrapper,
   InputBoxWrapper,
@@ -30,7 +28,7 @@ const FiltersSection = () => {
   const onChange = () => {};
 
   return (
-    <BoxWrapper display="grid" gridTemplateColumns="repeat(12, 1fr)">
+    <BoxWrapper display="grid" gridTemplateColumns="repeat(11, 1fr)">
       <InputBoxWrapper gridColumn="span 3">
         <Typography gutterBottom className="custom-name">
           Name:

@@ -4,6 +4,12 @@ import { styled } from "@mui/material/styles";
 export const SelectBoxWrapper = styled(MuiBox)<BoxProps>(
   ({ theme }) =>
     ({
+      maxWidth: '30%',
+      display: "-webkit-box",
+      WebkitBoxOrient: "vertical",
+      WebkitLineClamp: 1,
+      overflow: "hidden",
+      textOverflow: "ellipsis",
       color: theme.palette.text.secondary,
     } as any),
 ) as (props: BoxProps) => JSX.Element;

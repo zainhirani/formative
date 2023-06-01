@@ -104,6 +104,11 @@ export const BoxMatrixDropDownWrapper = styled(MuiBox)<BoxProps>(
       padding: "0px 20px",
       borderBottom:" 1px solid",
       borderColor: theme?.additionalColors?.primaryBorderGrey,
+      "& .scoring-matrix":{
+        display: 'flex',
+        alignItems: 'center',
+        height: '100%'
+      },
     } as any),
 ) as (props: BoxProps) => JSX.Element;
 
@@ -127,7 +132,6 @@ export const BoxMatrixWrapper = styled(MuiBox)<BoxProps>(
       alignItems: 'center',
       padding: "20px 0px",
       "& .boxMatrix-b":{
-        // borderRight:"1px solid",
         borderColor: theme?.additionalColors?.primaryBorderGrey,
         "&:last-child":{
           borderRight: "none",
@@ -156,7 +160,7 @@ export const BoxMatrix = styled(MuiBox)<BoxProps>(
         alignItems: "center",
         gap: '40px',
         color:theme.palette.text.secondary,
-        wordSpacing: "20px"
+        wordSpacing: "10px"
       },
       
     } as any),
@@ -216,7 +220,8 @@ export const SelectBoxWrapper = styled(MuiBox)<BoxProps>(
 export const SchemeBoxWrapper = styled(MuiBox)<BoxProps>(
   ({ theme }) =>
     ({
-      padding: '10px 5px 10px 15px',
+      padding: '10px 15px 10px 15px',
+      display: 'block',
       borderLeft: "1px solid",
       borderColor: theme?.additionalColors?.primaryBorderGrey
     } as any),
