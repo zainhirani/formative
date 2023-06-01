@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box } from "@mui/material";
 import LocalPrintshopOutlinedIcon from "@mui/icons-material/LocalPrintshopOutlined";
 import CachedIcon from "@mui/icons-material/Cached";
@@ -13,8 +13,16 @@ import {
   pageSizeManageQuizDraft,
   rowsManageQuizDraft,
 } from "mock-data/Teacher/ManageQuizDraft";
+import SideDrawer from "components/Drawer";
+import DrawerQuestionsSection from "./DrawerSections/DrawerQuestionsSection";
+import DrawerStudentsSection from "./DrawerSections/DrawerStudentsSection";
+import DrawerQuestionsDetailSection from "./DrawerSections/DrawerQuestionsDetailSection";
+import QuizQuestionFormat from "components/QuizQuestionFormat";
 
 const TableSection = () => {
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [drawerOpenStudents, setDrawerOpenStudents] = useState(false);
+
   const config: ButtonConfig[] = [
     {
       key: "addStudents",
@@ -23,7 +31,7 @@ const TableSection = () => {
         return <Box>Add Students</Box>;
       },
       onClick: () => {
-        // console.log("Add Students");
+        setDrawerOpenStudents(true);
       },
     },
     {
@@ -95,10 +103,17 @@ const TableSection = () => {
         return <Box>Add Question</Box>;
       },
       onClick: () => {
-        // console.log("Add Question");
+        setDrawerOpen(true);
       },
     },
   ];
+
+  const handleDrawerClose = () => {
+    setDrawerOpen(false);
+  };
+  const handleDrawerCloseStudents = () => {
+    setDrawerOpenStudents(false);
+  };
   return (
     <>
       <BoxWrapper>
@@ -111,10 +126,28 @@ const TableSection = () => {
           buttonArray={configManageQuiz}
         />
       </BoxWrapper>
+
       <BoxButtonWrapper>
-        <Box>Test</Box>
+        <Box>Date</Box>
         <GroupedButton config={config} />
       </BoxButtonWrapper>
+
+      <SideDrawer
+        title="Add Questions"
+        open={drawerOpen}
+        onClose={handleDrawerClose}
+      >
+        <DrawerQuestionsSection />
+      </SideDrawer>
+      <SideDrawer
+        title="Add Students"
+        open={drawerOpenStudents}
+        onClose={handleDrawerCloseStudents}
+      >
+        <DrawerStudentsSection />
+      </SideDrawer>
+
+      <DrawerQuestionsDetailSection />
     </>
   );
 };

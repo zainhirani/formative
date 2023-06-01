@@ -27,7 +27,7 @@ const Control = (props: any) => {
     <components.Control {...props}>
       <Tooltip title={controlText} placement="top">
         <SelectBoxWrapper>{controlText}</SelectBoxWrapper>
-      </Tooltip>{" "}
+      </Tooltip>
       {children}
     </components.Control>
   );

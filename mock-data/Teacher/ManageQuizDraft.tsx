@@ -1,11 +1,82 @@
-import React from "react";
+import React, { useState } from "react";
 import { Grid, IconButton } from "@mui/material";
 import Image from "next/image";
 import trashSvg from "../../public/quiz/trash.svg";
 import { GridColDef } from "@mui/x-data-grid";
 import eyeSvg from "../../public/quiz/eye.svg";
+import { useAppState } from "contexts/AppStateContext";
 
 export const pageSizeManageQuizDraft = 1000000;
+
+export const funColumnsManageQuizDraft = (data: any) => {
+  return [
+    {
+      field: "order",
+      headerName: "Order",
+      minWidth: 120,
+      flex: 1,
+      renderCell: (params: any) => {
+        const num = params.formattedValue;
+        return (
+          <Grid container spacing={3} alignItems="center">
+            <Grid item xs>
+              {num}
+            </Grid>
+          </Grid>
+        );
+      },
+    },
+    {
+      field: "question",
+      headerName: "Question",
+      minWidth: 180,
+      flex: 1,
+    },
+    {
+      field: "id",
+      headerName: "ID/REV",
+      minWidth: 180,
+      flex: 1,
+    },
+    {
+      field: "type",
+      headerName: "Type",
+      minWidth: 180,
+      flex: 1,
+    },
+    {
+      field: "difficulty",
+      headerName: "Difficulty",
+      minWidth: 180,
+      flex: 1,
+    },
+    {
+      field: "categories",
+      headerName: "Categories",
+      minWidth: 300,
+      flex: 1,
+    },
+    {
+      field: "quick_actions",
+      headerName: "Quick Actions",
+      width: 150,
+      renderCell: (params: any) => {
+        return (
+          <Grid container spacing={3}>
+            <Grid item xs>
+              <IconButton>
+                <Image alt="quiz-logo" src={eyeSvg} />
+              </IconButton>
+              <IconButton>
+                <Image alt="quiz-logo" src={trashSvg} />
+              </IconButton>
+            </Grid>
+          </Grid>
+        );
+      },
+    },
+  ];
+};
 
 export const columnsManageQuizDraft: GridColDef[] = [
   {
@@ -59,10 +130,14 @@ export const columnsManageQuizDraft: GridColDef[] = [
     headerName: "Quick Actions",
     width: 150,
     renderCell: (params) => {
+      const { state, setState } = useAppState();
+      const handleClick = () => {
+        setState(true);
+      };
       return (
         <Grid container spacing={3}>
           <Grid item xs>
-            <IconButton>
+            <IconButton onClick={handleClick}>
               <Image alt="quiz-logo" src={eyeSvg} />
             </IconButton>
             <IconButton>

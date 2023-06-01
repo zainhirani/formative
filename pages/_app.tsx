@@ -19,6 +19,7 @@ import { initFirebase } from "platform/initFirebase";
 import ThemeProvider from "theme/Provider";
 import { initAnalytics } from "../platform/analytics";
 import "react-quill/dist/quill.snow.css";
+import { AppStateProvider } from "contexts/AppStateContext";
 
 const loadSideEffects = () => {
   // firebase initialization
@@ -108,16 +109,18 @@ class MyApp extends App<{
             <SessionProvider session={session}>
               <AuthContextProvider>
                 <QueryClientProvider client={queryClient}>
-                  <SnackbarProvider
-                    anchorOrigin={{
-                      vertical: "top",
-                      horizontal: "center",
-                    }}
-                  >
-                    <Hydrate state={pageProps.dehydratedState}>
-                      <Component {...pageProps} />
-                    </Hydrate>
-                  </SnackbarProvider>
+                  <AppStateProvider>
+                    <SnackbarProvider
+                      anchorOrigin={{
+                        vertical: "top",
+                        horizontal: "center",
+                      }}
+                    >
+                      <Hydrate state={pageProps.dehydratedState}>
+                        <Component {...pageProps} />
+                      </Hydrate>
+                    </SnackbarProvider>
+                  </AppStateProvider>
                   <ReactQueryDevtools initialIsOpen={false} />
                 </QueryClientProvider>
               </AuthContextProvider>
