@@ -1,13 +1,12 @@
 import React from "react";
 import PageLayout from "components/PageLayout";
 import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
-import { Box } from "@mui/material";
-import QuizQuestionFormat from "components/QuizQuestionFormat";
+import QuizesListing from "./QuizesListing";
 
 const QuizResultScreen = () => {
   return (
     <PageLayout title="Quiz Results" icon={<HelpRoundedIcon />}>
-      <QuizQuestionFormat />
+      <QuizesListing />
     </PageLayout>
   );
 };

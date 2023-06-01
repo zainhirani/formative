@@ -9,12 +9,14 @@ interface TypeThreeProps {
   columns: TableColumn[];
   buttonArray?: ButtonConfig[];
   checkboxSelection?: boolean;
+  onRowClick?: () => void;
 }
 
 const TypeThree: React.FC<TypeThreeProps> = ({
   rows,
   columns,
   buttonArray,
+  onRowClick = () => {},
   ...props
 }) => {
   const getRowHeight = () => {
@@ -26,6 +28,7 @@ const TypeThree: React.FC<TypeThreeProps> = ({
       <Grid container>
         <Grid item xs={12}>
           <DataGrid
+            onRowClick={onRowClick}
             pagination
             hideFooter
             rows={rows}

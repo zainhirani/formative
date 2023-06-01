@@ -12,6 +12,7 @@ interface CustomDataGridProps {
   type: string;
   buttonArray?: ButtonConfig[];
   isCheckbox?: boolean;
+  onRowClick?: () => void;
   setChecked: any;
 }
 
@@ -22,6 +23,7 @@ const CustomDataGrid: React.FC<CustomDataGridProps> = ({
   type,
   buttonArray,
   isCheckbox,
+  onRowClick = () => {},
   setChecked,
   ...props
 }) => {
@@ -29,6 +31,7 @@ const CustomDataGrid: React.FC<CustomDataGridProps> = ({
     <>
       {type == "1" ? (
         <TypeOne
+          onRowClick={onRowClick}
           rows={rows}
           columns={columns}
           pageSizeData={pageSizeData}
@@ -39,6 +42,7 @@ const CustomDataGrid: React.FC<CustomDataGridProps> = ({
         />
       ) : type == "2" ? (
         <TypeTwo
+          onRowClick={onRowClick}
           rows={rows}
           columns={columns}
           pageSizeData={pageSizeData}
@@ -47,6 +51,7 @@ const CustomDataGrid: React.FC<CustomDataGridProps> = ({
         />
       ) : type == "3" ? (
         <TypeThree
+          onRowClick={onRowClick}
           rows={rows}
           columns={columns}
           pageSizeData={pageSizeData}
