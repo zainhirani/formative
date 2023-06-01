@@ -21,6 +21,7 @@ const ManageCourseScreen = () => {
   const router = useRouter();
   
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [checked, setChecked] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
 
     const config: ButtonConfig[] = [
@@ -75,6 +76,7 @@ const ManageCourseScreen = () => {
                 pageSizeData={pageSizeManageCourse}
                 type={"1"}
                 isCheckbox={true}
+                setChecked={setChecked}
               />
             </TableWrapper>
             <Box sx={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>

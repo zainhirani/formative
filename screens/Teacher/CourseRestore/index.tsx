@@ -74,6 +74,7 @@ const CourseRestore = () => {
                 pageSizeData={pageSizeManageCourse}
                 type={"1"}
                 isCheckbox={true}
+                setChecked={setChecked}
               />
             </TableWrapper>
             <Box sx={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
