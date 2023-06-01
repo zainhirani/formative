@@ -18,6 +18,24 @@ export const BoxWrapper = styled(MuiBox)<BoxProps>(
     } as any),
 ) as (props: BoxProps) => JSX.Element;
 
+export const TableWrapper = styled(MuiBox)<BoxProps>(
+  ({ theme }) =>
+    ({
+      overflow: "scroll",
+      marginBottom: "20px",
+      height: "40vh",
+      marginBotton: "20px",
+      borderRadius: "5px",
+      boxShadow: "0px 0px 40px rgba(0, 0, 0, 0.1)",
+      border: "1px solid",
+      borderColor: theme?.additionalColors?.primaryBorderGrey,
+      "& .MuiDataGrid-row":{
+        cursor: "pointer"
+      }
+    } as any),
+) as (props: BoxProps) => JSX.Element;
+
+
 export const BoxPaginate = styled(MuiBox)<BoxProps>(
   ({ theme }) =>
     ({

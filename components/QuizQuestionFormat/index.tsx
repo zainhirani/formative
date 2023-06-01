@@ -181,7 +181,7 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
 
       {/* Question Section */}
 
-      <Typography variant="body1" gutterBottom pl={2}>
+      <Typography variant="body1" gutterBottom pl={2} pt={3}>
         {questionContext}
       </Typography>
 

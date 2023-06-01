@@ -1,7 +1,6 @@
 import React from "react";
 // import ReactQuill from "react-quill";
 // import { modules, formats, EditorToolbar } from "./EditorToolbar";
-import "react-quill/dist/quill.snow.css";
 
 export const Editor = () => {
   const [state, setState] = React.useState({ value: undefined });
