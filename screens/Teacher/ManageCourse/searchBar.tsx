@@ -13,10 +13,13 @@ import {
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
 import CustomSelect from "components/CustomSelect/CustomSelect";
+import { useSnackbar } from "notistack";
+import CloseIcon from '@mui/icons-material/Close';
 
 const SearchBar = () => {
 //   const searchQuiz = useFormattedMessage(messages.searchQuiz);
 
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const target_audience = [
     { value: "cop", label: "COP" },
     { value: "cop-24-pod-26", label: "COP-2024; POD-2024" },
@@ -71,9 +74,19 @@ const SearchBar = () => {
       <Box gridColumn="span 3">
         <ButtonWrapper
           startIcon={<AddCircleOutlineRoundedIcon />}
-          variant="contained"
+          variant="contained" 
+          onClick={()=>{
+            enqueueSnackbar("Updated selected courses and added to new course.", {
+              variant: "success",
+              action: (key) => (
+                <IconButton onClick={() => closeSnackbar(key)} size="small">
+                  <CloseIcon sx={{color: "#fff"}}/>
+                </IconButton>
+              ),
+            });
+          }}
         >
-          "Add to course"
+          Add to course
         </ButtonWrapper>
       </Box>
     </BoxWrapper>

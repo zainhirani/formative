@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PageLayout from 'components/PageLayout';
 import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
-import { Box, Input, Button } from '@mui/material';
+import { Box, Input, Button, IconButton } from '@mui/material';
 import SearchSection from '../ManageQuizScreen/searchSection';
 import { TextFieldStyled, ButtonWrapper , BoxWrapper, TableWrapper} from './Styled';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
@@ -15,10 +15,14 @@ import { columnsManageCourse, pageSizeManageCourse, rowsManageCourse } from 'moc
 import { useSnackbar } from "notistack";
 import { useRouter } from 'next/router';
 import SearchBar from './searchBar';
+import CloseIcon from '@mui/icons-material/Close';
 
 const ManageCourseScreen = () => {
   const router = useRouter();
-  const { enqueueSnackbar } = useSnackbar();
+  
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [selectedRows, setSelectedRows] = useState([]);
+
     const config: ButtonConfig[] = [
         {
           key: "addStudents",
@@ -42,15 +46,20 @@ const ManageCourseScreen = () => {
           },
         },
         {
-          key: "duplicate",
+          key: "delete",
           startIcon: <DeleteForeverIcon />,
           render: () => {
             return <Box>Delete</Box>;
           },
           onClick: () => {
-            // console.log("Duplicate");
-            enqueueSnackbar("Delete World", {
+            // console.log("Selected Rows:", selectedRows);
+            enqueueSnackbar("Selected course has been successfully deleted.", {
               variant: "error",
+              action: (key) => (
+                <IconButton onClick={() => closeSnackbar(key)} size="small">
+                  <CloseIcon sx={{color: "#fff"}}/>
+                </IconButton>
+              ),
             });
           },
         }

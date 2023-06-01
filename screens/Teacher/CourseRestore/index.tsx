@@ -57,7 +57,7 @@ const CourseRestore = () => {
           },
           onClick: () => {
             // console.log("Duplicate");
-            enqueueSnackbar("Delete World", {
+            enqueueSnackbar("Selected course has been successfully deleted.", {
               variant: "error",
             });
           },
