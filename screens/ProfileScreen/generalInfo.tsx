@@ -1,25 +1,21 @@
 import {
   Box,
-  CardContent,
   FormHelperText,
   Grid,
   IconButton,
   InputAdornment,
   MenuItem,
-  OutlinedInput,
   Select,
   TextField,
   Typography,
 } from "@mui/material";
-import { IconButtonWrapper } from "screens/RegisterScreen/Styled";
-
 import {
   CardHeaderWrapper,
   InputLabelWrapper,
-} from "screens/RegisterScreen/Styled";
+  IconButtonWrapper,
+  LoadingButtonWrapper,
+} from "./Styled";
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
-
-import { RegisterProps } from "../RegisterScreen/fields/formProps";
 import { genderSelect, programSelect } from "../RegisterScreen/fields/data";
 import messages from "./messages";
 import { useState, useEffect, useCallback } from "react";
@@ -27,12 +23,14 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDownOutlined
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import ArrowDropUpOutlinedIcon from "@mui/icons-material/ArrowDropUpOutlined";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { BoxWrapper } from "./Styled";
+import { BoxWrapper, ButtonWrapper } from "./Styled";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useRegister } from "providers/Auth";
+import { useRegisterDetail, useRegisterUpdate } from "providers/Auth";
 import { useSnackbar } from "notistack";
-import { TOKEN } from "configs";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
+import { useRouter } from "next/router";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required().label("FirstName"),
@@ -49,6 +47,7 @@ const validationSchema = Yup.object().shape({
   confirmPassword: Yup.string()
     .required("Please confirm your password")
     .oneOf([Yup.ref("password")], "Passwords do not match"),
+  currentPassword: Yup.string().required().min(6).label("Password"),
 });
 
 export const GeneralInfo = () => {
@@ -68,34 +67,35 @@ export const GeneralInfo = () => {
   const confirmPasswordPlaceholder = useFormattedMessage(
     messages.confirmPasswordPlaceholder,
   );
-  const [genders, setGenders] = useState("Select from the list");
-  const [programs, setPrograms] = useState("Select from the list");
-  const [year, setYear] = useState(2000);
+  const registerUpdate = useRegisterUpdate();
+  const registerDetail = useRegisterDetail();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const register = useRegister();
   const { enqueueSnackbar } = useSnackbar();
+  const [year, setYear] = useState(
+    registerDetail.data?.year_of_graduation || 2000,
+  );
+  const router = useRouter();
 
   useEffect(() => {
-    if (register.isSuccess) {
+    if (registerUpdate.isSuccess) {
       enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
         variant: "success",
       });
-      localStorage.setItem(TOKEN, register?.data.token);
     }
-  }, [register.isSuccess]);
+  }, [registerUpdate.isSuccess]);
 
   useEffect(() => {
-    if (register.isError) {
-      const errorMessage = register.error.message;
+    if (registerUpdate.isError) {
+      const errorMessage = registerUpdate.error.message;
       enqueueSnackbar(errorMessage, {
         variant: "error",
       });
     }
-  }, [register.isError]);
+  }, [registerUpdate.isError]);
 
   const onSubmit = useCallback((data: any) => {
-    register.mutate({
+    registerUpdate.mutate({
       email: data.email,
       password: data.password,
       username: data.userName,
@@ -109,6 +109,7 @@ export const GeneralInfo = () => {
       birth_place: data.birthPlace,
     });
   }, []);
+  // console.log(registerDetail.data, "registerDetail");
 
   const {
     handleChange,
@@ -120,20 +121,22 @@ export const GeneralInfo = () => {
     setFieldValue,
   } = useFormik({
     initialValues: {
-      firstName: "",
-      lastName: "",
-      nickName: "",
-      gender: "",
-      email: "",
-      rfuID: "",
-      program: "",
-      graduation: "",
-      birthPlace: "",
-      userName: "",
+      firstName: registerDetail.data?.first_name || "",
+      lastName: registerDetail.data?.last_name || "",
+      nickName: registerDetail.data?.nick_name || "",
+      gender: registerDetail.data?.gender || "",
+      email: registerDetail.data?.email || "",
+      rfuID: registerDetail.data?.rfu_id || "",
+      program: registerDetail.data?.program || "",
+      graduation: registerDetail.data?.year_of_graduation || 0,
+      birthPlace: registerDetail.data?.birth_place || "",
+      userName: registerDetail.data?.username || "",
       password: "",
       confirmPassword: "",
+      currentPassword: "",
     },
     validationSchema,
+    enableReinitialize: true,
     onSubmit,
   });
 
@@ -150,7 +153,7 @@ export const GeneralInfo = () => {
   };
   return (
     <>
-      <form>
+      <form onSubmit={handleSubmit}>
         <BoxWrapper sx={{ padding: "40px 50px" }}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={3}>
@@ -226,12 +229,11 @@ export const GeneralInfo = () => {
               <Select
                 labelId="demo-simple-select-standard-label"
                 id="demo-simple-select-standard"
-                value={genders}
+                value={values.gender}
                 onChange={(e) => {
                   if (setFieldValue) {
                     setFieldValue("gender", e.target.value);
                   }
-                  setGenders(e.target.value);
                 }}
                 variant="standard"
                 fullWidth
@@ -305,12 +307,11 @@ export const GeneralInfo = () => {
               <Select
                 labelId="demo-simple-select-standard-label"
                 id="demo-simple-select-standard"
-                value={programs}
+                value={values.program}
                 IconComponent={KeyboardArrowDownIcon}
                 onChange={(e) => {
                   if (setFieldValue) {
                     setFieldValue("program", e.target.value);
-                    setPrograms(e.target.value);
                   }
                 }}
                 variant="standard"
@@ -344,9 +345,12 @@ export const GeneralInfo = () => {
                 placeholder={graduationPlaceholder}
                 fullWidth
                 type="number"
-                value={year}
+                value={year || values.graduation}
                 onBlur={handleBlur}
-                onChange={handleChange}
+                onChange={(e) => {
+                  handleChange;
+                  setYear(parseInt(e.target.value));
+                }}
                 error={Boolean(touched.graduation && errors.graduation)}
                 variant="standard"
                 InputProps={{
@@ -532,6 +536,81 @@ export const GeneralInfo = () => {
             </Grid>
           </Box>
         </BoxWrapper>
+        <Box
+          sx={{
+            boxShadow: (theme) => theme.shadow.boxShadow,
+            display: "flex",
+            alignItems: "center",
+            mt: "120px",
+            background: "transparent",
+            width: "max-content",
+            position: "relative",
+          }}
+        >
+          <TextField
+            id="currentPassword"
+            name="currentPassword"
+            placeholder={passwordPlaceholder}
+            fullWidth
+            type="password"
+            value={values.currentPassword}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            variant="standard"
+            error={Boolean(touched.currentPassword && errors.currentPassword)}
+            sx={{
+              background: (theme) => theme.palette.primary.light,
+              borderRadius: "0",
+              width: { md: "350px", xs: "250px" },
+              position: "relative",
+              px: "10px",
+              ".MuiInputBase-root": {
+                "&::before": {
+                  borderWidth: 0,
+                },
+              },
+            }}
+          />
+          {touched.currentPassword && errors.currentPassword && (
+            <FormHelperText
+              sx={{ position: "absolute", bottom: "-45%" }}
+              error
+              id="standard-weight-helper-text-currentPassword"
+            >
+              {errors.currentPassword}
+            </FormHelperText>
+          )}
+          <LoadingButtonWrapper
+            startIcon={<ArrowCircleRightOutlinedIcon />}
+            variant="contained"
+            type="submit"
+            loading={registerUpdate.isLoading}
+            loadingPosition="start"
+            sx={{
+              background: (theme) => theme.palette.secondary.main,
+              width: { xs: "100%", md: "max-content" },
+              display: "flex",
+              borderRadius: "none",
+              ".MuiLoadingButton-loadingIndicator": {
+                top: "35%",
+                left: "30%",
+              },
+            }}
+          >
+            <FormattedMessage {...messages.submit} />
+          </LoadingButtonWrapper>
+          <ButtonWrapper
+            sx={{
+              borderTopRightRadius: (theme) => theme.borderRadius.radius1,
+              borderBottomRightRadius: (theme) => theme.borderRadius.radius1,
+            }}
+            startIcon={<HighlightOffIcon />}
+            variant="contained"
+            onClick={() => router.push("/dashboard")}
+          >
+            <FormattedMessage {...messages.cancel} />
+          </ButtonWrapper>
+        </Box>
       </form>
     </>
   );

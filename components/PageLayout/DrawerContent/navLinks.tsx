@@ -52,17 +52,17 @@ const MenuData = [
       {
         id: 1,
         title: "Create New",
-        link: "",
+        link: "/teacher/questions/add",
       },
       {
         id: 2,
         title: "Upload Questions",
-        link: "",
+        link: "/teacher/questions/upload",
       },
       {
         id: 3,
         title: "Manage Questions",
-        link: "",
+        link: "teacher/questions/manage",
       },
     ],
   },
@@ -71,7 +71,7 @@ const MenuData = [
     icon: (
       <Image src={STUDENTS_SMALL} lazyLoad={true} width={16} alt="Students" />
     ),
-    link: "",
+    link: "/teacher/students",
   },
   {
     title: "Courses",

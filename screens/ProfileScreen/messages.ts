@@ -179,9 +179,16 @@ export default defineMessages({
     id: `${scope}.hobbiesPlaceholder`,
     defaultMessage: "Enter your hobbies",
   },
-
+  profile: {
+    id: `${scope}.profile`,
+    defaultMessage: "Save & Continue",
+  },
   successMessage: {
     id: `${scope}.successMessage`,
     defaultMessage: "General Information Updated Successfully!",
+  },
+  profileSuccessMessage: {
+    id: `${scope}.profileSuccessMessage`,
+    defaultMessage: "Profile Updated Successfully!",
   },
 });

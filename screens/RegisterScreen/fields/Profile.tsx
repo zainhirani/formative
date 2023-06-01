@@ -46,7 +46,7 @@ import messages from "../messages";
 import { useEffect, useState, useCallback } from "react";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
-import { useProfile } from "providers/Auth";
+import { useProfile } from "providers/Users";
 import { useSnackbar } from "notistack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
@@ -88,17 +88,7 @@ const validationSchema = Yup.object().shape({
   hobbies: Yup.string().required().label("Hobbies"),
 });
 
-export const StepTwo = (
-  {
-    // touched,
-    // values,
-    // errors,
-    // handleBlur,
-    // handleChange,
-    // setFieldValue,
-    // disable,
-  },
-) => {
+export const StepTwo = ({}) => {
   const dobPlaceholder = useFormattedMessage(messages.dobPlaceholder);
   const pharmacyPlaceholder = useFormattedMessage(messages.pharmacyPlaceholder);
   const passwordPlaceholder = useFormattedMessage(messages.passwordPlaceholder);
