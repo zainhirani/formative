@@ -71,7 +71,7 @@ const MenuData = [
     icon: (
       <Image src={STUDENTS_SMALL} lazyLoad={true} width={16} alt="Students" />
     ),
-    link: "",
+    link: "/teacher/students",
   },
   {
     title: "Courses",
