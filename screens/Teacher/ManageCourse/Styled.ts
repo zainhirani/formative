@@ -7,7 +7,7 @@ export const BoxWrapper = styled(MuiBox)<BoxProps>(
     ({ theme }) =>
       ({
         width: "100%",
-        maxWidth: "530px",
+        maxWidth: "581px",
         boxShadow: "0px 0px 40px rgba(0, 0, 0, 0.1)",
         marginTop: "20px",
         marginBottom: "20px",
@@ -50,3 +50,17 @@ export const TextFieldStyled = styled(TextField)<TextFieldProps>(
         textTransform: "capitalize",
       } as any),
   ) as (props: ButtonProps) => JSX.Element;
+
+  
+export const TableWrapper = styled(MuiBox)<BoxProps>(
+  ({ theme }) =>
+    ({
+      width: "100%",
+      boxShadow: "0px 0px 40px rgba(0, 0, 0, 0.1)",
+      marginTop: "20px",
+      marginBottom: "20px",
+      borderRadius: "6px",
+      border: "1px solid",
+      borderColor: "#e0e0e0"
+    } as any),
+) as (props: BoxProps) => JSX.Element;

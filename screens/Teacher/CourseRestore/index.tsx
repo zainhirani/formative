@@ -1,39 +1,46 @@
-import React from 'react'
+import { Box } from '@mui/material';
+import { ButtonConfig } from 'components/GroupedButton/types';
 import PageLayout from 'components/PageLayout';
-import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
-import { Box, Input, Button } from '@mui/material';
+import { useSnackbar } from 'notistack';
+import React, {useState} from 'react'
 import SearchSection from '../ManageQuizScreen/searchSection';
-import { TextFieldStyled, ButtonWrapper , BoxWrapper, TableWrapper} from './Styled';
-import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
-import GroupedButton from 'components/GroupedButton';
-import { ButtonConfig } from "components/GroupedButton/types";
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import RestoreFromTrashOutlinedIcon from '@mui/icons-material/RestoreFromTrashOutlined';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import CustomDataGrid from 'components/CustomDataGrid';
-import { columnsManageCourse, pageSizeManageCourse, rowsManageCourse } from 'mock-data/Teacher/ManageCourse';
-import { useSnackbar } from "notistack";
+import { BoxWrapper, TableWrapper } from 'screens/Teacher/ManageCourse/Styled';
+import { TextFieldStyled } from '../ManageCourse/Styled';
+import { ButtonWrapper } from 'components/GroupedButton/Styled';
+import GroupedButton from 'components/GroupedButton';
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
+import { columnsManageCourse, pageSizeManageCourse, rowsManageCourse } from 'mock-data/Teacher/CourseRestore';
 import { useRouter } from 'next/router';
-import SearchBar from './searchBar';
+import SearchBar from '../ManageCourse/searchBar';
 
-const ManageCourseScreen = () => {
+const CourseRestore = () => {
   const router = useRouter();
+
+  const [checked, setChecked] = useState(false);
+  console.log(checked,'checked custom');
+
   const { enqueueSnackbar } = useSnackbar();
     const config: ButtonConfig[] = [
         {
           key: "addStudents",
-          startIcon: <RestoreFromTrashOutlinedIcon />,
+          startIcon: <CancelOutlinedIcon />,
           render: () => {
-            return <Box>Restore</Box>;
+            return <Box>Cancel</Box>;
           },
           onClick: () => {
+            router.push("/teacher/courses")
             // console.log("Add Students");
-            router.push("/teacher/courses/restore")
           },
         },
         {
           key: "save",
           startIcon: <ContentCopyIcon />,
+          disabled: true,
           render: () => {
             return <Box>Duplicate</Box>;
           },
@@ -44,6 +51,7 @@ const ManageCourseScreen = () => {
         {
           key: "duplicate",
           startIcon: <DeleteForeverIcon />,
+          disabled: true,
           render: () => {
             return <Box>Delete</Box>;
           },
@@ -97,4 +105,4 @@ const ManageCourseScreen = () => {
   )
 }
 
-export default ManageCourseScreen;
+export default CourseRestore
