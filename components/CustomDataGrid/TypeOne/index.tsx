@@ -10,6 +10,7 @@ interface TypeOneProps {
   columns: TableColumn[];
   buttonArray?: ButtonConfig[];
   checkboxSelection?: boolean;
+  onRowClick?: () => void;
 }
 
 const TypeOne: React.FC<TypeOneProps> = ({
@@ -17,6 +18,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
   rows,
   columns,
   buttonArray,
+  onRowClick = () => {},
   ...props
 }) => {
   const [page, setPage] = useState(1);
@@ -45,6 +47,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
       <Grid container>
         <Grid item xs={12}>
           <DataGrid
+            onRowClick={onRowClick}
             pagination
             hideFooter
             rows={paginatedRows}
