@@ -1,9 +1,10 @@
+// @ts-nocheck
 import React from "react";
 import { ButtonConfig, TableColumn, TableRow } from "./type";
+import TypeFour from "./TypeFour";
 import TypeOne from "./TypeOne";
 import TypeThree from "./TypeThree";
 import TypeTwo from "./TypeTwo";
-import TypeFour from "./TypeFour";
 
 interface CustomDataGridProps {
   pageSizeData: number;
@@ -12,6 +13,7 @@ interface CustomDataGridProps {
   type: string;
   buttonArray?: ButtonConfig[];
   isCheckbox?: boolean;
+  setChecked?: any;
 }
 
 const CustomDataGrid: React.FC<CustomDataGridProps> = ({
@@ -21,6 +23,7 @@ const CustomDataGrid: React.FC<CustomDataGridProps> = ({
   type,
   buttonArray,
   isCheckbox,
+  setChecked,
   ...props
 }) => {
   return (
@@ -32,6 +35,7 @@ const CustomDataGrid: React.FC<CustomDataGridProps> = ({
           pageSizeData={pageSizeData}
           buttonArray={buttonArray}
           checkboxSelection={isCheckbox}
+          setChecked={setChecked}
           {...props}
         />
       ) : type == "2" ? (

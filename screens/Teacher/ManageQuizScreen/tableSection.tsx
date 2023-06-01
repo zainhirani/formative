@@ -71,7 +71,7 @@ const TableSection = () => {
   ];
   return (
     <BoxWrapper>
-      <CustomDataGrid
+      <CustomDataGrid      
         rows={rowsManageQuiz}
         columns={columnsManageQuiz}
         pageSizeData={pageSizeManageQuiz}
