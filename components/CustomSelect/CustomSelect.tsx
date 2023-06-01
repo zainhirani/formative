@@ -1,15 +1,15 @@
-import React, { FC, ReactNode, useState } from "react";
+import React, { FC, ReactNode } from "react";
+import { Tooltip } from "@mui/material";
 import { components } from "react-select";
 import AutoComplete from "components/AutoComplete";
 import { BoxWrapper, SelectBoxWrapper } from "./Styled";
 
 interface CustomSelectProps {
-  options: any[];
+  options: Array<{}>;
   placeholder: string;
   config?: string;
   controlText?: string;
   dropdownIcon?: ReactNode;
-  onChange?: (value: any) => void;
 }
 
 const CustomDropdownIndicator = (props: any) => {
@@ -25,7 +25,10 @@ const Control = (props: any) => {
   const { children, controlText } = props;
   return (
     <components.Control {...props}>
-      <SelectBoxWrapper>{controlText}</SelectBoxWrapper> {children}
+      <Tooltip title={controlText} placement="top">
+        <SelectBoxWrapper>{controlText}</SelectBoxWrapper>
+      </Tooltip>{" "}
+      {children}
     </components.Control>
   );
 };
@@ -35,8 +38,9 @@ const CustomSelect: FC<CustomSelectProps> = ({
   dropdownIcon,
   options,
   placeholder,
-  onChange,
 }) => {
+  const onChange = () => {};
+
   const style = {
     control: (provided: any, state: any) => ({
       ...provided,
@@ -85,20 +89,11 @@ const CustomSelect: FC<CustomSelectProps> = ({
     indicatorSeparator: () => ({ display: "none" }),
   };
 
-  const [selectedValue, setSelectedValue] = useState<any | null>(null);
-
-  const handleChange = (selectedOption: any) => {
-    setSelectedValue(selectedOption);
-    if (onChange) {
-      onChange(selectedOption);
-    }
-  };
-
   return (
     <BoxWrapper>
       <AutoComplete
         options={options}
-        onChange={handleChange}
+        onChange={onChange}
         placeholder={placeholder}
         customComponents={{
           DropdownIndicator: (props) => (

@@ -1,10 +1,10 @@
 import React from "react";
 import { BottomNavigationActionTypeMap, IconButton } from "@mui/material";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import MenuIcon from "@mui/icons-material/Menu";
 import Typography from "@mui/material/Typography";
 import RightMenu from "./RightMenu";
 import { AppBar, BoxWrapper, Toolbar } from "./Styled";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 interface BarComponentProps {
   open?: boolean;

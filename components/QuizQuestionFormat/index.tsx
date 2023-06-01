@@ -2,14 +2,14 @@ import React, { FC } from "react";
 import {
   Box,
   Grid,
-  useMediaQuery,
-  useTheme,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import List from "@mui/material/List";
@@ -18,8 +18,8 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Paper from "@mui/material/Paper";
-import SideDrawer from "components/Drawer";
 import Typography from "@mui/material/Typography";
+import SideDrawer from "components/Drawer";
 
 type QuizQuestionFormatProps = {
   title?: string;
@@ -236,6 +236,7 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
 
           return (
             <Paper
+              key={index}
               elevation={6}
               sx={{
                 borderRadius: "5px",

@@ -1,5 +1,5 @@
 import React, { FocusEvent, Ref } from "react";
-import Select, { components, Props as SelectProps } from "react-select";
+import Select, { Props as SelectProps, components } from "react-select";
 import Animated from "react-select/animated";
 
 interface CustomComponents {
