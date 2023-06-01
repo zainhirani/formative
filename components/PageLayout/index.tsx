@@ -8,6 +8,8 @@ interface Props {
   children?: JSX.Element;
   title?: any;
   icon?: any;
+  subText?: string;
+  iconAngle?: boolean;
 }
 
 const PageLayout = (props: Props) => {
@@ -40,6 +42,8 @@ const PageLayout = (props: Props) => {
       <AppBarComponent
         title={props.title}
         icon={props.icon}
+        iconAngle={props.iconAngle}
+        subText={props.subText}
         open={open}
         clickHandler={handleDrawerOpen}
       />

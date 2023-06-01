@@ -39,6 +39,7 @@ export const FieldBoxWrapper = styled(MuiBox)<BoxProps>(
       alignItems: "center",
       flexDirection: "row",
       justifyContent: "center",
+      height: "60px",
     } as any),
 ) as (props: BoxProps) => JSX.Element;
 

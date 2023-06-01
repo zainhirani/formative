@@ -2,14 +2,14 @@ import React, { FC } from "react";
 import {
   Box,
   Grid,
-  useMediaQuery,
-  useTheme,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import List from "@mui/material/List";
@@ -18,8 +18,8 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Paper from "@mui/material/Paper";
-import SideDrawer from "components/Drawer";
 import Typography from "@mui/material/Typography";
+import SideDrawer from "components/Drawer";
 
 type QuizQuestionFormatProps = {
   title?: string;
@@ -64,21 +64,29 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
   children,
 }): JSX.Element => {
   const [checked, setChecked] = React.useState([0]);
+  const [textColors, setTextColors] = React.useState([]);
   const theme = useTheme();
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleToggle = (value: number) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
+    const newTextColors = [...textColors];
 
     if (currentIndex === -1) {
       newChecked.push(value);
+      newTextColors.push("#225A41"); // Change the text color to red when checked
     } else {
       newChecked.splice(currentIndex, 1);
+      newTextColors.splice(currentIndex, 1);
     }
 
     setChecked(newChecked);
+    setTextColors(newTextColors);
   };
+  // const handleToggle = (value: number) => () => {
+  //   setChecked(value);
+  // };
 
   return (
     <SideDrawer open={isOpen} onClose={onClose} title={title}>
@@ -102,7 +110,11 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
                 }}
               >
                 <Box display="flex" alignItems="center">
-                  <Typography variant="body2" component="span">
+                  <Typography
+                    sx={{ color: (theme) => theme.palette.text.secondary }}
+                    variant="body2"
+                    component="span"
+                  >
                     Question ID No :
                   </Typography>
                   <Typography
@@ -124,7 +136,11 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
                 }}
               >
                 <Box display="flex" alignItems="center">
-                  <Typography variant="body2" component="span">
+                  <Typography
+                    sx={{ color: (theme) => theme.palette.text.secondary }}
+                    variant="body2"
+                    component="span"
+                  >
                     Average Time :
                   </Typography>
                   <Typography
@@ -146,7 +162,11 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
                 }}
               >
                 <Box display="flex" alignItems="center">
-                  <Typography variant="body2" component="span">
+                  <Typography
+                    sx={{ color: (theme) => theme.palette.text.secondary }}
+                    variant="body2"
+                    component="span"
+                  >
                     Average Attempts :
                   </Typography>
                   <Typography
@@ -162,8 +182,12 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Box sx={{ p: 2, height: "100%" }}>
                 <Box display="flex" alignItems="center">
-                  <Typography variant="body2" component="span">
-                    Difficult :
+                  <Typography
+                    sx={{ color: (theme) => theme.palette.text.secondary }}
+                    variant="body2"
+                    component="span"
+                  >
+                    Difficulty :
                   </Typography>
                   <Typography
                     variant="body2"
@@ -181,7 +205,7 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
 
       {/* Question Section */}
 
-      <Typography variant="body1" gutterBottom pl={2} pt={3}>
+      <Typography sx={{ mt: "30px" }} variant="body1" gutterBottom pl={2}>
         {questionContext}
       </Typography>
 
@@ -199,7 +223,7 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
       <List
         sx={{
           width: "100%",
-          maxWidth: 360,
+          maxWidth: { xs: 360, md: 500 },
 
           paddingLeft: "10px",
         }}
@@ -212,25 +236,41 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
 
           return (
             <Paper
+              key={index}
               elevation={6}
-              sx={{ borderRadius: "5px", marginBottom: "10px" }}
+              sx={{
+                borderRadius: "5px",
+                marginBottom: "10px",
+                boxShadow: " 0px 0px 40px rgba(0, 0, 0, 0.1)",
+              }}
             >
               <ListItem key={index} disablePadding>
                 <ListItemButton
                   role={undefined}
-                  onClick={handleToggle(value)}
+                  onClick={handleToggle(index)}
                   dense
                 >
-                  <ListItemIcon>
+                  <ListItemIcon sx={{ minWidth: "max-content" }}>
                     <Checkbox
                       edge="start"
-                      checked={checked.indexOf(value) !== -1}
+                      // checked={checked.indexOf(index) !== -1}
+                      checked={checked.indexOf(index) !== -1}
                       tabIndex={-1}
                       disableRipple
                       inputProps={{ "aria-labelledby": labelId }}
+                      sx={{
+                        ".MuiSvgIcon-root": {
+                          color: (theme) =>
+                            theme.additionalColors?.primaryGreen,
+                        },
+                      }}
                     />
                   </ListItemIcon>
-                  <ListItemText id={labelId} primary={`${value.optionText}`} />
+                  <ListItemText
+                    id={labelId}
+                    primary={`${value.optionText}`}
+                    sx={{ color: textColors[index] }}
+                  />
                 </ListItemButton>
               </ListItem>
             </Paper>
@@ -296,15 +336,18 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
         >
           <Table>
             <TableHead>
-              <TableRow>
-                <TableCell colSpan={isSmScreen ? 2 : 1}>
+              <TableRow sx={{ color: (theme) => theme.palette.primary.main }}>
+                <TableCell
+                  sx={{ color: "inherit" }}
+                  colSpan={isSmScreen ? 2 : 1}
+                >
                   # of times answered
                 </TableCell>
-                <TableCell>A</TableCell>
-                <TableCell>B</TableCell>
-                <TableCell>C</TableCell>
-                <TableCell>D</TableCell>
-                <TableCell>E</TableCell>
+                <TableCell sx={{ color: "inherit" }}>A</TableCell>
+                <TableCell sx={{ color: "inherit" }}>B</TableCell>
+                <TableCell sx={{ color: "inherit" }}>C</TableCell>
+                <TableCell sx={{ color: "inherit" }}>D</TableCell>
+                <TableCell sx={{ color: "inherit" }}>E</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

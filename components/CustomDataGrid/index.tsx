@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 import { ButtonConfig, TableColumn, TableRow } from "./type";
 import TypeOne from "./TypeOne";
@@ -12,6 +13,7 @@ interface CustomDataGridProps {
   buttonArray?: ButtonConfig[];
   isCheckbox?: boolean;
   onRowClick?: () => void;
+  setChecked: any;
 }
 
 const CustomDataGrid: React.FC<CustomDataGridProps> = ({
@@ -22,6 +24,7 @@ const CustomDataGrid: React.FC<CustomDataGridProps> = ({
   buttonArray,
   isCheckbox,
   onRowClick = () => {},
+  setChecked,
   ...props
 }) => {
   return (
@@ -34,6 +37,7 @@ const CustomDataGrid: React.FC<CustomDataGridProps> = ({
           pageSizeData={pageSizeData}
           buttonArray={buttonArray}
           checkboxSelection={isCheckbox}
+          setChecked={setChecked}
           {...props}
         />
       ) : type == "2" ? (
