@@ -1,12 +1,12 @@
 import type { NextPage } from "next";
-import CreateNew from "screens/Teacher/QuestionsScreen/CreateNew";
+import CreateNewScreen from "screens/Questions/CreateNew";
 // import Button from "theme/Button";
 
 // import Head from "next/head";
 // import Image from "next/image";
 
 const QuestionCreate: NextPage = () => {
-  return <CreateNew />;
+  return <CreateNewScreen />;
 };
 
 export default QuestionCreate;
