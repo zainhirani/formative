@@ -4,11 +4,14 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Typography from "@mui/material/Typography";
 import RightMenu from "./RightMenu";
 import { AppBar, BoxWrapper, Toolbar } from "./Styled";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 interface BarComponentProps {
   open?: boolean;
   clickHandler?: any;
-  title?: any;
+  title?: string;
+  iconAngle?: false;
+  subText?: string;
   icon?: any;
 }
 
@@ -17,6 +20,8 @@ const AppBarComponent: React.FC<BarComponentProps> = ({
   clickHandler,
   title,
   icon,
+  iconAngle,
+  subText,
 }) => {
   return (
     <>
@@ -56,21 +61,56 @@ const AppBarComponent: React.FC<BarComponentProps> = ({
                 sx={{ color: (theme) => theme.palette.primary.light }}
               />
             </IconButton>
-            <Typography
-              gutterBottom
-              variant="h4"
-              m={0}
-              sx={{
-                fontSize: "18px",
-                lineHeight: "21px",
-                fontWeight: "400",
-              }}
-            >
-              {title}
-              <IconButton sx={{ color: (theme) => theme.palette.primary.main }}>
-                {icon}
-              </IconButton>
-            </Typography>
+            {iconAngle ? (
+              <>
+                <Typography
+                  gutterBottom
+                  variant="h4"
+                  m={0}
+                  sx={{
+                    fontSize: "18px",
+                    display: "flex",
+                    alignItems: "center",
+                    lineHeight: "21px",
+                    fontWeight: "400",
+                    color: (theme) => theme.palette.text.secondary,
+                  }}
+                >
+                  {title}
+                  <IconButton sx={{ p: 0 }}>
+                    <ChevronRightIcon fontSize="large" />
+                  </IconButton>
+                  <Typography
+                    sx={{ color: (theme) => theme.palette.primary.dark }}
+                  >
+                    {subText}
+                  </Typography>
+                  <IconButton
+                    sx={{ color: (theme) => theme.palette.primary.main }}
+                  >
+                    {icon}
+                  </IconButton>
+                </Typography>
+              </>
+            ) : (
+              <Typography
+                gutterBottom
+                variant="h4"
+                m={0}
+                sx={{
+                  fontSize: "18px",
+                  lineHeight: "21px",
+                  fontWeight: "400",
+                }}
+              >
+                {title}
+                <IconButton
+                  sx={{ color: (theme) => theme.palette.primary.main }}
+                >
+                  {icon}
+                </IconButton>
+              </Typography>
+            )}
           </BoxWrapper>
           <BoxWrapper>
             <RightMenu />

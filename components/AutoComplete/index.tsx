@@ -1,34 +1,26 @@
 import React, { FocusEvent, Ref } from "react";
-import Select, { components } from "react-select";
+import Select, { components, Props as SelectProps } from "react-select";
 import Animated from "react-select/animated";
 
 interface CustomComponents {
   DropdownIndicator?: typeof components.DropdownIndicator;
   Control?: React.ComponentType<any>;
 }
-interface AutoCompleteProps {
+
+interface AutoCompleteProps<OptionType = any> extends SelectProps<OptionType> {
   className?: string;
-  options: any[];
-  onInputChange?: (inputValue: string, actionMeta: any) => void;
-  onChange: (value: any, actionMeta: any) => void;
   handleBlur?: (event: FocusEvent<any>) => void;
   customStyles?: any;
-  maxMenuHeight?: any;
-  isClearable?: boolean;
-  placeholder?: string;
-  isLoading?: boolean;
-  value?: any;
-  isMulti?: boolean;
   handleScroll?: () => void;
   handleOnFocus?: () => void;
   selectRef?: Ref<any>;
-  isOptionDisabled?: (option: any) => boolean;
+  isOptionDisabled?: (option: OptionType) => boolean;
   isDisabled?: boolean;
   closeMenuOnSelect?: boolean;
   customComponents?: CustomComponents;
 }
 
-const AutoComplete: React.FC<AutoCompleteProps> = ({
+const AutoComplete = <OptionType extends any = any>({
   className = "",
   options,
   onInputChange = () => {},
@@ -49,7 +41,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
   closeMenuOnSelect = true,
   customComponents,
   ...rest
-}) => {
+}: AutoCompleteProps<OptionType>) => {
   const style = {
     control: (provided: any, state: any) => ({
       ...provided,
@@ -78,7 +70,6 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
       isOptionDisabled={isOptionDisabled}
       isMulti={isMulti}
       components={customComponents}
-      // components={Animated()}
       {...rest}
     />
   );

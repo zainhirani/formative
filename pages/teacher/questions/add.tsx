@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import CreateNew from "screens/Questions/CreateNew/index";
+import CreateNew from "screens/Teacher/QuestionsScreen/CreateNew";
 // import Button from "theme/Button";
 
 // import Head from "next/head";
