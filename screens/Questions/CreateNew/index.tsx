@@ -145,8 +145,10 @@ const CreateNewScreen = () => {
   return (
     <>
       <PageLayout
+        iconAngle={true}
+        subText="Create New Questions"
         icon={<HelpRoundedIcon />}
-        title={"Questions > Create New Question"}
+        title={"Questions"}
       >
         <form onSubmit={handleSubmit}>
           <Box sx={{ display: "flex", minHeight: "800px" }}>

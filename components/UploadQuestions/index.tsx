@@ -10,16 +10,55 @@ import {
   Typography,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
+import { useRouter } from "next/router";
+import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
+import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
+import { ButtonConfig } from "components/GroupedButton/types";
+import GroupedButton from "components/GroupedButton";
 
 export const UploadQuestions = () => {
+  const router = useRouter();
+  const config: ButtonConfig[] = [
+    {
+      key: "submit",
+      startIcon: <FileUploadOutlinedIcon />,
+      render: () => {
+        return <Box>Upload</Box>;
+      },
+      onClick: () => {
+        // console.log("Add Students");
+      },
+    },
+    {
+      key: "duplicate",
+      startIcon: <CancelOutlinedIcon />,
+      render: () => {
+        return <Box>Cancel</Box>;
+      },
+      onClick: () => {
+        // console.log("Save");
+        router.back();
+      },
+    },
+  ];
+
   return (
-    <form>
+    <form
+      style={{
+        height: "80vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       <Box
         sx={{
           display: "flex",
           maxWidth: "670px",
           width: "100%",
-          margin: "40px auto",
+          margin: "0",
           boxShadow: "0 0 40px 0 rgb(0 0 0 / 10%)",
           borderRadius: "6px",
           overflow: "hidden",
@@ -93,6 +132,18 @@ export const UploadQuestions = () => {
             <Typography variant="body2" sx={{ color: "#7F7F7F" }}>
               No files uploaded yet!
             </Typography>
+            <Button
+              startIcon={<CheckCircleOutlinedIcon />}
+              sx={{
+                color: "#7F7F7F",
+                textTransform: "capitalize",
+                display: "flex",
+                alignItems: "start",
+                textAlign: "left",
+              }}
+            >
+              Select exam soft formatted question file to upload.
+            </Button>
           </Box>
           <Box>
             <Divider sx={{ margin: "10px -20px" }} />
@@ -103,16 +154,19 @@ export const UploadQuestions = () => {
               id="standard-basic"
               label="Start typing here..."
               variant="standard"
+              sx={{
+                ".MuiInputBase-root": {
+                  "&::before": {
+                    display: "none",
+                  },
+                  "&::after": {
+                    display: "none",
+                  },
+                },
+              }}
             />
             <Divider sx={{ margin: "10px -20px" }} />
-            <ButtonGroup
-              variant="contained"
-              aria-label="outlined buttons group"
-              sx={{ marginTop: "20px" }}
-            >
-              <Button>Upload</Button>
-              <Button>Cancel</Button>
-            </ButtonGroup>
+            <GroupedButton config={config} />
           </Box>
         </Box>
       </Box>
