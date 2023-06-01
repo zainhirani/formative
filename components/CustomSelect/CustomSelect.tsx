@@ -1,8 +1,8 @@
 import React, { FC, ReactNode } from "react";
+import { Tooltip } from "@mui/material";
 import { components } from "react-select";
 import AutoComplete from "components/AutoComplete";
 import { BoxWrapper, SelectBoxWrapper } from "./Styled";
-import { Tooltip } from "@mui/material";
 
 interface CustomSelectProps {
   options: Array<{}>;
