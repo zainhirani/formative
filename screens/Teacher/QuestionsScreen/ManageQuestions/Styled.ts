@@ -17,19 +17,18 @@ export const BoxWrapper = styled(MuiBox)<BoxProps>(
     } as any),
 ) as (props: BoxProps) => JSX.Element;
 
-export const TextFieldStyled = styled(TextField)<TextFieldProps>(
+export const SelectBoxWrapper = styled(MuiBox)<BoxProps>(
   ({ theme }) =>
     ({
-      borderWidth: "0px",
-      borderRadius: "0px",
+      borderWidth: "1px",
+      borderStyle: "solid",
+      borderColor: theme.additionalColors?.primaryBorderGrey,
+      padding: "10px 20px",
       width: "100%",
-      border: "0px",
-      ".MuiOutlinedInput-notchedOutline": {
-        border: "none",
-        color: "#404040",
-      },
+      display: "flex",
+      alignItems: "center",
     } as any),
-) as (props: TextFieldProps) => JSX.Element;
+) as (props: BoxProps) => JSX.Element;
 
 export const ButtonWrapper = styled(Button)<ButtonProps>(
   ({ theme }) =>

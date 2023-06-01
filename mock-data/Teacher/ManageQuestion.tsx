@@ -12,6 +12,29 @@ import FormattedMessage from "theme/FormattedMessage";
 import messages from "screens/Teacher/ManageQuizScreen/messages";
 import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 
+export const facultySelect = [
+  { value: "David Harrison", label: "David Harrison" },
+  { value: "John Doe", label: "John Doe" },
+];
+
+export const folderSelect = [
+  { value: "MedChem", label: "MedChem" },
+  { value: "Physics", label: "Physics" },
+  { value: "Maths", label: "Maths" },
+];
+
+export const typeSelect = [
+  { value: "MCR", label: "MCR" },
+  { value: "NCR", label: "NCR" },
+  { value: "SCR", label: "SCR" },
+];
+
+export const categorySelect = [
+  { value: "BC06- Amino Acids", label: "BC06- Amino Acids" },
+  { value: "Appendix", label: "Appendix" },
+  { value: "B01 Biochemistry", label: "B01 Biochemistry" },
+];
+
 export const pageSizeManageQuestion = 11;
 
 export const columnsManageQuestion: GridColDef[] = [

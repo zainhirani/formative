@@ -1,14 +1,15 @@
-import React, { FC, ReactNode } from "react";
+import React, { FC, ReactNode, useState } from "react";
 import { components } from "react-select";
 import AutoComplete from "components/AutoComplete";
 import { BoxWrapper, SelectBoxWrapper } from "./Styled";
 
 interface CustomSelectProps {
-  options: Array<{}>;
+  options: any[];
   placeholder: string;
   config?: string;
   controlText?: string;
   dropdownIcon?: ReactNode;
+  onChange?: (value: any) => void;
 }
 
 const CustomDropdownIndicator = (props: any) => {
@@ -34,9 +35,8 @@ const CustomSelect: FC<CustomSelectProps> = ({
   dropdownIcon,
   options,
   placeholder,
+  onChange,
 }) => {
-  const onChange = () => {};
-
   const style = {
     control: (provided: any, state: any) => ({
       ...provided,
@@ -85,11 +85,20 @@ const CustomSelect: FC<CustomSelectProps> = ({
     indicatorSeparator: () => ({ display: "none" }),
   };
 
+  const [selectedValue, setSelectedValue] = useState<any | null>(null);
+
+  const handleChange = (selectedOption: any) => {
+    setSelectedValue(selectedOption);
+    if (onChange) {
+      onChange(selectedOption);
+    }
+  };
+
   return (
     <BoxWrapper>
       <AutoComplete
         options={options}
-        onChange={onChange}
+        onChange={handleChange}
         placeholder={placeholder}
         customComponents={{
           DropdownIndicator: (props) => (

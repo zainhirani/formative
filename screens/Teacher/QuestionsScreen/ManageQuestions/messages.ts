@@ -9,32 +9,44 @@ import { defineMessages } from "react-intl";
 export const scope = "app.screens.ManageQuestionsScreen";
 
 export default defineMessages({
-  searchQuiz: {
-    id: `${scope}.searchQuiz`,
-    defaultMessage: "Search quiz",
+  faculty: {
+    id: `${scope}.faculty`,
+    defaultMessage: "Faculty:",
   },
-  selectCourse: {
-    id: `${scope}.selectCourse`,
-    defaultMessage: "Select Course",
+  facultyPlaceholder: {
+    id: `${scope}.facultyPlaceholder`,
+    defaultMessage: "David Harrison",
   },
-  selectFolder: {
-    id: `${scope}.selectFolder`,
-    defaultMessage: "Select Folder",
+  folder: {
+    id: `${scope}.folder`,
+    defaultMessage: "Folder:",
   },
-  selectStatus: {
-    id: `${scope}.selectStatus`,
-    defaultMessage: "Select Status",
+  folderPlaceholder: {
+    id: `${scope}.folderPlaceholder`,
+    defaultMessage: "MedChem",
+  },
+  type: {
+    id: `${scope}.type`,
+    defaultMessage: "Type:",
+  },
+  typePlaceholder: {
+    id: `${scope}.typePlaceholder`,
+    defaultMessage: "Select",
+  },
+  category: {
+    id: `${scope}.category`,
+    defaultMessage: "Category:",
+  },
+  categoryPlaceholder: {
+    id: `${scope}.categoryPlaceholder`,
+    defaultMessage: "Select Multiple",
+  },
+  categories: {
+    id: `${scope}.categories`,
+    defaultMessage: "Categories:",
   },
   createNew: {
     id: `${scope}.createNew`,
     defaultMessage: "Create New",
-  },
-  statusCompleted: {
-    id: `${scope}.statusCompleted`,
-    defaultMessage: "Completed",
-  },
-  statusDraft: {
-    id: `${scope}.statusDraft`,
-    defaultMessage: "Draft",
   },
 });
