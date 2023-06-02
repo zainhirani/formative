@@ -1,11 +1,11 @@
 import React, { FC, useState } from "react";
-import { Box, Typography, Checkbox, FormControlLabel } from "@mui/material";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import { Box, Checkbox, FormControlLabel, Typography } from "@mui/material";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
-import Image from "theme/Image";
 import FormattedMessage from "theme/FormattedMessage";
+import Image from "theme/Image";
 
 import messages from "./messages";
 import { BoxWrapper, ButtonWrapper } from "./Styled";
