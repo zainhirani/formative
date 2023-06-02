@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import HomeScreen from "screens/HomeScreen";
 import APP_ROUTES from "constants/RouteConstants";
+import type { NextPage } from "next";
+import HomeScreen from "screens/HomeScreen";
 // import Button from "theme/Button";
 // import Head from "next/head";
 // import Image from "next/image";
