@@ -19,7 +19,6 @@ import { getLocale, getMessages } from "i18n";
 import { initFirebase } from "platform/initFirebase";
 import ThemeProvider from "theme/Provider";
 import { initAnalytics } from "../platform/analytics";
-import "react-quill/dist/quill.snow.css";
 
 const loadSideEffects = () => {
   // firebase initialization

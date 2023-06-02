@@ -58,6 +58,7 @@ export const UploadQuestions = () => {
           display: "flex",
           maxWidth: "670px",
           width: "100%",
+          flexDirection: { md: "row", xs: "column" },
           margin: "0",
           boxShadow: "0 0 40px 0 rgb(0 0 0 / 10%)",
           borderRadius: "6px",
@@ -73,7 +74,7 @@ export const UploadQuestions = () => {
             alignItems: "center",
             justifyContent: "center",
             background: "#404040",
-            width: "50%",
+            width: { md: "50%", xs: "100%" },
             minHeight: "500px",
           }}
         >
@@ -122,7 +123,7 @@ export const UploadQuestions = () => {
             justifyContent: "space-between",
             background: "#fff",
             padding: "20px",
-            width: "50%",
+            width: { md: "50%", xs: "100%" },
           }}
         >
           <Box>

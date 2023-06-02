@@ -65,7 +65,6 @@ const categorySelect = [
   { value: "MC07 - Diuretics", label: "MC07 - Diuretics" },
 ];
 const facultyCategorySelect = [
-  { value: 1, label: "Select Multiple" },
   { value: "BC06- Amino Acids", label: "BC06- Amino Acids" },
   { value: "Appendix", label: "Appendix" },
   { value: "B01 Biochemistry", label: "B01 Biochemistry" },
@@ -76,9 +75,8 @@ const CreateNewScreen = () => {
   const [content, setContent] = useState("");
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
 
-  const handleSelectChange = (event: any) => {
-    const selectedValue = event.target.value;
-
+  const handleSelectChange = (e: any) => {
+    const selectedValue = e.label;
     if (selectedValue && !selectedValues.includes(selectedValue)) {
       setSelectedValues([...selectedValues, selectedValue]);
     }
@@ -405,7 +403,7 @@ const CreateNewScreen = () => {
                         placeholder={facultyPlaceholder}
                         controlText={faculty}
                         dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-                        options={facultySelect}
+                        options={facultyCategorySelect}
                         onChange={handleSelectChange}
                       />
                     </Box>
