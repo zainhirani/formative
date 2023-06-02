@@ -88,7 +88,13 @@ const ManageQuestionsScreen = () => {
               { id: 5, optionText: "Humpty Dumpty sat on a wall!" },
             ]}
           />
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              flexDirection: { md: "row", xs: "column" },
+            }}
+          >
             <SelectBoxWrapper>
               <CustomSelect
                 placeholder={facultyPlaceholder}

@@ -35,6 +35,9 @@ import GroupedButton from "components/GroupedButton";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
 import ExpandCircleDownOutlinedIcon from "@mui/icons-material/ExpandCircleDownOutlined";
 import TinyMCEEditor from "./Editor";
+import CustomSelect from "components/CustomSelect/CustomSelect";
+import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
+import { facultySelect } from "mock-data/Teacher/ManageQuestion";
 
 const validationSchema = Yup.object().shape({
   authorName: Yup.string().required().label("Author Name"),
@@ -42,39 +45,34 @@ const validationSchema = Yup.object().shape({
 });
 
 const questionSelect = [
-  { id: 1, name: "2573/1" },
-  { id: 2, name: "2574/1" },
-  { id: 3, name: "2574/1" },
+  { value: "2573/1", label: "2573/1" },
+  { value: "2574/1", label: "2574/1" },
+  { value: "2574/1", label: "2574/1" },
 ];
 const typeSelect = [
-  { id: 1, name: "MCR" },
-  { id: 2, name: "NCR" },
-  { id: 3, name: "SCR" },
+  { value: "MCR", label: "MCR" },
+  { value: "NCR", label: "NCR" },
+  { value: "SCR", label: "SCR" },
 ];
 const folderSelect = [
-  { id: 1, name: "/MedChem" },
-  { id: 2, name: "/Physics" },
-  { id: 3, name: "/Maths" },
+  { value: "/MedChem", label: "/MedChem" },
+  { value: "/Physics", label: "/Physics" },
+  { value: "/Maths", label: "/Maths" },
 ];
 const categorySelect = [
-  { id: 1, name: "MC05 - Diuretics" },
-  { id: 2, name: "MC06 - Diuretics" },
-  { id: 3, name: "MC07 - Diuretics" },
+  { value: "MC05 - Diuretics", label: "MC05 - Diuretics" },
+  { value: "MC06 - Diuretics", label: "MC06 - Diuretics" },
+  { value: "MC07 - Diuretics", label: "MC07 - Diuretics" },
 ];
 const facultyCategorySelect = [
-  { id: 1, name: "Select Multiple" },
-  { id: 2, name: "BC06- Amino Acids" },
-  { id: 3, name: "Appendix" },
-  { id: 4, name: "B01 Biochemistry" },
+  { value: 1, label: "Select Multiple" },
+  { value: "BC06- Amino Acids", label: "BC06- Amino Acids" },
+  { value: "Appendix", label: "Appendix" },
+  { value: "B01 Biochemistry", label: "B01 Biochemistry" },
 ];
 
 const CreateNewScreen = () => {
   const authorName = useFormattedMessage(messages.authorName);
-  const [questions, setQuestions] = useState("2573/1");
-  const [types, setTypes] = useState("MCR");
-  const [folders, setFolders] = useState("/MedChem");
-  const [categories, setCategories] = useState("MC05 - Diuretics");
-  const [faculties, setFaculties] = useState("Select Multiple");
   const [content, setContent] = useState("");
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
 
@@ -92,6 +90,19 @@ const CreateNewScreen = () => {
   const handleEditorChange = (newContent: string) => {
     setContent(newContent);
   };
+
+  const question = useFormattedMessage(messages.questNo);
+  const questionPlaceholder = useFormattedMessage(messages.questNoValue);
+  const type = useFormattedMessage(messages.questType);
+  const typePlaceholder = useFormattedMessage(messages.questTypeValue);
+  const folder = useFormattedMessage(messages.folder);
+  const folderPlaceholder = useFormattedMessage(messages.folderValue);
+  const category = useFormattedMessage(messages.category);
+  const categoryPlaceholder = useFormattedMessage(messages.categoryValue);
+  const faculty = useFormattedMessage(messages.categoriesForFaculty);
+  const facultyPlaceholder = useFormattedMessage(
+    messages.categoriesForFacultyValue,
+  );
 
   const config: ButtonConfig[] = [
     {
@@ -149,10 +160,16 @@ const CreateNewScreen = () => {
         title={"Questions > Create New Question"}
       >
         <form onSubmit={handleSubmit}>
-          <Box sx={{ display: "flex", minHeight: "800px" }}>
+          <Box
+            sx={{
+              display: "flex",
+              minHeight: "800px",
+              flexDirection: { md: "row", xs: "column" },
+            }}
+          >
             <BoxWrapper
               sx={{
-                width: "40%",
+                width: { md: "40%", xs: "100%" },
                 marginRight: "30px",
               }}
             >
@@ -163,8 +180,8 @@ const CreateNewScreen = () => {
                   px: "20px",
                 }}
               >
-                <Box sx={{ display: "flex" }}>
-                  <FieldBoxWrapper sx={{ width: "60%" }}>
+                <Box sx={{ display: "flex", width: "100%" }}>
+                  <FieldBoxWrapper sx={{ width: { md: "57%", lg: "55%" } }}>
                     <InputLabelWrapper htmlFor="authorName">
                       <FormattedMessage {...messages.author} />
                     </InputLabelWrapper>
@@ -216,77 +233,34 @@ const CreateNewScreen = () => {
                       width: "50%",
                       padding: " 0 24px",
                       border: "1px solid #EAEAEA",
+                      justifyContent: "space-between",
                     }}
                   >
-                    <InputLabelWrapper
-                      sx={{ width: "80%" }}
-                      htmlFor="authorName"
-                    >
-                      <FormattedMessage {...messages.questNo} />
-                    </InputLabelWrapper>
-                    <Select
-                      labelId="demo-simple-select-standard-label"
-                      id="demo-simple-select-standard"
-                      value={questions}
-                      IconComponent={ExpandCircleDownOutlinedIcon}
-                      onChange={(e) => {
-                        if (setFieldValue) {
-                          setFieldValue("question", e.target.value);
-                          setQuestions(e.target.value);
-                        }
-                      }}
-                      variant="standard"
-                      fullWidth
-                      disableUnderline
-                      sx={{
-                        ".MuiSvgIcon-root ": {
-                          color: (theme) => theme.palette.text.secondary,
-                        },
-                      }}
-                    >
-                      {questionSelect?.map((question) => (
-                        <MenuItem value={question.name} key={question.id}>
-                          {question.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
+                    <Box sx={{ width: "100%" }}>
+                      <CustomSelect
+                        placeholder={questionPlaceholder}
+                        controlText={question}
+                        dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
+                        options={questionSelect}
+                      />
+                    </Box>
                   </FieldBoxWrapper>
                   <FieldBoxWrapper
                     sx={{
                       width: "50%",
                       padding: " 0 24px",
                       border: "1px solid #EAEAEA",
+                      justifyContent: "space-between",
                     }}
                   >
-                    <InputLabelWrapper htmlFor="authorName">
-                      <FormattedMessage {...messages.questType} />
-                    </InputLabelWrapper>
-                    <Select
-                      labelId="demo-simple-select-standard-label"
-                      id="demo-simple-select-standard"
-                      value={types}
-                      IconComponent={ExpandCircleDownOutlinedIcon}
-                      onChange={(e) => {
-                        if (setFieldValue) {
-                          setFieldValue("type", e.target.value);
-                          setTypes(e.target.value);
-                        }
-                      }}
-                      variant="standard"
-                      fullWidth
-                      disableUnderline
-                      sx={{
-                        ".MuiSvgIcon-root ": {
-                          color: (theme) => theme.palette.text.secondary,
-                        },
-                      }}
-                    >
-                      {typeSelect?.map((type) => (
-                        <MenuItem value={type.name} key={type.id}>
-                          {type.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
+                    <Box sx={{ width: "100%" }}>
+                      <CustomSelect
+                        placeholder={typePlaceholder}
+                        controlText={type}
+                        dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
+                        options={typeSelect}
+                      />
+                    </Box>
                   </FieldBoxWrapper>
                 </Box>
               </Box>
@@ -297,12 +271,13 @@ const CreateNewScreen = () => {
                   justifyContent: "space-between",
                 }}
               >
-                <Box sx={{ display: "flex" }}>
+                <Box sx={{ display: "flex", width: "100%" }}>
                   <FieldBoxWrapper
                     sx={{
                       width: "50%",
                       padding: " 0 0 0 24px",
                       border: "1px solid #EAEAEA",
+                      justifyContent: "space-between",
                     }}
                   >
                     <FormControlLabel
@@ -311,7 +286,7 @@ const CreateNewScreen = () => {
                       sx={{
                         flexDirection: "row-reverse",
                         justifyContent: "space-between",
-                        width: "200px",
+                        width: "100%",
                         ".MuiTypography-root": {
                           ml: "15px",
                         },
@@ -342,7 +317,7 @@ const CreateNewScreen = () => {
                       name="limit"
                       type="number"
                       value={values.limit}
-                      placeholder={authorName}
+                      placeholder={"0"}
                       onChange={handleChange}
                       onBlur={handleBlur}
                       autoComplete="off"
@@ -365,40 +340,17 @@ const CreateNewScreen = () => {
                       width: "100%",
                       padding: " 0 24px",
                       border: "1px solid #EAEAEA",
+                      justifyContent: "space-between",
                     }}
                   >
-                    <InputLabelWrapper
-                      sx={{ width: "20%" }}
-                      htmlFor="authorName"
-                    >
-                      <FormattedMessage {...messages.folder} />
-                    </InputLabelWrapper>
-                    <Select
-                      labelId="demo-simple-select-standard-label"
-                      id="demo-simple-select-standard"
-                      value={folders}
-                      IconComponent={ExpandCircleDownOutlinedIcon}
-                      onChange={(e) => {
-                        if (setFieldValue) {
-                          setFieldValue("folder", e.target.value);
-                          setFolders(e.target.value);
-                        }
-                      }}
-                      variant="standard"
-                      fullWidth
-                      disableUnderline
-                      sx={{
-                        ".MuiSvgIcon-root ": {
-                          color: (theme) => theme.palette.text.secondary,
-                        },
-                      }}
-                    >
-                      {folderSelect?.map((folder) => (
-                        <MenuItem value={folder.name} key={folder.id}>
-                          {folder.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
+                    <Box sx={{ width: "100%" }}>
+                      <CustomSelect
+                        placeholder={folderPlaceholder}
+                        controlText={folder}
+                        dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
+                        options={folderSelect}
+                      />
+                    </Box>
                   </FieldBoxWrapper>
                 </Box>
               </Box>
@@ -415,40 +367,17 @@ const CreateNewScreen = () => {
                       width: "100%",
                       padding: " 0 24px",
                       border: "1px solid #EAEAEA",
+                      justifyContent: "space-between",
                     }}
                   >
-                    <InputLabelWrapper
-                      sx={{ width: "30%" }}
-                      htmlFor="authorName"
-                    >
-                      <FormattedMessage {...messages.category} />
-                    </InputLabelWrapper>
-                    <Select
-                      labelId="demo-simple-select-standard-label"
-                      id="demo-simple-select-standard"
-                      value={categories}
-                      IconComponent={ExpandCircleDownOutlinedIcon}
-                      onChange={(e) => {
-                        if (setFieldValue) {
-                          setFieldValue("category", e.target.value);
-                          setCategories(e.target.value);
-                        }
-                      }}
-                      variant="standard"
-                      fullWidth
-                      disableUnderline
-                      sx={{
-                        ".MuiSvgIcon-root ": {
-                          color: (theme) => theme.palette.text.secondary,
-                        },
-                      }}
-                    >
-                      {categorySelect?.map((category) => (
-                        <MenuItem value={category.name} key={category.id}>
-                          {category.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
+                    <Box sx={{ width: "100%" }}>
+                      <CustomSelect
+                        placeholder={categoryPlaceholder}
+                        controlText={category}
+                        dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
+                        options={categorySelect}
+                      />
+                    </Box>
                   </FieldBoxWrapper>
                 </Box>
               </Box>
@@ -466,47 +395,18 @@ const CreateNewScreen = () => {
                       width: "100%",
                       padding: " 0 24px",
                       border: "1px solid #EAEAEA",
+                      justifyContent: "space-between",
                     }}
                   >
-                    <InputLabelWrapper
-                      sx={{ width: "100%" }}
-                      htmlFor="authorName"
-                    >
-                      <FormattedMessage {...messages.categoriesForFaculty} />
-                    </InputLabelWrapper>
-                    <FormControl fullWidth>
-                      <Select
-                        labelId="demo-simple-select-standard-label"
-                        id="demo-simple-select-standard"
-                        value={faculties}
-                        IconComponent={ExpandCircleDownOutlinedIcon}
+                    <Box sx={{ width: "100%" }}>
+                      <CustomSelect
+                        placeholder={facultyPlaceholder}
+                        controlText={faculty}
+                        dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
+                        options={facultySelect}
                         onChange={handleSelectChange}
-                        variant="standard"
-                        fullWidth
-                        disableUnderline
-                        sx={{
-                          ".MuiSvgIcon-root ": {
-                            color: (theme) => theme.palette.text.secondary,
-                          },
-                        }}
-                      >
-                        {facultyCategorySelect?.map((faculty) =>
-                          faculty.id === 0 ? (
-                            <MenuItem
-                              disabled
-                              value={faculty.name}
-                              key={faculty.id}
-                            >
-                              {faculty.name}
-                            </MenuItem>
-                          ) : (
-                            <MenuItem value={faculty.name} key={faculty.id}>
-                              {faculty.name}
-                            </MenuItem>
-                          ),
-                        )}
-                      </Select>
-                    </FormControl>
+                      />
+                    </Box>
                   </FieldBoxWrapper>
                   <Box sx={{ p: "0 24px" }}>
                     {selectedValues.length > 0 ? (
@@ -535,10 +435,11 @@ const CreateNewScreen = () => {
             </BoxWrapper>
             <Box
               sx={{
-                width: "60%",
+                width: { md: "60%", xs: "100%" },
                 display: "flex",
                 flexDirection: "column",
                 gap: "30px",
+                mt: { xs: "30px", md: "0" },
               }}
             >
               <BoxWrapper
