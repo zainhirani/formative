@@ -20,7 +20,7 @@ pre-commit:
 commit-msg:
   parallel: true
   commands:
-    lint-commit-msg:
-      run: npx commitlint --edit
+    # lint-commit-msg:
+    #   run: npx commitlint --edit
     spell-check:
       run: yarn cspell --no-summary {1}

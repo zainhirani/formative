@@ -28,7 +28,7 @@ const MenuData = [
       {
         id: 2,
         title: "Manage Quiz",
-        link: "/teacher/quiz/",
+        link: "/teacher/quiz",
       },
       {
         id: 3,
@@ -57,12 +57,12 @@ const MenuData = [
       {
         id: 2,
         title: "Upload Questions",
-        link: "",
+        link: "/teacher/questions/upload",
       },
       {
         id: 3,
         title: "Manage Questions",
-        link: "",
+        link: "teacher/questions/manage",
       },
     ],
   },
@@ -78,7 +78,7 @@ const MenuData = [
     icon: (
       <Image src={COURSES_SMALL} lazyLoad={true} width={16} alt="Courses" />
     ),
-    link: "",
+    link: "/teacher/courses",
   },
   {
     title: "Test Yourself",

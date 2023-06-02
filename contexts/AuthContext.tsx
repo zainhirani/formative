@@ -63,7 +63,13 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
       setAuthenticationHeader(getToken);
     }
   }
+  if (router.pathname.includes("register")) {
+    setInterval(() => {
+      getTokenFunction();
+    }, 3000);
+  }
   getTokenFunction();
+
   if (currToken && prevToken !== `Bearer ${currToken}`) {
   }
 

@@ -10,6 +10,7 @@ interface TypeTwoProps {
   columns: TableColumn[];
   buttonArray?: ButtonConfig[];
   checkboxSelection?: boolean;
+  onRowClick?: () => void;
 }
 
 const TypeTwo: React.FC<TypeTwoProps> = ({
@@ -17,6 +18,7 @@ const TypeTwo: React.FC<TypeTwoProps> = ({
   rows,
   columns,
   buttonArray,
+  onRowClick = () => {},
   ...props
 }) => {
   return (
@@ -31,6 +33,7 @@ const TypeTwo: React.FC<TypeTwoProps> = ({
                 }}
               >
                 <DataGrid
+                  onRowClick={onRowClick}
                   hideFooter
                   rows={rows}
                   columns={columns}

@@ -1,4 +1,5 @@
 import React, { FC, ReactNode } from "react";
+import { Tooltip } from "@mui/material";
 import { components } from "react-select";
 import AutoComplete from "components/AutoComplete";
 import { BoxWrapper, SelectBoxWrapper } from "./Styled";
@@ -24,7 +25,10 @@ const Control = (props: any) => {
   const { children, controlText } = props;
   return (
     <components.Control {...props}>
-      <SelectBoxWrapper>{controlText}</SelectBoxWrapper> {children}
+      <Tooltip title={controlText} placement="top">
+        <SelectBoxWrapper>{controlText}</SelectBoxWrapper>
+      </Tooltip>{" "}
+      {children}
     </components.Control>
   );
 };

@@ -17,6 +17,10 @@ export default defineMessages({
     id: `${scope}.authorName`,
     defaultMessage: "Dr. Kevin B.",
   },
+  statusLabel: {
+    id: `${scope}.statusLabel`,
+    defaultMessage: "Status",
+  },
   status: {
     id: `${scope}.status`,
     defaultMessage: "Draft",
@@ -36,13 +40,11 @@ export default defineMessages({
   questTypeValue: {
     id: `${scope}.questTypeValue`,
     defaultMessage: "MCR",
-  }
-  ,
+  },
   public: {
     id: `${scope}.public`,
     defaultMessage: "Public",
-  }
-  ,
+  },
   limit: {
     id: `${scope}.limit`,
     defaultMessage: "Limit: ",
@@ -86,5 +88,33 @@ export default defineMessages({
   text3: {
     id: `${scope}.text3`,
     defaultMessage: "B01 Biochemistry ",
-  }
-})
+  },
+  imageLabel: {
+    id: `${scope}.imageLabel`,
+    defaultMessage: "Image ",
+  },
+  addImageButton: {
+    id: `${scope}.addImageButton`,
+    defaultMessage: "Add ",
+  },
+  addImageText: {
+    id: `${scope}.addImageText`,
+    defaultMessage: `No image attached. Click on "Add" to add image`,
+  },
+  optionPlaceholder: {
+    id: `${scope}.optionPlaceholder`,
+    defaultMessage: `Type your details here`,
+  },
+  correctCheck: {
+    id: `${scope}.correctCheck`,
+    defaultMessage: `Correct`,
+  },
+  lockCheck: {
+    id: `${scope}.lockCheck`,
+    defaultMessage: `Lock`,
+  },
+  deleteButton: {
+    id: `${scope}.deleteButton`,
+    defaultMessage: `Delete`,
+  },
+});

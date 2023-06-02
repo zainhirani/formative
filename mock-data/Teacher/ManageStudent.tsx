@@ -1,8 +1,8 @@
-export const pageSizeManageStudent = 12;
+import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 
 
-export const columnsManageStudent = [
-  
+export const pageSizeManageQuiz = 12;
+export const columnsManageQuiz: GridColDef[] = [
   {
     field: "lastName",
     headerName: "Last Name",
@@ -12,31 +12,31 @@ export const columnsManageStudent = [
   {
     field: "firstName",
     headerName: "First Name",
-    minWidth: 150,
+    minWidth: 100,
     flex: 1,
   },
   {
     field: "userName",
     headerName: "User Name",
-    minWidth: 200,
+    minWidth: 175,
     flex: 1,
   },
   {
     field: "yog",
     headerName: "YOG",
-    minWidth: 150,
+    minWidth: 60,
     flex: 1,
   },
   {
     field: "program",
     headerName: "Program",
-    minWidth: 150,
+    minWidth: 60,
     flex: 1,
   },
   {
     field: "email",
     headerName: "E-mail ",
-    minWidth: 300,
+    minWidth: 275,
     flex: 1,
   },
 ];

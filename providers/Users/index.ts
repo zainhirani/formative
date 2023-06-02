@@ -1,152 +1,83 @@
+//Profile API Integration
 import {
-  useQuery,
-  useMutation,
-  UseQueryResult,
-  useQueryClient,
   UseMutationResult,
+  UseQueryResult,
+  useMutation,
+  useQuery,
+  useQueryClient,
 } from "react-query";
 import * as api from "./api";
-import { Users } from "./types";
+import { Profile } from "./types";
 
-// const KEY = "Users";
+const KEY = "Profile";
 
-// export function getKeyFromProps(
-//   props: any,
-//   type: "LISTING" | "DETAIL",
-// ): string[] {
-//   const key = [KEY, type];
-//   key.push(props);
-//   return key;
-// }
-// // Fetch
-// export function useUsersListing(
-//   props: Users.ListingProps = {},
-// ): UseQueryResult<Users.ListingResponse> {
-//   return useQuery(
-//     getKeyFromProps(props, "LISTING"),
-//     () => api.fetch(props),
-//     {},
+export function getKeyFromProps(
+  props: any,
+  type: "LISTING" | "DETAIL",
+): string[] {
+  const key = [KEY, type];
+  key.push(props);
+  return key;
+}
+export function getStatsProviderKey(
+  arg0: { userId: number | undefined },
+  arg1: string,
+): import("react-query").InvalidateQueryFilters<unknown> | undefined {
+  throw new Error("Function not implemented.");
+}
+export function getFormProviderKey(
+  arg0: { id: string | undefined },
+  arg1: string,
+): import("react-query").InvalidateQueryFilters<unknown> | undefined {
+  throw new Error("Function not implemented.");
+}
+
+//profile Create / update
+export function useProfile(
+  props: Profile.CreateProps = {},
+): UseMutationResult<
+  Profile.CreateResponse,
+  {
+    message?: string;
+  },
+  Profile.CreateMutationPayload
+> {
+  const queryClient = useQueryClient();
+  return useMutation((payload) => api.createProfile({ ...props, data: payload }), {
+    mutationKey: `${KEY}|Create`,
+    onSuccess: () => {
+      queryClient.invalidateQueries(getKeyFromProps(props, "LISTING"));
+    },
+    retry: 0,
+  });
+}
+
+
+// export function useProfile(props: Profile.CreateProps = {}): UseMutationResult<
+//   Profile.CreateResponse,
+//   {
+//     message?: string;
+//   },
+//   Profile.CreateMutationPayload
+// > {
+//   const queryClient = useQueryClient();
+//   return useMutation(
+//     (payload) => api.createProfile({ ...props, data: payload }),
+//     {
+//       mutationKey: `${KEY}|Create`,
+//       onSuccess: () => {
+//         queryClient.invalidateQueries(getKeyFromProps(props, "LISTING"));
+//       },
+//       retry: 0,
+//     },
 //   );
 // }
 
-// // Detail
-// export function useUsersDetail(
-//   props: Users.DetailProps,
-// ): UseQueryResult<Users.DetailResponse> {
-//   return useQuery(getKeyFromProps(props, "DETAIL"), () => api.detail(props));
-// }
-
-// // Create
-// export function useUsersCreate(
-//   props: Users.CreateProps = {},
-// ): UseMutationResult<
-//   Users.CreateResponse,
-//   {
-//     message?: string;
-//   },
-//   Users.CreateMutationPayload
-// > {
-//   const queryClient = useQueryClient();
-//   return useMutation((payload) => api.create({ ...props, data: payload }), {
-//     mutationKey: `${KEY}|Create`,
-//     onSuccess: () => {
-//       queryClient.invalidateQueries(getKeyFromProps(props, "LISTING"));
-//       queryClient.invalidateQueries(
-//         getStatsProviderKey({ contractorId: props.contractorId }, "DETAIL"),
-//       );
-//     },
-//     retry: 0,
-//   });
-// }
-
-// // Create Bulk
-// export function useUsersCreateBulk(
-//   props: Users.CreateBulkProps = {},
-// ): UseMutationResult<
-//   Users.CreateBulkResponse,
-//   {
-//     message?: string;
-//   },
-//   Users.CreateBulkMutationPayload
-// > {
-//   const queryClient = useQueryClient();
-//   return useMutation((payload) => api.createBulk({ ...props, data: payload }), {
-//     mutationKey: `${KEY}|CreateBulk`,
-//     onSuccess: () => {
-//       queryClient.invalidateQueries(getKeyFromProps(props, "LISTING"));
-//       queryClient.invalidateQueries(
-//         getStatsProviderKey({ contractorId: props.contractorId }, "DETAIL"),
-//       );
-//     },
-//     retry: 0,
-//   });
-// }
-
-// // Update
-// export function useUsersUpdate(props: Users.UpdateProps): UseMutationResult<
-//   Users.UpdateResponse,
-//   {
-//     message?: string;
-//   },
-//   Users.UpdateMutationPayload
-// > {
-//   const queryClient = useQueryClient();
-//   return useMutation((payload) => api.update({ ...props, data: payload }), {
-//     mutationKey: `${KEY}|Update`,
-//     onSuccess: () => {
-//       queryClient.invalidateQueries(getKeyFromProps(props, "LISTING"));
-//       queryClient.invalidateQueries(getKeyFromProps(props, "DETAIL"));
-//       queryClient.invalidateQueries(
-//         getFormProviderKey({ id: props.userId }, "DETAIL"),
-//       );
-//     },
-//     retry: 0,
-//   });
-// }
-
-// // Remove
-// export function useUsersRemove(props: Users.RemoveProps): UseMutationResult<
-//   Users.RemoveResponse,
-//   {
-//     message?: string;
-//   },
-//   Users.RemoveMutationPayload
-// > {
-//   const queryClient = useQueryClient();
-//   return useMutation((payload) => api.remove(payload), {
-//     mutationKey: `${KEY}|Remove`,
-//     onSuccess: (resp, payload) => {
-//       queryClient.invalidateQueries(
-//         getStatsProviderKey({ contractorId: props.contractorId }, "DETAIL"),
-//       );
-//       queryClient.invalidateQueries(getKeyFromProps(props, "LISTING"));
-//       queryClient.invalidateQueries(getKeyFromProps(props, "DETAIL"));
-//     },
-//     retry: 0,
-//   });
-// }
-
-// // Remove Bulk
-// export function useUsersRemoveBulk(
-//   props: Users.RemoveBulkProps,
-// ): UseMutationResult<
-//   Users.RemoveBulkResponse,
-//   {
-//     message?: string;
-//   },
-//   Users.RemoveBulkMutationPayload
-// > {
-//   const queryClient = useQueryClient();
-
-//   return useMutation((payload) => api.removeBulk({ data: payload }), {
-//     mutationKey: `${KEY}|RemoveBulk`,
-//     onSuccess: (resp, payload) => {
-//       queryClient.invalidateQueries(
-//         getStatsProviderKey({ contractorId: props.contractorId }, "DETAIL"),
-//       );
-//       queryClient.invalidateQueries(getKeyFromProps(props, "LISTING"));
-//       queryClient.invalidateQueries(getKeyFromProps(props, "DETAIL"));
-//     },
-//     retry: 0,
-//   });
-// }
+// profile Detail
+export function useProfileDetail(
+  props?: Profile.DetailProps,
+): UseQueryResult<Profile.DetailResponse> {
+  return useQuery(getKeyFromProps(props, "DETAIL"), () =>
+    api.detailProfile(props),
+  );
+}

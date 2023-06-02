@@ -1,27 +1,19 @@
 import React from "react";
 import {
   Box,
-  Button,
-  FormControl,
   IconButton,
   InputAdornment,
-  InputLabel,
 } from "@mui/material";
-import { MenuItem } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import {
   BoxWrapper,
   ButtonWrapper,
-  SelectStyled,
   TextFieldStyled,
 } from "./Styled";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import messages from "./messages";
-import { selectCourseOption, selectFolderOption, selectProgram } from "./data";
-import AutoComplete from "components/AutoComplete";
-// import AutoComplete from "components/AutoComplete";
 import { useSnackbar } from "notistack";
 import CustomSelect from "components/CustomSelect/CustomSelect";
 import { GridCloseIcon } from "@mui/x-data-grid";
@@ -153,7 +145,6 @@ const SearchSection = (props: any) => {
                 </IconButton>
               ),
             });
-           
           }}
         >
           <FormattedMessage {...messages.enrollStudent} />
