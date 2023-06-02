@@ -75,6 +75,7 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
 
     if (currentIndex === -1) {
       newChecked.push(value);
+      // @ts-ignore
       newTextColors.push("#225A41"); // Change the text color to red when checked
     } else {
       newChecked.splice(currentIndex, 1);
@@ -232,6 +233,7 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
           Choose the best answer
         </Typography>
         {quizOptions.map((value, index) => {
+          // @ts-ignore
           const labelId = `checkbox-list-label-${value.id}`;
 
           return (
@@ -268,6 +270,7 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
                   </ListItemIcon>
                   <ListItemText
                     id={labelId}
+                    // @ts-ignore
                     primary={`${value.optionText}`}
                     sx={{ color: textColors[index] }}
                   />

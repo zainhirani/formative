@@ -71,6 +71,7 @@ const TableSection = () => {
   ];
   return (
     <BoxWrapper>
+      {/* @ts-ignore */}
       <CustomDataGrid
         rows={rowsQuizResults}
         columns={columnsQuizResults}

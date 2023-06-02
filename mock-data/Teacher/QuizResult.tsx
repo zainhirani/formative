@@ -126,7 +126,6 @@ export const columnsQuizResults: GridColDef[] = [
                 <Image
                   alt="quiz-logo"
                   src={"/view.svg"}
-                  alt="view-icon"
                   width={20}
                   height={20}
                 />

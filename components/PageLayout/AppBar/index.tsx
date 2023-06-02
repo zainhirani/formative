@@ -10,7 +10,7 @@ interface BarComponentProps {
   open?: boolean;
   clickHandler?: any;
   title?: string;
-  iconAngle?: false;
+  iconAngle?: boolean;
   subText?: string;
   icon?: any;
 }
@@ -20,7 +20,7 @@ const AppBarComponent: React.FC<BarComponentProps> = ({
   clickHandler,
   title,
   icon,
-  iconAngle,
+  iconAngle = false,
   subText,
 }) => {
   return (
