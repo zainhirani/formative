@@ -57,12 +57,12 @@ const MenuData = [
       {
         id: 2,
         title: "Upload Questions",
-        link: "",
+        link: "/teacher/questions/upload",
       },
       {
         id: 3,
         title: "Manage Questions",
-        link: "",
+        link: "teacher/questions/manage",
       },
     ],
   },
