@@ -14,7 +14,6 @@ export const SelectBoxWrapper = styled(MuiBox)<BoxProps>(
     } as any),
 ) as (props: BoxProps) => JSX.Element;
 
-
 export const SelectPlaceholderWrapper = styled(MuiBox)<BoxProps>(
   ({ theme }) =>
     ({
