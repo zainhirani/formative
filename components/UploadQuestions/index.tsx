@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouter } from "next/router";
 import {
   Box,
   Button,
@@ -10,12 +11,11 @@ import {
   Typography,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
-import { useRouter } from "next/router";
-import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
-import { ButtonConfig } from "components/GroupedButton/types";
+import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
+import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 import GroupedButton from "components/GroupedButton";
+import { ButtonConfig } from "components/GroupedButton/types";
 
 export const UploadQuestions = () => {
   const router = useRouter();
