@@ -42,6 +42,7 @@ const SelectedQuizDetails = () => {
         //   borderRadius: "5px",
         // }}
       >
+        {/* @ts-ignore  */}
         <CustomDataGrid
           onRowClick={handleOnRowClick}
           buttonArray={configExport}
@@ -61,6 +62,7 @@ const SelectedQuizDetails = () => {
         component={Paper}
         elevation={6}
       >
+        {/* @ts-ignore */}
         <CustomDataGrid
           rows={rowsQuizQuestions}
           columns={columnsQuizQuestions}
@@ -68,6 +70,7 @@ const SelectedQuizDetails = () => {
           type={"1"}
         />
       </Box>
+      {/* @ts-ignore */}
       <QuizQuestionFormat
         quizOptions={[
           { id: 1, optionText: "Roses are red!" },

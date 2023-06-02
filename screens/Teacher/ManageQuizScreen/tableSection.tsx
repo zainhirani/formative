@@ -71,12 +71,13 @@ const TableSection = () => {
   ];
   return (
     <BoxWrapper>
-      <CustomDataGrid      
+      {/* @ts-ignore */}
+      <CustomDataGrid
         rows={rowsManageQuiz}
         columns={columnsManageQuiz}
         pageSizeData={pageSizeManageQuiz}
         type={"1"}
-        isCheckbox={true}
+        isCheckbox={false}
       />
     </BoxWrapper>
   );

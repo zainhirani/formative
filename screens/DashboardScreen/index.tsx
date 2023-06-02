@@ -158,29 +158,10 @@ const DashboardScreen = () => {
     },
   ];
 
-  const [drawerOpen, setDrawerOpen] = useState(false);
-
-  const handleDrawerOpen = () => {
-    setDrawerOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setDrawerOpen(false);
-  };
-
   return (
     <PageLayout title={"Dashboard"}>
       <Box sx={{ flexGrow: 1 }}>
         {/* <DataTable data={collegesData} config={config} /> */}
-
-        <div>
-          <button onClick={handleDrawerOpen}>Open Drawer</button>
-          <SideDrawer open={drawerOpen} onClose={handleDrawerClose}>
-            {/* Your content goes here */}
-            <h1>Drawer Content</h1>
-            <p>This is the content of the drawer.</p>
-          </SideDrawer>
-        </div>
 
         <Box>
           <Typography

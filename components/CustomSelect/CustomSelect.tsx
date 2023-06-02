@@ -10,6 +10,7 @@ interface CustomSelectProps {
   config?: string;
   controlText?: string;
   dropdownIcon?: ReactNode;
+  onChange?: any;
 }
 
 const CustomDropdownIndicator = (props: any) => {
@@ -27,7 +28,7 @@ const Control = (props: any) => {
     <components.Control {...props}>
       <Tooltip title={controlText} placement="top">
         <SelectBoxWrapper>{controlText}</SelectBoxWrapper>
-      </Tooltip>{" "}
+      </Tooltip>
       {children}
     </components.Control>
   );
@@ -38,8 +39,9 @@ const CustomSelect: FC<CustomSelectProps> = ({
   dropdownIcon,
   options,
   placeholder,
+  onChange,
 }) => {
-  const onChange = () => {};
+  // const onChange = () => {};
 
   const style = {
     control: (provided: any, state: any) => ({

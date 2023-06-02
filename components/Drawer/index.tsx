@@ -48,7 +48,12 @@ const SideDrawer: React.FC<SideDrawerProps> = ({
             ""
           )}
           <IconButtonWrapper onClick={onClose}>
-            <Image src="/close-cancel.svg" width={20} height={20} />
+            <Image
+              src="/close-cancel.svg"
+              width={20}
+              height={20}
+              alt="cancel"
+            />
           </IconButtonWrapper>
         </CloseIconWrapper>
       </HeaderWrapper>
