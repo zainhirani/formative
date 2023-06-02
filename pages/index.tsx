@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
-import APP_ROUTES from "constants/RouteConstants";
 import type { NextPage } from "next";
+import APP_ROUTES from "constants/RouteConstants";
 import HomeScreen from "screens/HomeScreen";
 // import Button from "theme/Button";
 // import Head from "next/head";

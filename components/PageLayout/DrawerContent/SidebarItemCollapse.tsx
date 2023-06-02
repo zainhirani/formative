@@ -91,21 +91,21 @@ export const SidebarItemCollapse = ({ item }: any) => {
           <List disablePadding>
             {item.subitems.map((sitem: any) => {
               return (
-                // <Link href={sitem.link} key={item.title} passHref={true}>
                 <ListItem button key={sitem.id}>
-                  <ListItemText
-                    key={sitem.id}
-                    primary={sitem.title}
-                    sx={{
-                      color: (theme) => theme.palette.primary.light,
-                      fontSize: "14px",
-                      "& span": {
+                  <Link href={sitem.link} key={item.title} passHref={true}>
+                    <ListItemText
+                      key={sitem.id}
+                      primary={sitem.title}
+                      sx={{
+                        color: (theme) => theme.palette.primary.light,
                         fontSize: "14px",
-                      },
-                    }}
-                  />
+                        "& span": {
+                          fontSize: "14px",
+                        },
+                      }}
+                    />
+                  </Link>
                 </ListItem>
-                // </Link>
               );
             })}
           </List>
