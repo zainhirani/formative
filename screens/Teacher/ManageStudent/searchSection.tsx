@@ -153,6 +153,7 @@ const SearchSection = (props: any) => {
                 </IconButton>
               ),
             });
+           
           }}
         >
           <FormattedMessage {...messages.enrollStudent} />

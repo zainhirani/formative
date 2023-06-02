@@ -1,81 +1,22 @@
 import React from "react";
 import { BoxWrapper } from "./Styled";
 import {
-  columnsManageQuiz,
-  pageSizeManageQuiz,
+  columnsManageStudent,
+  pageSizeManageStudent,
   rowsManageStudent,
 } from "mock-data/Teacher/ManageStudent";
 import CustomDataGrid from "components/CustomDataGrid";
-import { Box } from "@mui/material";
-import LocalPrintshopOutlinedIcon from "@mui/icons-material/LocalPrintshopOutlined";
-import CachedIcon from "@mui/icons-material/Cached";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+
 
 const TableSection = (props: any) => {
   const {setChecked} = props;
-  const configManageQuiz = [
-    {
-      key: "print",
-      startIcon: <LocalPrintshopOutlinedIcon />,
-      render: () => {
-        return <Box>Print</Box>;
-      },
-      onClick: () => {
-        // console.log("Print");
-      },
-    },
-    {
-      key: "refresh",
-      startIcon: <CachedIcon />,
-      render: () => {
-        return <Box>Refresh</Box>;
-      },
-      onClick: () => {
-        // console.log("Refresh");
-      },
-    },
-    {
-      key: "addQuestion",
-      startIcon: <AddCircleOutlineIcon />,
-      render: () => {
-        return <Box>Add Question</Box>;
-      },
-      onClick: () => {
-        // console.log("Add Question");
-      },
-    },
-  ];
-  const configExport = [
-    {
-      key: "export",
-      startIcon: <LocalPrintshopOutlinedIcon />,
-      render: () => {
-        return <Box>Export</Box>;
-      },
-      onClick: () => {
-        // console.log("Export");
-      },
-    },
-  ];
-  const configCreate = [
-    {
-      key: "create",
-      customClass: "filled",
-      startIcon: <AddCircleOutlineIcon />,
-      render: () => {
-        return <Box>Create</Box>;
-      },
-      onClick: () => {
-        // console.log("Create");
-      },
-    },
-  ];
+  
   return (
     <BoxWrapper>
       <CustomDataGrid      
         rows={rowsManageStudent}
-        columns={columnsManageQuiz}
-        pageSizeData={pageSizeManageQuiz}
+        columns={columnsManageStudent}
+        pageSizeData={pageSizeManageStudent}
         type={"1"}
         isCheckbox={true}
         setChecked={setChecked}
