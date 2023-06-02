@@ -15,6 +15,7 @@ const GroupedButton: FC<GroupedButtonProps> = ({ config }) => {
           key={button?.key}
           onClick={button?.onClick}
           startIcon={button?.startIcon}
+          disabled={button?.disabled}
         >
           {button?.render()}
         </ButtonWrapper>
