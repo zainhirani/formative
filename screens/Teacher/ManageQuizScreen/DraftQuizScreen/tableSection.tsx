@@ -108,9 +108,6 @@ const TableSection = () => {
     },
   ];
 
-  const handleDrawerClose = () => {
-    setDrawerOpen(false);
-  };
   const handleDrawerCloseStudents = () => {
     setDrawerOpenStudents(false);
   };
@@ -133,19 +130,17 @@ const TableSection = () => {
       </BoxButtonWrapper>
 
       <SideDrawer
-        title="Add Questions"
-        open={drawerOpen}
-        onClose={handleDrawerClose}
-      >
-        <DrawerQuestionsSection />
-      </SideDrawer>
-      <SideDrawer
         title="Add Students"
         open={drawerOpenStudents}
         onClose={handleDrawerCloseStudents}
       >
         <DrawerStudentsSection />
       </SideDrawer>
+
+      <DrawerQuestionsSection
+        drawerOpen={drawerOpen}
+        setDrawerOpen={setDrawerOpen}
+      />
 
       <DrawerQuestionsDetailSection />
     </>
