@@ -11,6 +11,7 @@ import SaveAsIcon from "@mui/icons-material/SaveAs";
 import FormattedMessage from "theme/FormattedMessage";
 import messages from "screens/Teacher/ManageQuizScreen/messages";
 import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
+import Link from "next/link";
 
 export const pageSizeManageQuiz = 12;
 
@@ -122,9 +123,11 @@ export const columnsManageQuiz: GridColDef[] = [
       return (
         <Grid container spacing={3}>
           <Grid item xs>
-            <IconButton>
-              <Image alt="quiz-logo" src={editSvg} />
-            </IconButton>
+            <Link href={"/teacher/quiz/draft"}>
+              <IconButton>
+                <Image alt="quiz-logo" src={editSvg} />
+              </IconButton>
+            </Link>
             <IconButton>
               <Image alt="quiz-logo" src={copySvg} />
             </IconButton>

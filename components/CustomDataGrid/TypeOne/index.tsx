@@ -12,7 +12,7 @@ interface TypeOneProps {
   checkboxSelection?: boolean;
   onRowClick?: () => void;
   // setChecked?:  ((value: string) => void) | undefined;
-  setChecked: any;
+  setChecked?: any;
 
   // isChecked?:
 }

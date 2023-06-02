@@ -77,7 +77,7 @@ const TableSection = () => {
         columns={columnsManageQuiz}
         pageSizeData={pageSizeManageQuiz}
         type={"1"}
-        isCheckbox={true}
+        isCheckbox={false}
       />
     </BoxWrapper>
   );

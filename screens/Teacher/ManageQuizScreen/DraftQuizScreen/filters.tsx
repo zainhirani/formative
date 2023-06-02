@@ -1,21 +1,16 @@
 import React from "react";
-import { Box, IconButton, InputAdornment } from "@mui/material";
-import { Search } from "@mui/icons-material";
 import {
   BoxWrapper,
-  ButtonWrapper,
+  InputBoxWrapper,
+  QuizNoBoxWrapper,
   SelectBoxWrapper,
   TextFieldStyled,
 } from "./Styled";
-import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
-import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
-import messages from "./messages";
 import CustomSelect from "components/CustomSelect/CustomSelect";
+import Typography from "@mui/material/Typography";
 
-const SearchSection = () => {
-  const searchQuiz = useFormattedMessage(messages.searchQuiz);
-
+const FiltersSection = () => {
   const optionsCourse = [
     { value: "Cannabis 2023", label: "Cannabis 2023" },
     { value: "Cannabis 2024", label: "Cannabis 2024" },
@@ -33,54 +28,49 @@ const SearchSection = () => {
   const onChange = () => {};
 
   return (
-    <BoxWrapper display="grid" gridTemplateColumns="repeat(12, 1fr)">
-      <Box gridColumn="span 3">
-        <TextFieldStyled
-          placeholder={searchQuiz}
-          variant="outlined"
-          InputProps={{
-            style: { border: "none", outline: "0px" },
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton aria-label="visibility" edge="end">
-                  <Search />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-      </Box>
+    <BoxWrapper display="grid" gridTemplateColumns="repeat(11, 1fr)">
+      <InputBoxWrapper gridColumn="span 3">
+        <Typography gutterBottom className="custom-name">
+          Name:
+        </Typography>
+        <TextFieldStyled placeholder="" variant="outlined" />
+      </InputBoxWrapper>
       <SelectBoxWrapper gridColumn="span 2">
         <CustomSelect
-          placeholder="Select Course"
+          placeholder="Cannabis 2023"
+          controlText="Course:"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={optionsCourse}
         />
       </SelectBoxWrapper>
       <SelectBoxWrapper gridColumn="span 2">
         <CustomSelect
-          placeholder="Select Folder"
+          placeholder="/ Daily"
+          controlText="Folder:"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={optionsFolder}
         />
       </SelectBoxWrapper>
       <SelectBoxWrapper gridColumn="span 2">
         <CustomSelect
-          placeholder="Select Status"
+          placeholder="Draft"
+          controlText="Status"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={optionsStatus}
         />
       </SelectBoxWrapper>
-      <Box gridColumn="span 3">
-        <ButtonWrapper
-          startIcon={<AddCircleOutlineRoundedIcon />}
-          variant="contained"
-        >
-          <FormattedMessage {...messages.createNew} />
-        </ButtonWrapper>
-      </Box>
+      <SelectBoxWrapper gridColumn="span 2">
+        <QuizNoBoxWrapper gridColumn="span 3">
+          <Typography gutterBottom className="custom-name">
+            Quiz No.
+          </Typography>
+          <Typography gutterBottom className="custom-name-2">
+            303
+          </Typography>
+        </QuizNoBoxWrapper>
+      </SelectBoxWrapper>
     </BoxWrapper>
   );
 };
 
-export default SearchSection;
+export default FiltersSection;
