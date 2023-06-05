@@ -65,6 +65,7 @@ const categorySelect = [
   { value: "MC07 - Diuretics", label: "MC07 - Diuretics" },
 ];
 const facultyCategorySelect = [
+  { value: 1, label: "Select Multiple" },
   { value: "BC06- Amino Acids", label: "BC06- Amino Acids" },
   { value: "Appendix", label: "Appendix" },
   { value: "B01 Biochemistry", label: "B01 Biochemistry" },
@@ -403,7 +404,11 @@ const CreateNewScreen = () => {
                         placeholder={facultyPlaceholder}
                         controlText={faculty}
                         dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
+<<<<<<< HEAD
                         options={facultyCategorySelect}
+=======
+                        options={facultySelect}
+>>>>>>> 02712c9 (fix: changed select box from create new screen)
                         onChange={handleSelectChange}
                       />
                     </Box>
