@@ -13,6 +13,7 @@ interface TypeOneProps {
   onRowClick?: () => void;
   // setChecked?:  ((value: string) => void) | undefined;
   setChecked?: any;
+  columnVisibilityModel: any;
 
   // isChecked?:
 }
@@ -24,6 +25,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
   buttonArray,
   onRowClick = () => {},
   setChecked,
+  columnVisibilityModel,
   ...props
 }) => {
   const [page, setPage] = useState(1);
@@ -74,6 +76,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
             disableDensitySelector
             disableRowSelectionOnClick
             onRowSelectionModelChange={(e) => handleCheck(e)}
+            columnVisibilityModel={columnVisibilityModel}
             {...props}
           />
         </Grid>

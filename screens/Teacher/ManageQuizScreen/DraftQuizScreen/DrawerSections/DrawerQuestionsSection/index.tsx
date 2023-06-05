@@ -23,6 +23,7 @@ import {
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import messages from "./messages";
 import CancelIcon from "@mui/icons-material/Cancel";
+import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 
 const DrawerQuestionsSection = (props: any) => {
   const { drawerOpen, setDrawerOpen } = props;
@@ -51,19 +52,17 @@ const DrawerQuestionsSection = (props: any) => {
 
   const config = [
     {
-      key: "createNew",
-      startIcon: <AddCircleOutlineIcon />,
+      key: "acceptContinue",
+      startIcon: <CheckCircleOutlineRoundedIcon fontSize="small" />,
       customClass: "filled",
       render: () => {
         return (
           <Box>
-            <FormattedMessage {...messages.createNew} />
+            <FormattedMessage {...messages.accept} />
           </Box>
         );
       },
-      onClick: () => {
-        setOpen(true);
-      },
+      onClick: () => {},
     },
   ];
   const handleDrawerCloseQuestion = () => {

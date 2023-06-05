@@ -11,7 +11,7 @@ export const scope = "app.screens.TakeQuizScreen";
 export default defineMessages({
   searchQuiz: {
     id: `${scope}.searchQuiz`,
-    defaultMessage: "Search Quiz:",
+    defaultMessage: "Search quiz",
   },
   selectCourse: {
     id: `${scope}.selectCourse`,
@@ -19,7 +19,7 @@ export default defineMessages({
   },
   underTakingTitle: {
     id: `${scope}.underTakingTitle`,
-    defaultMessage: "Undertaking:",
+    defaultMessage: "Undertaking",
   },
   underTakingDesc: {
     id: `${scope}.underTakingDesc`,
@@ -37,7 +37,7 @@ export default defineMessages({
   },
   accept: {
     id: `${scope}.accept`,
-    defaultMessage: "Accept & Continue:",
+    defaultMessage: "Accept & Continue",
   },
   cancel: {
     id: `${scope}.cancel`,
@@ -65,7 +65,7 @@ export default defineMessages({
   },
   quizScore: {
     id: `${scope}.quizScore`,
-    defaultMessage: "You scored",
+    defaultMessage: "You Scored:",
   },
   quizScoreText: {
     id: `${scope}.quizScoreText`,
