@@ -31,4 +31,5 @@ export const COURSES_SMALL = "/courses_small.svg"
 export const HOW_DOING = "/how_doing.svg"
 export const PROFILE_SMALL = "/profile_small.svg"
 export const SETTINGS = "/settings.svg"
+export const QUIZ1 = '/quiz1.png'
 export const TOKEN = 'token';

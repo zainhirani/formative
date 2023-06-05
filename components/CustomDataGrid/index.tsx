@@ -13,8 +13,8 @@ interface CustomDataGridProps {
   type: string;
   buttonArray?: ButtonConfig[];
   isCheckbox?: boolean;
-  onRowClick?: () => void;
-  setChecked: any;
+  onRowClick?: (e?: any) => void;
+  setChecked?: any;
 }
 
 const CustomDataGrid: React.FC<CustomDataGridProps> = ({
