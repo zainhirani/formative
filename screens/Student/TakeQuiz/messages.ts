@@ -65,7 +65,7 @@ export default defineMessages({
   },
   quizScore: {
     id: `${scope}.quizScore`,
-    defaultMessage: "You Scored:",
+    defaultMessage: "You Scored",
   },
   quizScoreText: {
     id: `${scope}.quizScoreText`,

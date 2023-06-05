@@ -2,7 +2,14 @@ import React, { useState } from "react";
 import SideDrawer from "components/Drawer";
 import { useAppState } from "contexts/AppStateContext";
 import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
-import { Box, IconButton, MenuItem, Select, Typography } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  InputAdornment,
+  MenuItem,
+  Select,
+  Typography,
+} from "@mui/material";
 import { BoxWrapper, SelectBoxWrapper } from "./Styled";
 import CustomDataGrid from "components/CustomDataGrid";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
@@ -23,7 +30,8 @@ import {
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import messages from "./messages";
 import CancelIcon from "@mui/icons-material/Cancel";
-import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
+import { TextFieldStyled } from "../../Styled";
+import { Search } from "@mui/icons-material";
 
 const DrawerQuestionsSection = (props: any) => {
   const { drawerOpen, setDrawerOpen } = props;
@@ -52,13 +60,13 @@ const DrawerQuestionsSection = (props: any) => {
 
   const config = [
     {
-      key: "acceptContinue",
-      startIcon: <CheckCircleOutlineRoundedIcon fontSize="small" />,
+      key: "createNew",
+      startIcon: <AddCircleOutlineIcon fontSize="small" />,
       customClass: "filled",
       render: () => {
         return (
           <Box>
-            <FormattedMessage {...messages.accept} />
+            <FormattedMessage {...messages.createNew} />
           </Box>
         );
       },
@@ -76,7 +84,21 @@ const DrawerQuestionsSection = (props: any) => {
         onClose={handleDrawerCloseQuestion}
       >
         <Box>
-          <BoxWrapper>
+          <TextFieldStyled
+            placeholder={"Search a keyword ..."}
+            variant="outlined"
+            InputProps={{
+              style: { border: "none", outline: "0px" },
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton aria-label="visibility" edge="end">
+                    <Search />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+          <BoxWrapper sx={{ boxShadow: "none", mt: "0" }}>
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
               <SelectBoxWrapper>
                 <CustomSelect
@@ -104,7 +126,7 @@ const DrawerQuestionsSection = (props: any) => {
               </SelectBoxWrapper>
             </Box>
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              <SelectBoxWrapper>
+              <SelectBoxWrapper sx={{ width: "48.5%" }}>
                 <CustomSelect
                   placeholder={categoryPlaceholder}
                   controlText={category}
@@ -118,7 +140,11 @@ const DrawerQuestionsSection = (props: any) => {
                   {selectedValues.length > 0 ? (
                     selectedValues.map((value) => (
                       <Box
-                        sx={{ display: "flex", alignItems: "center" }}
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          width: "max-content",
+                        }}
                         key={value}
                       >
                         <Typography variant="body1">{value}</Typography>
@@ -137,7 +163,7 @@ const DrawerQuestionsSection = (props: any) => {
               </SelectBoxWrapper>
             </Box>
           </BoxWrapper>
-          <BoxWrapper>
+          <BoxWrapper sx={{ m: "20px", width: "inherit" }}>
             <CustomDataGrid
               rows={rowsManageQuestion}
               columns={columnsManageQuestion}
