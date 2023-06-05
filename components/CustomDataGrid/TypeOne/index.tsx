@@ -10,8 +10,9 @@ interface TypeOneProps {
   columns: TableColumn[];
   buttonArray?: ButtonConfig[];
   checkboxSelection?: boolean;
+  onRowClick?: () => void;
   // setChecked?:  ((value: string) => void) | undefined;
-  setChecked: any;
+  setChecked?: any;
 
   // isChecked?:
 }
@@ -21,6 +22,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
   rows,
   columns,
   buttonArray,
+  onRowClick = () => {},
   setChecked,
   ...props
 }) => {
@@ -61,6 +63,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
       <Grid container>
         <Grid item xs={12}>
           <DataGrid
+            onRowClick={onRowClick}
             pagination
             hideFooter
             rows={paginatedRows}

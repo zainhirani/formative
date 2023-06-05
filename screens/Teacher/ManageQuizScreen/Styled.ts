@@ -4,13 +4,23 @@ import MuiBox, { BoxProps } from "@mui/material/Box";
 import Button, { ButtonProps } from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 
+
+export const SelectBoxWrapper = styled(MuiBox)<BoxProps>(
+  ({ theme }) =>
+    ({
+      paddingLeft: '5px',
+      borderLeft: "1px solid",
+      borderColor: theme?.additionalColors?.primaryBorderGrey
+    } as any),
+) as (props: BoxProps) => JSX.Element;
+
 export const BoxWrapper = styled(MuiBox)<BoxProps>(
   ({ theme }) =>
     ({
       width: "100%",
       boxShadow: "0px 0px 40px rgba(0, 0, 0, 0.1)",
       marginTop: "20px",
-      marginBottom: "20px",
+      marginBottom: "30px",
       borderRadius: "6px",
       border: "1px solid",
       borderColor: theme?.additionalColors?.primaryBorderGrey
@@ -50,6 +60,7 @@ export const BoxPaginate = styled(MuiBox)<BoxProps>(
 export const TextFieldStyled = styled(TextField)<TextFieldProps>(
   ({ theme }) =>
     ({
+      width: "100%",
       borderWidth: "0px",
       borderRadius: "0px",
       border: "0px",

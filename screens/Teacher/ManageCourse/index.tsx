@@ -1,10 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PageLayout from 'components/PageLayout';
 import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
-import { Box, Input, Button } from '@mui/material';
+import { Box, Input, Button, IconButton } from '@mui/material';
 import SearchSection from '../ManageQuizScreen/searchSection';
-import TableSection from '../ManageQuizScreen/tableSection';
-import { TextFieldStyled, ButtonWrapper , BoxWrapper} from './Styled';
+import { TextFieldStyled, ButtonWrapper , BoxWrapper, TableWrapper} from './Styled';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import GroupedButton from 'components/GroupedButton';
 import { ButtonConfig } from "components/GroupedButton/types";
@@ -14,9 +13,17 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import CustomDataGrid from 'components/CustomDataGrid';
 import { columnsManageCourse, pageSizeManageCourse, rowsManageCourse } from 'mock-data/Teacher/ManageCourse';
 import { useSnackbar } from "notistack";
+import { useRouter } from 'next/router';
+import SearchBar from './searchBar';
+import CloseIcon from '@mui/icons-material/Close';
 
 const ManageCourseScreen = () => {
-  const { enqueueSnackbar } = useSnackbar();
+  const router = useRouter();
+  
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [checked, setChecked] = useState(false);
+  const [selectedRows, setSelectedRows] = useState([]);
+
     const config: ButtonConfig[] = [
         {
           key: "addStudents",
@@ -26,9 +33,7 @@ const ManageCourseScreen = () => {
           },
           onClick: () => {
             // console.log("Add Students");
-              enqueueSnackbar("hello World", {
-                variant: "success",
-              });
+            router.push("/teacher/courses/restore")
           },
         },
         {
@@ -42,15 +47,20 @@ const ManageCourseScreen = () => {
           },
         },
         {
-          key: "duplicate",
+          key: "delete",
           startIcon: <DeleteForeverIcon />,
           render: () => {
             return <Box>Delete</Box>;
           },
           onClick: () => {
-            // console.log("Duplicate");
-            enqueueSnackbar("Delete World", {
+            // console.log("Selected Rows:", selectedRows);
+            enqueueSnackbar("Selected course has been successfully deleted.", {
               variant: "error",
+              action: (key) => (
+                <IconButton onClick={() => closeSnackbar(key)} size="small">
+                  <CloseIcon sx={{color: "#fff"}}/>
+                </IconButton>
+              ),
             });
           },
         }
@@ -58,13 +68,17 @@ const ManageCourseScreen = () => {
   return (
     <PageLayout title="Courses"  icon={<HelpRoundedIcon />}>
         <Box>
-            <SearchSection />
-            <CustomDataGrid
-              rows={rowsManageCourse}
-              columns={columnsManageCourse}
-              pageSizeData={pageSizeManageCourse}
-              type={"1"}
-            />
+            <SearchBar />
+            <TableWrapper>
+              <CustomDataGrid
+                rows={rowsManageCourse}
+                columns={columnsManageCourse}
+                pageSizeData={pageSizeManageCourse}
+                type={"1"}
+                isCheckbox={true}
+                setChecked={setChecked}
+              />
+            </TableWrapper>
             <Box sx={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
                 <BoxWrapper display="grid" gridTemplateColumns="repeat(5, 1fr)">
                     <Box gridColumn="span 3">
@@ -81,7 +95,7 @@ const ManageCourseScreen = () => {
                             startIcon={<AddCircleOutlineRoundedIcon />}
                             variant="contained"
                         >
-                            Create New
+                            Create Course
                         </ButtonWrapper>
                     </Box>
                 </BoxWrapper>

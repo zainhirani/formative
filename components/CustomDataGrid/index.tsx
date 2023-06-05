@@ -1,6 +1,7 @@
 // @ts-nocheck
 import React from "react";
 import { ButtonConfig, TableColumn, TableRow } from "./type";
+import TypeFour from "./TypeFour";
 import TypeOne from "./TypeOne";
 import TypeThree from "./TypeThree";
 import TypeTwo from "./TypeTwo";
@@ -12,6 +13,7 @@ interface CustomDataGridProps {
   type: string;
   buttonArray?: ButtonConfig[];
   isCheckbox?: boolean;
+  onRowClick?: () => void;
   setChecked: any;
 }
 
@@ -22,6 +24,7 @@ const CustomDataGrid: React.FC<CustomDataGridProps> = ({
   type,
   buttonArray,
   isCheckbox,
+  onRowClick = () => {},
   setChecked,
   ...props
 }) => {
@@ -29,6 +32,7 @@ const CustomDataGrid: React.FC<CustomDataGridProps> = ({
     <>
       {type == "1" ? (
         <TypeOne
+          onRowClick={onRowClick}
           rows={rows}
           columns={columns}
           pageSizeData={pageSizeData}
@@ -39,6 +43,7 @@ const CustomDataGrid: React.FC<CustomDataGridProps> = ({
         />
       ) : type == "2" ? (
         <TypeTwo
+          onRowClick={onRowClick}
           rows={rows}
           columns={columns}
           pageSizeData={pageSizeData}
@@ -47,9 +52,18 @@ const CustomDataGrid: React.FC<CustomDataGridProps> = ({
         />
       ) : type == "3" ? (
         <TypeThree
+          onRowClick={onRowClick}
           rows={rows}
           columns={columns}
           pageSizeData={pageSizeData}
+          checkboxSelection={isCheckbox}
+        />
+      ) : type == "4" ? (
+        <TypeFour
+          rows={rows}
+          columns={columns}
+          pageSizeData={pageSizeData}
+          buttonArray={buttonArray}
           checkboxSelection={isCheckbox}
         />
       ) : (

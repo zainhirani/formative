@@ -12,6 +12,7 @@ import { QueryCache, QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { Hydrate } from "react-query/hydration";
 
+import { AppStateProvider } from "contexts/AppStateContext";
 import { AuthContextProvider } from "contexts/AuthContext";
 import ThemeContextProvider from "contexts/ThemeContext";
 import { getLocale, getMessages } from "i18n";
@@ -107,16 +108,18 @@ class MyApp extends App<{
             <SessionProvider session={session}>
               <AuthContextProvider>
                 <QueryClientProvider client={queryClient}>
-                  <SnackbarProvider
-                    anchorOrigin={{
-                      vertical: "top",
-                      horizontal: "center",
-                    }}
-                  >
-                    <Hydrate state={pageProps.dehydratedState}>
-                      <Component {...pageProps} />
-                    </Hydrate>
-                  </SnackbarProvider>
+                  <AppStateProvider>
+                    <SnackbarProvider
+                      anchorOrigin={{
+                        vertical: "top",
+                        horizontal: "center",
+                      }}
+                    >
+                      <Hydrate state={pageProps.dehydratedState}>
+                        <Component {...pageProps} />
+                      </Hydrate>
+                    </SnackbarProvider>
+                  </AppStateProvider>
                   <ReactQueryDevtools initialIsOpen={false} />
                 </QueryClientProvider>
               </AuthContextProvider>

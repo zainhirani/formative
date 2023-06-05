@@ -10,9 +10,10 @@ interface BarComponentProps {
   open?: boolean;
   clickHandler?: any;
   title?: string;
-  iconAngle?: false;
+  iconAngle?: boolean;
   subText?: string;
   icon?: any;
+  onIconClick?: () => void;
 }
 
 const AppBarComponent: React.FC<BarComponentProps> = ({
@@ -20,8 +21,9 @@ const AppBarComponent: React.FC<BarComponentProps> = ({
   clickHandler,
   title,
   icon,
-  iconAngle,
+  iconAngle = false,
   subText,
+  onIconClick,
 }) => {
   return (
     <>
@@ -105,6 +107,7 @@ const AppBarComponent: React.FC<BarComponentProps> = ({
               >
                 {title}
                 <IconButton
+                  onClick={onIconClick}
                   sx={{ color: (theme) => theme.palette.primary.main }}
                 >
                   {icon}

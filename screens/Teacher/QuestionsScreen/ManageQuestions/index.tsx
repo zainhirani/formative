@@ -119,6 +119,7 @@ const ManageQuestionsScreen = () => {
                 controlText={category}
                 dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
                 options={categorySelect}
+                /* @ts-ignore */
                 onChange={handleSelectChange}
               />
             </SelectBoxWrapper>
@@ -156,6 +157,7 @@ const ManageQuestionsScreen = () => {
           </Box>
         </BoxWrapper>
         <BoxWrapper>
+          {/* @ts-ignore */}
           <CustomDataGrid
             rows={rowsManageQuestion}
             columns={columnsManageQuestion}
