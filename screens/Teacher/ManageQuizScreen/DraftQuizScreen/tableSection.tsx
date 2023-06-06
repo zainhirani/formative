@@ -18,6 +18,7 @@ import DrawerQuestionsSection from "./DrawerSections/DrawerQuestionsSection";
 import DrawerStudentsSection from "./DrawerSections/DrawerStudentsSection";
 import DrawerQuestionsDetailSection from "./DrawerSections/DrawerQuestionsDetailSection";
 import QuizQuestionFormat from "components/QuizQuestionFormat";
+import DateTimePickerValue from "components/DatePicker";
 
 const TableSection = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -113,6 +114,8 @@ const TableSection = () => {
   };
   return (
     <>
+      Test
+      {/* <DateTimePickerValue /> */}
       <BoxWrapper>
         <CustomDataGrid
           rows={rowsManageQuizDraft}
@@ -123,12 +126,10 @@ const TableSection = () => {
           buttonArray={configManageQuiz}
         />
       </BoxWrapper>
-
       <BoxButtonWrapper>
         <Box>Date</Box>
         <GroupedButton config={config} />
       </BoxButtonWrapper>
-
       <SideDrawer
         title="Add Students"
         open={drawerOpenStudents}
@@ -136,12 +137,10 @@ const TableSection = () => {
       >
         <DrawerStudentsSection />
       </SideDrawer>
-
       <DrawerQuestionsSection
         drawerOpen={drawerOpen}
         setDrawerOpen={setDrawerOpen}
       />
-
       <DrawerQuestionsDetailSection />
     </>
   );
