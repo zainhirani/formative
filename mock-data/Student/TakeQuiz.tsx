@@ -1,6 +1,179 @@
 import React from "react";
 import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 
+import { QUIZ1 } from "configs";
+
+export const questionData = [
+  {
+    id: "Q195",
+    QNo: "117",
+    question: "Which of the structures shown is most hydrophobic?",
+    image: QUIZ1,
+    options: [
+      { name: "A", isCorrect: true, disabled: false },
+      { name: "B", isCorrect: false, disabled: false },
+      { name: "C", isCorrect: false, disabled: false },
+    ],
+    time: 20,
+  },
+  {
+    id: "Q196",
+    QNo: "118",
+    question: "Which of the structures shown is most hydrophobic?",
+    image: QUIZ1,
+    options: [
+      { name: "A", isCorrect: true, disabled: false },
+      { name: "B", isCorrect: false, disabled: false },
+      { name: "C", isCorrect: false, disabled: false },
+    ],
+    time: 20,
+  },
+  {
+    id: "Q197",
+    QNo: "119",
+    question: "Which of the structures shown is most hydrophobic?",
+    image: QUIZ1,
+    options: [
+      { name: "A", isCorrect: true, disabled: false },
+      { name: "B", isCorrect: false, disabled: false },
+      { name: "C", isCorrect: false, disabled: false },
+    ],
+    time: 20,
+  },
+  {
+    id: "Q198",
+    QNo: "120",
+    question: "Which of the structures shown is most hydrophobic?",
+    image: QUIZ1,
+    options: [
+      { name: "A", isCorrect: true, disabled: false },
+      { name: "B", isCorrect: false, disabled: false },
+      { name: "C", isCorrect: false, disabled: false },
+    ],
+    time: 20,
+  },
+  {
+    id: "Q199",
+    QNo: "121",
+    question: "Which of the structures shown is most hydrophobic?",
+    image: QUIZ1,
+    options: [
+      { name: "A", isCorrect: true, disabled: false },
+      { name: "B", isCorrect: false, disabled: false },
+      { name: "C", isCorrect: false, disabled: false },
+    ],
+    time: 20,
+  },
+  {
+    id: "Q200",
+    QNo: "122",
+    question: "Which of the structures shown is most hydrophobic?",
+    image: QUIZ1,
+    options: [
+      { name: "A", isCorrect: true, disabled: false },
+      { name: "B", isCorrect: false, disabled: false },
+      { name: "C", isCorrect: false, disabled: false },
+    ],
+    time: 20,
+  },
+  {
+    id: "Q201",
+    QNo: "123",
+    question: "Which of the structures shown is most hydrophobic?",
+    image: QUIZ1,
+    options: [
+      { name: "A", isCorrect: true, disabled: false },
+      { name: "B", isCorrect: false, disabled: false },
+      { name: "C", isCorrect: false, disabled: false },
+    ],
+    time: 20,
+  },
+  {
+    id: "Q202",
+    QNo: "124",
+    question: "Which of the structures shown is most hydrophobic?",
+    image: QUIZ1,
+    options: [
+      { name: "A", isCorrect: true, disabled: false },
+      { name: "B", isCorrect: false, disabled: false },
+      { name: "C", isCorrect: false, disabled: false },
+    ],
+    time: 20,
+  },
+  {
+    id: "Q203",
+    QNo: "125",
+    question: "Which of the structures shown is most hydrophobic?",
+    image: QUIZ1,
+    options: [
+      { name: "A", isCorrect: true, disabled: false },
+      { name: "B", isCorrect: false, disabled: false },
+      { name: "C", isCorrect: false, disabled: false },
+    ],
+    time: 20,
+  },
+  {
+    id: "Q204",
+    QNo: "126",
+    question: "Which of the structures shown is most hydrophobic?",
+    image: QUIZ1,
+    options: [
+      { name: "A", isCorrect: true, disabled: false },
+      { name: "B", isCorrect: false, disabled: false },
+      { name: "C", isCorrect: false, disabled: false },
+    ],
+    time: 20,
+  },
+  {
+    id: "Q205",
+    QNo: "127",
+    question: "Which of the structures shown is most hydrophobic?",
+    image: QUIZ1,
+    options: [
+      { name: "A", isCorrect: true, disabled: false },
+      { name: "B", isCorrect: false, disabled: false },
+      { name: "C", isCorrect: false, disabled: false },
+    ],
+    time: 20,
+  },
+  {
+    id: "Q206",
+    QNo: "128",
+    question: "Which of the structures shown is most hydrophobic?",
+    image: QUIZ1,
+    options: [
+      { name: "A", isCorrect: true, disabled: false },
+      { name: "B", isCorrect: false, disabled: false },
+      { name: "C", isCorrect: false, disabled: false },
+    ],
+    time: 20,
+  },
+  {
+    id: "Q207",
+    QNo: "129",
+    question: "Which of the structures shown is most hydrophobic?",
+    image: QUIZ1,
+    options: [
+      { name: "A", isCorrect: true, disabled: false },
+      { name: "B", isCorrect: false, disabled: false },
+      { name: "C", isCorrect: false, disabled: false },
+    ],
+    time: 20,
+  },
+  {
+    id: "Q208",
+    QNo: "130",
+    question: "Which of the structures shown is most hydrophobic?",
+    image: QUIZ1,
+    options: [
+      { name: "A", isCorrect: true, disabled: false },
+      { name: "B", isCorrect: false, disabled: false },
+      { name: "C", isCorrect: false, disabled: false },
+    ],
+    time: 20,
+  },
+];
+
 export const courseSelect = [
   { value: "Physics", label: "Physics" },
   { value: "MedChem", label: "MedChem" },

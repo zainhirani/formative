@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SideDrawer from "components/Drawer";
 import { Box, IconButton, MenuItem, Select, Typography } from "@mui/material";
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
@@ -18,10 +18,15 @@ const QuestionsModal = (props: any) => {
   const underTakingDesc = useFormattedMessage(messages.underTakingDesc);
   const underTakingLongDesc = useFormattedMessage(messages.underTakingLongDesc);
   const confirmUnderTaking = useFormattedMessage(messages.confirmUnderTaking);
+  const quizScoreTitle = useFormattedMessage(messages.quizScoreTitle);
   const questionNo = useFormattedMessage(messages.questionNo);
   const quizScore = useFormattedMessage(messages.quizScore);
   const submit = useFormattedMessage(messages.submit);
-
+  const handleDrawerCloseQuestion = () => {
+    setDrawerOpen((prev: any) => !prev);
+    props?.onClose && props.onClose();
+    setShowQuestionScreen((prev) => !prev);
+  };
   const config = [
     {
       key: "accept",
@@ -47,15 +52,10 @@ const QuestionsModal = (props: any) => {
           </Box>
         );
       },
-      onClick: () => {
-        setDrawerOpen((prev: any) => !prev);
-      },
+      onClick: handleDrawerCloseQuestion,
     },
   ];
 
-  const handleDrawerCloseQuestion = () => {
-    setDrawerOpen((prev: any) => !prev);
-  };
   return (
     <>
       <SideDrawer
@@ -66,7 +66,7 @@ const QuestionsModal = (props: any) => {
         <Box sx={{ p: "30px 20px" }}>
           {showQuestionScreen ? (
             <Box>
-              <QuestionsStepper />
+              <QuestionsStepper handleChangeState={handleDrawerCloseQuestion} />
             </Box>
           ) : (
             <Box>

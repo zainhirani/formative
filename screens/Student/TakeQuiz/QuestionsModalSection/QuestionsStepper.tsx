@@ -5,28 +5,14 @@ import messages from "../messages";
 import { BoxWrapper, ButtonWrapper, TypographyStyled } from "../Styled";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
+import { questionData } from "mock-data/Student/TakeQuiz";
+import TakeQuizFormat from "components/TakeQuizFormat";
+import Question from "components/QuizMultiQuestionsFormat";
 
-const steps = [
-  "Step 1 Content",
-  "Step 2 Content",
-  "Step 3 Content",
-  "Step 4 Content",
-  "Step 5 Content",
-  "Step 6 Content",
-  "Step 7 Content",
-  "Step 8 Content",
-  "Step 9 Content",
-  "Step 10 Content",
-  "Step 11 Content",
-  "Step 12 Content",
-  "Step 13 Content",
-  "Step 14 Content",
-  "Step 15 Content",
-];
-
-const QuestionsStepper = () => {
+const QuestionsStepper = (props: any) => {
+  const { handleChangeState } = props;
   const timer = 120;
-
+  const steps = questionData;
   const [activeStep, setActiveStep] = useState(0);
   const [completed, setCompleted] = useState(false);
   const [remainingTime, setRemainingTime] = useState(timer);
@@ -44,9 +30,6 @@ const QuestionsStepper = () => {
       setRemainingTime((prevTime) => {
         if (prevTime > 0) {
           return prevTime - 1;
-        } else {
-          handleNext();
-          return 0;
         }
       });
     }, 1000);
@@ -66,11 +49,6 @@ const QuestionsStepper = () => {
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    setCompleted(false);
   };
 
   const handleReset = () => {
@@ -100,37 +78,32 @@ const QuestionsStepper = () => {
               steps.length
             }`}</TypographyStyled>
             <Box sx={{ display: "flex" }}>
-              <TypographyStyled>{remainingTimeText}</TypographyStyled>
-              <TypographyStyled style={{ color: getTimeColor() }}>
-                {remainingTime} seconds
-              </TypographyStyled>
+              {remainingTime ? (
+                <>
+                  <TypographyStyled>{remainingTimeText}</TypographyStyled>
+                  <TypographyStyled style={{ color: getTimeColor() }}>
+                    {remainingTime} seconds
+                  </TypographyStyled>
+                </>
+              ) : (
+                <>
+                  <TypographyStyled>{remainingTimeText}</TypographyStyled>
+                  <TypographyStyled style={{ color: "#ff0000" }}>
+                    0 seconds
+                  </TypographyStyled>
+                </>
+              )}
             </Box>
           </Box>
-          <TypographyStyled sx={{ mt: "30px" }} variant="body1">
-            {steps[activeStep]}
-          </TypographyStyled>
-          <BoxWrapper
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <Box sx={{ p: "15px" }}>
-              <TypographyStyled>{quizScore}</TypographyStyled>
-            </Box>
-            <ButtonWrapper
-              startIcon={<ArrowCircleRightOutlinedIcon />}
-              onClick={handleNext}
-              sx={{
-                "&:hover": {
-                  background: (theme) => theme.palette.secondary.main,
-                },
-              }}
-            >
-              {submit}
-            </ButtonWrapper>
-          </BoxWrapper>
+          <Question
+            id={steps[activeStep]?.id}
+            QNo={steps[activeStep]?.QNo}
+            question={steps[activeStep]?.question}
+            options={steps[activeStep]?.options}
+            questionSelected={false}
+            image={steps[activeStep]?.image}
+            handleNext={handleNext}
+          />
         </>
       ) : (
         <Box>
@@ -164,7 +137,7 @@ const QuestionsStepper = () => {
             </Box>
             <ButtonWrapper
               startIcon={<CancelOutlinedIcon />}
-              onClick={handleNext}
+              onClick={handleChangeState}
               sx={{
                 "&:hover": {
                   background: (theme) => theme.palette.secondary.main,

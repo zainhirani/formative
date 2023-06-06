@@ -16,21 +16,13 @@ import CustomSelect from "components/CustomSelect/CustomSelect";
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import messages from "./messages";
 import QuestionsModal from "./QuestionsModalSection";
+
 const TakeQuizScreen = () => {
   const searchQuiz = useFormattedMessage(messages.searchQuiz);
   const selectCourse = useFormattedMessage(messages.selectCourse);
-  const [selectedValues, setSelectedValues] = useState<string[]>([]);
   const [open, setOpen] = useState(false);
-
-  const handleSelectChange = (e: any) => {
-    const selectedValue = e.label;
-    if (selectedValue && !selectedValues.includes(selectedValue)) {
-      setSelectedValues([...selectedValues, selectedValue]);
-    }
-  };
-  const handleRemoveValue = (value: string) => {
-    setSelectedValues(selectedValues.filter((v) => v !== value));
-  };
+  const [checked, setChecked] = useState<number[]>([]);
+  const [lastSelected, setLastSelected] = useState(-1);
 
   const showColumns = {
     id: false,
@@ -38,13 +30,32 @@ const TakeQuizScreen = () => {
     course: true,
     due_date: true,
   };
+
+  const handleSelection = React.useCallback((ids: number[]) => {
+    setOpen(true);
+    setLastSelected(ids[ids.length - 1]);
+    setChecked(ids);
+  }, []);
+
+  const onDrowerClose = () => {
+    setChecked((prev) => {
+      if (prev?.length) {
+        let newArray = prev.filter((cId) => cId !== lastSelected);
+        return newArray;
+      }
+      return prev;
+    });
+  };
+
   return (
     <PageLayout title="Take Quiz" iconAngle={false} icon={<HelpRoundedIcon />}>
       <Box>
         <BoxWrapper>
           <QuestionsModal
             drawerOpen={open}
+            // setDrawerOpen={() => setOpen((prev) => !prev)}
             setDrawerOpen={() => setOpen((prev) => !prev)}
+            onClose={onDrowerClose}
           />
           <Box
             sx={{
@@ -93,7 +104,9 @@ const TakeQuizScreen = () => {
             type={"1"}
             isCheckbox={true}
             columnVisibilityModel={showColumns}
-            setChecked={() => setOpen((prev) => !prev)}
+            // setChecked={() => setOpen((prev) => !prev)}
+            onRowSelect={handleSelection}
+            selectedIds={checked}
           />
         </BoxWrapper>
       </Box>
