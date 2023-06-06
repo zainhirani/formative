@@ -12,6 +12,7 @@ import { BoxWrapper, ButtonWrapper } from "./Styled";
 
 interface IOptionProps {
   name: string;
+  valid: string;
 }
 
 type ITakeQuizProps = {
@@ -58,6 +59,7 @@ const TakeQuizFormat: FC<ITakeQuizProps> = ({
             display: "flex",
             justifyContent: "center",
             paddingTop: "50px",
+            borderRadius: "6px",
           }}
         >
           <ErrorOutlineIcon sx={{ fontSize: "64px", marginRight: "10px" }} />
@@ -98,51 +100,72 @@ const TakeQuizFormat: FC<ITakeQuizProps> = ({
             </Typography>
           </Box>
           <Box sx={{ paddingTop: "10px" }}>
-            <Typography sx={{ marginBottom: "30px" }} fontSize={18}>
+            <Typography sx={{ marginBottom: "5px" }} fontSize={18}>
               {question}
             </Typography>
-            <Image
-              alt="quiz-image"
-              lazyLoadProps={{ height: 240 }}
-              src={image}
-              lazyLoad={true}
-              style={{ maxWidth: "100%" }}
-            />
+            {submit === false ? (
+              <Image
+                alt="quiz-image"
+                lazyLoadProps={{ height: 240 }}
+                src={image}
+                lazyLoad={true}
+                style={{ maxWidth: "100%", marginTop: "30px" }}
+              />
+            ) : (
+              <Typography
+                sx={{ marginBottom: "30px", color: "#225A41" }}
+                fontSize={18}
+              >
+                Your answer is correct!
+              </Typography>
+            )}
           </Box>
           <Box sx={{ marginTop: "30px" }}>
             <Typography sx={{ marginBottom: "10px" }} fontSize={14}>
               <FormattedMessage {...messages.chooseQuestion} />
             </Typography>
-            {options?.map((el, index) => (
-              <Box
-                key={index}
-                sx={{
-                  height: "56px",
-                  border: "1px solid #EAEAEA",
-                  borderRadius: "6px",
-                  paddingLeft: "20px",
-                  display: "flex",
-                  alignItems: "center",
-                  marginBottom: "10px",
-                  boxShadow:
-                    checkedState[index] === true
-                      ? "0px 0px 40px rgba(0, 0, 0, 0.1)"
-                      : "",
-                }}
-              >
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      onChange={(e) => handleOnChange(index, e)}
-                      checked={checkedState[index]}
-                      id={`custom-checkbox-${index}`}
-                      color="default"
-                    />
-                  }
-                  label={el.name}
-                />
-              </Box>
-            ))}
+            {options?.map((el, index) => {
+              const valNew = el.valid;
+              console.log(valNew, "valNew");
+              return (
+                <Box
+                  key={index}
+                  sx={{
+                    justifyContent: "space-between",
+                    height: "56px",
+                    border: "1px solid #EAEAEA",
+                    borderRadius: "6px",
+                    paddingLeft: "20px",
+                    display: "flex",
+                    alignItems: "center",
+                    marginBottom: "10px",
+                    boxShadow:
+                      checkedState[index] === true
+                        ? "0px 0px 40px rgba(0, 0, 0, 0.1)"
+                        : "",
+                  }}
+                >
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        onChange={(e) => handleOnChange(index, e)}
+                        checked={checkedState[index]}
+                        id={`custom-checkbox-${index}`}
+                        color="default"
+                      />
+                    }
+                    label={el.name}
+                  />
+                  {valNew === "true" && submit === true ? (
+                    <Box sx={{ color: "#225A41", marginRight: "20px" }}>
+                      Correct Answer!
+                    </Box>
+                  ) : (
+                    ""
+                  )}
+                </Box>
+              );
+            })}
           </Box>
           {submit ? (
             <Box

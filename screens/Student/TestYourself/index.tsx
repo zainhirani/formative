@@ -11,7 +11,10 @@ import TakeQuizFormat from "components/TakeQuizFormat";
 
 import { BoxWrapper } from "./Styled";
 import { questionData } from "mock-data/Student/Test-Yourself";
-
+import CircleChecked from "@material-ui/icons/CheckCircleOutline";
+import CircleCheckedFilled from "@material-ui/icons/CheckCircle";
+import CircleUnchecked from "@material-ui/icons/RadioButtonUnchecked";
+import Image from "next/image";
 const PageLayout = dynamic(() => import("components/PageLayout"), {
   ssr: false,
   loading: () => <Loader />,
@@ -60,19 +63,39 @@ const TestYourself = () => {
 
   let configTestYourself = [
     {
-      columnName: "Name",
+      columnName: "",
+      maxWidth: "20px",
       render: (item: { name: any; id: number }) => {
         return (
           <>
             <Checkbox
+              icon={<CircleUnchecked sx={{ fontSize: "20px" }} />}
+              checkedIcon={
+                <Image src="/tick.svg" width={20} height={20} alt="tick" />
+              }
               checked={checkedState[item.id]}
               id={`custom-checkbox-${item.id}`}
               onChange={(e) => handleOnChange(item?.id, e)}
               size="small"
+              sx={{
+                borderRadius: "50%",
+                "&.Mui-checked": {
+                  borderRadius: "50%",
+                },
+              }}
             />
-            {item.name}
           </>
         );
+      },
+      handleClick: (item: any) => {
+        console.log(item?.id, "item");
+      },
+    },
+    {
+      columnName: "Name",
+      maxWidth: "20px",
+      render: (item: { name: any; id: number }) => {
+        return <>{item.name}</>;
       },
       handleClick: (item: any) => {
         console.log(item?.id, "item");

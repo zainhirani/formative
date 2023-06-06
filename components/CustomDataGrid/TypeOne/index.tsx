@@ -11,7 +11,6 @@ interface TypeOneProps {
   buttonArray?: ButtonConfig[];
   checkboxSelection?: boolean;
   onRowClick?: () => void;
-  // setChecked?:  ((value: string) => void) | undefined;
   setChecked?: any;
 
   // isChecked?:
