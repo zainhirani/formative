@@ -10,15 +10,15 @@ import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOu
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
+import messages from "screens/Student/TakeQuiz/messages";
+import {
+  ButtonWrapper,
+  TypographyStyled,
+} from "screens/Student/TakeQuiz/Styled";
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import Image from "theme/Image";
 
-import messages from "screens/Student/TakeQuiz/messages";
 import { BoxWrapper } from "../TakeQuizFormat/Styled";
-import {
-  TypographyStyled,
-  ButtonWrapper,
-} from "screens/Student/TakeQuiz/Styled";
 
 interface IOptionProps {
   name: string;
