@@ -13,12 +13,12 @@ const PageLayout = dynamic(() => import("components/PageLayout"), {
 
 const ManageQuizScreen = () => {
   return (
-    <PageLayout title="All Quiz" icon={<HelpRoundedIcon />}>
-      <Box>
-        <SearchSection />
-        <TableSection />
-      </Box>
-    </PageLayout>
+    // <PageLayout title="All Quiz" icon={<HelpRoundedIcon />}>
+    <Box>
+      <SearchSection />
+      <TableSection />
+    </Box>
+    // </PageLayout>
   );
 };
 

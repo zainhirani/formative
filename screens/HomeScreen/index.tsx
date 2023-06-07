@@ -18,29 +18,29 @@ const HomeScreen: React.FC = () => {
 
   return (
     <>
-      <PageLayout>
-        <Box>
-          <BoxWrapper>
-            <Typography>
-              <FormattedMessage {...messages.title} />
-            </Typography>
-            <Box>
-              <Button
-                onClick={() => {
-                  signOut;
-                  router.push("/login");
-                  localStorage.clear();
-                }}
-              >
-                Logout
-              </Button>
-            </Box>
-          </BoxWrapper>
-          <Typography sx={{ ml: 4 }}>
-            <FormattedMessage {...messages.description} />
+      {/* <PageLayout> */}
+      <Box>
+        <BoxWrapper>
+          <Typography>
+            <FormattedMessage {...messages.title} />
           </Typography>
-        </Box>
-      </PageLayout>
+          <Box>
+            <Button
+              onClick={() => {
+                signOut;
+                router.push("/login");
+                localStorage.clear();
+              }}
+            >
+              Logout
+            </Button>
+          </Box>
+        </BoxWrapper>
+        <Typography sx={{ ml: 4 }}>
+          <FormattedMessage {...messages.description} />
+        </Typography>
+      </Box>
+      {/* </PageLayout> */}
     </>
   );
 };

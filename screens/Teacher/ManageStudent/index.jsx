@@ -13,10 +13,10 @@ const ManageStudents = () => {
   console.log(checked,'checked custom');
   return (
     <>
-        <PageLayout>
+        {/* <PageLayout> */}
             <SearchSection checked={checked} />
             <TableSection setChecked={setChecked} />
-        </PageLayout>
+        {/* </PageLayout> */}
     </>
   )
 }

@@ -24,6 +24,7 @@ const PageLayout = (props: Props) => {
   };
   return (
     <Box sx={{ display: "flex" }}>
+      {/* Sidebar */}
       <Box
         sx={{
           width: open ? primaryDrawerWidth : 60,
@@ -38,6 +39,7 @@ const PageLayout = (props: Props) => {
           <DrawerContent clickHandler={handleDrawerClose} />
         </Drawer>
       </Box>
+      {/* Header with breadcrumb */}
 
       <AppBarComponent
         title={props.title}
@@ -47,6 +49,7 @@ const PageLayout = (props: Props) => {
         open={open}
         clickHandler={handleDrawerOpen}
       />
+      {/* Main  */}
       <Box
         component="main"
         sx={{

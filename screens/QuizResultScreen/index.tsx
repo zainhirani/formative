@@ -5,9 +5,9 @@ import QuizesListing from "./QuizesListing";
 
 const QuizResultScreen = () => {
   return (
-    <PageLayout title="Quiz Results" icon={<HelpRoundedIcon />}>
-      <QuizesListing />
-    </PageLayout>
+    // <PageLayout title="Quiz Results" icon={<HelpRoundedIcon />}>
+    <QuizesListing />
+    // </PageLayout>
   );
 };
 

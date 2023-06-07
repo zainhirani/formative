@@ -102,40 +102,40 @@ const ProfileScreen = () => {
   );
   return (
     <>
-      <PageLayout title="Profile" icon={<HelpRoundedIcon />}>
-        <Box>
-          <TabContext value={value}>
-            <Tabs
-              value={value}
-              onChange={(event: React.SyntheticEvent, newValue: string) =>
-                setValue(newValue)
-              }
-              textColor="primary"
-              indicatorColor="secondary"
-              aria-label="secondary tabs example"
-            >
-              <Tab
-                value="one"
-                label={<FormattedMessage {...messages.stepOneTitle} />}
-                sx={{
-                  textTransform: "capitalize",
-                }}
-              />
-              <Tab
-                value="two"
-                label={<FormattedMessage {...messages.stepTwoTitle} />}
-                sx={{ textTransform: "capitalize" }}
-              />
-            </Tabs>
-            <TabPanel sx={{ px: 0 }} value="one">
-              <GeneralInfo />
-            </TabPanel>
-            <TabPanel sx={{ px: 0 }} value="two">
-              <ProfileTab />
-            </TabPanel>
-          </TabContext>
-        </Box>
-      </PageLayout>
+      {/* <PageLayout title="Profile" icon={<HelpRoundedIcon />}> */}
+      <Box>
+        <TabContext value={value}>
+          <Tabs
+            value={value}
+            onChange={(event: React.SyntheticEvent, newValue: string) =>
+              setValue(newValue)
+            }
+            textColor="primary"
+            indicatorColor="secondary"
+            aria-label="secondary tabs example"
+          >
+            <Tab
+              value="one"
+              label={<FormattedMessage {...messages.stepOneTitle} />}
+              sx={{
+                textTransform: "capitalize",
+              }}
+            />
+            <Tab
+              value="two"
+              label={<FormattedMessage {...messages.stepTwoTitle} />}
+              sx={{ textTransform: "capitalize" }}
+            />
+          </Tabs>
+          <TabPanel sx={{ px: 0 }} value="one">
+            <GeneralInfo />
+          </TabPanel>
+          <TabPanel sx={{ px: 0 }} value="two">
+            <ProfileTab />
+          </TabPanel>
+        </TabContext>
+      </Box>
+      {/* </PageLayout> */}
     </>
   );
 };

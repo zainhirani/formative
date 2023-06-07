@@ -12,10 +12,6 @@ import {
 } from "@mui/material";
 
 export const SidebarItemCollapse = ({ item }: any) => {
-  console.log(
-    "🚀 ~ file: SidebarItemCollapse.tsx:14 ~ SidebarItemCollapse ~ item:",
-    item,
-  );
   const [itemName, setItemName] = useState({
     toggle: false,
     title: "",

@@ -19,6 +19,7 @@ import { getLocale, getMessages } from "i18n";
 import { initFirebase } from "platform/initFirebase";
 import ThemeProvider from "theme/Provider";
 import { initAnalytics } from "../platform/analytics";
+import PageLayout from "components/PageLayout/";
 
 const loadSideEffects = () => {
   // firebase initialization
@@ -116,7 +117,9 @@ class MyApp extends App<{
                       }}
                     >
                       <Hydrate state={pageProps.dehydratedState}>
-                        <Component {...pageProps} />
+                        <PageLayout>
+                          <Component {...pageProps} />
+                        </PageLayout>
                       </Hydrate>
                     </SnackbarProvider>
                   </AppStateProvider>
