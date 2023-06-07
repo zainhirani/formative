@@ -264,21 +264,6 @@ export let getDesignTokens = (mode: PaletteMode) => {
           },
         },
       },
-      MuiDatePicker: {
-        root: {
-          "& .MuiInputBase-root": {
-            padding: 0,
-            "& .MuiButtonBase-root": {
-              padding: 0,
-              paddingLeft: 10,
-            },
-            "& .MuiInputBase-input": {
-              padding: 15,
-              paddingLeft: 0,
-            },
-          },
-        },
-      },
     },
   });
   return theme;

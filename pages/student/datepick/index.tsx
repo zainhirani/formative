@@ -1,13 +1,13 @@
-import SideDrawer from 'components/Drawer'
-import React from 'react'
+import React from "react";
+import SideDrawer from "components/Drawer";
 
 const Sider = () => {
   return (
     <>
-        <SideDrawer />
-        <h1>Hello World</h1>
+      <SideDrawer />
+      <h1>Hello World</h1>
     </>
-  )
-}
+  );
+};
 
-export default Sider
+export default Sider;

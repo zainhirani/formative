@@ -17,15 +17,14 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-
-
+import CustomeDatePicker from "components/CustomeDatePicker";
 
 const SearchSection = () => {
   const [afterDatevalue, setAfterDatevalue] = useState(null);
   const [beforeDatevalue, setBeforeDatevalue] = useState(null);
   const searchQuiz = useFormattedMessage(messages.searchQuiz);
 
-  //Remove Border of datepicker 
+  //Remove Border of datepicker
 
   const optionsCourse = [
     { value: "Cannabis 2023", label: "Cannabis 2023" },
@@ -58,33 +57,16 @@ const SearchSection = () => {
           options={optionsCourse}
         />
       </SelectBoxWrapper>
-      <SelectBoxWrapper gridColumn="span 3">
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker 
-            
-            label="Select Quiz After Date" 
-            value={afterDatevalue}
-            onChange={(newValue)=> setAfterDatevalue(newValue) }
-            renderInput= {(props:any) => <TextField  {...props}/>}
-          />
-        </LocalizationProvider>
-      </SelectBoxWrapper>
-      <SelectBoxWrapper gridColumn="span 3">
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker 
-            label="Select Quiz Before Date" 
-            value={beforeDatevalue}
-            onChange={(newValueBefore)=> setBeforeDatevalue(newValueBefore)}
-            renderInput= {(props:any) => <TextField variant="standard"  {...props}
-            variant="inline"
-            autoOk
-            InputAdornmentProps={{ position: "start" }}
-            InputProps={{
-              disableUnderline: true
-            }}/>}
-          />
-        </LocalizationProvider>
-      </SelectBoxWrapper> 
+      <CustomeDatePicker
+        label="Select Quiz After Date"
+        value={afterDatevalue}
+        onChange={setAfterDatevalue}
+      />
+      <CustomeDatePicker
+        label="Select Quiz Before Date"
+        value={beforeDatevalue}
+        onChange={setBeforeDatevalue}
+      />
     </BoxWrapper>
   );
 };

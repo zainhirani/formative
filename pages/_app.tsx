@@ -20,7 +20,6 @@ import { initFirebase } from "platform/initFirebase";
 import ThemeProvider from "theme/Provider";
 import { initAnalytics } from "../platform/analytics";
 
-
 const loadSideEffects = () => {
   // firebase initialization
   if (typeof window !== undefined) {
@@ -104,30 +103,30 @@ class MyApp extends App<{
           <meta name="viewport" content="initial-scale=1, width=device-width" />
         </Head>
         {/* <ThemeContextProvider> */}
-        
-          <ThemeProvider>
-            <IntlProvider locale={locale || "en"} messages={messages}>
-              <SessionProvider session={session}>
-                <AuthContextProvider>
-                  <QueryClientProvider client={queryClient}>
-                    <AppStateProvider>
-                      <SnackbarProvider
-                        anchorOrigin={{
-                          vertical: "top",
-                          horizontal: "center",
-                        }}
-                      >
-                        <Hydrate state={pageProps.dehydratedState}>
-                          <Component {...pageProps} />
-                        </Hydrate>
-                      </SnackbarProvider>
-                    </AppStateProvider>
-                    <ReactQueryDevtools initialIsOpen={false} />
-                  </QueryClientProvider>
-                </AuthContextProvider>
-              </SessionProvider>
-            </IntlProvider>
-          </ThemeProvider>
+
+        <ThemeProvider>
+          <IntlProvider locale={locale || "en"} messages={messages}>
+            <SessionProvider session={session}>
+              <AuthContextProvider>
+                <QueryClientProvider client={queryClient}>
+                  <AppStateProvider>
+                    <SnackbarProvider
+                      anchorOrigin={{
+                        vertical: "top",
+                        horizontal: "center",
+                      }}
+                    >
+                      <Hydrate state={pageProps.dehydratedState}>
+                        <Component {...pageProps} />
+                      </Hydrate>
+                    </SnackbarProvider>
+                  </AppStateProvider>
+                  <ReactQueryDevtools initialIsOpen={false} />
+                </QueryClientProvider>
+              </AuthContextProvider>
+            </SessionProvider>
+          </IntlProvider>
+        </ThemeProvider>
         {/* </ThemeContextProvider> */}
       </>
     );
