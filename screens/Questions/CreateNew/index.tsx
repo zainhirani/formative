@@ -403,6 +403,8 @@ const CreateNewScreen = () => {
                         placeholder={facultyPlaceholder}
                         controlText={faculty}
                         dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
+                        // options={facultyCategorySelect}
+                        // options={facultySelect}
                         options={facultyCategorySelect}
                         onChange={handleSelectChange}
                       />
