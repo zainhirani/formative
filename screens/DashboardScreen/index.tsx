@@ -6,7 +6,7 @@ import Iconbox from "components/IconBox";
 import PageLayout from "components/PageLayout";
 import DataTable from "components/DataTable";
 import FormattedMessage from "theme/FormattedMessage";
-import { QUIZ, COURSES, STUDENTS, QUESTIONS } from "configs";
+import { QUIZ, COURSES, STUDENTS, QUESTIONS,TESTYOURSELF,HOW_AM_I_DOING,PROFILE } from "configs";
 import messages from "./messages";
 import SideDrawer from "components/Drawer";
 
@@ -30,6 +30,31 @@ const boxContent = [
     title: "Questions",
     description: "Edit existing questions or add new questions.",
     image: QUESTIONS,
+  },
+];
+
+//Student Screen Dashboard
+
+const studentBoxContent = [
+  {
+    title: "Take Quiz",
+    description: "Take a quiz to test your abilities of the subjects.",
+    image: QUIZ,
+  },
+  {
+    title: "Test Yourself",
+    description: "Ask yourself a questions to test your skills.",
+    image: TESTYOURSELF,
+  },
+  {
+    title: "How Am I Doing?",
+    description: "Review your grade report and see how you are doing.",
+    image: HOW_AM_I_DOING,
+  },
+  {
+    title: "Profile",
+    description: "Update your details or change your password.",
+    image: PROFILE,
   },
 ];
 
@@ -159,48 +184,92 @@ const DashboardScreen = () => {
   ];
 
   return (
-    // <PageLayout title={"Dashboard"}>
-    <Box sx={{ flexGrow: 1 }}>
-      {/* <DataTable data={collegesData} config={config} /> */}
+    <>
+      {/* <PageLayout title={"Dashboard"}> */}
+      <Box sx={{ flexGrow: 1 }}>
+        {/* <DataTable data={collegesData} config={config} /> */}
 
-      <Box>
-        <Typography
-          gutterBottom
-          variant="h5"
-          sx={{
-            fontSize: "48px",
-            lineHeight: "56px",
-            fontWeight: "300",
-            maxWidth: "380px",
-          }}
-        >
-          <FormattedMessage {...messages.title} />
-        </Typography>
-        <Typography variant="body2">
-          <FormattedMessage {...messages.pitch} />
-        </Typography>
-      </Box>
-      <Box sx={{ display: "flex", flexWrap: "wrap", gap: "20px" }} mt={1}>
-        {boxContent.map((item, index) => (
-          <Paper
-            key={index}
+        <Box>
+          <Typography
+            gutterBottom
+            variant="h5"
             sx={{
-              padding: 0,
-              borderRadius: "none",
-              boxShadow: "none",
-              width: "48%",
+              fontSize: "48px",
+              lineHeight: "56px",
+              fontWeight: "300",
+              maxWidth: "380px",
             }}
           >
-            <Iconbox
-              title={item.title}
-              description={item.description}
-              image={item.image}
-            ></Iconbox>
-          </Paper>
-        ))}
+            <FormattedMessage {...messages.title} />
+          </Typography>
+          <Typography variant="body2">
+            <FormattedMessage {...messages.pitch} />
+          </Typography>
+        </Box>
+        <Box sx={{ display: "flex", flexWrap: "wrap", gap: "20px" }} mt={1}>
+          {boxContent.map((item, index) => (
+            <Paper
+              key={index}
+              sx={{
+                padding: 0,
+                borderRadius: "none",
+                boxShadow: "none",
+                width: "48%",
+              }}
+            >
+              <Iconbox
+                title={item.title}
+                description={item.description}
+                image={item.image}
+              ></Iconbox>
+            </Paper>
+          ))}
+        </Box>
       </Box>
-    </Box>
-    // </PageLayout>
+      {/* // </PageLayout> */}
+
+      {/* Student Dashboard Screen */}
+      <Box sx={{ flexGrow: 1 }}>
+        {/* <DataTable data={collegesData} config={config} /> */}
+
+        <Box>
+          <Typography
+            gutterBottom
+            variant="h5"
+            sx={{
+              fontSize: "48px",
+              lineHeight: "56px",
+              fontWeight: "300",
+              maxWidth: "380px",
+            }}
+          >
+            <FormattedMessage {...messages.title} />
+          </Typography>
+          <Typography variant="body2">
+            <FormattedMessage {...messages.pitch} />
+          </Typography>
+        </Box>
+        <Box sx={{ display: "flex", flexWrap: "wrap", gap: "20px" }} mt={1}>
+          {studentBoxContent.map((item, index) => (
+            <Paper
+              key={index}
+              sx={{
+                padding: 0,
+                borderRadius: "none",
+                boxShadow: "none",
+                width: "48%",
+              }}
+            >
+              <Iconbox
+                title={item.title}
+                description={item.description}
+                image={item.image}
+              ></Iconbox>
+            </Paper>
+          ))}
+        </Box>
+      </Box>
+    </>
   );
 };
 
