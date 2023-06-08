@@ -104,6 +104,7 @@ class MyApp extends App<{
           <meta name="viewport" content="initial-scale=1, width=device-width" />
         </Head>
         {/* <ThemeContextProvider> */}
+
         <ThemeProvider>
           <IntlProvider locale={locale || "en"} messages={messages}>
             <SessionProvider session={session}>

@@ -75,9 +75,9 @@ const RegisterScreen: React.FC = () => {
     nickName: "",
     gender: "",
     email: "",
-    rfuID: "",
+    rfuID: "12",
     program: "",
-    graduation: "",
+    graduation: "2022",
     birthPlace: "",
     userName: "",
     password: "",
@@ -198,16 +198,16 @@ const RegisterScreen: React.FC = () => {
                 <FormattedMessage {...messages.description} />
               </Typography>
               {/* <form onSubmit={handleSubmit}> */}
-                <StepTwo
-                  // handleChange={handleChange}
-                  // handleBlur={handleBlur}
-                  // errors={errors}
-                  // values={values}
-                  // touched={touched}
-                  // setFieldValue={setFieldValue}
-                  // disable={false}
-                />
-                {/* <Box
+              <StepTwo
+              // handleChange={handleChange}
+              // handleBlur={handleBlur}
+              // errors={errors}
+              // values={values}
+              // touched={touched}
+              // setFieldValue={setFieldValue}
+              // disable={false}
+              />
+              {/* <Box
                   sx={{
                     display: "flex",
                     flexDirection: { md: "row", xs: "column" },
