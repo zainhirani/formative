@@ -159,48 +159,48 @@ const DashboardScreen = () => {
   ];
 
   return (
-    <PageLayout title={"Dashboard"}>
-      <Box sx={{ flexGrow: 1 }}>
-        {/* <DataTable data={collegesData} config={config} /> */}
+    // <PageLayout title={"Dashboard"}>
+    <Box sx={{ flexGrow: 1 }}>
+      {/* <DataTable data={collegesData} config={config} /> */}
 
-        <Box>
-          <Typography
-            gutterBottom
-            variant="h5"
+      <Box>
+        <Typography
+          gutterBottom
+          variant="h5"
+          sx={{
+            fontSize: "48px",
+            lineHeight: "56px",
+            fontWeight: "300",
+            maxWidth: "380px",
+          }}
+        >
+          <FormattedMessage {...messages.title} />
+        </Typography>
+        <Typography variant="body2">
+          <FormattedMessage {...messages.pitch} />
+        </Typography>
+      </Box>
+      <Box sx={{ display: "flex", flexWrap: "wrap", gap: "20px" }} mt={1}>
+        {boxContent.map((item, index) => (
+          <Paper
+            key={index}
             sx={{
-              fontSize: "48px",
-              lineHeight: "56px",
-              fontWeight: "300",
-              maxWidth: "380px",
+              padding: 0,
+              borderRadius: "none",
+              boxShadow: "none",
+              width: "48%",
             }}
           >
-            <FormattedMessage {...messages.title} />
-          </Typography>
-          <Typography variant="body2">
-            <FormattedMessage {...messages.pitch} />
-          </Typography>
-        </Box>
-        <Box sx={{ display: "flex", flexWrap: "wrap", gap: "20px" }} mt={1}>
-          {boxContent.map((item, index) => (
-            <Paper
-              key={index}
-              sx={{
-                padding: 0,
-                borderRadius: "none",
-                boxShadow: "none",
-                width: "48%",
-              }}
-            >
-              <Iconbox
-                title={item.title}
-                description={item.description}
-                image={item.image}
-              ></Iconbox>
-            </Paper>
-          ))}
-        </Box>
+            <Iconbox
+              title={item.title}
+              description={item.description}
+              image={item.image}
+            ></Iconbox>
+          </Paper>
+        ))}
       </Box>
-    </PageLayout>
+    </Box>
+    // </PageLayout>
   );
 };
 

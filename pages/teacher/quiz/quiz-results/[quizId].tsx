@@ -5,9 +5,9 @@ import SelectedQuizDetails from "screens/QuizResultScreen/SelectedQuizDetails";
 
 const SelectedQuiz: NextPage = () => {
   return (
-    <PageLayout title="Quiz Results" icon={<HelpRoundedIcon />}>
-      <SelectedQuizDetails />
-    </PageLayout>
+    // <PageLayout title="Quiz Results" icon={<HelpRoundedIcon />}>
+    <SelectedQuizDetails />
+    // </PageLayout>
   );
 };
 

@@ -11,16 +11,16 @@ import { UploadQuestions } from "components/UploadQuestions";
 const UploadQuestionScreen = () => {
   return (
     <>
-      <PageLayout
+      {/* <PageLayout
         iconAngle={true}
         subText="Upload Questions"
         icon={<HelpRoundedIcon />}
         title={"Questions"}
-      >
-        <BoxWrapper>
-          <UploadQuestions />
-        </BoxWrapper>
-      </PageLayout>
+      > */}
+      <BoxWrapper>
+        <UploadQuestions />
+      </BoxWrapper>
+      {/* </PageLayout> */}
     </>
   );
 };

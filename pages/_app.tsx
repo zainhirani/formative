@@ -12,6 +12,7 @@ import { QueryCache, QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { Hydrate } from "react-query/hydration";
 
+import PageLayout from "components/PageLayout/";
 import { AppStateProvider } from "contexts/AppStateContext";
 import { AuthContextProvider } from "contexts/AuthContext";
 import ThemeContextProvider from "contexts/ThemeContext";
@@ -117,7 +118,9 @@ class MyApp extends App<{
                       }}
                     >
                       <Hydrate state={pageProps.dehydratedState}>
-                        <Component {...pageProps} />
+                        <PageLayout>
+                          <Component {...pageProps} />
+                        </PageLayout>
                       </Hydrate>
                     </SnackbarProvider>
                   </AppStateProvider>
