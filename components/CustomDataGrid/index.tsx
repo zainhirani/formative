@@ -14,11 +14,15 @@ interface CustomDataGridProps {
   buttonArray?: ButtonConfig[];
   isCheckbox?: boolean;
   onRowClick?: () => void;
+  selectedIds: number[];
   setChecked: any;
+  onRowSelect?: (ids: number[], details: any) => void;
+  columnVisibilityModel?: any;
 }
 
 const CustomDataGrid: React.FC<CustomDataGridProps> = ({
   pageSizeData,
+  columnVisibilityModel,
   rows,
   columns,
   type,
@@ -39,6 +43,7 @@ const CustomDataGrid: React.FC<CustomDataGridProps> = ({
           buttonArray={buttonArray}
           checkboxSelection={isCheckbox}
           setChecked={setChecked}
+          columnVisibilityModel={columnVisibilityModel}
           {...props}
         />
       ) : type == "2" ? (
