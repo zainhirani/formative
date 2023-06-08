@@ -1,6 +1,3 @@
-import { useState } from "react";
-
-import { TextField, makeStyles } from "@mui/material";
 import { Box, IconButton, InputAdornment } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import {
@@ -13,11 +10,8 @@ import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCi
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import messages from "./messages";
 import CustomSelect from "components/CustomSelect/CustomSelect";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import CustomeDatePicker from "components/CustomeDatePicker";
+import { useState } from "react";
 
 const SearchSection = () => {
   const [afterDatevalue, setAfterDatevalue] = useState(null);
