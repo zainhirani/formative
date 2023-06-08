@@ -44,11 +44,13 @@ const QuestionsStepper = (props: any) => {
   }, [activeStep]);
 
   const handleNext = () => {
-    if (activeStep === steps.length - 1) {
-      setCompleted(true);
-    } else {
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    }
+    setCompleted(true);
+    setActiveStep(steps);
+    // if (activeStep === steps.length - 1) {
+    //   setCompleted(true);
+    // } else {
+    //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    // }
   };
 
   const handleReset = () => {
@@ -71,7 +73,7 @@ const QuestionsStepper = (props: any) => {
 
   return (
     <>
-      {activeStep !== steps.length - 1 ? (
+      {!completed ? (
         <>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <TypographyStyled>{`${questionNo} ${activeStep + 1} of ${

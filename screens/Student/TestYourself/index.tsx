@@ -87,38 +87,38 @@ const TestYourself = () => {
   ];
 
   return (
-    // <PageLayout title="Test Yourself" icon={<HelpRoundedIcon />}>
-    <Box sx={{ display: "flex" }}>
-      <BoxWrapper sx={{ marginRight: "15px" }}>
-        <Box
-          sx={{
-            height: "50px",
-            background: (theme) => theme.palette.secondary.dark,
-            pl: "20px",
-            display: "flex",
-            alignItems: "center",
-            borderTopLeftRadius: "6px",
-            borderTopRightRadius: "6px",
-          }}
-        >
-          Biochem - Enzymes As Catalysts
-        </Box>
+    <PageLayout title="Test Yourself" icon={<HelpRoundedIcon />}>
+      <Box sx={{ display: "flex" }}>
+        <BoxWrapper sx={{ marginRight: "15px" }}>
+          <Box
+            sx={{
+              height: "50px",
+              background: (theme) => theme.palette.secondary.dark,
+              pl: "20px",
+              display: "flex",
+              alignItems: "center",
+              borderTopLeftRadius: "6px",
+              borderTopRightRadius: "6px",
+            }}
+          >
+            Biochem - Enzymes As Catalysts
+          </Box>
 
-        <DataTable data={dataTestYourself} config={configTestYourself} />
-      </BoxWrapper>
-      <BoxWrapper sx={{ width: "60%", marginLeft: "15px" }}>
-        <TakeQuizFormat
-          id={questionData?.id}
-          QNo={questionData?.QNo}
-          question={questionData?.question}
-          image={questionData?.image}
-          options={questionData?.options}
-          time={questionData?.time}
-          questionSelected={checkedState.indexOf(true) > -1}
-        />
-      </BoxWrapper>
-    </Box>
-    // </PageLayout>
+          <DataTable data={dataTestYourself} config={configTestYourself} />
+        </BoxWrapper>
+        <BoxWrapper sx={{ width: "60%", marginLeft: "15px" }}>
+          <TakeQuizFormat
+            id={questionData?.id}
+            QNo={questionData?.QNo}
+            question={questionData?.question}
+            image={questionData?.image}
+            options={questionData?.options}
+            time={questionData?.time}
+            questionSelected={checkedState.indexOf(true) > -1}
+          />
+        </BoxWrapper>
+      </Box>
+    </PageLayout>
   );
 };
 

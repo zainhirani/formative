@@ -48,69 +48,69 @@ const TakeQuizScreen = () => {
   };
 
   return (
-    // <PageLayout title="Take Quiz" iconAngle={false} icon={<HelpRoundedIcon />}>
-    <Box>
-      <BoxWrapper>
-        <QuestionsModal
-          drawerOpen={open}
-          // setDrawerOpen={() => setOpen((prev) => !prev)}
-          setDrawerOpen={() => setOpen((prev) => !prev)}
-          onClose={onDrowerClose}
-        />
-        <Box
+    <PageLayout title="Take Quiz" iconAngle={false} icon={<HelpRoundedIcon />}>
+      <Box>
+        <BoxWrapper>
+          <QuestionsModal
+            drawerOpen={open}
+            // setDrawerOpen={() => setOpen((prev) => !prev)}
+            setDrawerOpen={() => setOpen((prev) => !prev)}
+            onClose={onDrowerClose}
+          />
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              height: "60px",
+            }}
+          >
+            <TextFieldStyled
+              placeholder={searchQuiz}
+              variant="outlined"
+              InputProps={{
+                style: { border: "none", outline: "0px" },
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton aria-label="visibility" edge="end">
+                      <Search />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <SelectBoxWrapper>
+              <Box sx={{ width: "100%" }}>
+                <CustomSelect
+                  placeholder={selectCourse}
+                  dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
+                  options={courseSelect}
+                />
+              </Box>
+            </SelectBoxWrapper>
+          </Box>
+        </BoxWrapper>
+        <BoxWrapper
           sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            height: "60px",
+            ".MuiDataGrid-columnHeaderDraggableContainer .MuiCheckbox-root": {
+              display: "none",
+            },
           }}
         >
-          <TextFieldStyled
-            placeholder={searchQuiz}
-            variant="outlined"
-            InputProps={{
-              style: { border: "none", outline: "0px" },
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton aria-label="visibility" edge="end">
-                    <Search />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
+          {/* @ts-ignore */}
+          <CustomDataGrid
+            rows={rowsTakeQuiz}
+            columns={columnsTakeQuiz}
+            pageSizeData={pageSizeTakeQuiz}
+            type={"1"}
+            isCheckbox={true}
+            columnVisibilityModel={showColumns}
+            // setChecked={() => setOpen((prev) => !prev)}
+            onRowSelect={handleSelection}
+            selectedIds={checked}
           />
-          <SelectBoxWrapper>
-            <Box sx={{ width: "100%" }}>
-              <CustomSelect
-                placeholder={selectCourse}
-                dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-                options={courseSelect}
-              />
-            </Box>
-          </SelectBoxWrapper>
-        </Box>
-      </BoxWrapper>
-      <BoxWrapper
-        sx={{
-          ".MuiDataGrid-columnHeaderDraggableContainer .MuiCheckbox-root": {
-            display: "none",
-          },
-        }}
-      >
-        {/* @ts-ignore */}
-        <CustomDataGrid
-          rows={rowsTakeQuiz}
-          columns={columnsTakeQuiz}
-          pageSizeData={pageSizeTakeQuiz}
-          type={"1"}
-          isCheckbox={true}
-          columnVisibilityModel={showColumns}
-          // setChecked={() => setOpen((prev) => !prev)}
-          onRowSelect={handleSelection}
-          selectedIds={checked}
-        />
-      </BoxWrapper>
-    </Box>
-    // </PageLayout>
+        </BoxWrapper>
+      </Box>
+    </PageLayout>
   );
 };
 

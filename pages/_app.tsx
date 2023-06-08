@@ -118,9 +118,9 @@ class MyApp extends App<{
                       }}
                     >
                       <Hydrate state={pageProps.dehydratedState}>
-                        <PageLayout>
-                          <Component {...pageProps} />
-                        </PageLayout>
+                        {/* <PageLayout> */}
+                        <Component {...pageProps} />
+                        {/* </PageLayout> */}
                       </Hydrate>
                     </SnackbarProvider>
                   </AppStateProvider>
