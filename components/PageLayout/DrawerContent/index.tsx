@@ -15,8 +15,8 @@ import {
 import PowerSettingsNewOutlinedIcon from "@mui/icons-material/PowerSettingsNewOutlined";
 import { SITELOGO } from "configs";
 import Image from "theme/Image";
-import MenuData from "./navLinks";
-import { SidebarItemCollapse } from "./SidebarItemCollapse";
+import { STUDENT_MENU, TEACHER_MENU, COMMON_MENU } from "./sidebarData";
+import SidebarMultiMenuItem from "./SidebarIMultiMenuItem";
 import { DrawerHeader } from "./Styled";
 
 interface BarComponentProps {
@@ -26,8 +26,9 @@ interface BarComponentProps {
 
 const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
   const router = useRouter();
+  let MENU_ITEMS = 3 === 2 ? TEACHER_MENU : STUDENT_MENU;
+  let COMMON_MENU_ITEMS = [COMMON_MENU.profile, COMMON_MENU.settings];
 
-  // Define a helper function to determine if a given route is active
   const isActiveRoute = (route: string) => {
     return router.pathname === route;
   };
@@ -50,15 +51,17 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
             lazyLoad={true}
           />
         </Box>
-        {/* <IconButton onClick={clickHandler}>
+        {/* 
+        <IconButton onClick={clickHandler}>
           <MenuIcon sx={{ color: (theme) => theme.palette.primary.light }} />
-        </IconButton> */}
+        </IconButton> 
+        */}
       </DrawerHeader>
 
       <List sx={{ height: "100%" }}>
-        {MenuData.map((item: any, index) =>
-          item.subitems != null ? (
-            <SidebarItemCollapse item={item} key={index} />
+        {MENU_ITEMS.map((item: any, index) =>
+          item?.subitems?.length ? (
+            <SidebarMultiMenuItem item={item} key={index} />
           ) : (
             <ListItem
               key={item.title}
@@ -100,24 +103,62 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
                   />
                 </ListItemButton>
               </Link>
-              {index == 6 ? (
-                <Divider
-                  sx={{
-                    height: "1px",
-                    background: (theme) => theme.palette.primary.light,
-                    width: "82%",
-                    position: "absolute",
-                    left: "16px",
-                    bottom: "-30px",
-                  }}
-                />
-              ) : (
-                ""
-              )}
             </ListItem>
           ),
         )}
+        <Divider
+          sx={{
+            height: "1px",
+            background: (theme) => theme.palette.primary.light,
+            width: "80%",
+            margin: "0 auto",
+            marginTop: "3rem",
+          }}
+        />
+
+        {COMMON_MENU_ITEMS.map((item: any, index) => (
+          <ListItem
+            key={item.title}
+            disablePadding
+            sx={{
+              backgroundColor: isActiveRoute(item.link) ? "#68151E" : "initial",
+              "&:nth-of-type(7)": {
+                marginBottom: "60px",
+              },
+              "&:hover": {
+                background: "#68151E",
+              },
+            }}
+          >
+            <Link href={item.link} key={item.title} passHref={true}>
+              <ListItemButton>
+                <ListItemIcon
+                  sx={{
+                    color: (theme) => theme.palette.primary.light,
+                    minWidth: "40px",
+                    "& .lazyload-wrapper": {
+                      display: "flex",
+                    },
+                  }}
+                >
+                  {item.icon}
+                </ListItemIcon>
+                <ListItemText
+                  primary={item.title}
+                  sx={{
+                    color: (theme) => theme.palette.primary.light,
+                    fontSize: "14px",
+                    "& span": {
+                      fontSize: "14px",
+                    },
+                  }}
+                />
+              </ListItemButton>
+            </Link>
+          </ListItem>
+        ))}
       </List>
+      {/* Logout Button */}
       <List>
         <ListItem disablePadding>
           <Link href="#" passHref={true}>
