@@ -15,7 +15,7 @@ import {
 import PowerSettingsNewOutlinedIcon from "@mui/icons-material/PowerSettingsNewOutlined";
 import { SITELOGO } from "configs";
 import Image from "theme/Image";
-import { STUDENT_MENU, TEACHER_MENU, COMMON_MENU } from "./sidebarData";
+import { COMMON_MENU, STUDENT_MENU, TEACHER_MENU } from "./sidebarData";
 import SidebarMultiMenuItem from "./SidebarIMultiMenuItem";
 import { DrawerHeader } from "./Styled";
 
