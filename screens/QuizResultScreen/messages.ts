@@ -36,5 +36,19 @@ export default defineMessages({
   statusDraft: {
     id: `${scope}.statusDraft`,
     defaultMessage: "Draft",
+  }, 
+  helpTitle: {
+    id: `${scope}.helpTitle`,
+    defaultMessage: "How this page works?",
   },
+  helpHeading: {
+    id: `${scope}.helpHeading`,
+    defaultMessage: "This article helps you to understand and how to perform different operations on this page.",
+  },
+  helpDescription: {
+    id: `${scope}.helpDescription`,
+    defaultMessage: "If you still need help then please send us an email to get email support. Thanks!",
+  },
+
+  
 });

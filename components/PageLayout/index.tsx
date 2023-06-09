@@ -10,6 +10,7 @@ interface Props {
   icon?: any;
   subText?: string;
   iconAngle?: boolean;
+  onIconClick?: () => void;
 }
 
 const PageLayout = (props: Props) => {
@@ -46,6 +47,7 @@ const PageLayout = (props: Props) => {
         subText={props.subText}
         open={open}
         clickHandler={handleDrawerOpen}
+        onIconClick={props.onIconClick}
       />
       <Box
         component="main"
