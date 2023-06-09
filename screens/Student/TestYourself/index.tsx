@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 
-import { Box } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import { Checkbox } from "@mui/material";
 import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
 
@@ -9,12 +9,19 @@ import Loader from "components/Loader";
 import DataTable from "components/DataTable";
 import TakeQuizFormat from "components/TakeQuizFormat";
 
-import { BoxWrapper } from "./Styled";
+import { BoxWrapper, SelectBoxWrapper } from "./Styled";
 import { questionData } from "mock-data/Student/Test-Yourself";
 import CircleChecked from "@material-ui/icons/CheckCircleOutline";
 import CircleCheckedFilled from "@material-ui/icons/CheckCircle";
 import CircleUnchecked from "@material-ui/icons/RadioButtonUnchecked";
 import Image from "next/image";
+import TestYourSelfGrid from "components/TestYourSelfGrid";
+import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CustomSelect from "components/CustomSelect/CustomSelect";
+import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
+import CustomSelectTestYourSelf from "components/CustomSelectTestYourSelf/CustomSelectTestYourSelf";
+
 const PageLayout = dynamic(() => import("components/PageLayout"), {
   ssr: false,
   loading: () => <Loader />,
@@ -25,33 +32,49 @@ const dataTestYourself = [
     id: 0,
     name: "Q195",
     type: "MC",
+    attempted: false,
+    correct: false,
   },
   {
     id: 1,
     name: "Q196",
     type: "MC",
+    attempted: true,
+    correct: false,
   },
   {
     id: 2,
     name: "Q197",
     type: "MC",
+    attempted: false,
+    correct: false,
   },
   {
     id: 3,
     name: "Q198",
     type: "MC",
+    attempted: false,
+    correct: true,
   },
   {
     id: 4,
     name: "Q199",
     type: "MC",
+    attempted: false,
+    correct: false,
   },
 ];
 
+const pageSizeTestYourself = 12;
+
 const TestYourself = () => {
+  const [checkedStateAns, setCheckedStateAns] = useState(
+    new Array(questionData?.options?.length).fill(false),
+  );
   const [checkedState, setCheckedState] = useState(
     new Array(dataTestYourself.length).fill(false),
   );
+  const [submit, setSubmit] = useState(false);
 
   const handleOnChange = (position: any, e: any) => {
     if (checkedState.filter((i) => i).length >= 1 && e.target.checked) return;
@@ -59,19 +82,56 @@ const TestYourself = () => {
       index === position ? !item : item,
     );
     setCheckedState(updatedCheckedState);
+    setSubmit(false);
+    setCheckedStateAns(new Array(questionData?.options?.length).fill(false));
   };
 
   let configTestYourself = [
     {
       columnName: "",
       maxWidth: "20px",
-      render: (item: { name: any; id: number }) => {
+      render: (item: {
+        name: any;
+        id: number;
+        attempted: boolean;
+        correct: boolean;
+      }) => {
+        console.log(item, "item item");
+
         return (
           <>
             <Checkbox
-              icon={<CircleUnchecked sx={{ fontSize: "20px" }} />}
+              icon={
+                <>
+                  {item?.attempted == false && item?.correct == false ? (
+                    <CircleUnchecked sx={{ fontSize: "20px" }} />
+                  ) : (
+                    <IconButton sx={{ width: "20px", padding: "0px" }}>
+                      {item?.correct == true ? (
+                        <Image
+                          src="/correct.svg"
+                          width={20}
+                          height={20}
+                          alt="tick"
+                        />
+                      ) : item?.attempted == true ? (
+                        <Image
+                          src="/wrong.svg"
+                          width={20}
+                          height={20}
+                          alt="tick"
+                        />
+                      ) : (
+                        ""
+                      )}
+                    </IconButton>
+                  )}
+                </>
+              }
               checkedIcon={
-                <Image src="/tick.svg" width={20} height={20} alt="tick" />
+                <>
+                  <Image src="/tick.svg" width={20} height={20} alt="tick" />
+                </>
               }
               checked={checkedState[item.id]}
               id={`custom-checkbox-${item.id}`}
@@ -109,24 +169,83 @@ const TestYourself = () => {
     },
   ];
 
+  const columnsTestYourself = [
+    {
+      field: "id",
+      headerName: "",
+      headerClassName: "custom-id",
+      width: 10,
+      renderCell: (params: any) => {
+        const itemId = params?.row?.id;
+        // console.log(itemId, "itemId");
+
+        return (
+          <>
+            <Checkbox
+              icon={<CircleUnchecked sx={{ fontSize: "20px" }} />}
+              checkedIcon={
+                <>
+                  <CheckCircleIcon sx={{ fontSize: "20px", color: itemId }} />
+                </>
+              }
+              checked={checkedState[itemId]}
+              id={`custom-checkbox-${itemId}`}
+              onChange={(e) => handleOnChange(itemId, e)}
+              size="small"
+              sx={{
+                borderRadius: "50%",
+                "&.Mui-checked": {
+                  borderRadius: "50%",
+                  color: "#404040",
+                },
+              }}
+            />
+          </>
+        );
+      },
+    },
+    {
+      field: "name",
+      headerName: "Name",
+      flex: 1,
+    },
+    {
+      field: "type",
+      headerName: "Type",
+      flex: 1,
+    },
+  ];
+  const optionsCourse = [
+    {
+      value: "Biochem - Enzymes As Catalysts",
+      label: "Biochem - Enzymes As Catalysts",
+    },
+    {
+      value: "Biochem - Enzymes As Catalysts1",
+      label: "Biochem - Enzymes As Catalysts",
+    },
+    {
+      value: "Biochem - Enzymes As Catalysts2",
+      label: "Biochem - Enzymes As Catalysts",
+    },
+  ];
   return (
     <PageLayout title="Test Yourself" icon={<HelpRoundedIcon />}>
       <Box sx={{ display: "flex" }}>
-        <BoxWrapper sx={{ marginRight: "15px" }}>
-          <Box
-            sx={{
-              height: "50px",
-              background: (theme) => theme.palette.secondary.dark,
-              pl: "20px",
-              display: "flex",
-              alignItems: "center",
-              borderTopLeftRadius: "6px",
-              borderTopRightRadius: "6px",
-            }}
-          >
-            Biochem - Enzymes As Catalysts
-          </Box>
-
+        <BoxWrapper>
+          <SelectBoxWrapper>
+            <CustomSelectTestYourSelf
+              placeholder="Biochem - Enzymes As Catalysts"
+              dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
+              options={optionsCourse}
+            />
+          </SelectBoxWrapper>
+          {/* <TestYourSelfGrid
+            rows={dataTestYourself}
+            columns={columnsTestYourself}
+            pageSizeData={pageSizeTestYourself}
+            checkboxSelection={false}
+          /> */}
           <DataTable data={dataTestYourself} config={configTestYourself} />
         </BoxWrapper>
         <BoxWrapper sx={{ width: "60%", marginLeft: "15px" }}>
@@ -138,6 +257,11 @@ const TestYourself = () => {
             options={questionData?.options}
             time={questionData?.time}
             questionSelected={checkedState.indexOf(true) > -1}
+            questionData={questionData}
+            setSubmit={setSubmit}
+            submit={submit}
+            setCheckedStateAns={setCheckedStateAns}
+            checkedStateAns={checkedStateAns}
           />
         </BoxWrapper>
       </Box>

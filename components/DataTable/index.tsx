@@ -5,6 +5,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import { BoxWrapper } from "./Styled";
 // import { makeStyles } from "@material-ui/core/styles";
 
 interface ConfigItem {
@@ -42,67 +43,75 @@ const DataTable: React.FC<DataTableProps> = ({ config = [], data = [] }) => {
     }
   };
   return (
-    <TableContainer>
-      {/* <Table sx={{ minWidth: 650 }}> */}
-      <Table>
-        <TableHead>
-          <TableRow>
-            {config.map((item, index) => (
-              <TableCell
-                key={index}
-                sx={{
-                  fontWeight: "400",
-                  color: (theme) => theme.palette.primary.main,
-                  fontSize: "14px",
-                  "&:first-child": {
-                    width: "15px",
-                    padding: "10px 0px 10px 10px",
-                  },
-                }}
-                // align="center"
-              >
-                {item.columnName}
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.map((dataSourceItem, index) => (
-            <TableRow
-              key={index}
-              sx={{
-                "&:last-child td, &:last-child th": { border: 0 },
-                "&.cus-selected": { background: "#EAEAEA" },
-              }}
-              // onClick={(e) => console.log(e)}
-              // className={selectedRows.includes(index) ? "cus-selected" : ""}
-              onClick={() => handleRowClick(index)}
-            >
-              {config.map((configItem, index) => (
+    <BoxWrapper>
+      <TableContainer>
+        {/* <Table sx={{ minWidth: 650 }}> */}
+        <Table>
+          <TableHead>
+            <TableRow>
+              {config.map((item, index) => (
                 <TableCell
                   key={index}
-                  // align="center"
-                  onClick={(evt) => configItem.onCellClick?.(evt)}
                   sx={{
+                    fontWeight: "400",
+                    color: (theme) => theme.palette.primary.main,
                     fontSize: "14px",
                     "&:first-child": {
                       width: "15px",
                       padding: "10px 0px 10px 10px",
                     },
                   }}
+                  // align="center"
                 >
-                  <div
-                    onClick={() => configItem?.handleClick?.(dataSourceItem)}
-                  >
-                    {configItem.render(dataSourceItem)}
-                  </div>
+                  {item.columnName}
                 </TableCell>
               ))}
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {data.map((dataSourceItem, index) => (
+              <TableRow
+                key={index}
+                className={
+                  dataSourceItem?.correct === true
+                    ? "correct"
+                    : dataSourceItem?.attempted
+                    ? "wrong"
+                    : ""
+                }
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                  "&.cus-selected": { background: "#EAEAEA" },
+                }}
+                // onClick={(e) => console.log(e)}
+                onClick={() => handleRowClick(index)}
+              >
+                {config.map((configItem, index) => (
+                  <TableCell
+                    key={index}
+                    // align="center"
+                    onClick={(evt) => configItem.onCellClick?.(evt)}
+                    sx={{
+                      fontSize: "14px",
+                      "&:first-child": {
+                        width: "15px",
+                        padding: "10px 0px 10px 10px",
+                      },
+                    }}
+                  >
+                    <div
+                      onClick={() => configItem?.handleClick?.(dataSourceItem)}
+                    >
+                      {configItem.render(dataSourceItem)}
+                    </div>
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </BoxWrapper>
   );
 };
 

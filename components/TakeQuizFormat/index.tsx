@@ -23,6 +23,11 @@ type ITakeQuizProps = {
   options: IOptionProps[];
   time?: number;
   questionSelected: boolean;
+  setSubmit: any;
+  submit: boolean;
+  setCheckedStateAns: any;
+  checkedStateAns: any;
+  questionData: any;
 };
 
 const TakeQuizFormat: FC<ITakeQuizProps> = ({
@@ -33,19 +38,20 @@ const TakeQuizFormat: FC<ITakeQuizProps> = ({
   QNo,
   id,
   questionSelected,
+  setSubmit,
+  submit,
+  checkedStateAns,
+  setCheckedStateAns,
+  questionData,
 }): JSX.Element => {
-  const [checkedState, setCheckedState] = useState(
-    new Array(options?.length).fill(false),
-  );
-
-  const [submit, setSubmit] = useState(false);
-
+  const [ansCorrect, setAnsCorrect] = useState(false);
   const handleOnChange = (position: any, e: any) => {
-    if (checkedState.filter((i) => i).length >= 1 && e.target.checked) return;
-    const updatedCheckedState = checkedState.map((item, index) =>
-      index === position ? !item : item,
+    if (checkedStateAns.filter((i: any) => i).length >= 1 && e.target.checked)
+      return;
+    const updatedCheckedStateAns = checkedStateAns.map(
+      (item: any, index: number) => (index === position ? !item : item),
     );
-    setCheckedState(updatedCheckedState);
+    setCheckedStateAns(updatedCheckedStateAns);
   };
 
   return (
@@ -67,11 +73,11 @@ const TakeQuizFormat: FC<ITakeQuizProps> = ({
             <Typography
               fontWeight={400}
               fontSize={14}
-              sx={{ paddingBottom: "10px" }}
+              sx={{ paddingBottom: "5px", paddingTop: "7px" }}
             >
               <FormattedMessage {...messages.noQuestionTitle} />
             </Typography>
-            <Typography fontWeight={400} fontSize={18}>
+            <Typography fontWeight={400} fontSize={18} sx={{ margin: "0px" }}>
               <FormattedMessage {...messages.noQuestionDescription} />
             </Typography>
           </Box>
@@ -83,6 +89,7 @@ const TakeQuizFormat: FC<ITakeQuizProps> = ({
             width: "100%",
             height: "100%",
             p: "20px",
+            borderRadius: "6px",
           }}
         >
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -140,7 +147,7 @@ const TakeQuizFormat: FC<ITakeQuizProps> = ({
                     alignItems: "center",
                     marginBottom: "10px",
                     boxShadow:
-                      checkedState[index] === true
+                      checkedStateAns[index] === true
                         ? "0px 0px 40px rgba(0, 0, 0, 0.1)"
                         : "",
                   }}
@@ -149,17 +156,24 @@ const TakeQuizFormat: FC<ITakeQuizProps> = ({
                     control={
                       <Checkbox
                         onChange={(e) => handleOnChange(index, e)}
-                        checked={checkedState[index]}
+                        checked={checkedStateAns[index]}
                         id={`custom-checkbox-${index}`}
                         color="default"
+                        disabled={submit ? true : false}
                       />
                     }
                     label={el.name}
                   />
-                  {valNew === "true" && submit === true ? (
-                    <Box sx={{ color: "#225A41", marginRight: "20px" }}>
-                      Correct Answer!
-                    </Box>
+                  {submit && checkedStateAns[index] ? (
+                    valNew === "true" ? (
+                      <Box sx={{ color: "#225A41", marginRight: "20px" }}>
+                        Correct Answer!
+                      </Box>
+                    ) : (
+                      <Box sx={{ color: "#8C2531", marginRight: "20px" }}>
+                        Incorrect Answer!
+                      </Box>
+                    )
                   ) : (
                     ""
                   )}
@@ -183,11 +197,11 @@ const TakeQuizFormat: FC<ITakeQuizProps> = ({
                 <Typography
                   fontWeight={400}
                   fontSize={14}
-                  sx={{ paddingBottom: "10px" }}
+                  sx={{ paddingBottom: "5px", paddingTop: "5px" }}
                 >
                   <FormattedMessage {...messages.tryMore} />
                 </Typography>
-                <Typography fontWeight={400} fontSize={18}>
+                <Typography fontWeight={400} fontSize={17}>
                   <FormattedMessage {...messages.select} />
                 </Typography>
               </Box>
@@ -207,7 +221,7 @@ const TakeQuizFormat: FC<ITakeQuizProps> = ({
               </BoxWrapper>
               <ButtonWrapper
                 onClick={() => setSubmit(true)}
-                disabled={!(checkedState.indexOf(true) > -1)}
+                disabled={!(checkedStateAns.indexOf(true) > -1)}
                 loadingPosition="start"
                 startIcon={<ArrowCircleRightOutlinedIcon />}
                 sx={{

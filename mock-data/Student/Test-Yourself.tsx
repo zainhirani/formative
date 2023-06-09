@@ -6,9 +6,9 @@ export const questionData = {
   question: "Which of the structures shown is most hydrophobic?",
   image: QUIZ1,
   options: [
-    { name: "A", valid: "false" },
-    { name: "B", valid: "true" },
-    { name: "C", valid: "false" },
+    { name: "A", isCorrect: false, valid: "false" },
+    { name: "B", isCorrect: false, valid: "true" },
+    { name: "C", isCorrect: false, valid: "false" },
   ],
   time: 20,
 };
