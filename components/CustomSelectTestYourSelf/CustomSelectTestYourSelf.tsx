@@ -41,8 +41,6 @@ const CustomSelectTestYourSelf: FC<CustomSelectTestYourSelfProps> = ({
   placeholder,
   onChange,
 }) => {
-  // const onChange = () => {};
-
   const style = {
     control: (provided: any, state: any) => ({
       ...provided,

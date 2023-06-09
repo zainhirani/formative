@@ -6,7 +6,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { BoxWrapper } from "./Styled";
-// import { makeStyles } from "@material-ui/core/styles";
 
 interface ConfigItem {
   columnName: string;
@@ -23,16 +22,8 @@ interface DataTableProps {
   data: any[];
 }
 
-// const useStyles = makeStyles({
-//   selectedRow: {
-//     backgroundColor: "lightblue",
-//   },
-// });
-
 const DataTable: React.FC<DataTableProps> = ({ config = [], data = [] }) => {
   if (!config.length || !data.length) return null;
-
-  // const classes = useStyles();
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
 
   const handleRowClick = (index: number) => {
@@ -45,7 +36,6 @@ const DataTable: React.FC<DataTableProps> = ({ config = [], data = [] }) => {
   return (
     <BoxWrapper>
       <TableContainer>
-        {/* <Table sx={{ minWidth: 650 }}> */}
         <Table>
           <TableHead>
             <TableRow>
@@ -61,7 +51,6 @@ const DataTable: React.FC<DataTableProps> = ({ config = [], data = [] }) => {
                       padding: "10px 0px 10px 10px",
                     },
                   }}
-                  // align="center"
                 >
                   {item.columnName}
                 </TableCell>
@@ -83,13 +72,11 @@ const DataTable: React.FC<DataTableProps> = ({ config = [], data = [] }) => {
                   "&:last-child td, &:last-child th": { border: 0 },
                   "&.cus-selected": { background: "#EAEAEA" },
                 }}
-                // onClick={(e) => console.log(e)}
                 onClick={() => handleRowClick(index)}
               >
                 {config.map((configItem, index) => (
                   <TableCell
                     key={index}
-                    // align="center"
                     onClick={(evt) => configItem.onCellClick?.(evt)}
                     sx={{
                       fontSize: "14px",
