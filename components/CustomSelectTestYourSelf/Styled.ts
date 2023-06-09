@@ -11,7 +11,7 @@ export const SelectBoxWrapper = styled(MuiBox)<BoxProps>(
       overflow: "hidden",
       textOverflow: "ellipsis",
       color: theme.palette.text.secondary,
-      paddingLeft: '10px',
+      paddingLeft: "10px",
     } as any),
 ) as (props: BoxProps) => JSX.Element;
 
@@ -28,7 +28,7 @@ export const BoxWrapper = styled(MuiBox)<BoxProps>(
     ({
       display: "flex",
       alignItems: "center",
-      width: '100%',
+      width: "100%",
       height: "100%",
       "&.react-select__dropdown-indicator svg ": {
         opacity: "1 !important",
@@ -42,7 +42,7 @@ export const BoxWrapper = styled(MuiBox)<BoxProps>(
         },
         "& svg": {
           color: theme.palette.text.secondary,
-          marginRight: '10px',
+          marginRight: "10px",
         },
       },
     } as any),
