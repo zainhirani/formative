@@ -19,11 +19,11 @@ export const questionData = [
   {
     id: "Q196",
     QNo: "118",
-    question: "Which of the structures shown is most hydrophobic?",
+    question: "Which of the structures shown is most hydrophobic2?",
     image: QUIZ1,
     options: [
-      { name: "A", isCorrect: true, disabled: false },
-      { name: "B", isCorrect: false, disabled: false },
+      { name: "A", isCorrect: false, disabled: false },
+      { name: "B", isCorrect: true, disabled: false },
       { name: "C", isCorrect: false, disabled: false },
     ],
     time: 20,
@@ -31,19 +31,19 @@ export const questionData = [
   {
     id: "Q197",
     QNo: "119",
-    question: "Which of the structures shown is most hydrophobic?",
+    question: "Which of the structures shown is most hydrophobic3?",
     image: QUIZ1,
     options: [
-      { name: "A", isCorrect: true, disabled: false },
+      { name: "A", isCorrect: false, disabled: false },
       { name: "B", isCorrect: false, disabled: false },
-      { name: "C", isCorrect: false, disabled: false },
+      { name: "C", isCorrect: true, disabled: false },
     ],
     time: 20,
   },
   {
     id: "Q198",
     QNo: "120",
-    question: "Which of the structures shown is most hydrophobic?",
+    question: "Which of the structures shown is most hydrophobic4?",
     image: QUIZ1,
     options: [
       { name: "A", isCorrect: true, disabled: false },
@@ -55,11 +55,11 @@ export const questionData = [
   {
     id: "Q199",
     QNo: "121",
-    question: "Which of the structures shown is most hydrophobic?",
+    question: "Which of the structures shown is most hydrophobic5?",
     image: QUIZ1,
     options: [
-      { name: "A", isCorrect: true, disabled: false },
-      { name: "B", isCorrect: false, disabled: false },
+      { name: "A", isCorrect: false, disabled: false },
+      { name: "B", isCorrect: true, disabled: false },
       { name: "C", isCorrect: false, disabled: false },
     ],
     time: 20,
@@ -67,19 +67,19 @@ export const questionData = [
   {
     id: "Q200",
     QNo: "122",
-    question: "Which of the structures shown is most hydrophobic?",
+    question: "Which of the structures shown is most hydrophobic6?",
     image: QUIZ1,
     options: [
-      { name: "A", isCorrect: true, disabled: false },
+      { name: "A", isCorrect: false, disabled: false },
       { name: "B", isCorrect: false, disabled: false },
-      { name: "C", isCorrect: false, disabled: false },
+      { name: "C", isCorrect: true, disabled: false },
     ],
     time: 20,
   },
   {
     id: "Q201",
     QNo: "123",
-    question: "Which of the structures shown is most hydrophobic?",
+    question: "Which of the structures shown is most hydrophobic7?",
     image: QUIZ1,
     options: [
       { name: "A", isCorrect: true, disabled: false },
@@ -91,11 +91,11 @@ export const questionData = [
   {
     id: "Q202",
     QNo: "124",
-    question: "Which of the structures shown is most hydrophobic?",
+    question: "Which of the structures shown is most hydrophobic8?",
     image: QUIZ1,
     options: [
-      { name: "A", isCorrect: true, disabled: false },
-      { name: "B", isCorrect: false, disabled: false },
+      { name: "A", isCorrect: false, disabled: false },
+      { name: "B", isCorrect: true, disabled: false },
       { name: "C", isCorrect: false, disabled: false },
     ],
     time: 20,
@@ -103,19 +103,19 @@ export const questionData = [
   {
     id: "Q203",
     QNo: "125",
-    question: "Which of the structures shown is most hydrophobic?",
+    question: "Which of the structures shown is most hydrophobic9?",
     image: QUIZ1,
     options: [
-      { name: "A", isCorrect: true, disabled: false },
+      { name: "A", isCorrect: false, disabled: false },
       { name: "B", isCorrect: false, disabled: false },
-      { name: "C", isCorrect: false, disabled: false },
+      { name: "C", isCorrect: true, disabled: false },
     ],
     time: 20,
   },
   {
     id: "Q204",
     QNo: "126",
-    question: "Which of the structures shown is most hydrophobic?",
+    question: "Which of the structures shown is most hydrophobic10?",
     image: QUIZ1,
     options: [
       { name: "A", isCorrect: true, disabled: false },
@@ -127,11 +127,11 @@ export const questionData = [
   {
     id: "Q205",
     QNo: "127",
-    question: "Which of the structures shown is most hydrophobic?",
+    question: "Which of the structures shown is most hydrophobic11?",
     image: QUIZ1,
     options: [
-      { name: "A", isCorrect: true, disabled: false },
-      { name: "B", isCorrect: false, disabled: false },
+      { name: "A", isCorrect: false, disabled: false },
+      { name: "B", isCorrect: true, disabled: false },
       { name: "C", isCorrect: false, disabled: false },
     ],
     time: 20,
@@ -139,19 +139,19 @@ export const questionData = [
   {
     id: "Q206",
     QNo: "128",
-    question: "Which of the structures shown is most hydrophobic?",
+    question: "Which of the structures shown is most hydrophobic12?",
     image: QUIZ1,
     options: [
-      { name: "A", isCorrect: true, disabled: false },
+      { name: "A", isCorrect: false, disabled: false },
       { name: "B", isCorrect: false, disabled: false },
-      { name: "C", isCorrect: false, disabled: false },
+      { name: "C", isCorrect: true, disabled: false },
     ],
     time: 20,
   },
   {
     id: "Q207",
     QNo: "129",
-    question: "Which of the structures shown is most hydrophobic?",
+    question: "Which of the structures shown is most hydrophobic13?",
     image: QUIZ1,
     options: [
       { name: "A", isCorrect: true, disabled: false },
@@ -163,11 +163,11 @@ export const questionData = [
   {
     id: "Q208",
     QNo: "130",
-    question: "Which of the structures shown is most hydrophobic?",
+    question: "Which of the structures shown is most hydrophobic14?",
     image: QUIZ1,
     options: [
-      { name: "A", isCorrect: true, disabled: false },
-      { name: "B", isCorrect: false, disabled: false },
+      { name: "A", isCorrect: false, disabled: false },
+      { name: "B", isCorrect: true, disabled: false },
       { name: "C", isCorrect: false, disabled: false },
     ],
     time: 20,

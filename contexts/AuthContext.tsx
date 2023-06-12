@@ -47,6 +47,21 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
   //   }
   // }, []);
 
+  useEffect(() => {
+    if (!session?.user && !localStorage.getItem(TOKEN)) {
+      router.replace(AUTHENTICATION_PATH[0]!);
+      return null;
+    }
+    if (
+      (session?.user || localStorage.getItem(TOKEN)) &&
+      (router.pathname.includes("/login") ||
+        router.pathname.includes("/register"))
+    ) {
+      router.replace("/dashboard");
+      return null;
+    }
+  }, []);
+
   const signOut = useCallback(async () => {
     logout({ callbackUrl: "/login" });
     localStorage.clear();

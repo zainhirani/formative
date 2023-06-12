@@ -52,6 +52,7 @@ const LoginForm = () => {
         throw new Error("Request failed");
       }
       // setLoading(false);
+      router.push("/dashboard");
       enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
         variant: "success",
       });
@@ -59,9 +60,10 @@ const LoginForm = () => {
     } catch (error: any) {
       const errorCode = error.code;
       const errorMessage = error.message;
-      enqueueSnackbar(errorMessage, {
-        variant: "error",
-      });
+      // enqueueSnackbar(errorMessage, {
+      //   variant: "error",
+      // });
+      console.log(errorMessage, "errorMessage");
     }
   }, []);
 

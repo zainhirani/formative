@@ -1,14 +1,6 @@
-import React, { FC, useState } from "react";
-import {
-  Box,
-  Button,
-  Checkbox,
-  FormControlLabel,
-  Typography,
-} from "@mui/material";
+import React, { FC, useEffect, useState } from "react";
+import { Box, Checkbox, FormControlLabel, Typography } from "@mui/material";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 import messages from "screens/Student/TakeQuiz/messages";
 import {
@@ -32,6 +24,7 @@ type ITakeQuizProps = {
   question: string;
   image?: string;
   options: IOptionProps[];
+  onOptionChange?: (optionId: string) => void;
   time?: number;
   questionSelected: boolean;
   handleNext?: () => void;
@@ -41,35 +34,57 @@ const Question: FC<ITakeQuizProps> = ({
   question,
   image,
   options,
-  time,
-  QNo,
-  id,
-  questionSelected,
+  onOptionChange,
   handleNext,
 }): JSX.Element => {
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const [isChecked, setIsChecked] = useState<boolean[]>([]);
   const quizScore = useFormattedMessage(messages.quizScore);
 
+  useEffect(() => {
+    setSelectedOptions([]);
+  }, [options]);
+
   const handleOptionChange = (optionId: string) => {
-    if (selectedOptions.includes(optionId)) {
-      setSelectedOptions((prevSelectedOptions) =>
-        prevSelectedOptions.filter(
-          (selectedOption) => selectedOption !== optionId,
-        ),
-      );
+    const updatedSelectedOptions = [...selectedOptions];
+
+    if (updatedSelectedOptions.includes(optionId)) {
+      const index = updatedSelectedOptions.indexOf(optionId);
+      updatedSelectedOptions.splice(index, 1);
     } else {
-      setSelectedOptions((prevSelectedOptions) => [
-        ...prevSelectedOptions,
-        optionId,
-      ]);
-      //   setOptionSet((prevOptions) =>
-      //     prevOptions.map((option) =>
-      //       option.id === optionId ? { ...option, disabled: true } : option,
-      //     ),
-      //   );
+      updatedSelectedOptions.push(optionId);
+    }
+
+    setSelectedOptions(updatedSelectedOptions);
+    if (onOptionChange) {
+      onOptionChange(optionId);
     }
   };
-  const isSubmitDisabled = selectedOptions.length === 0;
+
+  const isOptionSelected = (optionId: string) =>
+    selectedOptions.includes(optionId);
+
+  const isOptionCorrect = (optionId: string) => {
+    const selectedOption = options.find((option) => option.name === optionId);
+    return selectedOption?.isCorrect || false;
+  };
+
+  const getOptionColor = (optionId: string) => {
+    if (isOptionSelected(optionId)) {
+      if (isOptionCorrect(optionId)) {
+        return (theme: any) => theme.additionalColors?.primaryGreen;
+      } else {
+        return (theme: any) => theme.palette.primary.main;
+      }
+    }
+    return (theme: any) => theme.palette.text.primary;
+  };
+  const isSubmitDisabled = !selectedOptions.some((optionId) =>
+    isOptionCorrect(optionId),
+  );
+  const isCorrectOptionSelected = selectedOptions.some((optionId) =>
+    isOptionCorrect(optionId),
+  );
 
   return (
     <>
@@ -114,21 +129,17 @@ const Question: FC<ITakeQuizProps> = ({
                 control={
                   <Checkbox
                     id={`custom-checkbox-${index}`}
-                    checked={selectedOptions.includes(el.name)}
+                    checked={isOptionSelected(el.name)}
                     onChange={() => handleOptionChange(el.name)}
-                    disabled={el.disabled}
-                    sx={{
-                      color:
-                        selectedOptions.includes(el.name) && !el.isCorrect
-                          ? (theme) => theme.palette.primary.main
-                          : selectedOptions.includes(el.name) && el.isCorrect
-                          ? (theme) => theme.additionalColors?.primaryGreen
-                          : (theme) => theme.palette.text.primary,
-                    }}
+                    disabled={
+                      isCorrectOptionSelected || isOptionSelected(el.name)
+                    }
+                    sx={{ color: getOptionColor(el.name) }}
                     color="default"
                   />
                 }
                 label={el.name}
+                sx={{ color: getOptionColor(el.name) }}
               />
             </Box>
           ))}

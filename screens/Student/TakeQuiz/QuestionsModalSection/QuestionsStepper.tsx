@@ -10,7 +10,8 @@ import TakeQuizFormat from "components/TakeQuizFormat";
 import Question from "components/QuizMultiQuestionsFormat";
 
 const QuestionsStepper = (props: any) => {
-  const { handleChangeState } = props;
+  const [selectedOption, setSelectedOption] = useState<string>("");
+  const { handleChangeState, setModalTitle } = props;
   const timer = 120;
   const steps = questionData;
   const [activeStep, setActiveStep] = useState(0);
@@ -24,6 +25,7 @@ const QuestionsStepper = (props: any) => {
   const quizScorePoints = useFormattedMessage(messages.quizScorePoints);
   const percentage = useFormattedMessage(messages.percentage);
   const close = useFormattedMessage(messages.close);
+  const quizScoreTitle = useFormattedMessage(messages.quizScoreTitle);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -31,6 +33,7 @@ const QuestionsStepper = (props: any) => {
         if (prevTime > 0) {
           return prevTime - 1;
         }
+        return prevTime;
       });
     }, 1000);
 
@@ -44,10 +47,19 @@ const QuestionsStepper = (props: any) => {
   }, [activeStep]);
 
   const handleNext = () => {
+    console.log("Workingggggggg");
+    console.log(activeStep, "activeStep");
+    console.log(steps.length, "steps.length");
+
     if (activeStep === steps.length - 1) {
+      setModalTitle(quizScoreTitle);
+    }
+    if (activeStep === steps.length) {
       setCompleted(true);
+      setSelectedOption("");
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      setSelectedOption("");
     }
   };
 
@@ -69,9 +81,13 @@ const QuestionsStepper = (props: any) => {
     }
   };
 
+  const handleOptionChange = (optionId: string) => {
+    setSelectedOption(optionId);
+  };
+
   return (
     <>
-      {activeStep !== steps.length - 1 ? (
+      {activeStep !== steps.length ? (
         <>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <TypographyStyled>{`${questionNo} ${activeStep + 1} of ${
@@ -103,6 +119,8 @@ const QuestionsStepper = (props: any) => {
             questionSelected={false}
             image={steps[activeStep]?.image}
             handleNext={handleNext}
+            onOptionChange={handleOptionChange}
+            // handleLast={handleChangeTitle}
           />
         </>
       ) : (
