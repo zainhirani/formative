@@ -12,9 +12,9 @@ export const NEXT_PUBLIC_FIREBASE_APP_ID =
 export const NEXT_PUBLIC_MODE_ENV =
   process.env.NEXT_PUBLIC_MODE_ENV === "development";
 
-export const AUTH_LOGIN_URL = process.env.NEXT_PUBLIC_AUTH_LOGIN_URL;
+export const AUTH_LOGIN_URL = process.env.NEXT_PUBLIC_AUTH_LOGIN_URL || '/login';
 
-export const PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
+export const PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api-formative.appnofy.com/v1';
 export const LOGINBG = "/LoginBackGround.png";
 export const SITELOGO = "/websiteLogo.png";
 export const USERIMAGE = "/userImage.png";
