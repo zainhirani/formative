@@ -29,7 +29,7 @@ import { useRouter } from "next/router";
 import { TOKEN } from "configs";
 
 const validationSchema = Yup.object().shape({
-  email: Yup.string().required().label("User Name"),
+  email: Yup.string().required().email().label("Email"),
   password: Yup.string().required().min(6).label("Password"),
 });
 
@@ -40,26 +40,34 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-
-
   const onSubmit = useCallback(async (data: any) => {
-    setLoading(true);
-
-      const response: any = await signIn("credentials", {
-        ...data,
-        redirect: false,
-      });
-      setLoading(false);
-   
- 
- if(response?.error){
-  enqueueSnackbar(response?.error, {
-    variant: "error",
-  });
- }
-  
-    
-    
+    const resp: any = await signIn("credentials", {
+      ...data,
+      redirect: false,
+    });
+    try {
+      setLoading(true);
+      if (!resp?.ok) {
+        setLoading(false);
+        throw new Error("Request failed");
+      }
+      if (!resp.error) {
+        router.push("/dashboard");
+        enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
+          variant: "success",
+        });
+        // localStorage.setItem(TOKEN, resp?.data.token);
+      }
+    } catch (error: any) {
+      if (resp.error) {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        enqueueSnackbar("Something went wrong", {
+          variant: "error",
+        });
+      }
+    }
+    console.log(resp, "resp");
   }, []);
 
   // use formik

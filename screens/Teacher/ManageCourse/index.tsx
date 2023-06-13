@@ -25,8 +25,12 @@ import { useSnackbar } from "notistack";
 import { useRouter } from "next/router";
 import SearchBar from "./searchBar";
 import CloseIcon from "@mui/icons-material/Close";
+import { useCourseListing } from "providers/Courses";
 
 const ManageCourseScreen = () => {
+  const getCourseListing = useCourseListing();
+  console.log(getCourseListing, "getCourseListing");
+
   const router = useRouter();
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -80,7 +84,7 @@ const ManageCourseScreen = () => {
       <SearchBar />
       <TableWrapper>
         <CustomDataGrid
-          rows={rowsManageCourse}
+          rows={getCourseListing.data}
           columns={columnsManageCourse}
           pageSizeData={pageSizeManageCourse}
           type={"1"}

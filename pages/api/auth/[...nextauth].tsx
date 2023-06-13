@@ -4,7 +4,6 @@ import CredentialProvider from "next-auth/providers/credentials";
 import { getUser, login } from "services/auth";
 
 export default NextAuth({
-  secret: "INp6HjGDyOpYnGAEdLoQSDDPKAlwLEdnDcCkFvA8QSPR",
   providers: [
     CredentialProvider({
       name: "credentials",
@@ -23,7 +22,7 @@ export default NextAuth({
             password: credentials.password,
           });
           return Promise.resolve(
-            resp?.token ? { jwtToken: resp?.token } : {},
+            resp?.token ? { jwtToken: resp.token } : {},
           ) as any;
         } catch (e: any) {
           return Promise.reject(new Error(e?.msg || "Something Wrong"));
@@ -31,12 +30,14 @@ export default NextAuth({
       },
     }),
   ],
+  secret: "test",
   pages: {
     signIn: "/login",
     newUser:'/register'
   },
   callbacks: {
     async signIn({ user }: any) {
+<<<<<<< HEAD
       if (user?.jwtToken) {
         return Promise.resolve(true);
       }
@@ -46,17 +47,27 @@ export default NextAuth({
       if (!token.accessToken) {
         return Promise.resolve(session);
       }
+=======
+      user.accessToken = user?.jwtToken;
+      return Promise.resolve(true);
+    },
+    async session({ session, token }: any) {
+      // if (!token.accessToken) {
+      //   return Promise.resolve(session);
+      // }
+>>>>>>> f7d0cd8 (feat: done get course api)
 
       session.accessToken = token.accessToken;
       session.user = token.user as any;
       // session.user = await getUser(token.accessToken as string);
+      session.user = {};
       return Promise.resolve(session);
     },
     async jwt({ token, user }: any) {
-      if (user?.jwtToken) {
+      if (user?.accessToken) {
         // eslint-disable-next-line
         token = {
-          accessToken: user.jwtToken,
+          accessToken: user.accessToken,
         };
       }
 
