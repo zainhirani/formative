@@ -42,6 +42,8 @@ const LoginForm = () => {
 
   const onSubmit = useCallback(async (data: any) => {
     try {
+      setLoading(true);
+
       const response: any = await signIn("credentials", {
         ...data,
         redirect: false,

@@ -106,8 +106,8 @@ export const GeneralInfo = () => {
       last_name: data.lastName,
       nick_name: data.nickName,
       gender: data.gender,
-      rfu_id: data.rfuID,
-      year_of_graduation: data.graduation,
+      rfu_id: Number(data.rfuID),
+      year_of_graduation: Number(data.graduation),
       program: data.program,
       birth_place: data.birthPlace,
     });
@@ -133,10 +133,10 @@ export const GeneralInfo = () => {
       nickName: registerDetail.data?.nick_name || "",
       gender: registerDetail.data?.gender || "",
       email: registerDetail.data?.email || "",
-      rfuID: registerDetail.data?.rfu_id || 0,
+      rfuID: Number(registerDetail.data?.rfu_id) || 0,
       program: registerDetail.data?.program || "",
-      // graduation: registerDetail.data?.year_of_graduation || 0,
-      graduation: "2022",
+      graduation: registerDetail.data?.year_of_graduation || 0,
+      // graduation: 2022,
       birthPlace: registerDetail.data?.birth_place || "",
       userName: registerDetail.data?.username || "",
       password: "",
@@ -346,10 +346,14 @@ export const GeneralInfo = () => {
                 gridColumn="span 2"
               >
                 <CustomSelect
-                  name="graduation"
-                  placeholder="2004"
+                  // placeholder="2004"
                   // controlText="Year of Graduation:"
-                  value={year}
+                  value={{ label: values.graduation, value: values.graduation }}
+                  defaultValue={{
+                    label: values.graduation,
+                    value: values.graduation,
+                  }}
+                  name="graduation"
                   onBlur={handleBlur}
                   onChange={handleSetYear}
                   dropdownIcon={<ExpandMoreIcon />}
