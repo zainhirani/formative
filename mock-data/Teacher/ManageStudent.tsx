@@ -1,49 +1,8 @@
-import React from "react";
-import { Grid, IconButton, Box } from "@mui/material";
-import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
-import { CheckBox } from "@mui/icons-material";
+import { GridColDef } from "@mui/x-data-grid";
 
 export const pageSizeManageQuiz = 12;
 
-export const columnsManageStudent: GridColDef[] = [
-  {
-    field: "lastName",
-    headerName: "Last Name",
-    minWidth: 100,
-    flex: 1,
-  },
-  {
-    field: "firstName",
-    headerName: "First Name",
-    minWidth: 100,
-    flex: 1,
-  },
-  {
-    field: "userName",
-    headerName: "User Name",
-    minWidth: 100,
-    flex: 1,
-  },
 
-  {
-    field: "yog",
-    headerName: "YOG",
-    minWidth: 100,
-    flex: 1,
-  },
-  {
-    field: "program",
-    headerName: "Program",
-    minWidth: 100,
-    flex: 1,
-  },
-  {
-    field: "email",
-    headerName: "E-mail ",
-    minWidth: 100,
-    flex: 1,
-  },
-];
 
 export const rowsManageStudent = [
   {
