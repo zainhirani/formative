@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
@@ -6,9 +7,19 @@ import Iconbox from "components/IconBox";
 import PageLayout from "components/PageLayout";
 import DataTable from "components/DataTable";
 import FormattedMessage from "theme/FormattedMessage";
-import { QUIZ, COURSES, STUDENTS, QUESTIONS,TESTYOURSELF,HOW_AM_I_DOING,PROFILE } from "configs";
+import {
+  QUIZ,
+  COURSES,
+  STUDENTS,
+  QUESTIONS,
+  TESTYOURSELF,
+  HOW_AM_I_DOING,
+  PROFILE,
+} from "configs";
 import messages from "./messages";
 import SideDrawer from "components/Drawer";
+import { useAuthContext } from "contexts/AuthContext";
+import { useRouter } from "next/router";
 
 const boxContent = [
   {
@@ -150,6 +161,8 @@ const collegesData = [
 ];
 
 const DashboardScreen = () => {
+  const signOut = useAuthContext();
+  const router = useRouter();
   let config = [
     {
       columnName: COLUMN_NAME.ID,
@@ -248,6 +261,15 @@ const DashboardScreen = () => {
           <Typography variant="body2">
             <FormattedMessage {...messages.pitch} />
           </Typography>
+          <Button
+            onClick={() => {
+              signOut;
+              router.push("/login");
+              localStorage.clear();
+            }}
+          >
+            Logout
+          </Button>
         </Box>
         <Box sx={{ display: "flex", flexWrap: "wrap", gap: "20px" }} mt={1}>
           {studentBoxContent.map((item, index) => (
