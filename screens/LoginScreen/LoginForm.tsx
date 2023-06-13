@@ -40,29 +40,26 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
+
+
   const onSubmit = useCallback(async (data: any) => {
-    try {
+    setLoading(true);
+
       const response: any = await signIn("credentials", {
         ...data,
         redirect: false,
       });
-      setLoading(true);
-      if (!response?.ok) {
-        setLoading(false);
-        throw new Error("Request failed");
-      }
-      // setLoading(false);
-      enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
-        variant: "success",
-      });
-      localStorage.setItem(TOKEN, response?.data.token);
-    } catch (error: any) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      enqueueSnackbar(errorMessage, {
-        variant: "error",
-      });
-    }
+      setLoading(false);
+   
+ 
+ if(response?.error){
+  enqueueSnackbar(response?.error, {
+    variant: "error",
+  });
+ }
+  
+    
+    
   }, []);
 
   // use formik

@@ -23,3 +23,14 @@ export async function createProfile(
       url: `/user/profile`,
     });
   }
+
+
+    // User Detail
+    export async function userDetail(
+      props?: Profile.UserAPIPayload,
+    ): Promise<Profile.UserResponse> {
+      return service({
+        method: "GET",
+        url: `/user`,
+      });
+    }

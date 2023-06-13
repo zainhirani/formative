@@ -40,4 +40,23 @@ export namespace Profile {
   export type DetailProps = {};
   export type DetailResponse = Fields;
   export interface DetailAPIPayload extends DetailProps {}
+
+  //Get User
+
+  export type Userprops ={}
+  export type UserResponse = {
+    id:number,
+    email:string,
+    name:string,
+    username:string,
+    phone:number | string | null,
+    type:'ADMIN' | 'STUDENT',
+    status:string,
+    profilePictureId: string | null,
+    first_name:string,
+    last_name:string,
+    program:string
+  }
+
+  export interface UserAPIPayload extends Userprops {}
 }
