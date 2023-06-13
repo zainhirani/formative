@@ -57,6 +57,9 @@ const dataTestYourself = [
 ];
 
 const TestYourself = () => {
+  const timer = 300;
+  const [remainingTime, setRemainingTime] = useState(timer);
+
   const [checkedStateAns, setCheckedStateAns] = useState(
     new Array(questionData?.options?.length).fill(false),
   );
@@ -132,6 +135,10 @@ const TestYourself = () => {
                   borderRadius: "50%",
                 },
               }}
+              onClick={(e) => {
+                console.log(e, "event");
+                return setRemainingTime(timer);
+              }}
             />
           </>
         );
@@ -172,37 +179,43 @@ const TestYourself = () => {
       label: "Biochem - Enzymes As Catalysts",
     },
   ];
+
+  console.log(checkedState, "checkedState");
+
   return (
-    <PageLayout title="Test Yourself" icon={<HelpRoundedIcon />}>
-      <Box sx={{ display: "flex" }}>
-        <BoxWrapper>
-          <SelectBoxWrapper>
-            <CustomSelectTestYourSelf
-              placeholder="Biochem - Enzymes As Catalysts"
-              dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-              options={optionsCourse}
-            />
-          </SelectBoxWrapper>
-          <DataTable data={dataTestYourself} config={configTestYourself} />
-        </BoxWrapper>
-        <BoxWrapper sx={{ width: "60%", marginLeft: "15px" }}>
-          <TakeQuizFormat
-            id={questionData?.id}
-            QNo={questionData?.QNo}
-            question={questionData?.question}
-            image={questionData?.image}
-            options={questionData?.options}
-            time={questionData?.time}
-            questionSelected={checkedState.indexOf(true) > -1}
-            questionData={questionData}
-            setSubmit={setSubmit}
-            submit={submit}
-            setCheckedStateAns={setCheckedStateAns}
-            checkedStateAns={checkedStateAns}
+    // <PageLayout title="Test Yourself" icon={<HelpRoundedIcon />}>
+    <Box sx={{ display: "flex" }}>
+      <BoxWrapper>
+        <SelectBoxWrapper>
+          <CustomSelectTestYourSelf
+            placeholder="Biochem - Enzymes As Catalysts"
+            dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
+            options={optionsCourse}
           />
-        </BoxWrapper>
-      </Box>
-    </PageLayout>
+        </SelectBoxWrapper>
+        <DataTable data={dataTestYourself} config={configTestYourself} />
+      </BoxWrapper>
+      <BoxWrapper sx={{ width: "60%", marginLeft: "15px" }}>
+        <TakeQuizFormat
+          id={questionData?.id}
+          QNo={questionData?.QNo}
+          question={questionData?.question}
+          image={questionData?.image}
+          options={questionData?.options}
+          time={questionData?.time}
+          questionSelected={checkedState.indexOf(true) > -1}
+          questionData={questionData}
+          setSubmit={setSubmit}
+          submit={submit}
+          setCheckedStateAns={setCheckedStateAns}
+          checkedStateAns={checkedStateAns}
+          setRemainingTime={setRemainingTime}
+          remainingTime={remainingTime}
+          timer={timer}
+        />
+      </BoxWrapper>
+    </Box>
+    // </PageLayout>
   );
 };
 

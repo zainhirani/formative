@@ -1,106 +1,116 @@
 import React, { useState } from "react";
 import PageLayout from "components/PageLayout";
 import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
-import { Box, IconButton, MenuItem, Select, Typography } from "@mui/material";
-import { BoxWrapper, SelectBoxWrapper } from "./Styled";
+import { Box, IconButton, InputAdornment } from "@mui/material";
+import { BoxWrapper, SelectBoxWrapper, TextFieldStyled } from "./Styled";
 import CustomDataGrid from "components/CustomDataGrid";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import { Search } from "@mui/icons-material";
 import {
   courseSelect,
   columnsTakeQuiz,
   pageSizeTakeQuiz,
   rowsTakeQuiz,
 } from "mock-data/Student/TakeQuiz";
-import { useSnackbar } from "notistack";
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
-import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import CustomSelect from "components/CustomSelect/CustomSelect";
-import {
-  facultySelect,
-  folderSelect,
-  typeSelect,
-} from "mock-data/Teacher/ManageQuestion";
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import messages from "./messages";
-import CancelIcon from "@mui/icons-material/Cancel";
-import QuizQuestionFormat from "components/QuizQuestionFormat";
-import { UploadQuestions } from "components/UploadQuestions";
+import QuestionsModal from "./QuestionsModalSection";
+
 const TakeQuizScreen = () => {
-  const { enqueueSnackbar } = useSnackbar();
   const searchQuiz = useFormattedMessage(messages.searchQuiz);
   const selectCourse = useFormattedMessage(messages.selectCourse);
-  const [selectedValues, setSelectedValues] = useState<string[]>([]);
   const [open, setOpen] = useState(false);
-  const [showQuestionScreen, setShowQuestionScreen] = useState(false);
+  const [checked, setChecked] = useState<number[]>([]);
+  const [lastSelected, setLastSelected] = useState(-1);
 
-  const handleSelectChange = (e: any) => {
-    const selectedValue = e.label;
-    if (selectedValue && !selectedValues.includes(selectedValue)) {
-      setSelectedValues([...selectedValues, selectedValue]);
-    }
-  };
-  const handleRemoveValue = (value: string) => {
-    setSelectedValues(selectedValues.filter((v) => v !== value));
+  const showColumns = {
+    id: false,
+    quiz: true,
+    course: true,
+    due_date: true,
   };
 
-  const config = [
-    {
-      key: "acceptContinue",
-      startIcon: <CheckCircleOutlineRoundedIcon fontSize="small" />,
-      customClass: "filled",
-      render: () => {
-        return (
-          <Box>
-            <FormattedMessage {...messages.accept} />
-          </Box>
-        );
-      },
-      onClick: () => {
-        setOpen(true);
-      },
-    },
-  ];
+  const handleSelection = React.useCallback((ids: number[]) => {
+    setOpen(true);
+    setLastSelected(ids[ids.length - 1]);
+    setChecked(ids);
+  }, []);
+
+  const onDrowerClose = () => {
+    setChecked((prev) => {
+      if (prev?.length) {
+        let newArray = prev.filter((cId) => cId !== lastSelected);
+        return newArray;
+      }
+      return prev;
+    });
+  };
+
   return (
-    <PageLayout title="Take Quiz" iconAngle={false} icon={<HelpRoundedIcon />}>
-      <Box>
-        <BoxWrapper>
-          <QuizQuestionFormat
-            isShowScoreBar={false}
-            isOpen={open}
-            onClose={() => setOpen(false)}
-            title="Dr. Kevin B. this is how Question 10/2 appers to student"
-            questionContext={`In the child's poem "...,..., sugar is sweet! and so are you!"`}
-            actualQuestion="What is the first phrase?"
-            quizOptions={[
-              { id: 1, optionText: "Roses are red!" },
-              { id: 2, optionText: "Grass is green!" },
-              { id: 3, optionText: "Violets are blue!" },
-              { id: 4, optionText: "Roses are violet!" },
-              { id: 5, optionText: "Humpty Dumpty sat on a wall!" },
-            ]}
+    // <PageLayout title="Take Quiz" iconAngle={false} icon={<HelpRoundedIcon />}>
+    <Box>
+      <BoxWrapper>
+        <QuestionsModal
+          drawerOpen={open}
+          // setDrawerOpen={() => setOpen((prev) => !prev)}
+          setDrawerOpen={() => setOpen((prev) => !prev)}
+          onClose={onDrowerClose}
+        />
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            height: "60px",
+          }}
+        >
+          <TextFieldStyled
+            placeholder={searchQuiz}
+            variant="outlined"
+            InputProps={{
+              style: { border: "none", outline: "0px" },
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton aria-label="visibility" edge="end">
+                    <Search />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <SelectBoxWrapper>
+          <SelectBoxWrapper>
+            <Box sx={{ width: "100%" }}>
               <CustomSelect
                 placeholder={selectCourse}
                 dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-                options={typeSelect}
+                options={courseSelect}
               />
-            </SelectBoxWrapper>
-          </Box>
-        </BoxWrapper>
-        <BoxWrapper>
-          {/* @ts-ignore */}
-          <CustomDataGrid
-            rows={rowsTakeQuiz}
-            columns={columnsTakeQuiz}
-            pageSizeData={pageSizeTakeQuiz}
-            type={"1"}
-            isCheckbox={true}
-          />
-        </BoxWrapper>
-      </Box>
-    </PageLayout>
+            </Box>
+          </SelectBoxWrapper>
+        </Box>
+      </BoxWrapper>
+      <BoxWrapper
+        sx={{
+          ".MuiDataGrid-columnHeaderDraggableContainer .MuiCheckbox-root": {
+            display: "none",
+          },
+        }}
+      >
+        {/* @ts-ignore */}
+        <CustomDataGrid
+          rows={rowsTakeQuiz}
+          columns={columnsTakeQuiz}
+          pageSizeData={pageSizeTakeQuiz}
+          type={"1"}
+          isCheckbox={true}
+          columnVisibilityModel={showColumns}
+          // setChecked={() => setOpen((prev) => !prev)}
+          onRowSelect={handleSelection}
+          selectedIds={checked}
+        />
+      </BoxWrapper>
+    </Box>
+    // </PageLayout>
   );
 };
 

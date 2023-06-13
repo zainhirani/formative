@@ -7,11 +7,15 @@ import { ButtonConfig, TableColumn, TableRow } from "../type";
 interface TypeOneProps {
   pageSizeData: number;
   rows: TableRow[];
+  selectedIds: number[];
   columns: TableColumn[];
   buttonArray?: ButtonConfig[];
   checkboxSelection?: boolean;
   onRowClick?: () => void;
+  // setChecked?:  ((value: string) => void) | undefined;
+  onRowSelect?: (ids: number[], details: any) => void;
   setChecked?: any;
+  columnVisibilityModel: any;
 
   // isChecked?:
 }
@@ -22,10 +26,14 @@ const TypeOne: React.FC<TypeOneProps> = ({
   columns,
   buttonArray,
   onRowClick = () => {},
-  setChecked,
+  setChecked = () => {},
+  columnVisibilityModel,
+  selectedIds,
+  onRowSelect,
   ...props
 }) => {
   const [page, setPage] = useState(1);
+
   // const [checked, setChecked] = useState(false);
 
   // console.log(checked, "checked");
@@ -33,7 +41,8 @@ const TypeOne: React.FC<TypeOneProps> = ({
   const totalRows = rows.length;
   const totalPages = Math.ceil(totalRows / pageSizeData);
 
-  const handleCheck = useCallback((e: any) => {
+  const handleCheck = useCallback((e: any, details: any) => {
+    onRowSelect && onRowSelect(e, details);
     if (e.length) {
       setChecked(true);
     } else {
@@ -72,7 +81,9 @@ const TypeOne: React.FC<TypeOneProps> = ({
             disableColumnSelector
             disableDensitySelector
             disableRowSelectionOnClick
-            onRowSelectionModelChange={(e) => handleCheck(e)}
+            rowSelectionModel={selectedIds}
+            onRowSelectionModelChange={(...e) => handleCheck(...e)}
+            columnVisibilityModel={columnVisibilityModel}
             {...props}
           />
         </Grid>

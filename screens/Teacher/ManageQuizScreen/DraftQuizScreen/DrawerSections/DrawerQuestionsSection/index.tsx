@@ -61,7 +61,7 @@ const DrawerQuestionsSection = (props: any) => {
   const config = [
     {
       key: "createNew",
-      startIcon: <AddCircleOutlineIcon />,
+      startIcon: <AddCircleOutlineIcon fontSize="small" />,
       customClass: "filled",
       render: () => {
         return (
@@ -70,9 +70,7 @@ const DrawerQuestionsSection = (props: any) => {
           </Box>
         );
       },
-      onClick: () => {
-        setOpen(true);
-      },
+      onClick: () => {},
     },
   ];
   const handleDrawerCloseQuestion = () => {

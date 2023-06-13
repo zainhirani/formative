@@ -8,13 +8,13 @@ import FiltersSection from "./filters";
 
 const DraftQuizScreen: NextPage = () => {
   return (
-    <PageLayout title="All Quiz" icon={<ArrowForwardIcon />}>
-      <Box>
-        <FiltersSection />
-        <CusQuizDetails />
-        <TableSection />
-      </Box>
-    </PageLayout>
+    // <PageLayout title="All Quiz" icon={<ArrowForwardIcon />}>
+    <Box>
+      <FiltersSection />
+      <CusQuizDetails />
+      <TableSection />
+    </Box>
+    // </PageLayout>
   );
 };
 

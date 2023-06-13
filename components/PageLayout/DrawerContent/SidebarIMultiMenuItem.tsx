@@ -11,11 +11,7 @@ import {
   ListItemText,
 } from "@mui/material";
 
-export const SidebarItemCollapse = ({ item }: any) => {
-  console.log(
-    "🚀 ~ file: SidebarItemCollapse.tsx:14 ~ SidebarItemCollapse ~ item:",
-    item,
-  );
+const SidebarMultiMenuItem = ({ item }: any) => {
   const [itemName, setItemName] = useState({
     toggle: false,
     title: "",
@@ -115,3 +111,5 @@ export const SidebarItemCollapse = ({ item }: any) => {
     </ListItem>
   );
 };
+
+export default SidebarMultiMenuItem;

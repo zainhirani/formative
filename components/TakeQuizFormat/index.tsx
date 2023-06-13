@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { Box, Checkbox, FormControlLabel, Typography } from "@mui/material";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
@@ -26,6 +26,9 @@ type ITakeQuizProps = {
   setCheckedStateAns: any;
   checkedStateAns: any;
   questionData: any;
+  setRemainingTime: any;
+  remainingTime: any;
+  timer: any;
 };
 
 const TakeQuizFormat: FC<ITakeQuizProps> = ({
@@ -41,6 +44,9 @@ const TakeQuizFormat: FC<ITakeQuizProps> = ({
   checkedStateAns,
   setCheckedStateAns,
   questionData,
+  setRemainingTime,
+  remainingTime,
+  timer,
 }): JSX.Element => {
   const [ansCorrect, setAnsCorrect] = useState(false);
   const handleOnChange = (position: any, e: any) => {
@@ -51,6 +57,41 @@ const TakeQuizFormat: FC<ITakeQuizProps> = ({
     );
     setCheckedStateAns(updatedCheckedStateAns);
   };
+
+  // Timer
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setRemainingTime((prevTime: number | undefined) => {
+        const currentTime = prevTime ?? 0;
+        if (currentTime > 0) {
+          return currentTime - 1;
+        }
+        return currentTime;
+      });
+    }, 1000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [ansCorrect]);
+
+  useEffect(() => {
+    setRemainingTime(timer);
+  }, [ansCorrect]);
+
+  const getTimeColor = () => {
+    if (remainingTime <= 10) {
+      return "#ff0000";
+    } else if (remainingTime <= 30) {
+      return "orange";
+    } else if (remainingTime <= 60) {
+      return "#005E84";
+    } else {
+      return "#225A41";
+    }
+  };
+
+  // Timer
 
   return (
     <>
@@ -117,12 +158,13 @@ const TakeQuizFormat: FC<ITakeQuizProps> = ({
                 style={{ maxWidth: "100%", marginTop: "30px" }}
               />
             ) : (
-              <Typography
-                sx={{ marginBottom: "30px", color: "#225A41" }}
-                fontSize={18}
-              >
-                Your answer is correct!
-              </Typography>
+              <></>
+              // <Typography
+              //   sx={{ marginBottom: "30px", color: "#225A41" }}
+              //   fontSize={18}
+              // >
+              //   Your answer is correct!
+              // </Typography>
             )}
           </Box>
           <Box sx={{ marginTop: "30px" }}>
@@ -131,7 +173,6 @@ const TakeQuizFormat: FC<ITakeQuizProps> = ({
             </Typography>
             {options?.map((el, index) => {
               const valNew = el.valid;
-              console.log(valNew, "valNew");
               return (
                 <Box
                   key={index}
@@ -211,10 +252,33 @@ const TakeQuizFormat: FC<ITakeQuizProps> = ({
                   fontSize={14}
                   sx={{ color: (theme) => theme.palette.text.secondary }}
                 >
-                  <FormattedMessage
-                    {...messages.answerTime}
-                    values={{ value: time }}
-                  />
+                  <Box sx={{ display: "flex", gap: "5px" }}>
+                    {remainingTime ? (
+                      <>
+                        <FormattedMessage
+                          {...messages.answerTime}
+                          // values={{ value: time }}
+                        />
+                        <Typography
+                          style={{ fontSize: "14px", color: getTimeColor() }}
+                        >
+                          {remainingTime} seconds
+                        </Typography>
+                      </>
+                    ) : (
+                      <>
+                        <FormattedMessage
+                          {...messages.answerTime}
+                          // values={{ value: time }}
+                        />
+                        <Typography
+                          style={{ fontSize: "14px", color: "#ff0000" }}
+                        >
+                          0 seconds
+                        </Typography>
+                      </>
+                    )}
+                  </Box>
                 </Typography>
               </BoxWrapper>
               <ButtonWrapper
