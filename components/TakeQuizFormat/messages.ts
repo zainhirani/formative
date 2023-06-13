@@ -23,7 +23,8 @@ export default defineMessages({
   },
   answerTime: {
     id: `${scope}.answerTime`,
-    defaultMessage: "Answer the question in: {value} Seconds",
+    defaultMessage: "Answer the question in: ",
+    // defaultMessage: "Answer the question in: {value} Seconds",
   },
   submit: {
     id: `${scope}.submit`,
