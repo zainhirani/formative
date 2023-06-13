@@ -38,6 +38,7 @@ import TinyMCEEditor from "./Editor";
 import CustomSelect from "components/CustomSelect/CustomSelect";
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
 import { facultySelect } from "mock-data/Teacher/ManageQuestion";
+import { useSession } from "next-auth/react";
 
 const validationSchema = Yup.object().shape({
   authorName: Yup.string().required().label("Author Name"),
