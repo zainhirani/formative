@@ -49,29 +49,35 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
 
   const signOut = useCallback(async () => {
     logout({ callbackUrl: "/login" });
-    localStorage.clear();
     router?.replace(AUTHENTICATION_PATH[0]!);
+    localStorage.clear();
   }, [router]);
 
   const prevToken = getAuthenticationToken();
   //@ts-ignore
   const currToken: any = session?.accessToken;
 
-  async function getTokenFunction() {
-    if (typeof window !== "undefined") {
-      const getToken = localStorage.getItem(TOKEN);
-      setAuthenticationHeader(getToken);
-    }
-  }
-  if (router.pathname.includes("register")) {
-    setInterval(() => {
-      getTokenFunction();
-    }, 3000);
-  }
-  getTokenFunction();
+
+
 
   if (currToken && prevToken !== `Bearer ${currToken}`) {
+    setAuthenticationHeader(currToken);
   }
+
+  // async function getTokenFunction() {
+  //   if (typeof window !== "undefined") {
+  //     const getToken = localStorage.getItem(TOKEN);
+  //     setAuthenticationHeader(getToken);
+  //   }
+  // }
+  // if (router.pathname.includes("register")) {
+  //   setInterval(() => {
+  //     getTokenFunction();
+  //   }, 3000);
+  // }
+  // getTokenFunction();
+
+
 
   if (loading) {
     return (
@@ -88,12 +94,38 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
     );
   }
 
+  if (
+    !!process.browser &&
+    !(AUTHENTICATION_PATH || "").includes(window?.location?.pathname) &&
+    !session?.accessToken &&
+    !loading
+  ) {
+    router.replace(AUTHENTICATION_PATH[0]!);
+    return null;
+  }
+
+  if (
+    !!process.browser &&
+    (AUTHENTICATION_PATH || "").includes(window?.location?.pathname) &&
+    session &&
+    session.accessToken &&
+    !loading
+  ) {
+    const params: { pathname: string; query?: { redirectTo: string } } = {
+      pathname:
+        // @ts-ignore
+        "/dashboard",
+    };
+    router.replace(params);
+    return null;
+  }
+
   return (
     <AuthContext.Provider
       value={{
         signIn,
         signOut,
-        currentUser: session?.user,
+    
       }}
     >
       {children}

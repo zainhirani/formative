@@ -11,7 +11,7 @@ import {
   ListItemText,
 } from "@mui/material";
 
-export const SidebarItemCollapse = ({ item }: any) => {
+const SidebarMultiMenuItem = ({ item }: any) => {
   const [itemName, setItemName] = useState({
     toggle: false,
     title: "",
@@ -111,3 +111,5 @@ export const SidebarItemCollapse = ({ item }: any) => {
     </ListItem>
   );
 };
+
+export default SidebarMultiMenuItem;
