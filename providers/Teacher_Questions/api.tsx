@@ -46,11 +46,11 @@ export const getFaculties = async () => {
   });
 };
 
-export const addQuestion = async (props: any) => {
+export const addQuestion = async (payload) => {
   return service({
     method: "POST",
     url: TEACHER__ADD_QUESTION,
-    body: props,
+    body: payload,
   });
 };
 
