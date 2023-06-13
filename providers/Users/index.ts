@@ -53,31 +53,19 @@ export function useProfile(
 }
 
 
-// export function useProfile(props: Profile.CreateProps = {}): UseMutationResult<
-//   Profile.CreateResponse,
-//   {
-//     message?: string;
-//   },
-//   Profile.CreateMutationPayload
-// > {
-//   const queryClient = useQueryClient();
-//   return useMutation(
-//     (payload) => api.createProfile({ ...props, data: payload }),
-//     {
-//       mutationKey: `${KEY}|Create`,
-//       onSuccess: () => {
-//         queryClient.invalidateQueries(getKeyFromProps(props, "LISTING"));
-//       },
-//       retry: 0,
-//     },
-//   );
-// }
-
 // profile Detail
 export function useProfileDetail(
   props?: Profile.DetailProps,
 ): UseQueryResult<Profile.DetailResponse> {
   return useQuery(getKeyFromProps(props, "DETAIL"), () =>
     api.detailProfile(props),
+  );
+}
+
+export function useUserDetail(
+  props?: Profile.Userprops,
+): UseQueryResult<Profile.UserResponse> {
+  return useQuery(getKeyFromProps(props, "DETAIL"), () =>
+    api.userDetail(props),
   );
 }

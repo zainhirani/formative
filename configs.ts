@@ -12,9 +12,9 @@ export const NEXT_PUBLIC_FIREBASE_APP_ID =
 export const NEXT_PUBLIC_MODE_ENV =
   process.env.NEXT_PUBLIC_MODE_ENV === "development";
 
-export const AUTH_LOGIN_URL = process.env.NEXT_PUBLIC_AUTH_LOGIN_URL;
+export const AUTH_LOGIN_URL = process.env.NEXT_PUBLIC_AUTH_LOGIN_URL || '/login';
 
-export const PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
+export const PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api-formative.appnofy.com/v1';
 export const LOGINBG = "/LoginBackGround.png";
 export const SITELOGO = "/websiteLogo.png";
 export const USERIMAGE = "/userImage.png";
@@ -23,7 +23,10 @@ export const SMALL_QUIZ = "/quiz_small.svg";
 export const COURSES = "/courses.svg";
 export const STUDENTS = "/students.svg";
 export const QUESTIONS = "/questions.svg";
-export const TEST_YOURSELF = "/test_yourself.svg"
+export const TEST_YOURSELF = "/test_yourself.svg";
+export const TESTYOURSELF = "/test-yourself.svg";
+export const HOW_AM_I_DOING = "/how-am-i-doing.svg";
+export const PROFILE = "/profile.svg"
 export const DASHBOARD = "/dashboard.svg"
 export const QUESTIONS_SMALL = "/questions_small.svg"
 export const STUDENTS_SMALL = "/students_small.svg"
