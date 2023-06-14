@@ -18,8 +18,6 @@ import {
 } from "configs";
 import messages from "./messages";
 import SideDrawer from "components/Drawer";
-import { useAuthContext } from "contexts/AuthContext";
-import { useRouter } from "next/router";
 
 const boxContent = [
   {
@@ -161,8 +159,6 @@ const collegesData = [
 ];
 
 const DashboardScreen = () => {
-  const signOut = useAuthContext();
-  const router = useRouter();
   let config = [
     {
       columnName: COLUMN_NAME.ID,
@@ -261,15 +257,6 @@ const DashboardScreen = () => {
           <Typography variant="body2">
             <FormattedMessage {...messages.pitch} />
           </Typography>
-          <Button
-            onClick={() => {
-              signOut;
-              router.push("/login");
-              localStorage.clear();
-            }}
-          >
-            Logout
-          </Button>
         </Box>
         <Box sx={{ display: "flex", flexWrap: "wrap", gap: "20px" }} mt={1}>
           {studentBoxContent.map((item, index) => (

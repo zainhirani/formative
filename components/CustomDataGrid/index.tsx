@@ -18,6 +18,7 @@ interface CustomDataGridProps {
   setChecked: any;
   onRowSelect?: (ids: number[], details: any) => void;
   columnVisibilityModel?: any;
+  getSelectedId?: (e?: any) => void;
 }
 
 const CustomDataGrid: React.FC<CustomDataGridProps> = ({
@@ -30,6 +31,7 @@ const CustomDataGrid: React.FC<CustomDataGridProps> = ({
   isCheckbox,
   onRowClick = () => {},
   setChecked,
+  getSelectedId,
   ...props
 }) => {
   return (
@@ -44,6 +46,7 @@ const CustomDataGrid: React.FC<CustomDataGridProps> = ({
           checkboxSelection={isCheckbox}
           setChecked={setChecked}
           columnVisibilityModel={columnVisibilityModel}
+          getSelectedId={getSelectedId}
           {...props}
         />
       ) : type == "2" ? (

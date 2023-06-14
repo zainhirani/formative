@@ -6,16 +6,28 @@ export const pageSizeManageCourse = 12;
 
 export const columnsManageCourse = [
   {
+    field: "id",
+    headerName: "ID",
+    minWidth: 60,
+  },
+  {
     field: "course_name",
     headerName: "Course",
-    minWidth: 600,
+    minWidth: 500,
     flex: 1,
   },
   {
-    field: "target_students",
+    field: "course",
     headerName: "Target Students",
     minWidth: 150,
     flex: 1,
+    renderCell: (params: any) => {
+      // return params.value?.programs.replaceAll(/[""]/g, "");
+      return params.value?.programs
+        .slice(2, -2)
+        .replaceAll(/[""]/g, "")
+        .toUpperCase();
+    },
   },
 ];
 

@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  Box,
-  IconButton,
-  InputAdornment,
-} from "@mui/material";
+import { Box, IconButton, InputAdornment } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import {
   BoxWrapper,
@@ -14,12 +10,24 @@ import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRou
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
 import CustomSelect from "components/CustomSelect/CustomSelect";
 import { useSnackbar } from "notistack";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
 
-const SearchBar = () => {
-//   const searchQuiz = useFormattedMessage(messages.searchQuiz);
-
+const SearchBar = (props: any) => {
+  const { checked, onSelectAudienceOption, onSelectClassOption } = props;
+  //   const searchQuiz = useFormattedMessage(messages.searchQuiz);
+  const [selectedAudience, setSelectedAudience] = React.useState("");
+  const [selectedClass, setSelectedClass] = React.useState("");
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+  const handleSelectAudienceChange = (selectedOption: any) => {
+    setSelectedAudience(selectedOption);
+    onSelectAudienceOption(selectedOption);
+  };
+  const handleSelectClassChange = (selectedOption: any) => {
+    setSelectedClass(selectedOption);
+    onSelectAudienceOption(selectedOption);
+  };
+  onSelectClassOption;
   const target_audience = [
     { value: "cop", label: "COP" },
     { value: "cop-24-pod-26", label: "COP-2024; POD-2024" },
@@ -61,6 +69,8 @@ const SearchBar = () => {
           controlText="Target Audience: School/Program: "
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={target_audience}
+          // value={selectedAudience}
+          onChange={handleSelectAudienceChange}
         />
       </Box>
       <Box gridColumn="span 2">
@@ -69,21 +79,27 @@ const SearchBar = () => {
           controlText="Class of: "
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={class_of}
+          // value={selectedClass}
+          onChange={handleSelectClassChange}
         />
       </Box>
       <Box gridColumn="span 3">
         <ButtonWrapper
           startIcon={<AddCircleOutlineRoundedIcon />}
-          variant="contained" 
-          onClick={()=>{
-            enqueueSnackbar("Updated selected courses and added to new course.", {
-              variant: "success",
-              action: (key) => (
-                <IconButton onClick={() => closeSnackbar(key)} size="small">
-                  <CloseIcon sx={{color: "#fff"}}/>
-                </IconButton>
-              ),
-            });
+          variant="contained"
+          disabled={checked ? false : true}
+          onClick={() => {
+            enqueueSnackbar(
+              "Updated selected courses and added to new course.",
+              {
+                variant: "success",
+                action: (key) => (
+                  <IconButton onClick={() => closeSnackbar(key)} size="small">
+                    <CloseIcon sx={{ color: "#fff" }} />
+                  </IconButton>
+                ),
+              },
+            );
           }}
         >
           Add to course

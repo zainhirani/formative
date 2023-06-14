@@ -16,6 +16,7 @@ interface TypeOneProps {
   onRowSelect?: (ids: number[], details: any) => void;
   setChecked?: any;
   columnVisibilityModel: any;
+  getSelectedId?: (e?: any) => void;
 
   // isChecked?:
 }
@@ -30,6 +31,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
   columnVisibilityModel,
   selectedIds,
   onRowSelect,
+  getSelectedId = () => {},
   ...props
 }) => {
   const [page, setPage] = useState(1);
@@ -42,6 +44,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
   const totalPages = Math.ceil(totalRows / pageSizeData);
 
   const handleCheck = useCallback((e: any, details: any) => {
+    console.log(details, e, "@@@@@@@@@@");
     onRowSelect && onRowSelect(e, details);
     if (e.length) {
       setChecked(true);
@@ -82,7 +85,10 @@ const TypeOne: React.FC<TypeOneProps> = ({
             disableDensitySelector
             disableRowSelectionOnClick
             rowSelectionModel={selectedIds}
-            onRowSelectionModelChange={(...e) => handleCheck(...e)}
+            onRowSelectionModelChange={(...e) => {
+              handleCheck(...e);
+              getSelectedId(e);
+            }}
             columnVisibilityModel={columnVisibilityModel}
             {...props}
           />
