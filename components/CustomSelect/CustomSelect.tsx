@@ -11,7 +11,7 @@ interface CustomSelectProps {
   controlText?: string;
   dropdownIcon?: ReactNode;
   onChange?: any;
-  value?:any;
+  value?: any;
 }
 
 const CustomDropdownIndicator = (props: any) => {

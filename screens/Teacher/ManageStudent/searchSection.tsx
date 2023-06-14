@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useMemo} from "react";
 import {
   Box,
   Button,
@@ -25,17 +25,29 @@ import AutoComplete from "components/AutoComplete";
 import { useSnackbar } from "notistack";
 import CustomSelect from "components/CustomSelect/CustomSelect";
 import { GridCloseIcon } from "@mui/x-data-grid";
+import { useCourseListing } from "providers/Courses";
+
 
 const SearchSection = (props: any) => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { checked } = props;
   const searchCourse = useFormattedMessage(messages.searchCourse);
 
-  const new_course_options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-  ];
+//Course data 
+const courseListing = useCourseListing({});
+
+
+const cousrseData = useMemo(() => {
+ return courseListing?.data?.map((item) => (
+    {
+    
+      value:item.id,
+      label:item.course_name
+    }
+    ))
+},[courseListing?.data])
+
+ 
   const programs = [
     { value: "COP", label: "COP" },
     { value: "COP1", label: "COP" },
@@ -119,7 +131,8 @@ const SearchSection = (props: any) => {
           placeholder="Select Course"
           controlText="New Course:"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-          options={new_course_options}
+            options={cousrseData || [] }
+          
         />
       </Box>
       <Box gridColumn="span 2">

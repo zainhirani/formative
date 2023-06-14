@@ -121,8 +121,9 @@ const TypeOne: React.FC<TypeOneProps> = ({
             onRowSelectionModelChange={(...e) => handleCheck(...e)}
             columnVisibilityModel={columnVisibilityModel}
             sx={{ minHeight: "400px" }}
-            {...props}
             slots={{ pagination: CustomPagination }}
+            loading={loading}
+            {...props}
           />
         </Grid>
       </Grid>

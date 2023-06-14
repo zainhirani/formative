@@ -1,9 +1,5 @@
 import { GridColDef } from "@mui/x-data-grid";
-
 export const pageSizeManageQuiz = 12;
-
-
-
 export const rowsManageStudent = [
   {
     id: 1,

@@ -1,12 +1,7 @@
 import React from "react";
 import { BoxWrapper } from "./Styled";
-import {
-  
-  pageSizeManageQuiz,
-  
-} from "mock-data/Teacher/ManageStudent";
+import { pageSizeManageQuiz } from "mock-data/Teacher/ManageStudent";
 import { GridColDef } from "@mui/x-data-grid";
-
 
 import CustomDataGrid from "components/CustomDataGrid";
 import { useStudentListing } from "providers/teacher/student";
@@ -53,11 +48,10 @@ export const columnsManageStudent: GridColDef[] = [
 
 const TableSection = (props: any) => {
   const { setChecked } = props;
-  const studentListing = useStudentListing({})
-  console.log(studentListing?.data,'studentListing')
+  const studentListing = useStudentListing({});
+  // console.log(studentListing?.data,'studentListing')
   return (
     <BoxWrapper>
-     
       <CustomDataGrid
         rows={studentListing.data}
         columns={columnsManageStudent}
@@ -66,9 +60,7 @@ const TableSection = (props: any) => {
         isCheckbox={true}
         setChecked={setChecked}
         loading={studentListing.isFetching}
-        
       />
-
     </BoxWrapper>
   );
 };
