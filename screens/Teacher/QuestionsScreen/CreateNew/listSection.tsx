@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Delete } from "@mui/icons-material";
 import {
   List,
@@ -5,9 +6,6 @@ import {
   ListItemText,
   FormControlLabel,
   Checkbox,
-  ListItemSecondaryAction,
-  IconButton,
-  Typography,
   Button,
   Box,
 } from "@mui/material";
@@ -35,6 +33,13 @@ const initialItems: ListItemData[] = [
 const QuestionListSection = () => {
   const [items, setItems] = useState<ListItemData[]>(initialItems);
   const [counter, setCounter] = useState(initialItems.length + 1);
+
+  useEffect(() => {
+    console.log("ITEMS", items);
+  }, [items]);
+  useEffect(() => {
+    console.log("COUNTER", counter);
+  }, [counter]);
 
   const getNextOptionText = () => {
     const lastOption = items[items.length - 1];

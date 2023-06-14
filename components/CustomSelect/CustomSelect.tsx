@@ -11,6 +11,7 @@ interface CustomSelectProps {
   controlText?: string;
   dropdownIcon?: ReactNode;
   onChange?: any;
+  value: object;
 }
 
 const CustomDropdownIndicator = (props: any) => {
@@ -40,6 +41,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
   options,
   placeholder,
   onChange,
+  value,
 }) => {
   // const onChange = () => {};
 
@@ -94,6 +96,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
   return (
     <BoxWrapper>
       <AutoComplete
+        value={value}
         options={options}
         onChange={onChange}
         placeholder={placeholder}

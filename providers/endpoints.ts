@@ -4,7 +4,7 @@ export const TEACHER__ADD_QUESTION =  '/questions';
 
 export const TEACHER__GET_FACULTIES =  '/faculty';
 export const TEACHER__GET_FOLDERS =  '/folder';
-export const TEACHER__GET_FACULTIES_CATEGORIES =  '/faculty';
+export const TEACHER__GET_FACULTIES_CATEGORIES =  '/categories';
 export const TEACHER__GET_CATEGORIES =  '/categories';
 
 export const TEACHER__EDIT_QUESTIONS =  '/questions/'; //{id}

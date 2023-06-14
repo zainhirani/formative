@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   Box,
   Button,
@@ -38,41 +39,54 @@ import TinyMCEEditor from "./Editor";
 import CustomSelect from "components/CustomSelect/CustomSelect";
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
 import { facultySelect } from "mock-data/Teacher/ManageQuestion";
+import { initialValues, validationSchema } from "./Form";
 import { useSession } from "next-auth/react";
+import { useQuery } from "react-query";
 
-const validationSchema = Yup.object().shape({
-  authorName: Yup.string().required().label("Author Name"),
-  password: Yup.string().required().min(6).label("Password"),
-});
-
-const questionSelect = [
-  { value: "2573/1", label: "2573/1" },
-  { value: "2574/1", label: "2574/1" },
-  { value: "2574/1", label: "2574/1" },
-];
-const typeSelect = [
+const TYPE_OPTIONS = [
+  { value: "SA", label: "SA" },
+  { value: "MCN", label: "MCN" },
   { value: "MCR", label: "MCR" },
-  { value: "NCR", label: "NCR" },
-  { value: "SCR", label: "SCR" },
+  { value: "MSN", label: "MSN" },
+  { value: "MSR", label: "MSR" },
+  { value: "MA", label: "MA" },
+  { value: "F", label: "F" },
 ];
-const folderSelect = [
-  { value: "/MedChem", label: "/MedChem" },
-  { value: "/Physics", label: "/Physics" },
-  { value: "/Maths", label: "/Maths" },
-];
-const categorySelect = [
-  { value: "MC05 - Diuretics", label: "MC05 - Diuretics" },
-  { value: "MC06 - Diuretics", label: "MC06 - Diuretics" },
-  { value: "MC07 - Diuretics", label: "MC07 - Diuretics" },
-];
-const facultyCategorySelect = [
-  { value: "BC06- Amino Acids", label: "BC06- Amino Acids" },
-  { value: "Appendix", label: "Appendix" },
-  { value: "B01 Biochemistry", label: "B01 Biochemistry" },
-];
+
+const STATUS = {
+  ACTIVE: "ACTIVE",
+  INACTIVE: "INACTIVE",
+  DRAFT: "DRAFT",
+};
 
 const CreateNewScreen = () => {
-  const authorName = useFormattedMessage(messages.authorName);
+  // ======================= State
+
+  let { data } = useSession();
+  console.log("🚀 ~ file: index.tsx:66 ~ CreateNewScreen ~ data:", data);
+
+  const [questionId, setQuestionId] = useState("");
+  const [title, setTitle] = useState("");
+  const [authorName, setAuthorName] = useState("");
+  const [detail, setDetail] = useState("");
+  const [options, setOptions] = useState<string[]>([]);
+  const [answer, setAnswer] = useState("");
+  const [isPublic, setIsPublic] = useState(false);
+  const [folderId, setFolderId] = useState(0);
+  const [folderOptions, setFolderOptions] = useState(null);
+  const [media, setMedia] = useState();
+  const [enumType, setEnumType] = useState({});
+  const [status, setStatus] = useState(STATUS.DRAFT);
+  const [categoryId, setCategoryId] = useState(0);
+  const [facultyCategoryId, setFacultyCategoryId] = useState([]);
+  const [categoryOptions, setCategoryOptions] = useState([]);
+  const [timelimit, setTimelimit] = useState(0);
+  const [tries, setTries] = useState(0);
+  const [facultyIds, setFacultyIds] = useState<number[]>([]);
+
+  //  ====================== State
+
+  const authorNamePlaceholder = useFormattedMessage(messages.authorName);
   const [content, setContent] = useState("");
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
 
@@ -85,9 +99,6 @@ const CreateNewScreen = () => {
 
   const handleRemoveValue = (value: any) => {
     setSelectedValues(selectedValues.filter((v) => v !== value));
-  };
-  const handleEditorChange = (newContent: string) => {
-    setContent(newContent);
   };
 
   const question = useFormattedMessage(messages.questNo);
@@ -136,22 +147,15 @@ const CreateNewScreen = () => {
     },
   ];
 
-  const onSubmit = useCallback(async (data: any) => {}, []);
+  const handleSubmit = useCallback(async (data: any) => {
+    console.log("🚀 ~ file: index.tsx:140 ~ onSubmit ~ values:", data);
+    //  quesiton submit code here
+  }, []);
 
-  // use formik
-  const {
-    handleChange,
-    handleSubmit,
-    handleBlur,
-    errors,
-    values,
-    touched,
-    setFieldValue,
-  } = useFormik({
-    initialValues: { authorName: "", password: "", limit: 0 },
-    validationSchema,
-    onSubmit,
-  });
+  useEffect(() => {
+    console.log(detail);
+  }, [detail]);
+
   return (
     <>
       {/* <PageLayout
@@ -186,19 +190,20 @@ const CreateNewScreen = () => {
                   <InputLabelWrapper htmlFor="authorName">
                     <FormattedMessage {...messages.author} />
                   </InputLabelWrapper>
+
+                  {/* Author Name */}
                   <TextFieldWrapper
+                    disabled
                     id="authorName"
                     name="authorName"
                     type="text"
-                    value={values.authorName}
-                    placeholder={authorName}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    autoComplete="off"
+                    value={authorName}
+                    placeholder={authorNamePlaceholder}
                     variant="standard"
                     fullWidth
                   />
                 </FieldBoxWrapper>
+
                 <Box
                   sx={{ display: "flex", alignItems: "center", gap: "10px" }}
                 >
@@ -208,6 +213,7 @@ const CreateNewScreen = () => {
                   >
                     <FormattedMessage {...messages.statusLabel} />
                   </InputLabelWrapper>
+                  {/* Status */}
                   <Box
                     sx={{
                       display: "flex",
@@ -216,8 +222,8 @@ const CreateNewScreen = () => {
                       color: (theme) => theme.additionalColors?.primaryYellow,
                     }}
                   >
-                    <SaveAsIcon style={{ fontSize: "20px" }} />{" "}
-                    <FormattedMessage {...messages.status} />
+                    <SaveAsIcon style={{ fontSize: "20px" }} />
+                    <div>{status}</div>
                   </Box>
                 </Box>
               </Box>
@@ -229,6 +235,7 @@ const CreateNewScreen = () => {
                   justifyContent: "space-between",
                 }}
               >
+                {/* Question Id */}
                 <FieldBoxWrapper
                   sx={{
                     width: "50%",
@@ -237,14 +244,21 @@ const CreateNewScreen = () => {
                     justifyContent: "space-between",
                   }}
                 >
-                  <Box sx={{ width: "100%" }}>
-                    <CustomSelect
-                      placeholder={questionPlaceholder}
-                      controlText={question}
-                      dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-                      options={questionSelect}
-                    />
-                  </Box>
+                  <InputLabelWrapper htmlFor="authorName">
+                    <FormattedMessage {...messages.questNo} />
+                  </InputLabelWrapper>
+
+                  {/* Author Name */}
+                  <TextFieldWrapper
+                    disabled
+                    id="questionId"
+                    name=""
+                    type="text"
+                    value={questionId}
+                    placeholder={questionPlaceholder}
+                    variant="standard"
+                    fullWidth
+                  />
                 </FieldBoxWrapper>
                 <FieldBoxWrapper
                   sx={{
@@ -254,12 +268,15 @@ const CreateNewScreen = () => {
                     justifyContent: "space-between",
                   }}
                 >
+                  {/* Type */}
                   <Box sx={{ width: "100%" }}>
                     <CustomSelect
+                      onChange={(val: object) => setEnumType(val)}
+                      value={enumType}
                       placeholder={typePlaceholder}
                       controlText={type}
                       dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-                      options={typeSelect}
+                      options={TYPE_OPTIONS}
                     />
                   </Box>
                 </FieldBoxWrapper>
@@ -273,6 +290,7 @@ const CreateNewScreen = () => {
               }}
             >
               <Box sx={{ display: "flex", width: "100%" }}>
+                {/* Public Checkbox */}
                 <FieldBoxWrapper
                   sx={{
                     width: "50%",
@@ -283,7 +301,13 @@ const CreateNewScreen = () => {
                 >
                   <FormControlLabel
                     label="Public"
-                    control={<Checkbox defaultChecked />}
+                    control={
+                      <Checkbox
+                        defaultChecked
+                        checked={isPublic}
+                        onChange={(e) => setIsPublic(e.target.checked)}
+                      />
+                    }
                     sx={{
                       flexDirection: "row-reverse",
                       justifyContent: "space-between",
@@ -303,6 +327,7 @@ const CreateNewScreen = () => {
                     }}
                   />
                 </FieldBoxWrapper>
+                {/* Limit */}
                 <FieldBoxWrapper
                   sx={{
                     width: "50%",
@@ -317,10 +342,9 @@ const CreateNewScreen = () => {
                     id="limit"
                     name="limit"
                     type="number"
-                    value={values.limit}
+                    value={timelimit}
                     placeholder={"0"}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
+                    onChange={(e) => setTimelimit(e.target.value)}
                     autoComplete="off"
                     variant="standard"
                     fullWidth
@@ -336,6 +360,7 @@ const CreateNewScreen = () => {
                   justifyContent: "space-between",
                 }}
               >
+                {/* Folders */}
                 <FieldBoxWrapper
                   sx={{
                     width: "100%",
@@ -349,7 +374,9 @@ const CreateNewScreen = () => {
                       placeholder={folderPlaceholder}
                       controlText={folder}
                       dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-                      options={folderSelect}
+                      options={folderOptions}
+                      value={folderId}
+                      onChange={(val) => setFolderId(val)}
                     />
                   </Box>
                 </FieldBoxWrapper>
@@ -363,6 +390,7 @@ const CreateNewScreen = () => {
                   justifyContent: "space-between",
                 }}
               >
+                {/* Category */}
                 <FieldBoxWrapper
                   sx={{
                     width: "100%",
@@ -376,7 +404,9 @@ const CreateNewScreen = () => {
                       placeholder={categoryPlaceholder}
                       controlText={category}
                       dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-                      options={categorySelect}
+                      options={categoryOptions}
+                      onChange={(val) => setCategoryOptions(val)}
+                      value={categoryId}
                     />
                   </Box>
                 </FieldBoxWrapper>
@@ -391,6 +421,7 @@ const CreateNewScreen = () => {
                   gap: "20px",
                 }}
               >
+                {/* Faculty Category */}
                 <FieldBoxWrapper
                   sx={{
                     width: "100%",
@@ -404,14 +435,15 @@ const CreateNewScreen = () => {
                       placeholder={facultyPlaceholder}
                       controlText={faculty}
                       dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-                      options={facultyCategorySelect}
-                      onChange={handleSelectChange}
+                      options={categoryOptions}
+                      onChange={(val) => setFacultyCategoryId(val)}
+                      value={facultyCategoryId}
                     />
                   </Box>
                 </FieldBoxWrapper>
                 <Box sx={{ p: "0 24px" }}>
-                  {selectedValues.length > 0 ? (
-                    selectedValues.map((value) => (
+                  {facultyCategoryId?.length > 0 ? (
+                    facultyCategoryId.map((value) => (
                       <Box
                         sx={{ display: "flex", alignItems: "center" }}
                         key={value}
@@ -441,6 +473,7 @@ const CreateNewScreen = () => {
               mt: { xs: "30px", md: "0" },
             }}
           >
+            {/* Question Details */}
             <BoxWrapper
               sx={{
                 ".tox-tinymce": { border: "none" },
@@ -455,273 +488,13 @@ const CreateNewScreen = () => {
               }}
             >
               <TinyMCEEditor
-                initialValue={content}
-                handleEditorChange={handleEditorChange}
+                initialValue={detail}
+                onChange={(val) => setDetail(val)}
               />
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  px: "20px",
-                }}
-              >
-                <Box sx={{ display: "flex", width: "100%" }}>
-                  <FieldBoxWrapper sx={{ width: { md: "57%", lg: "55%" } }}>
-                    <InputLabelWrapper htmlFor="authorName">
-                      <FormattedMessage {...messages.author} />
-                    </InputLabelWrapper>
-                    <TextFieldWrapper
-                      id="authorName"
-                      name="authorName"
-                      type="text"
-                      value={values.authorName}
-                      placeholder={authorName}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      autoComplete="off"
-                      variant="standard"
-                      fullWidth
-                    />
-                  </FieldBoxWrapper>
-                  <Box
-                    sx={{ display: "flex", alignItems: "center", gap: "10px" }}
-                  >
-                    <InputLabelWrapper
-                      sx={{ width: "100%" }}
-                      htmlFor="authorName"
-                    >
-                      <FormattedMessage {...messages.statusLabel} />
-                    </InputLabelWrapper>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "2px",
-                        color: (theme) => theme.additionalColors?.primaryYellow,
-                      }}
-                    >
-                      <SaveAsIcon style={{ fontSize: "20px" }} />{" "}
-                      <FormattedMessage {...messages.status} />
-                    </Box>
-                  </Box>
-                </Box>
-              </Box>
-              <Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <FieldBoxWrapper
-                    sx={{
-                      width: "50%",
-                      padding: " 0 24px",
-                      border: "1px solid #EAEAEA",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Box sx={{ width: "100%" }}>
-                      <CustomSelect
-                        placeholder={questionPlaceholder}
-                        controlText={question}
-                        dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-                        options={questionSelect}
-                      />
-                    </Box>
-                  </FieldBoxWrapper>
-                  <FieldBoxWrapper
-                    sx={{
-                      width: "50%",
-                      padding: " 0 24px",
-                      border: "1px solid #EAEAEA",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Box sx={{ width: "100%" }}>
-                      <CustomSelect
-                        placeholder={typePlaceholder}
-                        controlText={type}
-                        dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-                        options={typeSelect}
-                      />
-                    </Box>
-                  </FieldBoxWrapper>
-                </Box>
-              </Box>
-
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Box sx={{ display: "flex", width: "100%" }}>
-                  <FieldBoxWrapper
-                    sx={{
-                      width: "50%",
-                      padding: " 0 0 0 24px",
-                      border: "1px solid #EAEAEA",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <FormControlLabel
-                      label="Public"
-                      control={<Checkbox defaultChecked />}
-                      sx={{
-                        flexDirection: "row-reverse",
-                        justifyContent: "space-between",
-                        width: "100%",
-                        ".MuiTypography-root": {
-                          ml: "15px",
-                        },
-                        ".MuiSvgIcon-root": {
-                          color: (theme) => theme.palette.text.secondary,
-                        },
-                        "&.Mui-checked": {
-                          ".MuiSvgIcon-root": {
-                            background: (theme) => theme.palette.text.secondary,
-                            color: (theme) => theme.palette.primary.light,
-                          },
-                        },
-                      }}
-                    />
-                  </FieldBoxWrapper>
-                  <FieldBoxWrapper
-                    sx={{
-                      width: "50%",
-                      padding: " 0 24px",
-                      border: "1px solid #EAEAEA",
-                    }}
-                  >
-                    <InputLabelWrapper sx={{ width: "50%" }} htmlFor="limit">
-                      <FormattedMessage {...messages.limit} />
-                    </InputLabelWrapper>
-                    <TextFieldWrapper
-                      id="limit"
-                      name="limit"
-                      type="number"
-                      value={values.limit}
-                      placeholder={"0"}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      autoComplete="off"
-                      variant="standard"
-                      fullWidth
-                    />
-                  </FieldBoxWrapper>
-                </Box>
-              </Box>
-
-              <Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <FieldBoxWrapper
-                    sx={{
-                      width: "100%",
-                      padding: " 0 24px",
-                      border: "1px solid #EAEAEA",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Box sx={{ width: "100%" }}>
-                      <CustomSelect
-                        placeholder={folderPlaceholder}
-                        controlText={folder}
-                        dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-                        options={folderSelect}
-                      />
-                    </Box>
-                  </FieldBoxWrapper>
-                </Box>
-              </Box>
-
-              <Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <FieldBoxWrapper
-                    sx={{
-                      width: "100%",
-                      padding: " 0 24px",
-                      border: "1px solid #EAEAEA",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Box sx={{ width: "100%" }}>
-                      <CustomSelect
-                        placeholder={categoryPlaceholder}
-                        controlText={category}
-                        dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-                        options={categorySelect}
-                      />
-                    </Box>
-                  </FieldBoxWrapper>
-                </Box>
-              </Box>
-              <Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    flexDirection: "column",
-                    gap: "20px",
-                  }}
-                >
-                  <FieldBoxWrapper
-                    sx={{
-                      width: "100%",
-                      padding: " 0 24px",
-                      border: "1px solid #EAEAEA",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Box sx={{ width: "100%" }}>
-                      <CustomSelect
-                        placeholder={facultyPlaceholder}
-                        controlText={faculty}
-                        dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-                        // options={facultyCategorySelect}
-                        // options={facultySelect}
-                        options={facultyCategorySelect}
-                        onChange={handleSelectChange}
-                      />
-                    </Box>
-                  </FieldBoxWrapper>
-                  <Box sx={{ p: "0 24px" }}>
-                    {selectedValues.length > 0 ? (
-                      selectedValues.map((value) => (
-                        <Box
-                          sx={{ display: "flex", alignItems: "center" }}
-                          key={value}
-                        >
-                          <Typography variant="body1">{value}</Typography>
-                          <IconButton
-                            color="primary"
-                            onClick={() => handleRemoveValue(value)}
-                          >
-                            <CancelIcon />
-                          </IconButton>
-                        </Box>
-                      ))
-                    ) : (
-                      <Typography variant="body2">
-                        No values selected.
-                      </Typography>
-                    )}
-                  </Box>
-                </Box>
-              </Box>
             </BoxWrapper>
+            {/* Upload Image */}
             <Box>
-              <ImageSection />
+              <ImageSection onImageUpload={(img: File) => setMedia(img)} />
             </Box>
             <BoxWrapper sx={{ p: "20px" }}>
               <QuestionListSection />
