@@ -18,7 +18,7 @@ interface CustomDataGridProps {
   setChecked: any;
   onRowSelect?: (ids: number[], details: any) => void;
   columnVisibilityModel?: any;
-  loading?:boolean
+  loading?: boolean;
 }
 
 const CustomDataGrid: React.FC<CustomDataGridProps> = ({

@@ -24,9 +24,6 @@ export default NextAuth({
           });
           return Promise.resolve(
             resp?.token ? { jwtToken: resp?.token } : {},
-        
-         
-
           ) as any;
         } catch (e: any) {
           return Promise.reject(new Error(e?.msg || "Something Wrong"));
@@ -39,16 +36,12 @@ export default NextAuth({
   },
   callbacks: {
     async signIn({ user }: any) {
-
-
-      if(user?.jwtToken){
-
+      if (user?.jwtToken) {
         return Promise.resolve(true);
       }
       return Promise.resolve(false);
     },
     async session({ session, token }: any) {
-
       if (!token.accessToken) {
         return Promise.resolve(session);
       }

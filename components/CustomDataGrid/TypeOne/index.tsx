@@ -16,7 +16,7 @@ interface TypeOneProps {
   onRowSelect?: (ids: number[], details: any) => void;
   setChecked?: any;
   columnVisibilityModel: any;
-  loading?:boolean
+  loading?: boolean;
 
   // isChecked?:
 }
@@ -86,9 +86,9 @@ const TypeOne: React.FC<TypeOneProps> = ({
             rowSelectionModel={selectedIds}
             onRowSelectionModelChange={(...e) => handleCheck(...e)}
             columnVisibilityModel={columnVisibilityModel}
-            loading= {loading}
+            loading={loading}
             {...props}
-            sx={{minHeight:'400px'}}
+            sx={{ minHeight: "400px" }}
           />
         </Grid>
         <BoxPaginate>
