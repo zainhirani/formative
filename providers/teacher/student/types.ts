@@ -17,5 +17,4 @@ export namespace Student {
   export type ListingProps = {};
   export type ListingResponse = [Item]
   export interface ListingAPIPayload extends ListingProps {}
-
 }

@@ -1,17 +1,16 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { Box, Checkbox, FormControlLabel, Typography } from "@mui/material";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-
 import FormattedMessage from "theme/FormattedMessage";
 import Image from "theme/Image";
-
 import messages from "./messages";
 import { BoxWrapper, ButtonWrapper } from "./Styled";
 
 interface IOptionProps {
   name: string;
+  valid: string;
 }
 
 type ITakeQuizProps = {
@@ -22,6 +21,14 @@ type ITakeQuizProps = {
   options: IOptionProps[];
   time?: number;
   questionSelected: boolean;
+  setSubmit: any;
+  submit: boolean;
+  setCheckedStateAns: any;
+  checkedStateAns: any;
+  questionData: any;
+  setRemainingTime: any;
+  remainingTime: any;
+  timer: any;
 };
 
 const TakeQuizFormat: FC<ITakeQuizProps> = ({
@@ -32,20 +39,59 @@ const TakeQuizFormat: FC<ITakeQuizProps> = ({
   QNo,
   id,
   questionSelected,
+  setSubmit,
+  submit,
+  checkedStateAns,
+  setCheckedStateAns,
+  questionData,
+  setRemainingTime,
+  remainingTime,
+  timer,
 }): JSX.Element => {
-  const [checkedState, setCheckedState] = useState(
-    new Array(options?.length).fill(false),
-  );
-
-  const [submit, setSubmit] = useState(false);
-
+  const [ansCorrect, setAnsCorrect] = useState(false);
   const handleOnChange = (position: any, e: any) => {
-    if (checkedState.filter((i) => i).length >= 1 && e.target.checked) return;
-    const updatedCheckedState = checkedState.map((item, index) =>
-      index === position ? !item : item,
+    if (checkedStateAns.filter((i: any) => i).length >= 1 && e.target.checked)
+      return;
+    const updatedCheckedStateAns = checkedStateAns.map(
+      (item: any, index: number) => (index === position ? !item : item),
     );
-    setCheckedState(updatedCheckedState);
+    setCheckedStateAns(updatedCheckedStateAns);
   };
+
+  // Timer
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setRemainingTime((prevTime: number | undefined) => {
+        const currentTime = prevTime ?? 0;
+        if (currentTime > 0) {
+          return currentTime - 1;
+        }
+        return currentTime;
+      });
+    }, 1000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [ansCorrect]);
+
+  useEffect(() => {
+    setRemainingTime(timer);
+  }, [ansCorrect]);
+
+  const getTimeColor = () => {
+    if (remainingTime <= 10) {
+      return "#ff0000";
+    } else if (remainingTime <= 30) {
+      return "orange";
+    } else if (remainingTime <= 60) {
+      return "#005E84";
+    } else {
+      return "#225A41";
+    }
+  };
+
+  // Timer
 
   return (
     <>
@@ -58,6 +104,7 @@ const TakeQuizFormat: FC<ITakeQuizProps> = ({
             display: "flex",
             justifyContent: "center",
             paddingTop: "50px",
+            borderRadius: "6px",
           }}
         >
           <ErrorOutlineIcon sx={{ fontSize: "64px", marginRight: "10px" }} />
@@ -65,11 +112,11 @@ const TakeQuizFormat: FC<ITakeQuizProps> = ({
             <Typography
               fontWeight={400}
               fontSize={14}
-              sx={{ paddingBottom: "10px" }}
+              sx={{ paddingBottom: "5px", paddingTop: "7px" }}
             >
               <FormattedMessage {...messages.noQuestionTitle} />
             </Typography>
-            <Typography fontWeight={400} fontSize={18}>
+            <Typography fontWeight={400} fontSize={18} sx={{ margin: "0px" }}>
               <FormattedMessage {...messages.noQuestionDescription} />
             </Typography>
           </Box>
@@ -81,6 +128,7 @@ const TakeQuizFormat: FC<ITakeQuizProps> = ({
             width: "100%",
             height: "100%",
             p: "20px",
+            borderRadius: "6px",
           }}
         >
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -98,51 +146,79 @@ const TakeQuizFormat: FC<ITakeQuizProps> = ({
             </Typography>
           </Box>
           <Box sx={{ paddingTop: "10px" }}>
-            <Typography sx={{ marginBottom: "30px" }} fontSize={18}>
+            <Typography sx={{ marginBottom: "5px" }} fontSize={18}>
               {question}
             </Typography>
-            <Image
-              alt="quiz-image"
-              lazyLoadProps={{ height: 240 }}
-              src={image}
-              lazyLoad={true}
-              style={{ maxWidth: "100%" }}
-            />
+            {submit === false ? (
+              <Image
+                alt="quiz-image"
+                lazyLoadProps={{ height: 240 }}
+                src={image}
+                lazyLoad={true}
+                style={{ maxWidth: "100%", marginTop: "30px" }}
+              />
+            ) : (
+              <></>
+              // <Typography
+              //   sx={{ marginBottom: "30px", color: "#225A41" }}
+              //   fontSize={18}
+              // >
+              //   Your answer is correct!
+              // </Typography>
+            )}
           </Box>
           <Box sx={{ marginTop: "30px" }}>
             <Typography sx={{ marginBottom: "10px" }} fontSize={14}>
               <FormattedMessage {...messages.chooseQuestion} />
             </Typography>
-            {options?.map((el, index) => (
-              <Box
-                key={index}
-                sx={{
-                  height: "56px",
-                  border: "1px solid #EAEAEA",
-                  borderRadius: "6px",
-                  paddingLeft: "20px",
-                  display: "flex",
-                  alignItems: "center",
-                  marginBottom: "10px",
-                  boxShadow:
-                    checkedState[index] === true
-                      ? "0px 0px 40px rgba(0, 0, 0, 0.1)"
-                      : "",
-                }}
-              >
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      onChange={(e) => handleOnChange(index, e)}
-                      checked={checkedState[index]}
-                      id={`custom-checkbox-${index}`}
-                      color="default"
-                    />
-                  }
-                  label={el.name}
-                />
-              </Box>
-            ))}
+            {options?.map((el, index) => {
+              const valNew = el.valid;
+              return (
+                <Box
+                  key={index}
+                  sx={{
+                    justifyContent: "space-between",
+                    height: "56px",
+                    border: "1px solid #EAEAEA",
+                    borderRadius: "6px",
+                    paddingLeft: "20px",
+                    display: "flex",
+                    alignItems: "center",
+                    marginBottom: "10px",
+                    boxShadow:
+                      checkedStateAns[index] === true
+                        ? "0px 0px 40px rgba(0, 0, 0, 0.1)"
+                        : "",
+                  }}
+                >
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        onChange={(e) => handleOnChange(index, e)}
+                        checked={checkedStateAns[index]}
+                        id={`custom-checkbox-${index}`}
+                        color="default"
+                        disabled={submit ? true : false}
+                      />
+                    }
+                    label={el.name}
+                  />
+                  {submit && checkedStateAns[index] ? (
+                    valNew === "true" ? (
+                      <Box sx={{ color: "#225A41", marginRight: "20px" }}>
+                        Correct Answer!
+                      </Box>
+                    ) : (
+                      <Box sx={{ color: "#8C2531", marginRight: "20px" }}>
+                        Incorrect Answer!
+                      </Box>
+                    )
+                  ) : (
+                    ""
+                  )}
+                </Box>
+              );
+            })}
           </Box>
           {submit ? (
             <Box
@@ -160,11 +236,11 @@ const TakeQuizFormat: FC<ITakeQuizProps> = ({
                 <Typography
                   fontWeight={400}
                   fontSize={14}
-                  sx={{ paddingBottom: "10px" }}
+                  sx={{ paddingBottom: "5px", paddingTop: "5px" }}
                 >
                   <FormattedMessage {...messages.tryMore} />
                 </Typography>
-                <Typography fontWeight={400} fontSize={18}>
+                <Typography fontWeight={400} fontSize={17}>
                   <FormattedMessage {...messages.select} />
                 </Typography>
               </Box>
@@ -176,15 +252,38 @@ const TakeQuizFormat: FC<ITakeQuizProps> = ({
                   fontSize={14}
                   sx={{ color: (theme) => theme.palette.text.secondary }}
                 >
-                  <FormattedMessage
-                    {...messages.answerTime}
-                    values={{ value: time }}
-                  />
+                  <Box sx={{ display: "flex", gap: "5px" }}>
+                    {remainingTime ? (
+                      <>
+                        <FormattedMessage
+                          {...messages.answerTime}
+                          // values={{ value: time }}
+                        />
+                        <Typography
+                          style={{ fontSize: "14px", color: getTimeColor() }}
+                        >
+                          {remainingTime} seconds
+                        </Typography>
+                      </>
+                    ) : (
+                      <>
+                        <FormattedMessage
+                          {...messages.answerTime}
+                          // values={{ value: time }}
+                        />
+                        <Typography
+                          style={{ fontSize: "14px", color: "#ff0000" }}
+                        >
+                          0 seconds
+                        </Typography>
+                      </>
+                    )}
+                  </Box>
                 </Typography>
               </BoxWrapper>
               <ButtonWrapper
                 onClick={() => setSubmit(true)}
-                disabled={!(checkedState.indexOf(true) > -1)}
+                disabled={!(checkedStateAns.indexOf(true) > -1)}
                 loadingPosition="start"
                 startIcon={<ArrowCircleRightOutlinedIcon />}
                 sx={{

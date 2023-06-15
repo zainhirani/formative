@@ -1,4 +1,4 @@
-import React,{useMemo} from "react";
+import React,{useMemo, useState} from "react";
 import {
   Box,
   Button,
@@ -29,8 +29,9 @@ import { useCourseListing } from "providers/Courses";
 
 
 const SearchSection = (props: any) => {
+  
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const { checked } = props;
+  const { checked,setProgram,setYearOfGraduation, setCourse } = props;
   const searchCourse = useFormattedMessage(messages.searchCourse);
 
 //Course data 
@@ -47,12 +48,19 @@ const cousrseData = useMemo(() => {
     ))
 },[courseListing?.data])
 
+console.log(cousrseData,'Course Data')
+
  
   const programs = [
+    { value: "CHP/BMS", label: "CHP/BMS" },
+    { value: "CHP/DPT", label: "CHP/DPT" },
+    { value: "CHP/PA", label: "CHP/PA" },
+    { value: "CHP/PATH", label: "CHP/PATH" },
+    { value: "CHP/PSY", label: "CHP/PSY" },
     { value: "COP", label: "COP" },
-    { value: "COP1", label: "COP" },
-    { value: "COP2", label: "COP" },
-    { value: "COP3", label: "COP" },
+    { value: "POD", label: "POD" },
+    { value: "SOM", label: "SOM" },
+    { value: "SON", label: "SON" },
   ];
 
   const year_of_graduation = [
@@ -107,7 +115,35 @@ const cousrseData = useMemo(() => {
     { value: "2038", label: "2038" },
     { value: "2039", label: "2039" },
     { value: "2040", label: "2040" },
+    { value: "2041", label: "2041" },
+    { value: "2042", label: "2042" },
+    { value: "2043", label: "2043" },
+    { value: "2044", label: "2044" },
+    { value: "2045", label: "2045" },
+    { value: "2046", label: "2046" },
+    { value: "2047", label: "2047" },
+    { value: "2048", label: "2048" },
+    { value: "2049", label: "2049" },
+    { value: "2050", label: "2050" },
+    
   ];
+
+//Select  Program Value
+const handleProgram = (programValue :any) =>{
+  setProgram(programValue.value)
+  console.log(programValue)
+}
+//Select Year Of Graduation Value
+const handleYearOfGraduation = (yearValue :any) =>{
+  setYearOfGraduation(yearValue.value)
+  console.log(yearValue)
+}
+
+const handleCourse = (courseValue :any) =>{
+  setCourse(courseValue.value)
+}
+
+
   return (
     <BoxWrapper display="grid" gridTemplateColumns="repeat(12, 1fr)">
       <Box gridColumn="span 3">
@@ -131,7 +167,8 @@ const cousrseData = useMemo(() => {
           placeholder="Select Course"
           controlText="New Course:"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-            options={cousrseData || [] }
+          options={cousrseData || [] }
+          onChange={handleCourse}
           
         />
       </Box>
@@ -141,6 +178,7 @@ const cousrseData = useMemo(() => {
           controlText="Year of Graduation:"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={year_of_graduation}
+          onChange={handleYearOfGraduation}
         />
       </Box>
       <Box gridColumn="span 2">
@@ -149,6 +187,7 @@ const cousrseData = useMemo(() => {
           controlText="School/Program:"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={programs}
+          onChange={handleProgram}
         />
       </Box>
       <Box gridColumn="span 3">
@@ -156,17 +195,17 @@ const cousrseData = useMemo(() => {
           startIcon={<AddCircleOutlineRoundedIcon />}
           variant="contained"
           disabled={checked ? false : true}
-          onClick={() => {
-            enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
-              variant: "success",
-              autoHideDuration: 3000,
-              action: (key) => (
-                <IconButton onClick={() => closeSnackbar(key)}>
-                  <GridCloseIcon sx={{color:(theme) => theme.palette.primary.light}}/>
-                </IconButton>
-              ),
-            });
-          }}
+          // onClick={() => {
+          //   enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
+          //     variant: "success",
+          //     autoHideDuration: 3000,
+          //     action: (key) => (
+          //       <IconButton onClick={() => closeSnackbar(key)}>
+          //         <GridCloseIcon sx={{color:(theme) => theme.palette.primary.light}}/>
+          //       </IconButton>
+          //     ),
+          //   });
+          // }}
         >
           <FormattedMessage {...messages.enrollStudent} />
         </ButtonWrapper>

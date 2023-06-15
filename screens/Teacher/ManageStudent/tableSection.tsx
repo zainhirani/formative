@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BoxWrapper } from "./Styled";
 import { pageSizeManageQuiz } from "mock-data/Teacher/ManageStudent";
 import { GridColDef } from "@mui/x-data-grid";
@@ -46,10 +46,19 @@ export const columnsManageStudent: GridColDef[] = [
   },
 ];
 
+
+
 const TableSection = (props: any) => {
-  const { setChecked } = props;
-  const studentListing = useStudentListing({});
+  const { setChecked,program,yearOfGraduation, isCheckbox } = props;
+  console.log(program,'program')
+  console.log(yearOfGraduation,'yearOfGraduation')
+  const studentListing = useStudentListing({queryParams:{yop:yearOfGraduation?.toString(),program:program?.toString()}});
+  // const studentListing = useStudentListing({queryParams:{yop:"2022",program:"Business Administration"}});
+
+  // const studentListing = useStudentListing({});
   // console.log(studentListing?.data,'studentListing')
+
+
   return (
     <BoxWrapper>
       <CustomDataGrid
@@ -57,7 +66,7 @@ const TableSection = (props: any) => {
         columns={columnsManageStudent}
         pageSizeData={pageSizeManageQuiz}
         type={"1"}
-        isCheckbox={true}
+        isCheckbox={isCheckbox}
         setChecked={setChecked}
         loading={studentListing.isFetching}
       />
