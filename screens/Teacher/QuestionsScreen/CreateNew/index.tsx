@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import PageLayout from "components/PageLayout";
 import ImageSection from "./addImage";
-import QuestionListSection from "./listSection";
+import AnswerOptions from "./listSection";
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
 import messages from "./messages";
@@ -42,6 +42,9 @@ import { facultySelect } from "mock-data/Teacher/ManageQuestion";
 import { initialValues, validationSchema } from "./Form";
 import { useSession } from "next-auth/react";
 import { useQuery } from "react-query";
+import { getCategories, getFolders } from "providers/Teacher_Questions/api";
+import { setAuthenticationHeader } from "services";
+import { useRegisterDetail } from "providers/Auth";
 
 const TYPE_OPTIONS = [
   { value: "SA", label: "SA" },
@@ -59,27 +62,31 @@ const STATUS = {
   DRAFT: "DRAFT",
 };
 
-const CreateNewScreen = () => {
+const AddQuestion = () => {
+  let { data: currentUser } = useSession();
+  setAuthenticationHeader(currentUser?.accessToken);
+  let userDetails = useRegisterDetail(currentUser.accessToken);
+
+  const foldersData = useQuery(["FOLDERS"], getFolders);
+  const categoriesData = useQuery(["CATEGORIES"], getCategories);
   // ======================= State
 
-  let { data } = useSession();
-  console.log("🚀 ~ file: index.tsx:66 ~ CreateNewScreen ~ data:", data);
-
-  const [questionId, setQuestionId] = useState("");
+  const [questionId, setQuestionId] = useState("121/1");
   const [title, setTitle] = useState("");
   const [authorName, setAuthorName] = useState("");
   const [detail, setDetail] = useState("");
   const [options, setOptions] = useState<string[]>([]);
-  const [answer, setAnswer] = useState("");
+  const [answerOptions, setAnswerOptions] = useState("");
   const [isPublic, setIsPublic] = useState(false);
-  const [folderId, setFolderId] = useState(0);
-  const [folderOptions, setFolderOptions] = useState(null);
+  const [selectedFolder, setSelectedFolder] = useState(0);
+  const [folderOptions, setFolderOptions] = useState([]);
   const [media, setMedia] = useState();
   const [enumType, setEnumType] = useState({});
   const [status, setStatus] = useState(STATUS.DRAFT);
-  const [categoryId, setCategoryId] = useState(0);
-  const [facultyCategoryId, setFacultyCategoryId] = useState([]);
-  const [categoryOptions, setCategoryOptions] = useState([]);
+  const [selectedfacultyCategoryIds, setSelectedFacultyCategoryIds] = useState(
+    [],
+  );
+  const [selectedCategory, setSelectedCategory] = useState([]);
   const [timelimit, setTimelimit] = useState(0);
   const [tries, setTries] = useState(0);
   const [facultyIds, setFacultyIds] = useState<number[]>([]);
@@ -121,9 +128,7 @@ const CreateNewScreen = () => {
       render: () => {
         return <Box>Submit</Box>;
       },
-      onClick: () => {
-        // console.log("Add Students");
-      },
+      onClick: () => handleSubmit(),
     },
     {
       key: "duplicate",
@@ -147,14 +152,41 @@ const CreateNewScreen = () => {
     },
   ];
 
-  const handleSubmit = useCallback(async (data: any) => {
-    console.log("🚀 ~ file: index.tsx:140 ~ onSubmit ~ values:", data);
-    //  quesiton submit code here
-  }, []);
+  const handleSubmit = () => {
+    let correctAnswer = undefined;
+    let formatedOptions = answerOptions.map((item) => {
+      if (item.correct) correctAnswer = item;
+      return {
+        key: item.text.replace("Option", "").trim(),
+        value: item.inputText,
+      };
+    });
+    let formattedCategoryIds = selectedfacultyCategoryIds.map(
+      (item) => item.value,
+    );
+    let payload = {
+      title: title,
+      detail: detail,
+      answer: correctAnswer?.text.replace("Option", "").trim(),
+      isPublic: isPublic,
+      type: enumType.value,
+      status: status,
+      timelimit: timelimit,
+      media: media,
+      folderId: selectedFolder.value,
+      categoryId: selectedCategory.value,
+      facultyIds: formattedCategoryIds,
+      options: formatedOptions,
+    };
+
+    console.log("PAYLOAD", payload);
+  };
 
   useEffect(() => {
-    console.log(detail);
-  }, [detail]);
+    setAuthorName(
+      `${userDetails.data?.first_name} ${userDetails.data?.last_name}`,
+    );
+  }, [userDetails]);
 
   return (
     <>
@@ -164,7 +196,7 @@ const CreateNewScreen = () => {
         icon={<HelpRoundedIcon />}
         title={"Questions"}
       > */}
-      <form onSubmit={handleSubmit}>
+      <form>
         <Box
           sx={{
             display: "flex",
@@ -228,6 +260,40 @@ const CreateNewScreen = () => {
                 </Box>
               </Box>
             </Box>
+
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                px: "20px",
+                borderTop: "1px solid #EAEAEA",
+              }}
+            >
+              <Box sx={{ display: "flex", width: "100%" }}>
+                <FieldBoxWrapper
+                  sx={{
+                    width: { md: "57%", lg: "55%" },
+                  }}
+                >
+                  <InputLabelWrapper htmlFor="questionTitle">
+                    <div>Title: </div>
+                  </InputLabelWrapper>
+
+                  {/* Question Title */}
+                  <TextFieldWrapper
+                    id="questionTitle"
+                    name="questionTitle"
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder={"Question title"}
+                    variant="standard"
+                    fullWidth
+                  />
+                </FieldBoxWrapper>
+              </Box>
+            </Box>
+
             <Box>
               <Box
                 sx={{
@@ -374,9 +440,13 @@ const CreateNewScreen = () => {
                       placeholder={folderPlaceholder}
                       controlText={folder}
                       dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-                      options={folderOptions}
-                      value={folderId}
-                      onChange={(val) => setFolderId(val)}
+                      options={foldersData?.data?.map((folder) => ({
+                        label: folder.name,
+                        value: folder.id,
+                      }))}
+                      value={selectedFolder}
+                      onChange={(val) => setSelectedFolder(val)}
+                      isFetching={foldersData?.isFetching}
                     />
                   </Box>
                 </FieldBoxWrapper>
@@ -404,9 +474,12 @@ const CreateNewScreen = () => {
                       placeholder={categoryPlaceholder}
                       controlText={category}
                       dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-                      options={categoryOptions}
-                      onChange={(val) => setCategoryOptions(val)}
-                      value={categoryId}
+                      options={categoriesData?.data?.map((category) => ({
+                        label: category.name,
+                        value: category.id,
+                      }))}
+                      onChange={(val) => setSelectedCategory(val)}
+                      value={selectedCategory}
                     />
                   </Box>
                 </FieldBoxWrapper>
@@ -432,23 +505,29 @@ const CreateNewScreen = () => {
                 >
                   <Box sx={{ width: "100%" }}>
                     <CustomSelect
+                      isMulti
                       placeholder={facultyPlaceholder}
                       controlText={faculty}
                       dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-                      options={categoryOptions}
-                      onChange={(val) => setFacultyCategoryId(val)}
-                      value={facultyCategoryId}
+                      options={categoriesData?.data?.map((category) => ({
+                        label: category.name,
+                        value: category.id,
+                      }))}
+                      onChange={(val) => {
+                        setSelectedFacultyCategoryIds(val);
+                      }}
+                      value={selectedfacultyCategoryIds}
                     />
                   </Box>
                 </FieldBoxWrapper>
                 <Box sx={{ p: "0 24px" }}>
-                  {facultyCategoryId?.length > 0 ? (
-                    facultyCategoryId.map((value) => (
+                  {selectedfacultyCategoryIds?.length > 0 ? (
+                    selectedfacultyCategoryIds.map((item, index) => (
                       <Box
                         sx={{ display: "flex", alignItems: "center" }}
-                        key={value}
+                        key={index}
                       >
-                        <Typography variant="body1">{value}</Typography>
+                        <Typography variant="body1">{item.label}</Typography>
                         <IconButton
                           color="primary"
                           onClick={() => handleRemoveValue(value)}
@@ -497,7 +576,9 @@ const CreateNewScreen = () => {
               <ImageSection onImageUpload={(img: File) => setMedia(img)} />
             </Box>
             <BoxWrapper sx={{ p: "20px" }}>
-              <QuestionListSection />
+              <AnswerOptions
+                onChange={(options) => setAnswerOptions(options)}
+              />
             </BoxWrapper>
           </Box>
         </Box>
@@ -509,4 +590,4 @@ const CreateNewScreen = () => {
     </>
   );
 };
-export default CreateNewScreen;
+export default AddQuestion;

@@ -12,6 +12,8 @@ interface CustomSelectProps {
   dropdownIcon?: ReactNode;
   onChange?: any;
   value: object;
+  isFetching?: boolean;
+  isMulti?: boolean;
 }
 
 const CustomDropdownIndicator = (props: any) => {
@@ -42,6 +44,8 @@ const CustomSelect: FC<CustomSelectProps> = ({
   placeholder,
   onChange,
   value,
+  isFetching,
+  isMulti,
 }) => {
   // const onChange = () => {};
 
@@ -96,6 +100,8 @@ const CustomSelect: FC<CustomSelectProps> = ({
   return (
     <BoxWrapper>
       <AutoComplete
+        isMulti={isMulti}
+        isLoading={isFetching}
         value={value}
         options={options}
         onChange={onChange}

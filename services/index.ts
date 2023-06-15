@@ -1,7 +1,7 @@
 import omit from "lodash/omit";
 import qs from "query-string";
 import { PUBLIC_API_URL, TOKEN } from "configs";
-import { useSession } from "next-auth/react";
+
 
 // import { logSuccess } from 'utils/logger';
 
@@ -43,9 +43,8 @@ interface IAPArgs {
 }
 
 async function service(args: IAPArgs): Promise<any> {
-  let {data:userData} = useSession();
 
-  setAuthenticationHeader(userData?.accessToken);
+
   const {
     url,
     method = "GET",
