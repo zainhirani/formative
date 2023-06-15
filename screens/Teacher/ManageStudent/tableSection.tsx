@@ -49,26 +49,22 @@ export const columnsManageStudent: GridColDef[] = [
 
 
 const TableSection = (props: any) => {
-  const { setChecked,program,yearOfGraduation, isCheckbox } = props;
-  console.log(program,'program')
-  console.log(yearOfGraduation,'yearOfGraduation')
+  const { setChecked,program,yearOfGraduation, isCheckbox,setUserId } = props;
+
   const studentListing = useStudentListing({queryParams:{yop:yearOfGraduation?.toString(),program:program?.toString()}});
-  // const studentListing = useStudentListing({queryParams:{yop:"2022",program:"Business Administration"}});
-
-  // const studentListing = useStudentListing({});
-  // console.log(studentListing?.data,'studentListing')
-
+ 
 
   return (
     <BoxWrapper>
       <CustomDataGrid
-        rows={studentListing.data}
+        rows={studentListing.data  || []}
         columns={columnsManageStudent}
         pageSizeData={pageSizeManageQuiz}
         type={"1"}
         isCheckbox={isCheckbox}
         setChecked={setChecked}
         loading={studentListing.isFetching}
+        getSelectedId={(e) => setUserId(e?.[0])}
       />
     </BoxWrapper>
   );

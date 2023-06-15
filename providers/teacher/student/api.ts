@@ -11,4 +11,15 @@ export async function listing(props?:Student.ListingAPIPayload):Promise<Student.
     })
 }
 
+// Enroll
+export async function enroll(
+    props: Student.EnrollAPIPayload,
+  ): Promise<Student.EnrollResponse> {
+    return service({
+      method: "POST",
+      url: `/user/assign`,
+      body: props.data,
+    });
+  }
+
   

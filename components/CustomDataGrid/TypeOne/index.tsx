@@ -17,6 +17,7 @@ interface TypeOneProps {
   setChecked?: any;
   columnVisibilityModel: any;
   loading?: boolean;
+  getSelectedId?: (e?: any) => void;
 
   // isChecked?:
 }
@@ -32,6 +33,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
   selectedIds,
   loading,
   onRowSelect,
+  getSelectedId = () => {},
   ...props
 }) => {
   const [page, setPage] = useState(1);
@@ -84,7 +86,10 @@ const TypeOne: React.FC<TypeOneProps> = ({
             disableDensitySelector
             disableRowSelectionOnClick
             rowSelectionModel={selectedIds}
-            onRowSelectionModelChange={(...e) => handleCheck(...e)}
+            onRowSelectionModelChange={(...e) => {
+              handleCheck(...e);
+              getSelectedId(e);
+            }}
             columnVisibilityModel={columnVisibilityModel}
             loading={loading}
             {...props}
