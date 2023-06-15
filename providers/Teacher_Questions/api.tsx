@@ -10,6 +10,7 @@ import {
   TEACHER__GET_FACULTIES_CATEGORIES,
   TEACHER__GET_FOLDERS,
   TEACHER__GET_CATEGORIES,
+  TEACHER__GET_QUESTION_COUNT_ID,
 } from "providers/endpoints";
 
 export const getQuestions = async () => {
@@ -51,6 +52,7 @@ export const addQuestion = async (payload) => {
     method: "POST",
     url: TEACHER__ADD_QUESTION,
     body: payload,
+    formData: true,
   });
 };
 
@@ -72,5 +74,12 @@ export const deleteQuestion = async () => {
   return await service({
     url: TEACHER__DELETE_QUESTION,
     method: "DELETE",
+  });
+};
+
+export const getQuestionCountId = async () => {
+  return await service({
+    url: TEACHER__GET_QUESTION_COUNT_ID,
+    method: "GET",
   });
 };

@@ -42,9 +42,15 @@ import { facultySelect } from "mock-data/Teacher/ManageQuestion";
 import { initialValues, validationSchema } from "./Form";
 import { useSession } from "next-auth/react";
 import { useQuery } from "react-query";
-import { getCategories, getFolders } from "providers/Teacher_Questions/api";
+import {
+  addQuestion,
+  getCategories,
+  getFolders,
+  getQuestionCountId,
+} from "providers/Teacher_Questions/api";
 import { setAuthenticationHeader } from "services";
 import { useRegisterDetail } from "providers/Auth";
+import { formatArrayOfObjectsForFormData } from "utils";
 
 const TYPE_OPTIONS = [
   { value: "SA", label: "SA" },
@@ -69,6 +75,8 @@ const AddQuestion = () => {
 
   const foldersData = useQuery(["FOLDERS"], getFolders);
   const categoriesData = useQuery(["CATEGORIES"], getCategories);
+  const questionCountData = useQuery(["QUESTION_ID"], getQuestionCountId);
+
   // ======================= State
 
   const [questionId, setQuestionId] = useState("121/1");
@@ -80,7 +88,7 @@ const AddQuestion = () => {
   const [isPublic, setIsPublic] = useState(false);
   const [selectedFolder, setSelectedFolder] = useState(0);
   const [folderOptions, setFolderOptions] = useState([]);
-  const [media, setMedia] = useState();
+  const [media, setMedia] = useState({});
   const [enumType, setEnumType] = useState({});
   const [status, setStatus] = useState(STATUS.DRAFT);
   const [selectedfacultyCategoryIds, setSelectedFacultyCategoryIds] = useState(
@@ -152,10 +160,12 @@ const AddQuestion = () => {
     },
   ];
 
-  const handleSubmit = () => {
-    let correctAnswer = undefined;
+  const handleSubmit = async () => {
+    var formdata = new FormData();
+    let correctAnswer = [];
     let formatedOptions = answerOptions.map((item) => {
-      if (item.correct) correctAnswer = item;
+      if (item.correct)
+        correctAnswer.push(item.text.replace("Option", "").trim());
       return {
         key: item.text.replace("Option", "").trim(),
         value: item.inputText,
@@ -164,29 +174,31 @@ const AddQuestion = () => {
     let formattedCategoryIds = selectedfacultyCategoryIds.map(
       (item) => item.value,
     );
-    let payload = {
-      title: title,
-      detail: detail,
-      answer: correctAnswer?.text.replace("Option", "").trim(),
-      isPublic: isPublic,
-      type: enumType.value,
-      status: status,
-      timelimit: timelimit,
-      media: media,
-      folderId: selectedFolder.value,
-      categoryId: selectedCategory.value,
-      facultyIds: formattedCategoryIds,
-      options: formatedOptions,
-    };
 
-    console.log("PAYLOAD", payload);
+    formdata.append("folderId", selectedFolder.value);
+    formdata.append("timelimit", timelimit);
+    formdata.append("detail", detail);
+    formdata.append("status", status);
+    formdata.append("isPublic", isPublic);
+    formdata.append("title", title);
+    formdata.append("categoryId", selectedCategory.value);
+    formdata.append("facultyIds", formattedCategoryIds);
+    // formdata.append("tries", "3");
+    formdata.append("type", enumType.value);
+    formdata.append("answer", `${correctAnswer.join(",")}`);
+    formatArrayOfObjectsForFormData("option", formatedOptions, formdata);
+
+    // formdata.append("img", media);
+    // return;
+    await addQuestion(formdata);
   };
 
   useEffect(() => {
     setAuthorName(
       `${userDetails.data?.first_name} ${userDetails.data?.last_name}`,
     );
-  }, [userDetails]);
+    setQuestionId(questionCountData.data?.count + 1);
+  }, [userDetails, questionCountData]);
 
   return (
     <>
@@ -573,7 +585,12 @@ const AddQuestion = () => {
             </BoxWrapper>
             {/* Upload Image */}
             <Box>
-              <ImageSection onImageUpload={(img: File) => setMedia(img)} />
+              <ImageSection
+                onImageUpload={(uploadedImage) => {
+                  console.log(uploadedImage);
+                  setMedia(uploadedImage);
+                }}
+              />
             </Box>
             <BoxWrapper sx={{ p: "20px" }}>
               <AnswerOptions
