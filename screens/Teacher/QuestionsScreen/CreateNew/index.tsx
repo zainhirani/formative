@@ -163,6 +163,7 @@ const AddQuestion = () => {
   const handleSubmit = async () => {
     var formdata = new FormData();
     let correctAnswer = [];
+
     let formatedOptions = answerOptions.map((item) => {
       if (item.correct)
         correctAnswer.push(item.text.replace("Option", "").trim());
