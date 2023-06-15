@@ -84,6 +84,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
             rowSelectionModel={selectedIds}
             onRowSelectionModelChange={(...e) => handleCheck(...e)}
             columnVisibilityModel={columnVisibilityModel}
+            sx={{minHeight:'400px'}}
             {...props}
           />
         </Grid>

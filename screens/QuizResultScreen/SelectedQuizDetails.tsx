@@ -12,9 +12,21 @@ import CustomDataGrid from "components/CustomDataGrid";
 import LocalPrintshopOutlinedIcon from "@mui/icons-material/LocalPrintshopOutlined";
 import CachedIcon from "@mui/icons-material/Cached";
 import QuizQuestionFormat from "components/QuizQuestionFormat";
+import { useQuizResultDetail } from "providers/QuizResult";
+import { useRouter } from "next/router";
 
 const SelectedQuizDetails = () => {
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const router = useRouter();
+
+  const id = router?.query?.quizId !== undefined ? router?.query?.quizId.toString() : ''
+
+  console.log(router,'12')
+    const [drawerOpen, setDrawerOpen] = useState(false);
+  const quizResultDetail = useQuizResultDetail({id:parseInt(id,10)})
+
+
+
+  console.log(quizResultDetail,'quizResultDetail')
   const configExport = [
     {
       key: "export",
