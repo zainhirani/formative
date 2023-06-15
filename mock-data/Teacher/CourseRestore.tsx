@@ -7,16 +7,28 @@ export const pageSizeManageCourse = 12;
 
 export const columnsManageCourse = [
   {
-    field: "course",
+    field: "id",
+    headerName: "id",
+    minWidth: 500,
+    flex: 1,
+  },
+  {
+    field: "course_name",
     headerName: "Course",
     minWidth: 500,
     flex: 1,
   },
   {
-    field: "target_students",
+    field: "courseTarget",
     headerName: "Target Students",
     minWidth: 200,
     flex: 1,
+    renderCell: (params: any) => {
+      return params.value?.map((item: any) => item.programs);
+      // .slice(2, -2)
+      // .replaceAll(/[""]/g, "")
+      // .toUpperCase();
+    },
   },
   {
     field: "restore",

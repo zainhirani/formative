@@ -8,7 +8,7 @@ export const BoxWrapper = styled(MuiBox)<BoxProps>(
   ({ theme }) =>
     ({
       width: "100%",
-      maxWidth: "581px",
+      maxWidth: "max-content",
       boxShadow: "0px 0px 40px rgba(0, 0, 0, 0.1)",
       marginTop: "20px",
       marginBottom: "20px",

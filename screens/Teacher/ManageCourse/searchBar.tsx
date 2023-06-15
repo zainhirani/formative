@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, IconButton, InputAdornment } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import {
@@ -10,39 +10,38 @@ import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRou
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
 import CustomSelect from "components/CustomSelect/CustomSelect";
 import { useSnackbar } from "notistack";
-import CloseIcon from "@mui/icons-material/Close";
+import { class_of } from "mock-data/Teacher/ManageCourse";
 
 const SearchBar = (props: any) => {
-  const { checked, onSelectAudienceOption, onSelectClassOption } = props;
-  //   const searchQuiz = useFormattedMessage(messages.searchQuiz);
-  const [selectedAudience, setSelectedAudience] = React.useState("");
-  const [selectedClass, setSelectedClass] = React.useState("");
+  const { checked, setSelectedAudience, setSelectedClass, handleSubmitCourse } =
+    props;
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
+  const [targetCourse, setTargetCourse] = useState("CHP/BMS");
+  const [targetClass, setTargetClass] = useState(1990);
+
   const handleSelectAudienceChange = (selectedOption: any) => {
-    setSelectedAudience(selectedOption);
-    onSelectAudienceOption(selectedOption);
+    setTargetCourse(selectedOption.label);
+    setSelectedAudience(selectedOption.value);
   };
   const handleSelectClassChange = (selectedOption: any) => {
-    setSelectedClass(selectedOption);
-    onSelectAudienceOption(selectedOption);
+    setSelectedClass(selectedOption.label);
+    setTargetClass(selectedOption.value);
   };
-  onSelectClassOption;
   const target_audience = [
+    { value: "chp/bms", label: "CHP/BMS" },
+    { value: "chp/dpt", label: "CHP/DPT" },
+    { value: "chp/pa", label: "CHP/PA" },
+    { value: "chp/path", label: "CHP/PATH" },
+    { value: "chp/psy", label: "CHP/PSY" },
     { value: "cop", label: "COP" },
-    { value: "cop-24-pod-26", label: "COP-2024; POD-2024" },
-    { value: "cop-2024", label: "COP-2024" },
-    { value: "cop-2026", label: "COP-2026" },
+    { value: "pod", label: "POD" },
+    { value: "som", label: "SOM" },
+    { value: "son", label: "SON" },
   ];
-  const class_of = [
-    { value: "2000", label: "2000" },
-    { value: "2001", label: "2001" },
-    { value: "2002", label: "2002" },
-    { value: "2003", label: "2003" },
-    { value: "2004", label: "2004" },
-    { value: "2005", label: "2005" },
-    { value: "2006", label: "2006" },
-  ];
+
+  console.log(target_audience[0]);
+
   const onChange = () => {};
 
   return (
@@ -65,21 +64,19 @@ const SearchBar = (props: any) => {
       </Box>
       <Box gridColumn="span 4">
         <CustomSelect
-          placeholder="COP"
           controlText="Target Audience: School/Program: "
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={target_audience}
-          // value={selectedAudience}
+          value={{ label: targetCourse, value: targetCourse }}
           onChange={handleSelectAudienceChange}
         />
       </Box>
       <Box gridColumn="span 2">
         <CustomSelect
-          placeholder="2004"
           controlText="Class of: "
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={class_of}
-          // value={selectedClass}
+          value={{ label: targetClass, value: targetClass }}
           onChange={handleSelectClassChange}
         />
       </Box>
@@ -88,18 +85,12 @@ const SearchBar = (props: any) => {
           startIcon={<AddCircleOutlineRoundedIcon />}
           variant="contained"
           disabled={checked ? false : true}
-          onClick={() => {
-            enqueueSnackbar(
-              "Updated selected courses and added to new course.",
-              {
-                variant: "success",
-                action: (key) => (
-                  <IconButton onClick={() => closeSnackbar(key)} size="small">
-                    <CloseIcon sx={{ color: "#fff" }} />
-                  </IconButton>
-                ),
-              },
-            );
+          onClick={handleSubmitCourse}
+          sx={{
+            ":disabled": {
+              background: (theme) => theme.palette.text.secondary,
+              color: (theme) => theme.palette.primary.light,
+            },
           }}
         >
           Add to course

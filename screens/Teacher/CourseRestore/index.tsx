@@ -1,8 +1,8 @@
-import { Box } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import { ButtonConfig } from "components/GroupedButton/types";
 import PageLayout from "components/PageLayout";
 import { useSnackbar } from "notistack";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SearchSection from "../ManageQuizScreen/searchSection";
 import CustomDataGrid from "components/CustomDataGrid";
 import { BoxWrapper, TableWrapper } from "screens/Teacher/ManageCourse/Styled";
@@ -14,21 +14,76 @@ import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRou
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
-import {
-  columnsManageCourse,
-  pageSizeManageCourse,
-  rowsManageCourse,
-} from "mock-data/Teacher/CourseRestore";
+import { pageSizeManageCourse } from "mock-data/Teacher/CourseRestore";
 import { useRouter } from "next/router";
 import SearchBar from "../ManageCourse/searchBar";
+import CloseIcon from "@mui/icons-material/Close";
+import {
+  useRestoreCourse,
+  useRestoreCourseListing,
+} from "providers/Courses/Restore";
+import Image from "next/image";
+import courseRestoreSvg from "public/CourseType.svg";
 
 const CourseRestore = () => {
   const router = useRouter();
+  const getRestoreCourseListing = useRestoreCourseListing();
+  const restoreCourse = useRestoreCourse();
 
   const [checked, setChecked] = useState(false);
-  console.log(checked, "checked custom");
 
-  const { enqueueSnackbar } = useSnackbar();
+  const showColumns = {
+    id: false,
+    course_name: true,
+    target_students: true,
+  };
+
+  const columnsManageCourse = [
+    {
+      field: "id",
+      headerName: "id",
+      minWidth: 500,
+      flex: 1,
+    },
+    {
+      field: "course_name",
+      headerName: "Course",
+      minWidth: 500,
+      flex: 1,
+    },
+    {
+      field: "courseTarget",
+      headerName: "Target Students",
+      minWidth: 200,
+      flex: 1,
+      renderCell: (params: any) => {
+        return params.value?.map((item: any) => item.programs);
+        // .slice(2, -2)
+        // .replaceAll(/[""]/g, "")
+        // .toUpperCase();
+      },
+    },
+    {
+      field: "restore",
+      headerName: " ",
+      minWidth: 90,
+      flex: 1,
+      headerClassName: "restore-icon-left",
+      renderCell: (params: any) => {
+        return (
+          <IconButton
+            onClick={() => {
+              restoreCourse.mutate({ ids: [params.row.id] });
+            }}
+          >
+            <Image alt="restore-logo" src={courseRestoreSvg} />
+          </IconButton>
+        );
+      },
+    },
+  ];
+
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const config: ButtonConfig[] = [
     {
       key: "addStudents",
@@ -60,22 +115,37 @@ const CourseRestore = () => {
         return <Box>Delete</Box>;
       },
       onClick: () => {
-        // console.log("Duplicate");
         enqueueSnackbar("Selected course has been successfully deleted.", {
           variant: "error",
         });
       },
     },
   ];
+
+  useEffect(() => {
+    if (restoreCourse.isSuccess) {
+      enqueueSnackbar("Selected course restored successfully.", {
+        variant: "success",
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)} size="small">
+            <CloseIcon sx={{ color: "#fff" }} />
+          </IconButton>
+        ),
+      });
+    }
+  }, [restoreCourse.isSuccess]);
+
   return (
     // <PageLayout title="Courses"  icon={<HelpRoundedIcon />}>
     <Box>
       <SearchBar />
       <TableWrapper>
         <CustomDataGrid
-          rows={rowsManageCourse}
+          rows={getRestoreCourseListing?.data || []}
+          getRowId={(row: any) => row.id}
           columns={columnsManageCourse}
           pageSizeData={pageSizeManageCourse}
+          columnVisibilityModel={showColumns}
           type={"1"}
           isCheckbox={true}
           setChecked={setChecked}
@@ -102,6 +172,13 @@ const CourseRestore = () => {
             <ButtonWrapper
               startIcon={<AddCircleOutlineRoundedIcon />}
               variant="contained"
+              disabled={true}
+              sx={{
+                ":disabled": {
+                  background: (theme) => theme.palette.text.secondary,
+                  color: (theme) => theme.palette.primary.light,
+                },
+              }}
             >
               Create Course
             </ButtonWrapper>

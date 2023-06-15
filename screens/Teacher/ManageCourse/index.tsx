@@ -1,11 +1,7 @@
-import React, { useCallback, useEffect, useState } from "react";
-import PageLayout from "components/PageLayout";
-import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
-import { Box, Input, Button, IconButton } from "@mui/material";
-import SearchSection from "../ManageQuizScreen/searchSection";
+import React, { useCallback, useEffect, useState, memo } from "react";
+import { Box, IconButton } from "@mui/material";
 import {
   TextFieldStyled,
-  ButtonWrapper,
   BoxWrapper,
   TableWrapper,
   LoadingButtonWrapper,
@@ -31,26 +27,37 @@ import {
   useCreateCourse,
 } from "providers/Courses";
 import { useFormik } from "formik";
-import FormattedMessage from "theme/FormattedMessage";
+import { useTargetCourse } from "providers/Courses/TargetCourse";
 
 const ManageCourseScreen = () => {
   const getCourseListing = useCourseListing();
   const createCourse = useCreateCourse();
   const deleteCourse = useCourseRemove();
-  console.log(getCourseListing, "getCourseListing");
+  const targetCourse = useTargetCourse();
 
+  const [selectedAudience, setSelectedAudience] = React.useState("");
+  const [selectedClass, setSelectedClass] = React.useState("");
   const router = useRouter();
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [checked, setChecked] = useState(false);
-  const [selectedRowId, setSelectedRowId] = React.useState<number | undefined>(
-    undefined,
-  );
-
+  const [selectedRowId, setSelectedRowId] = useState<number>(0);
+  console.log(selectedRowId, "selectedRowId");
   const showColumns = {
     id: false,
     course_name: true,
     target_students: true,
+  };
+  const targetCourses: any = [
+    {
+      courseId: selectedRowId,
+      programs: selectedAudience,
+      clas: selectedClass,
+    },
+  ];
+
+  const handleSubmitCourse = () => {
+    targetCourse.mutate(targetCourses);
   };
 
   useEffect(() => {
@@ -60,6 +67,19 @@ const ManageCourseScreen = () => {
       });
     }
   }, [createCourse.isSuccess]);
+
+  useEffect(() => {
+    if (createCourse.isError) {
+      enqueueSnackbar("Can't add course at the moment.", {
+        variant: "error",
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)} size="small">
+            <CloseIcon sx={{ color: "#fff" }} />
+          </IconButton>
+        ),
+      });
+    }
+  }, [createCourse.isError]);
 
   useEffect(() => {
     if (deleteCourse.isSuccess) {
@@ -74,6 +94,45 @@ const ManageCourseScreen = () => {
     }
   }, [deleteCourse.isSuccess]);
 
+  useEffect(() => {
+    if (deleteCourse.isError) {
+      enqueueSnackbar("Can't delete course.", {
+        variant: "error",
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)} size="small">
+            <CloseIcon sx={{ color: "#fff" }} />
+          </IconButton>
+        ),
+      });
+    }
+  }, [deleteCourse.isError]);
+
+  useEffect(() => {
+    if (targetCourse.isSuccess) {
+      enqueueSnackbar("Updated selected courses and addedd to new course.", {
+        variant: "error",
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)} size="small">
+            <CloseIcon sx={{ color: "#fff" }} />
+          </IconButton>
+        ),
+      });
+    }
+  }, [targetCourse.isSuccess]);
+
+  useEffect(() => {
+    if (targetCourse.isError) {
+      enqueueSnackbar("Can't update the course.", {
+        variant: "error",
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)} size="small">
+            <CloseIcon sx={{ color: "#fff" }} />
+          </IconButton>
+        ),
+      });
+    }
+  }, [targetCourse.isError]);
+
   const onSubmit = useCallback((data: any, { resetForm }: any) => {
     createCourse.mutate({
       course_name: data.course,
@@ -81,20 +140,13 @@ const ManageCourseScreen = () => {
     resetForm();
   }, []);
 
-  const {
-    handleChange,
-    handleSubmit,
-    handleBlur,
-    errors,
-    values,
-    touched,
-    setFieldValue,
-  } = useFormik({
-    initialValues: {
-      course: "",
-    },
-    onSubmit,
-  });
+  const { handleChange, handleSubmit, handleBlur, values, setFieldValue } =
+    useFormik({
+      initialValues: {
+        course: "",
+      },
+      onSubmit,
+    });
 
   const config: ButtonConfig[] = [
     {
@@ -132,7 +184,12 @@ const ManageCourseScreen = () => {
   return (
     // <PageLayout title="Courses"  icon={<HelpRoundedIcon />}>
     <Box>
-      <SearchBar checked={checked} />
+      <SearchBar
+        checked={checked}
+        setSelectedClass={setSelectedClass}
+        setSelectedAudience={setSelectedAudience}
+        handleSubmitCourse={handleSubmitCourse}
+      />
       <TableWrapper>
         <CustomDataGrid
           rows={getCourseListing?.data || []}
@@ -143,8 +200,8 @@ const ManageCourseScreen = () => {
           isCheckbox={true}
           setChecked={setChecked}
           columnVisibilityModel={showColumns}
-          disableMultipleSelection={true}
           loading={getCourseListing.isFetching}
+          // isRowSelectable={(params: any) => params.value?.id === selectedRowId}
           getSelectedId={(e) => setSelectedRowId(e?.[0]?.[0])}
         />
       </TableWrapper>
@@ -183,7 +240,14 @@ const ManageCourseScreen = () => {
                   width: { xs: "100%", md: "max-content" },
                   ".MuiLoadingButton-loadingIndicator": {
                     top: "35%",
-                    left: "30%",
+                    left: "20%",
+                  },
+                  ":disabled": {
+                    background: (theme) => theme.palette.text.secondary,
+                    color: (theme) => theme.palette.primary.light,
+                  },
+                  "&:hover": {
+                    background: (theme) => theme.palette.secondary.main,
                   },
                 }}
               >
@@ -201,4 +265,4 @@ const ManageCourseScreen = () => {
   );
 };
 
-export default ManageCourseScreen;
+export default memo(ManageCourseScreen);

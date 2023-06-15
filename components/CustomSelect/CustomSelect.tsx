@@ -6,11 +6,12 @@ import { BoxWrapper, SelectBoxWrapper } from "./Styled";
 
 interface CustomSelectProps {
   options: Array<{}>;
-  placeholder: string;
+  placeholder?: string;
   config?: string;
   controlText?: string;
   dropdownIcon?: ReactNode;
   onChange?: any;
+  value?: any;
 }
 
 const CustomDropdownIndicator = (props: any) => {
@@ -40,6 +41,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
   options,
   placeholder,
   onChange,
+  value,
 }) => {
   // const onChange = () => {};
 
@@ -105,6 +107,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
         }}
         customStyles={style}
         className="custom-select"
+        value={value}
       />
     </BoxWrapper>
   );

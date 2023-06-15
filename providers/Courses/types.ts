@@ -9,7 +9,7 @@ export namespace Course {
     createdAt: string | Date;
     updatedAt: string | Date;
     deletedAt?: string | Date | null;
-    course?: {
+    courseTarget?: {
       courseId: number | null;
       programs: string | null;
     };

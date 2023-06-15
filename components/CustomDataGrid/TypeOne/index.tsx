@@ -44,7 +44,6 @@ const TypeOne: React.FC<TypeOneProps> = ({
   const totalPages = Math.ceil(totalRows / pageSizeData);
 
   const handleCheck = useCallback((e: any, details: any) => {
-    console.log(details, e, "@@@@@@@@@@");
     onRowSelect && onRowSelect(e, details);
     if (e.length) {
       setChecked(true);

@@ -41,7 +41,6 @@ export function useCreateCourse(
     mutationKey: `${KEY} | Create`,
     onSuccess: () => {
       console.log(getKeyFromProps(props, "LISTING"));
-      console.log("##################");
       queryClient.invalidateQueries([KEY]);
     },
     retry: 0,
