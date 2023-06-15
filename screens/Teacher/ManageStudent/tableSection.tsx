@@ -47,19 +47,22 @@ export const columnsManageStudent: GridColDef[] = [
 ];
 
 const TableSection = (props: any) => {
-  const { setChecked } = props;
-  const studentListing = useStudentListing({});
-  // console.log(studentListing?.data,'studentListing')
+  const { setChecked,program,yearOfGraduation, isCheckbox,setUserId } = props;
+
+  const studentListing = useStudentListing({queryParams:{yop:yearOfGraduation?.toString(),program:program?.toString()}});
+ 
+
   return (
     <BoxWrapper>
       <CustomDataGrid
-        rows={studentListing.data}
+        rows={studentListing.data  || []}
         columns={columnsManageStudent}
         pageSizeData={pageSizeManageQuiz}
         type={"1"}
         isCheckbox={true}
         setChecked={setChecked}
         loading={studentListing.isFetching}
+        getSelectedId={(e) => setUserId(e?.[0])}
       />
     </BoxWrapper>
   );

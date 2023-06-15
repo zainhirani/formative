@@ -9,13 +9,15 @@ const ManageStudents = () => {
   // const [isChecked, setIsChecked] = useState([])
   
   const [checked, setChecked] = useState(false);
+  const [selectNewCourse, setSelectNewCourse] = useState();
+  const [userId,setUserId] = useState([])
 
   console.log(checked,'checked custom');
   return (
     <>
         {/* <PageLayout> */}
-            <SearchSection checked={checked} />
-            <TableSection setChecked={setChecked} />
+            <SearchSection userIds={userId} selectedCourse={selectNewCourse} setCourse={setSelectNewCourse} checked={checked} setProgram={setProgram} setYearOfGraduation={setYearOfGraduation} />
+            <TableSection setUserId={setUserId} isCheckbox={!!selectNewCourse} setChecked={setChecked} program={program} yearOfGraduation={yearOfGraduation}/>
         {/* </PageLayout> */}
     </>
   )

@@ -18,4 +18,18 @@ export namespace Student {
   export type ListingResponse = [Item]
   export interface ListingAPIPayload extends ListingProps {}
 
+
+  ///enroll student
+  export type EnrollProps = {};
+  export type EnrollResponse = {
+   data:boolean
+  }
+  export type EnrollMutationPayload = {
+    courseId:string
+    userIds:string[]
+  }
+  export interface EnrollAPIPayload extends EnrollProps {
+    data: EnrollMutationPayload
+  }
+
 }
