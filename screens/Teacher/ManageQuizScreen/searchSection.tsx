@@ -1,4 +1,5 @@
-import React from "react";
+//@ts-nocheck
+import React, { useMemo } from "react";
 import { Box, IconButton, InputAdornment } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import {
@@ -12,25 +13,35 @@ import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCi
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import messages from "./messages";
 import CustomSelect from "components/CustomSelect/CustomSelect";
+import { useCourseListing } from "providers/Courses";
+import { useFoldersListing } from "providers/Teacher/TeacherQuiz";
+import { useRouter } from "next/router";
+import APP_ROUTES from "constants/RouteConstants";
+import optionsStatus from "constants/Teacher/QuizConstant";
 
 const SearchSection = () => {
+  const coursesList = useCourseListing();
+  const foldersList = useFoldersListing();
   const searchQuiz = useFormattedMessage(messages.searchQuiz);
+  const router = useRouter();
 
-  const optionsCourse = [
-    { value: "Cannabis 2023", label: "Cannabis 2023" },
-    { value: "Cannabis 2024", label: "Cannabis 2024" },
-    { value: "Cannabis 2025", label: "Cannabis 2025" },
-  ];
-  const optionsFolder = [
-    { value: "1/ Daily", label: "/ Daily" },
-    { value: "2/ Daily", label: "/ Daily" },
-    { value: "3/ Daily", label: "/ Daily" },
-  ];
-  const optionsStatus = [
-    { value: "Completed", label: "Completed" },
-    { value: "Draft", label: "Draft" },
-  ];
-  const onChange = () => {};
+  const folderData = useMemo(() => {
+    return foldersList?.data?.map((item) => ({
+      value: item.id,
+      label: item.name,
+    }));
+  }, [foldersList?.data]);
+
+  const courseData = useMemo(() => {
+    return coursesList?.data?.map((item) => ({
+      value: item.id,
+      label: item.course_name,
+    }));
+  }, [coursesList?.data]);
+
+  const createNewHandler = () => {
+    router.push(APP_ROUTES.DRAFT_QUIZ);
+  };
 
   return (
     <BoxWrapper display="grid" gridTemplateColumns="repeat(12, 1fr)">
@@ -54,14 +65,14 @@ const SearchSection = () => {
         <CustomSelect
           placeholder="Select Course"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-          options={optionsCourse}
+          options={courseData}
         />
       </SelectBoxWrapper>
       <SelectBoxWrapper gridColumn="span 2">
         <CustomSelect
           placeholder="Select Folder"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-          options={optionsFolder}
+          options={folderData}
         />
       </SelectBoxWrapper>
       <SelectBoxWrapper gridColumn="span 2">
@@ -75,6 +86,7 @@ const SearchSection = () => {
         <ButtonWrapper
           startIcon={<AddCircleOutlineRoundedIcon />}
           variant="contained"
+          onClick={createNewHandler}
         >
           <FormattedMessage {...messages.createNew} />
         </ButtonWrapper>

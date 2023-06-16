@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import LocalPrintshopOutlinedIcon from "@mui/icons-material/LocalPrintshopOutlined";
 import CachedIcon from "@mui/icons-material/Cached";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
@@ -19,7 +19,8 @@ import DrawerStudentsSection from "./DrawerSections/DrawerStudentsSection";
 import DrawerQuestionsDetailSection from "./DrawerSections/DrawerQuestionsDetailSection";
 import QuizQuestionFormat from "components/QuizQuestionFormat";
 
-const TableSection = () => {
+const TableSection = (props: any) => {
+  const { handleChange, setFieldValue, values } = props;
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [drawerOpenStudents, setDrawerOpenStudents] = useState(false);
 
@@ -38,7 +39,7 @@ const TableSection = () => {
       key: "save",
       startIcon: <ArrowCircleRightOutlinedIcon />,
       render: () => {
-        return <Box>Save</Box>;
+        return <Button type="submit">Save</Button>;
       },
       onClick: () => {
         // console.log("Save");
@@ -111,6 +112,8 @@ const TableSection = () => {
   const handleDrawerCloseStudents = () => {
     setDrawerOpenStudents(false);
   };
+
+  // console.log("table section component is re-render");
   return (
     <>
       <BoxWrapper>
@@ -147,4 +150,4 @@ const TableSection = () => {
   );
 };
 
-export default TableSection;
+export default React.memo(TableSection);

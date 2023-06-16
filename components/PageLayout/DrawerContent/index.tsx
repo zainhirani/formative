@@ -26,7 +26,7 @@ interface BarComponentProps {
 
 const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
   const router = useRouter();
-  let MENU_ITEMS = 3 === 2 ? TEACHER_MENU : STUDENT_MENU;
+  let MENU_ITEMS = 3 === 3 ? TEACHER_MENU : STUDENT_MENU;
   let COMMON_MENU_ITEMS = [COMMON_MENU.profile, COMMON_MENU.settings];
 
   const isActiveRoute = (route: string) => {

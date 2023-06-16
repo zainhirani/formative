@@ -5,12 +5,15 @@ import AutoComplete from "components/AutoComplete";
 import { BoxWrapper, SelectBoxWrapper } from "./Styled";
 
 interface CustomSelectProps {
-  options: Array<{}>;
+  options: Array<{}> | undefined;
+  // options: Array<{}>;
   placeholder: string;
   config?: string;
   controlText?: string;
   dropdownIcon?: ReactNode;
   onChange?: any;
+  value?: any;
+  name?: any;
 }
 
 const CustomDropdownIndicator = (props: any) => {
@@ -40,9 +43,9 @@ const CustomSelect: FC<CustomSelectProps> = ({
   options,
   placeholder,
   onChange,
+  value,
+  name,
 }) => {
-  // const onChange = () => {};
-
   const style = {
     control: (provided: any, state: any) => ({
       ...provided,
@@ -105,6 +108,8 @@ const CustomSelect: FC<CustomSelectProps> = ({
         }}
         customStyles={style}
         className="custom-select"
+        value={value}
+        name={name}
       />
     </BoxWrapper>
   );

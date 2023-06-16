@@ -26,7 +26,7 @@ const CourseRestore = () => {
   const router = useRouter();
 
   const [checked, setChecked] = useState(false);
-  console.log(checked, "checked custom");
+  // console.log(checked, "checked custom");
 
   const { enqueueSnackbar } = useSnackbar();
   const config: ButtonConfig[] = [

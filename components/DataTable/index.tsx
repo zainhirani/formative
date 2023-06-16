@@ -46,7 +46,7 @@ const DataTable: React.FC<DataTableProps> = ({ config = [], data = [] }) => {
                     fontWeight: "400",
                     color: (theme) => theme.palette.primary.main,
                     fontSize: "14px",
-                    "&:first-child": {
+                    "&:first-of-type": {
                       width: "15px",
                       padding: "10px 0px 10px 10px",
                     },
@@ -80,7 +80,7 @@ const DataTable: React.FC<DataTableProps> = ({ config = [], data = [] }) => {
                     onClick={(evt) => configItem.onCellClick?.(evt)}
                     sx={{
                       fontSize: "14px",
-                      "&:first-child": {
+                      "&:first-of-type": {
                         width: "15px",
                         padding: "10px 0px 10px 10px",
                       },

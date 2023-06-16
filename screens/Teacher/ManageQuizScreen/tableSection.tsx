@@ -10,8 +10,12 @@ import { Box } from "@mui/material";
 import LocalPrintshopOutlinedIcon from "@mui/icons-material/LocalPrintshopOutlined";
 import CachedIcon from "@mui/icons-material/Cached";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import { allCourses, allTeacherQuiz } from "providers/Teacher/TeacherQuiz/api";
 
 const TableSection = () => {
+  const quizList = allTeacherQuiz();
+  // console.log(quizList, "quizList");
+
   const configManageQuiz = [
     {
       key: "print",

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   BoxWrapper,
   InputBoxWrapper,
@@ -9,23 +9,32 @@ import {
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
 import CustomSelect from "components/CustomSelect/CustomSelect";
 import Typography from "@mui/material/Typography";
+import {
+  useCourseListing,
+  useFoldersListing,
+  useScoringListing,
+} from "providers/Teacher/TeacherQuiz";
+import optionsStatus from "constants/Teacher/QuizConstant";
 
-const FiltersSection = () => {
-  const optionsCourse = [
-    { value: "Cannabis 2023", label: "Cannabis 2023" },
-    { value: "Cannabis 2024", label: "Cannabis 2024" },
-    { value: "Cannabis 2025", label: "Cannabis 2025" },
-  ];
-  const optionsFolder = [
-    { value: "1/ Daily", label: "/ Daily" },
-    { value: "2/ Daily", label: "/ Daily" },
-    { value: "3/ Daily", label: "/ Daily" },
-  ];
-  const optionsStatus = [
-    { value: "Completed", label: "Completed" },
-    { value: "Draft", label: "Draft" },
-  ];
-  const onChange = () => {};
+const FiltersSection = (props: any) => {
+  const coursesList = useCourseListing();
+  const foldersList = useFoldersListing();
+
+  const { setFieldValue, values, handleChange } = props;
+
+  const optionsFolder = useMemo(() => {
+    return foldersList?.data?.map((item: any) => ({
+      value: item?.id,
+      label: item?.name,
+    }));
+  }, [foldersList?.data]);
+
+  const optionsCourse = useMemo(() => {
+    return coursesList?.data?.map((item: any) => ({
+      value: item?.id,
+      label: item?.course_name,
+    }));
+  }, [coursesList?.data]);
 
   return (
     <BoxWrapper display="grid" gridTemplateColumns="repeat(11, 1fr)">
@@ -33,7 +42,14 @@ const FiltersSection = () => {
         <Typography gutterBottom className="custom-name">
           Name:
         </Typography>
-        <TextFieldStyled placeholder="" variant="outlined" />
+        <TextFieldStyled
+          placeholder=""
+          variant="outlined"
+          value={values?.name}
+          name="name"
+          onChange={handleChange}
+          id="name"
+        />
       </InputBoxWrapper>
       <SelectBoxWrapper gridColumn="span 2">
         <CustomSelect
@@ -41,6 +57,14 @@ const FiltersSection = () => {
           controlText="Course:"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={optionsCourse}
+          value={values?.courseId}
+          onChange={(e: any) => {
+            const obj = {
+              value: e.value,
+              label: e.label,
+            };
+            setFieldValue("courseId", obj);
+          }}
         />
       </SelectBoxWrapper>
       <SelectBoxWrapper gridColumn="span 2">
@@ -49,6 +73,14 @@ const FiltersSection = () => {
           controlText="Folder:"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={optionsFolder}
+          value={values?.folderId}
+          onChange={(e: any) => {
+            const obj = {
+              value: e.value,
+              label: e.label,
+            };
+            setFieldValue("folderId", obj);
+          }}
         />
       </SelectBoxWrapper>
       <SelectBoxWrapper gridColumn="span 2">
@@ -57,6 +89,14 @@ const FiltersSection = () => {
           controlText="Status"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={optionsStatus}
+          value={values?.status}
+          onChange={(e: any) => {
+            const obj = {
+              value: e.value,
+              label: e.label,
+            };
+            setFieldValue("status", obj);
+          }}
         />
       </SelectBoxWrapper>
       <SelectBoxWrapper gridColumn="span 2">
@@ -73,4 +113,4 @@ const FiltersSection = () => {
   );
 };
 
-export default FiltersSection;
+export default React.memo(FiltersSection);

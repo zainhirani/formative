@@ -21,7 +21,7 @@ import {
 
   //Listing
   export function useCourseListing (props:Course.ListingProps):UseQueryResult<Course.ListingResponse>{
-    return useQuery(getKeyFromProps(props, 'LISTING'), () => api.listing(props))
+    return useQuery("COURSES_LISTING", () => api.listing(props))
   }
 
   //Create
@@ -38,8 +38,8 @@ import {
     return useMutation((payload) => api.create({ ...props, data: payload }), {
       mutationKey: `${KEY} | Create`,
       onSuccess: () => {
-          console.log(getKeyFromProps(props, "LISTING"))
-        console.log('##################')
+        // console.log(getKeyFromProps(props, "LISTING"))
+        // console.log('##################')
         queryClient.invalidateQueries(getKeyFromProps(props, "LISTING"));
       },
       retry: 0,

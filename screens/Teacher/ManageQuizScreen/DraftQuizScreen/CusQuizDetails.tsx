@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   BoxMatrix,
   BoxMatrixDropDownWrapper,
@@ -15,24 +15,34 @@ import {
   Grid,
   Stack,
   Typography,
+  InputLabel,
+  TextField,
+  Tooltip,
 } from "@mui/material";
 import CustomSelect from "components/CustomSelect/CustomSelect";
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
+import {
+  useScoringByID,
+  useScoringListing,
+} from "providers/Teacher/TeacherQuiz";
 
+interface MyData {
+  dynamicData: object;
+}
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   textAlign: "center",
   color: theme.palette.text.secondary,
   boxShadow: "none",
   margin: "0px 50px",
-  "&:first-child": {
+  "&:first-of-type": {
     margin: "0px 50px 0px 0px",
   },
   [theme.breakpoints.between("sm", "xl")]: {
     margin: "0px 30px",
-    "&:first-child": {
+    "&:first-of-type": {
       margin: "0px 30px 0px 0px",
     },
   },
@@ -43,23 +53,51 @@ const ItemTwo = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
   boxShadow: "none",
   margin: "0px 60px",
-  "&:first-child": {
+  "&:first-of-type": {
     margin: "0px 60px 0px 0px",
   },
   [theme.breakpoints.between("sm", "xl")]: {
     margin: "0px 54px",
-    "&:first-child": {
+    "&:first-of-type": {
       margin: "0px 54px 0px 0px",
     },
   },
 }));
 
-const CusQuizDetails = () => {
-  const optionsScheme = [
-    { value: "Bonus Test (ave=3.75)", label: "Bonus Test (ave=3.75)" },
-    { value: "1Bonus Test (ave=3.75)", label: "Bonus Test (ave=3.75)" },
-    { value: "2Bonus Test (ave=3.75)", label: "Bonus Test (ave=3.75)" },
-  ];
+const CusQuizDetails = (props: any) => {
+  const { handleChange, setFieldValue, values } = props;
+  const scoringList = useScoringListing();
+  const [scoringId, setScoringId] = useState(null);
+  const { data: scoringByIdData, refetch: cusRefetch } = useScoringByID({
+    id: scoringId ? scoringId : null,
+    scoringId,
+  });
+  const data = scoringByIdData?.dynamicData;
+
+  console.log(data, "data");
+
+  useEffect(() => {
+    if (scoringId) {
+      cusRefetch(scoringId);
+    }
+  }, [scoringId]);
+
+  const optionsScoring = useMemo(() => {
+    return scoringList?.data?.map((item: any) => ({
+      value: item?.id,
+      label: item?.scheme,
+    }));
+  }, [scoringList?.data]);
+
+  const onChangeScoring = (e: any) => {
+    const obj = {
+      value: e.value,
+      label: e.label,
+    };
+    setScoringId(e.value);
+    setFieldValue("scoringId", obj);
+  };
+
   return (
     <BoxWrapper>
       <BoxMatrixDropDownWrapper>
@@ -75,18 +113,49 @@ const CusQuizDetails = () => {
                 placeholder="Bonus Test (ave=3.75)"
                 controlText="Scheme:"
                 dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-                options={optionsScheme}
+                options={optionsScoring}
+                value={values?.scoringId}
+                onChange={onChangeScoring}
               />
             </SchemeBoxWrapper>
           </Grid>
           <Grid item className="item" md={3}>
-            <SchemeBoxWrapper gridColumn="span 2">
-              <CustomSelect
+            <SchemeBoxWrapper
+              gridColumn="span 2"
+              sx={{ display: "flex", alignItems: "center", height: "62px" }}
+            >
+              <Tooltip title={"Time Limit per response (sec):"} placement="top">
+                <InputLabel htmlFor="time">
+                  Time Limit per response (sec):
+                </InputLabel>
+              </Tooltip>
+              <TextField
+                id="time"
+                name="time"
+                fullWidth
+                type="number"
+                defaultValue={0}
+                inputProps={{ min: 0 }}
+                variant="standard"
+                sx={{
+                  maxWidth: "28px",
+                  paddingLeft: "1px",
+                  ".MuiInputBase-root": {
+                    "&::before": {
+                      display: "none",
+                    },
+                    "&::after": {
+                      display: "none",
+                    },
+                  },
+                }}
+              />
+              {/* <CustomSelect
                 placeholder="120"
                 controlText="Time Limit per response (sec):"
                 dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
                 options={optionsScheme}
-              />
+              /> */}
             </SchemeBoxWrapper>
           </Grid>
           <Grid item className="item" md={2}>
@@ -111,6 +180,37 @@ const CusQuizDetails = () => {
             justifyContent="space-between"
             alignItems="center"
           >
+            {/* {data?.map((item: any, index: number) => {
+              return (
+                <Item key={item?.id}>
+                  <BoxMatrix className="boxMatrix-b">
+                    <Typography
+                      variant="h2"
+                      component="h2"
+                      className="heading-h2"
+                    >
+                      {index == 0
+                        ? "Two:"
+                        : index == 1
+                        ? "Three:"
+                        : index == 2
+                        ? "Four:"
+                        : index == 3
+                        ? "Five"
+                        : index == 4
+                        ? "Six"
+                        : index == 5
+                        ? "Seven:"
+                        : index == 6
+                        ? "Eight"
+                        : ""}
+                      Two:
+                    </Typography>
+                    <Typography className="heading-p">{item?.value}</Typography>
+                  </BoxMatrix>
+                </Item>
+              );
+            })} */}
             <Item>
               <BoxMatrix className="boxMatrix-b">
                 <Typography variant="h2" component="h2" className="heading-h2">
@@ -187,4 +287,4 @@ const CusQuizDetails = () => {
   );
 };
 
-export default CusQuizDetails;
+export default React.memo(CusQuizDetails);

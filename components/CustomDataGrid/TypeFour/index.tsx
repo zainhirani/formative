@@ -57,16 +57,14 @@ const TypeFour: React.FC<TypeFourProps> = ({
             <Grid item xs={8} className="table_row_btn">
               {buttonArray?.map((button) => {
                 return (
-                  <>
-                    <ButtonWrapper
-                      key={button?.key}
-                      onClick={button?.onClick}
-                      startIcon={button?.startIcon}
-                      className={`print_arrow_btn ${button?.customClass}`}
-                    >
-                      {button?.render()}
-                    </ButtonWrapper>
-                  </>
+                  <ButtonWrapper
+                    key={button?.key}
+                    onClick={button?.onClick}
+                    startIcon={button?.startIcon}
+                    className={`print_arrow_btn ${button?.customClass}`}
+                  >
+                    {button?.render()}
+                  </ButtonWrapper>
                 );
               })}
             </Grid>

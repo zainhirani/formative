@@ -123,6 +123,7 @@ export const columnsManageQuiz: GridColDef[] = [
       return (
         <Grid container spacing={3}>
           <Grid item xs>
+            {/* href={`${APP_ROUTES.DRAFT_QUIZ_EDIT.replace("[id]", params?.id)}`} */}
             <Link href={"/teacher/quiz/draft"}>
               <IconButton>
                 <Image alt="quiz-logo" src={editSvg} />

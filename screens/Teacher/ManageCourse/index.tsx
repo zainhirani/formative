@@ -29,7 +29,7 @@ import { useCourseListing } from "providers/Courses";
 
 const ManageCourseScreen = () => {
   const getCourseListing = useCourseListing();
-  console.log(getCourseListing, "getCourseListing");
+  // console.log(getCourseListing, "getCourseListing");
 
   const router = useRouter();
 

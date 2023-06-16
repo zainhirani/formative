@@ -4,6 +4,7 @@ const APP_ROUTES = {
   // Quiz Section
   ADD_QUIZ: "/add-quiz",
   DRAFT_QUIZ: "teacher/quiz/draft",
+  DRAFT_QUIZ_EDIT: "teacher/quiz/draft/[id]",
   MANAGE_QUIZ: "/teacher/quiz",
   QUIZ_RESULTS: "/teacher/quiz/quiz-results",
   // - Question Section
