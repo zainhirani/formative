@@ -12,6 +12,7 @@ export namespace Course {
     courseTarget?: {
       courseId: number | null;
       programs: string | null;
+      clas: string | undefined;
     };
   };
 
@@ -53,6 +54,7 @@ export namespace Course {
     course?: {
       courseId: number | null;
       programs: string | null;
+      clas: string | undefined;
     };
   };
   export interface DetailAPIPayload extends DetailProps {}

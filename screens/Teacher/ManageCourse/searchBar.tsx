@@ -13,8 +13,13 @@ import { useSnackbar } from "notistack";
 import { class_of } from "mock-data/Teacher/ManageCourse";
 
 const SearchBar = (props: any) => {
-  const { checked, setSelectedAudience, setSelectedClass, handleSubmitCourse } =
-    props;
+  const {
+    checked,
+    setSelectedAudience,
+    setSelectedClass,
+    handleSubmitCourse,
+    setSearchChange,
+  } = props;
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const [targetCourse, setTargetCourse] = useState("CHP/BMS");
@@ -28,6 +33,9 @@ const SearchBar = (props: any) => {
     setSelectedClass(selectedOption.label);
     setTargetClass(selectedOption.value);
   };
+  const handleSearchChange = (search: any) => {
+    setSearchChange(search.target.value);
+  };
   const target_audience = [
     { value: "chp/bms", label: "CHP/BMS" },
     { value: "chp/dpt", label: "CHP/DPT" },
@@ -40,8 +48,6 @@ const SearchBar = (props: any) => {
     { value: "son", label: "SON" },
   ];
 
-  console.log(target_audience[0]);
-
   const onChange = () => {};
 
   return (
@@ -50,6 +56,7 @@ const SearchBar = (props: any) => {
         <TextFieldStyled
           placeholder="Search Course"
           variant="outlined"
+          onChange={handleSearchChange}
           InputProps={{
             style: { border: "none", outline: "0px" },
             endAdornment: (

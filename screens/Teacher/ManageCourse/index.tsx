@@ -7,11 +7,6 @@ import {
   LoadingButtonWrapper,
 } from "./Styled";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
-import GroupedButton from "components/GroupedButton";
-import { ButtonConfig } from "components/GroupedButton/types";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import RestoreFromTrashOutlinedIcon from "@mui/icons-material/RestoreFromTrashOutlined";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import CustomDataGrid from "components/CustomDataGrid";
 import {
   columnsManageCourse,
@@ -28,21 +23,25 @@ import {
 } from "providers/Courses";
 import { useFormik } from "formik";
 import { useTargetCourse } from "providers/Courses/TargetCourse";
+import FooterButton from "./FooterButton";
 
 const ManageCourseScreen = () => {
-  const getCourseListing = useCourseListing();
+  const [selectedAudience, setSelectedAudience] = React.useState("");
+  const [selectedClass, setSelectedClass] = React.useState("");
+  const [searchChange, setSearchChange] = React.useState("");
+  const router = useRouter();
+  const getCourseListing = useCourseListing({
+    queryParams: { SearchBy: searchChange, Limit: pageSizeManageCourse },
+  });
   const createCourse = useCreateCourse();
   const deleteCourse = useCourseRemove();
   const targetCourse = useTargetCourse();
 
-  const [selectedAudience, setSelectedAudience] = React.useState("");
-  const [selectedClass, setSelectedClass] = React.useState("");
-  const router = useRouter();
-
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [checked, setChecked] = useState(false);
+  const [checkedId, setCheckedId] = useState<number[]>([]);
+  const [lastSelected, setLastSelected] = useState(-1);
   const [selectedRowId, setSelectedRowId] = useState<number>(0);
-  console.log(selectedRowId, "selectedRowId");
   const showColumns = {
     id: false,
     course_name: true,
@@ -52,7 +51,7 @@ const ManageCourseScreen = () => {
     {
       courseId: selectedRowId,
       programs: selectedAudience,
-      clas: selectedClass,
+      clas: selectedClass.toString(),
     },
   ];
 
@@ -60,10 +59,25 @@ const ManageCourseScreen = () => {
     targetCourse.mutate(targetCourses);
   };
 
+  const handleDeleteCourse = () => {
+    deleteCourse.mutate({ id: selectedRowId });
+  };
+
+  const handleSelection = React.useCallback((ids: number[]) => {
+    setLastSelected(ids[ids.length - 1]);
+    setCheckedId([ids[ids?.length - 1]]);
+  }, []);
+  console.log(checkedId, selectedRowId, "checkedId");
+
   useEffect(() => {
     if (createCourse.isSuccess) {
-      enqueueSnackbar("Course Added Successfully", {
+      enqueueSnackbar(`Course "${values.course}" created successfully`, {
         variant: "success",
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)} size="small">
+            <CloseIcon sx={{ color: "#fff" }} />
+          </IconButton>
+        ),
       });
     }
   }, [createCourse.isSuccess]);
@@ -110,7 +124,7 @@ const ManageCourseScreen = () => {
   useEffect(() => {
     if (targetCourse.isSuccess) {
       enqueueSnackbar("Updated selected courses and addedd to new course.", {
-        variant: "error",
+        variant: "success",
         action: (key) => (
           <IconButton onClick={() => closeSnackbar(key)} size="small">
             <CloseIcon sx={{ color: "#fff" }} />
@@ -137,7 +151,9 @@ const ManageCourseScreen = () => {
     createCourse.mutate({
       course_name: data.course,
     });
-    resetForm();
+    setTimeout(() => {
+      resetForm();
+    }, 3000);
   }, []);
 
   const { handleChange, handleSubmit, handleBlur, values, setFieldValue } =
@@ -148,39 +164,6 @@ const ManageCourseScreen = () => {
       onSubmit,
     });
 
-  const config: ButtonConfig[] = [
-    {
-      key: "restoreStudent",
-      startIcon: <RestoreFromTrashOutlinedIcon />,
-      render: () => {
-        return <Box>Restore</Box>;
-      },
-      onClick: () => {
-        // console.log("Add Students");
-        router.push("/teacher/courses/restore");
-      },
-    },
-    {
-      key: "save",
-      startIcon: <ContentCopyIcon />,
-      render: () => {
-        return <Box>Duplicate</Box>;
-      },
-      onClick: () => {},
-      // disabled: { checked },
-    },
-    {
-      key: "delete",
-      startIcon: <DeleteForeverIcon />,
-      render: () => {
-        return <Box>Delete</Box>;
-      },
-      // disabled: { checked },
-      onClick: () => {
-        deleteCourse.mutate({ id: selectedRowId });
-      },
-    },
-  ];
   return (
     // <PageLayout title="Courses"  icon={<HelpRoundedIcon />}>
     <Box>
@@ -189,6 +172,7 @@ const ManageCourseScreen = () => {
         setSelectedClass={setSelectedClass}
         setSelectedAudience={setSelectedAudience}
         handleSubmitCourse={handleSubmitCourse}
+        setSearchChange={setSearchChange}
       />
       <TableWrapper>
         <CustomDataGrid
@@ -201,8 +185,9 @@ const ManageCourseScreen = () => {
           setChecked={setChecked}
           columnVisibilityModel={showColumns}
           loading={getCourseListing.isFetching}
-          // isRowSelectable={(params: any) => params.value?.id === selectedRowId}
-          getSelectedId={(e) => setSelectedRowId(e?.[0]?.[0])}
+          selectedIds={checkedId}
+          onRowSelect={handleSelection}
+          getSelectedId={(e) => setSelectedRowId(e?.[0]?.[e.length - 1])}
         />
       </TableWrapper>
       <Box
@@ -257,7 +242,7 @@ const ManageCourseScreen = () => {
           </BoxWrapper>
         </form>
         <Box>
-          <GroupedButton config={config} />
+          <FooterButton checked={checked} deleteCourse={handleDeleteCourse} />
         </Box>
       </Box>
     </Box>

@@ -2,7 +2,7 @@ import { Box, IconButton } from "@mui/material";
 import { ButtonConfig } from "components/GroupedButton/types";
 import PageLayout from "components/PageLayout";
 import { useSnackbar } from "notistack";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import SearchSection from "../ManageQuizScreen/searchSection";
 import CustomDataGrid from "components/CustomDataGrid";
 import { BoxWrapper, TableWrapper } from "screens/Teacher/ManageCourse/Styled";
@@ -24,9 +24,12 @@ import {
 } from "providers/Courses/Restore";
 import Image from "next/image";
 import courseRestoreSvg from "public/CourseType.svg";
+import { useQueryClient } from "react-query";
 
 const CourseRestore = () => {
   const router = useRouter();
+  const [checkedId, setCheckedId] = useState<number[]>([]);
+  const [lastSelected, setLastSelected] = useState(-1);
   const getRestoreCourseListing = useRestoreCourseListing();
   const restoreCourse = useRestoreCourse();
 
@@ -83,7 +86,13 @@ const CourseRestore = () => {
     },
   ];
 
+  const handleSelection = React.useCallback((ids: number[]) => {
+    setLastSelected(ids[ids.length - 1]);
+    setCheckedId([ids[ids?.length - 1]]);
+  }, []);
+
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const queryClient = useQueryClient();
   const config: ButtonConfig[] = [
     {
       key: "addStudents",
@@ -93,7 +102,7 @@ const CourseRestore = () => {
       },
       onClick: () => {
         router.push("/teacher/courses");
-        // console.log("Add Students");
+        queryClient.invalidateQueries("Courses");
       },
     },
     {
@@ -149,6 +158,9 @@ const CourseRestore = () => {
           type={"1"}
           isCheckbox={true}
           setChecked={setChecked}
+          loading={getRestoreCourseListing.isFetching}
+          selectedIds={checkedId}
+          onRowSelect={handleSelection}
         />
       </TableWrapper>
       <Box

@@ -21,7 +21,7 @@ export function getKeyFromProps(
 
 //Listing
 export function useCourseListing(
-  props?: Course.ListingProps,
+  props: Course.ListingProps,
 ): UseQueryResult<Course.ListingResponse> {
   return useQuery(getKeyFromProps(props, "LISTING"), () => api.listing(props));
 }

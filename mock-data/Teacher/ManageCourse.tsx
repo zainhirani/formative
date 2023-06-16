@@ -76,7 +76,9 @@ export const columnsManageCourse = [
     minWidth: 150,
     flex: 1,
     renderCell: (params: any) => {
-      return params.value?.map((item: any) => item.programs);
+      return params.value?.map((item: any) =>
+        item.programs?.concat("-", item.clas, ";"),
+      );
       // .slice(2, -2)
       // .replaceAll(/[""]/g, "")
       // .toUpperCase()
