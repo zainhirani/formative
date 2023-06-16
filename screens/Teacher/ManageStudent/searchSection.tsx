@@ -1,4 +1,4 @@
-import React,{useMemo,useEffect} from "react";
+import React,{useMemo,useEffect, useState} from "react";
 
 import {
   Box,
@@ -26,8 +26,9 @@ import {
 
 const SearchSection = (props: any) => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const { checked,setProgram,setYearOfGraduation, setCourse,userIds,selectedCourse } = props;
+  const { checked,setProgram,setYearOfGraduation, setCourse,userIds,selectedCourse,setSearchChange } = props;
   const searchCourse = useFormattedMessage(messages.searchCourse);
+  
 
 //Course data 
 const courseListing = useCourseListing({});
@@ -44,7 +45,6 @@ const cousrseData = useMemo(() => {
     ))
 },[courseListing?.data])
 
-
 //Select  Program Value
 const handleProgram = (programValue :any) =>{
   setProgram(programValue.value)
@@ -57,6 +57,8 @@ const handleYearOfGraduation = (yearValue :any) =>{
 
 const handleCourse = (courseValue :any) =>{
   setCourse(courseValue.value)
+  console.log(courseValue.value,"jdlkfjsdlfkj")
+
 }
 
 useEffect(() => {
@@ -87,6 +89,11 @@ useEffect(() => {
     }
 },[enrollStudent?.isError])
 
+const handleSearchChange = (search: any) => {
+  setSearchChange(search.target.value);
+  console.log(search.target.value)
+};
+
 
   return (
     <BoxWrapper display="grid" gridTemplateColumns="repeat(12, 1fr)">
@@ -94,6 +101,7 @@ useEffect(() => {
         <TextFieldStyled
           placeholder={searchCourse}
           variant="outlined"
+          onChange={handleSearchChange}
           InputProps={{
             style: { border: "none", outline: "0px" },
             endAdornment: (
@@ -106,7 +114,7 @@ useEffect(() => {
           }}
         />
       </Box>
-      <Box gridColumn="span 2">
+      <Box  gridColumn="span 2">
         <CustomSelect
           placeholder="Select Course"
           controlText="New Course:"
@@ -121,6 +129,7 @@ useEffect(() => {
           controlText="Year of Graduation:"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={year_of_graduation}
+          onChange={handleYearOfGraduation}
         />
       </Box>
       <Box gridColumn="span 2">
