@@ -64,8 +64,12 @@ const ManageCourseScreen = () => {
   };
 
   const handleSelection = React.useCallback((ids: number[]) => {
-    setLastSelected(ids[ids.length - 1]);
-    setCheckedId([ids[ids?.length - 1]]);
+    if (ids.length === 0) {
+      setCheckedId([]);
+    } else {
+      setLastSelected(ids[ids.length - 1]);
+      setCheckedId([ids[ids.length - 1]]);
+    }
   }, []);
   console.log(checkedId, selectedRowId, "checkedId");
 
