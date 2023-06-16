@@ -284,45 +284,13 @@ export const rowsQuizResults = [
   },
 ];
 
-export const columnsQuizAttemptedStds: GridColDef[] = [
-  {
-    field: "id",
-    headerName: "ID",
-    minWidth: 150,
-    flex: 1,
-  },
-  {
-    field: "fname",
-    headerName: "First Name",
-    minWidth: 150,
-    flex: 1,
-  },
-  {
-    field: "lname",
-    headerName: "Last Name",
-    minWidth: 150,
-    flex: 1,
-  },
-  {
-    field: "score",
-    headerName: "Score",
-    minWidth: 150,
-    flex: 1,
-  },
 
-  {
-    field: "traditional",
-    headerName: "Traditional",
-    minWidth: 150,
-    flex: 1,
-  },
-];
 
 export const columnsQuizQuestions: GridColDef[] = [
   {
-    field: "no",
+    field: "id",
     headerName: "No.",
-    minWidth: 180,
+    minWidth: 80,
     flex: 1,
     renderCell: (params: any) => {
       const num = params.formattedValue;
@@ -346,77 +314,85 @@ export const columnsQuizQuestions: GridColDef[] = [
     },
   },
   {
-    field: "question",
+    field: "detail",
     headerName: "Question",
-    minWidth: 200,
+    minWidth: 350,
     flex: 2,
   },
   {
     field: "score",
     headerName: "Score",
-    minWidth: 150,
+    minWidth: 100,
     flex: 1,
   },
   {
     field: "difficulty",
     headerName: "Difficulty",
-    minWidth: 150,
+    minWidth: 100,
     flex: 1,
   },
   {
-    field: "time",
+    field: "averageTime",
     headerName: "Time",
-    minWidth: 150,
+    minWidth: 100,
     flex: 1,
   },
 
   {
-    field: "a",
+    field: "A",
     headerName: "A",
     minWidth: 100,
     flex: 1,
+    valueGetter(params) {return params?.row?.optionStatistics?.A},
   },
   {
-    field: "b",
+    field: "B",
     headerName: "B",
     minWidth: 100,
     flex: 1,
+    valueGetter(params) {return params?.row?.optionStatistics?.B},
   },
   {
     field: "c",
     headerName: "C",
     minWidth: 100,
     flex: 1,
+    valueGetter(params) {return params?.row?.optionStatistics?.C},
   },
   {
-    field: "d",
+    field: "D",
     headerName: "D",
     minWidth: 100,
     flex: 1,
+    valueGetter(params) {return params?.row?.optionStatistics?.D},
   },
   {
     field: "e",
     headerName: "E",
     minWidth: 100,
     flex: 1,
+    valueGetter(params) {return params?.row?.optionStatistics?.E},
   },
   {
     field: "f",
     headerName: "F",
     minWidth: 100,
     flex: 1,
+    valueGetter(params) {return params?.row?.optionStatistics?.F},
   },
   {
     field: "g",
     headerName: "G",
-    minWidth: 150,
+    minWidth: 100,
     flex: 1,
+    valueGetter(params) {return params?.row?.optionStatistics?.G},
   },
   {
     field: "h",
     headerName: "H",
-    minWidth: 150,
+    minWidth: 100,
     flex: 1,
+    valueGetter(params) {return params?.row?.optionStatistics?.H},
   },
 ];
 

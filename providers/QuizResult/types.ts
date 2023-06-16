@@ -6,11 +6,39 @@ export namespace QuizResult {
         total_time:number,
         quizId:number,
         createdAt:string | Date,
+        course_name:string,
+        difficulty:string | null,
+        folders_name:string,
+        quiz_name:string,
+        status:string
+    }
+    export type studentItem = {
+      attemptId:number,
+      first_name:string,
+      last_name:string,
+      score:number,
+      std_id:number,
+      tradition:number,
+      total_time:number
+    }
+    export type questionItem = {
+      id:number,
+      answer:string,
+      averageAttempts:string,
+      averageTime:string,
+      detail:string,
+      difficulty:string,
+      option:string,
+      title:string,
+      optionStatistics:{
+        option_count:number,
+        option_selected:string
+      }[]
     }
 
       //Listing
   export type ListingProps = {};
-  export type ListingResponse = [Item]
+  export type ListingResponse = Item[]
   export interface ListingAPIPayload extends ListingProps {}
 
     // Detail
@@ -18,12 +46,12 @@ export namespace QuizResult {
       id?:number
     }
     export type DetailResponse = {
-      id:number,
-      score:number,
-      tradition:number,
-      total_time:number,
       quizId:number,
-      createdAt:string | Date,
+      name:string,
+      student:studentItem[],
+      questions:questionItem[]
+      
+   
     }
     export interface DetailAPIPayload extends DetailProps {}
 }

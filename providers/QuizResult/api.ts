@@ -4,7 +4,7 @@ import { QuizResult } from "./types";
 export async function listing(props?:QuizResult.ListingAPIPayload):Promise<QuizResult.ListingResponse> {
     return service ({
         method:'GET',
-        url:`/quiz-attempt`
+        url:`/quiz-result`
     })
 }
 
@@ -14,6 +14,6 @@ export async function listing(props?:QuizResult.ListingAPIPayload):Promise<QuizR
   ): Promise<QuizResult.DetailResponse> {
     return service({
       method: "GET",
-      url: `/quiz-attempt/${props.id}`,
+      url: `/quiz-result/${props.id}`,
     });
   }

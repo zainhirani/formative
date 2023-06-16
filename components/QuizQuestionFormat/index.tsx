@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import {
   Box,
+  CircularProgress,
   Grid,
   Table,
   TableBody,
@@ -26,8 +27,8 @@ type QuizQuestionFormatProps = {
   questionContext?: string;
   actualQuestion?: string;
   quizOptions?: object[];
-  timeSpent?: string;
-  score?: string;
+  timeSpent?: string | number;
+  score?: string |number;
   isHeader?: boolean;
   questionIdNum?: string;
   avgTime?: string;
@@ -38,6 +39,8 @@ type QuizQuestionFormatProps = {
   isOpen: boolean;
   children?: any;
   onClose: () => void;
+  loading?:boolean;
+  disable?:boolean
 };
 
 const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
@@ -58,9 +61,11 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
   avgTime = "18 Sec",
   difficulty = "Hard",
   isShowScoreBar = true,
-  answerStats = [1],
+  answerStats = [2],
   onClose = () => {},
   isOpen = true,
+  disable,
+  loading,
   children,
 }): JSX.Element => {
   const [checked, setChecked] = React.useState([0]);
@@ -91,6 +96,14 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
 
   return (
     <SideDrawer open={isOpen} onClose={onClose} title={title}>
+
+      {loading ?  
+      
+      <Box sx={{display:'flex', alignItems:'center', justifyContent:'center',height:'100vh'}}>
+        <CircularProgress />
+      </Box>
+       :
+      <>
       {/* Header 4 Boxes */}
 
       {isHeader && (
@@ -254,9 +267,11 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
                 >
                   <ListItemIcon sx={{ minWidth: "max-content" }}>
                     <Checkbox
+                    disabled={true}
+                    
                       edge="start"
                       // checked={checked.indexOf(index) !== -1}
-                      checked={checked.indexOf(index) !== -1}
+                      checked={value?.id === 2}
                       tabIndex={-1}
                       disableRipple
                       inputProps={{ "aria-labelledby": labelId }}
@@ -367,6 +382,8 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
         </TableContainer>
       ) : null}
       {children}
+      </>
+}
     </SideDrawer>
   );
 };

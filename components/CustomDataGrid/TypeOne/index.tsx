@@ -11,7 +11,7 @@ interface TypeOneProps {
   columns: TableColumn[];
   buttonArray?: ButtonConfig[];
   checkboxSelection?: boolean;
-  onRowClick?: () => void;
+  onRowClick?: (e?:any) => void;
   // setChecked?:  ((value: string) => void) | undefined;
   onRowSelect?: (ids: number[], details: any) => void;
   setChecked?: any;

@@ -13,9 +13,9 @@ interface CustomDataGridProps {
   type?: string;
   buttonArray?: ButtonConfig[];
   isCheckbox?: boolean;
-  onRowClick?: () => void;
-  selectedIds?: number[];
-  setChecked?: any;
+  onRowClick?: (e?:any) => void;
+  selectedIds: number[];
+  setChecked: any;
   onRowSelect?: (ids: number[], details: any) => void;
   columnVisibilityModel?: any;
 }

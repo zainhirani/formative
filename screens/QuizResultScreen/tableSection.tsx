@@ -23,7 +23,7 @@ const quizResult = useQuizResultListing({})
 
  const columnsQuizResults: GridColDef[] = useMemo(() =>  [
   {
-    field: "quizNoSort",
+    field: "quizId",
     headerName: "Quiz No.",
     minWidth: 180,
     flex: 1,
@@ -49,20 +49,19 @@ const quizResult = useQuizResultListing({})
     },
   },
   {
-    field: "name",
+    field: "quiz_name",
     headerName: "Name",
     minWidth: 150,
     flex: 1,
-    valueGetter: (params) => params.row.quiz.name,
   },
   {
-    field: "course",
+    field: "course_name",
     headerName: "Course",
     minWidth: 150,
     flex: 1,
   },
   {
-    field: "folder",
+    field: "folders_name",
     headerName: "Folder",
     minWidth: 150,
     flex: 1,
@@ -73,7 +72,7 @@ const quizResult = useQuizResultListing({})
     minWidth: 150,
     flex: 1,
     renderCell: (params: any) => {
-      const status = params.row.quiz.status;
+      const status = params?.row?.status;
       return (
         <Grid container spacing={3} alignItems="center">
           {status === "Draft" ? (
@@ -130,7 +129,7 @@ const quizResult = useQuizResultListing({})
       return (
         <Grid container spacing={3}>
           <Grid item xs>
-            <Link href={APP_ROUTES.QUIZ_RESULTS + `/${params.row.id}`}>
+            <Link href={APP_ROUTES.QUIZ_RESULTS + `/${params?.row?.quizId}`}>
               <IconButton>
                 <Image
                   alt="quiz-logo"
