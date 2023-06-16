@@ -11,7 +11,7 @@ import Question from "components/QuizMultiQuestionsFormat";
 
 const QuestionsStepper = (props: any) => {
   const { handleChangeState } = props;
-  const timer = 120;
+  const timer = 20;
   const steps = questionData;
   const [activeStep, setActiveStep] = useState(0);
   const [completed, setCompleted] = useState(false);
