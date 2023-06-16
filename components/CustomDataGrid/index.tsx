@@ -7,15 +7,15 @@ import TypeThree from "./TypeThree";
 import TypeTwo from "./TypeTwo";
 
 interface CustomDataGridProps {
-  pageSizeData: number;
-  rows: TableRow[];
-  columns: TableColumn[];
-  type: string;
+  pageSizeData?: number;
+  rows?: TableRow[];
+  columns?: TableColumn[];
+  type?: string;
   buttonArray?: ButtonConfig[];
   isCheckbox?: boolean;
   onRowClick?: () => void;
-  selectedIds: number[];
-  setChecked: any;
+  selectedIds?: number[];
+  setChecked?: any;
   onRowSelect?: (ids: number[], details: any) => void;
   columnVisibilityModel?: any;
 }
