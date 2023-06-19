@@ -11,7 +11,7 @@ interface CustomSelectProps {
   controlText?: string;
   dropdownIcon?: ReactNode;
   onChange?: any;
-  value: object;
+  value?: object;
   isFetching?: boolean;
   isMulti?: boolean;
 }

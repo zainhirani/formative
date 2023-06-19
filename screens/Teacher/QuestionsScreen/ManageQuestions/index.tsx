@@ -24,7 +24,29 @@ import messages from "./messages";
 import CancelIcon from "@mui/icons-material/Cancel";
 import QuizQuestionFormat from "components/QuizQuestionFormat";
 import { UploadQuestions } from "components/UploadQuestions";
-const ManageQuestionsScreen = () => {
+import { useQuery } from "react-query";
+import { getCategories, getFolders } from "providers/Teacher_Questions/api";
+
+const TYPE_OPTIONS = [
+  { value: "SA", label: "SA" },
+  { value: "MCN", label: "MCN" },
+  { value: "MCR", label: "MCR" },
+  { value: "MSN", label: "MSN" },
+  { value: "MSR", label: "MSR" },
+  { value: "MA", label: "MA" },
+  { value: "F", label: "F" },
+];
+
+const ManageQuestions = () => {
+  const foldersData = useQuery(["FOLDERS"], getFolders);
+  const categoriesData = useQuery(["CATEGORIES"], getCategories);
+  const [selectedFolder, setSelectedFolder] = useState([]);
+  const [enumType, setEnumType] = useState({});
+  const [selectedfacultyCategoryIds, setSelectedFacultyCategoryIds] = useState(
+    [],
+  );
+  const [selectedCategory, setSelectedCategory] = useState([]);
+
   const { enqueueSnackbar } = useSnackbar();
   const faculty = useFormattedMessage(messages.faculty);
   const facultyPlaceholder = useFormattedMessage(messages.facultyPlaceholder);
@@ -43,8 +65,12 @@ const ManageQuestionsScreen = () => {
       setSelectedValues([...selectedValues, selectedValue]);
     }
   };
-  const handleRemoveValue = (value: string) => {
-    setSelectedValues(selectedValues.filter((v) => v !== value));
+  const handleRemoveValue = (value: any) => {
+    setSelectedFacultyCategoryIds(
+      selectedfacultyCategoryIds.filter(
+        (obj: any) => obj?.value !== value.value,
+      ),
+    );
   };
 
   const config = [
@@ -96,6 +122,7 @@ const ManageQuestionsScreen = () => {
           }}
         >
           <SelectBoxWrapper>
+            {/* Faculty */}
             <CustomSelect
               placeholder={facultyPlaceholder}
               controlText={faculty}
@@ -104,32 +131,48 @@ const ManageQuestionsScreen = () => {
             />
           </SelectBoxWrapper>
           <SelectBoxWrapper>
+            {/* Folder */}
             <CustomSelect
               placeholder={folderPlaceholder}
               controlText={folder}
               dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-              options={folderSelect}
+              options={foldersData?.data?.map((folder) => ({
+                label: folder.name,
+                value: folder.id,
+              }))}
+              value={selectedFolder}
+              onChange={(val) => setSelectedFolder(val)}
+              isFetching={foldersData?.isFetching}
             />
           </SelectBoxWrapper>
+          {/* Type */}
           <SelectBoxWrapper>
             <CustomSelect
               placeholder={typePlaceholder}
               controlText={type}
               dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-              options={typeSelect}
+              options={TYPE_OPTIONS}
             />
           </SelectBoxWrapper>
           <SelectBoxWrapper>
+            {/* Category */}
             <CustomSelect
-              placeholder={categoryPlaceholder}
-              controlText={category}
+              isMulti
+              placeholder={facultyPlaceholder}
+              controlText={faculty}
               dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-              options={categorySelect}
-              /* @ts-ignore */
-              onChange={handleSelectChange}
+              options={categoriesData?.data?.map((category) => ({
+                label: category.name,
+                value: category.id,
+              }))}
+              onChange={(val) => {
+                setSelectedFacultyCategoryIds(val);
+              }}
+              value={selectedfacultyCategoryIds}
             />
           </SelectBoxWrapper>
         </Box>
+        {/* Selected Categories */}
         <Box sx={{ display: "flex" }}>
           <SelectBoxWrapper sx={{ width: "max-content" }}>
             <Typography sx={{ color: (theme) => theme.palette.text.secondary }}>
@@ -138,16 +181,16 @@ const ManageQuestionsScreen = () => {
           </SelectBoxWrapper>
           <SelectBoxWrapper>
             <Box sx={{ display: "flex" }}>
-              {selectedValues.length > 0 ? (
-                selectedValues.map((value) => (
+              {selectedfacultyCategoryIds.length > 0 ? (
+                selectedfacultyCategoryIds.map((item, index) => (
                   <Box
                     sx={{ display: "flex", alignItems: "center" }}
-                    key={value}
+                    key={index}
                   >
-                    <Typography variant="body1">{value}</Typography>
+                    <Typography variant="body1">{item?.label}</Typography>
                     <IconButton
                       color="primary"
-                      onClick={() => handleRemoveValue(value)}
+                      onClick={() => handleRemoveValue(item)}
                     >
                       <CancelIcon />
                     </IconButton>
@@ -160,6 +203,7 @@ const ManageQuestionsScreen = () => {
           </SelectBoxWrapper>
         </Box>
       </BoxWrapper>
+      {/* Listing */}
       <BoxWrapper>
         {/* @ts-ignore */}
         <CustomDataGrid
@@ -175,4 +219,4 @@ const ManageQuestionsScreen = () => {
   );
 };
 
-export default ManageQuestionsScreen;
+export default ManageQuestions;
