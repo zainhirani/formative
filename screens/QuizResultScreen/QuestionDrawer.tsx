@@ -1,6 +1,7 @@
 import {useMemo} from 'react'
 import QuizQuestionFormat from "components/QuizQuestionFormat"
 import { useQuestionAttempQuestion } from "providers/QuestionAttempt"
+import { useAuthContext } from 'contexts/AuthContext'
 
 interface IQuestionDrawerProps {
     isOpen:boolean,
@@ -9,6 +10,7 @@ interface IQuestionDrawerProps {
 }
 
 const QuestionDrawer = ({isOpen,onClose,questionId}:IQuestionDrawerProps) => {
+  const { currentUser } = useAuthContext();
     const attemptQuestionListing = useQuestionAttempQuestion({questionId:questionId})
 
     const quizOptions = useMemo(() => {
@@ -29,7 +31,7 @@ const QuestionDrawer = ({isOpen,onClose,questionId}:IQuestionDrawerProps) => {
     return (
         <>
          <QuizQuestionFormat
-        title="Dr. Kevin B. this is how Question 10/2 appears to student"
+        title= {` ${currentUser.name} this is how Question ${attemptQuestionListing?.data?.question?.id} appears to student`}
         isOpen={isOpen}
          onClose={onClose}
         isShowScoreBar={false}

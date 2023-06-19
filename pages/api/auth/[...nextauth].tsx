@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialProvider from "next-auth/providers/credentials";
 // import { useLoginUser } from "providers/Auth";
-import { login } from "services/auth";
+import { getUser, login } from "services/auth";
 
 export default NextAuth({
   secret: "INp6HjGDyOpYnGAEdLoQSDDPKAlwLEdnDcCkFvA8QSPR",
@@ -47,6 +47,7 @@ export default NextAuth({
       }
 
       session.accessToken = token.accessToken;
+      session.user = token.user as any;
       // session.user = await getUser(token.accessToken as string);
       return Promise.resolve(session);
     },
@@ -57,9 +58,10 @@ export default NextAuth({
           accessToken: user.jwtToken,
         };
       }
-      // if (token.accessToken && !token.user) {
-      //   token.user = await getUser(token.accessToken as string);
-      // }
+
+      if (token.accessToken && !token.user) {
+        token.user = await getUser(token.accessToken as string);
+      }
       return Promise.resolve(token);
     },
   },

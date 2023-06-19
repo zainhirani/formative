@@ -18,3 +18,13 @@ export async function login({
     },
   });
 }
+
+export async function getUser(token: string) {
+  return service({
+    method: "GET",
+    url: "/user",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
