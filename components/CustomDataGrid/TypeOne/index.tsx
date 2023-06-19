@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
-import { Grid, Pagination } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import { Grid, Pagination, Stack } from "@mui/material";
+import { DataGrid, GridOverlay } from "@mui/x-data-grid";
 import { BoxPaginate, ButtonWrapper, ShowingBox } from "./Styled";
 import { ButtonConfig, TableColumn, TableRow } from "../type";
 
@@ -68,6 +68,14 @@ const TypeOne: React.FC<TypeOneProps> = ({
     page * pageSizeData,
   );
 
+  const CustomNoRowsOverlay = () => {
+    return (
+      <GridOverlay>
+        <div>No data found</div>
+      </GridOverlay>
+    );
+  };
+
   return (
     <>
       <Grid container>
@@ -90,6 +98,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
             }}
             columnVisibilityModel={columnVisibilityModel}
             {...props}
+            sx={{ minHeight: "400px" }}
           />
         </Grid>
         <BoxPaginate>

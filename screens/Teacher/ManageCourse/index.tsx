@@ -29,11 +29,12 @@ import FooterForm from "./FooterForm";
 const ManageCourseScreen = () => {
   const [selectedAudience, setSelectedAudience] = React.useState("");
   const [selectedClass, setSelectedClass] = React.useState("");
-  const [searchChange, setSearchChange] = React.useState("");
+  const [searchChange, setSearchChange] = React.useState();
   const [addCourse, setAddCourse] = useState("");
   const router = useRouter();
   const getCourseListing = useCourseListing({
-    queryParams: { SearchBy: searchChange, Limit: pageSizeManageCourse },
+    SearchBy: searchChange,
+    Limit: pageSizeManageCourse,
   });
   const createCourse = useCreateCourse();
   const deleteCourse = useCourseRemove();

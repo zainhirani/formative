@@ -42,6 +42,8 @@ import { useSnackbar } from "notistack";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import { BoxWrapper, ButtonWrapper } from "./Styled";
+import CustomeDatePicker from "components/CustomeDatePicker";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
 interface StyledFormControlLabelProps extends FormControlLabelProps {
   checked: boolean;
@@ -89,6 +91,7 @@ export const ProfileTab = ({}) => {
   const passwordPlaceholder = useFormattedMessage(messages.passwordPlaceholder);
   const hobbiesPlaceholder = useFormattedMessage(messages.hobbiesPlaceholder);
   const [math, setMath] = useState("Select an option for the list");
+  const [dobValue, setDobValue] = useState(null);
   const [experience, setExperience] = useState(
     profileDetail.data?.experience || 0,
   );
@@ -148,7 +151,7 @@ export const ProfileTab = ({}) => {
 
   const onSubmit = useCallback((data: any) => {
     profile.mutate({
-      date_of_birth: data.dob,
+      date_of_birth: dobValue?.toString(),
       experience: data.pharmacy,
       working_part_time: data.partTime === "yes" ? true : false,
       athlete: data.played,
@@ -195,6 +198,10 @@ export const ProfileTab = ({}) => {
     onSubmit,
   });
 
+  const handleDateChange = (date: any) => {
+    setDobValue(date);
+  };
+
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -204,17 +211,24 @@ export const ProfileTab = ({}) => {
               <InputLabelWrapper htmlFor="dob">
                 <FormattedMessage {...messages.dobLabel} />
               </InputLabelWrapper>
-              <TextField
-                id="dob"
-                name="dob"
-                placeholder={dobPlaceholder}
-                fullWidth
-                type="date"
-                value={values.dob}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                error={Boolean(touched.dob && errors.dob)}
-                variant="standard"
+              <CustomeDatePicker
+                value={dobValue}
+                onChange={() => {
+                  handleDateChange;
+                  handleChange;
+                }}
+                components={{ OpenPickerIcon: CalendarMonthIcon }}
+                sx={{
+                  ".MuiBox-root": { borderLeft: "none" },
+                  width: "100%",
+                  borderBottom: "1px solid",
+                  ".MuiSvgIcon-root": {
+                    color: (theme: any) => theme.palette.primary.main,
+                  },
+                  ".MuiInputBase-input": {
+                    padding: "0 10px 8px 0",
+                  },
+                }}
               />
               {touched.dob && errors.dob && (
                 <FormHelperText error id="standard-weight-helper-text-dob">
@@ -729,7 +743,7 @@ export const ProfileTab = ({}) => {
             }}
             startIcon={<HighlightOffIcon />}
             variant="contained"
-            onClick={()=>router.push("/dashboard")}
+            onClick={() => router.push("/dashboard")}
           >
             <FormattedMessage {...messages.cancel} />
           </ButtonWrapper>

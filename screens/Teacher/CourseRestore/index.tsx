@@ -62,9 +62,6 @@ const CourseRestore = () => {
       flex: 1,
       renderCell: (params: any) => {
         return params.value?.map((item: any) => item.programs);
-        // .slice(2, -2)
-        // .replaceAll(/[""]/g, "")
-        // .toUpperCase();
       },
     },
     {

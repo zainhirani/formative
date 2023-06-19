@@ -70,9 +70,9 @@ class MyApp extends App<{
     return fullProps;
   }
 
-  componentDidMount(): void {
-    loadSideEffects();
-  }
+  // componentDidMount(): void {
+  //   loadSideEffects();
+  // }
 
   render() {
     const {

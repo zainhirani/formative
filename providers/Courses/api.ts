@@ -9,7 +9,7 @@ export async function listing(
   return service({
     method: "GET",
     url: `/courses`,
-    ...props,
+    queryParams: props,
   });
 }
 
