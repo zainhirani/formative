@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import {
   Box,
+  CircularProgress,
   Grid,
   Table,
   TableBody,
@@ -20,24 +21,29 @@ import ListItemText from "@mui/material/ListItemText";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import SideDrawer from "components/Drawer";
+import Image from "theme/Image";
 
 type QuizQuestionFormatProps = {
   title?: string;
   questionContext?: string;
   actualQuestion?: string;
   quizOptions?: object[];
-  timeSpent?: string;
-  score?: string;
+  timeSpent?: string | number;
+  score?: string |number;
   isHeader?: boolean;
-  questionIdNum?: string;
+  questionIdNum?: string | number;
   avgTime?: string;
-  avgAttemps?: number;
+  avgAttemps?: number | string;
   difficulty?: string;
-  answerStats?: object[];
+  answerStats?: {key?:string,value?:any}[];
   isShowScoreBar: boolean;
   isOpen: boolean;
   children?: any;
   onClose: () => void;
+  loading?:boolean;
+  disable?:boolean;
+  isChecked?:boolean | number,
+  media?:string
 };
 
 const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
@@ -58,9 +64,13 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
   avgTime = "18 Sec",
   difficulty = "Hard",
   isShowScoreBar = true,
-  answerStats = [1],
+  answerStats ,
   onClose = () => {},
   isOpen = true,
+  disable,
+  loading,
+  isChecked,
+  media,
   children,
 }): JSX.Element => {
   const [checked, setChecked] = React.useState([0]);
@@ -90,7 +100,15 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
   // };
 
   return (
-    <SideDrawer open={isOpen} onClose={onClose} title={title}>
+    <SideDrawer open={isOpen} onClose={onClose} title={title} loading={loading}>
+
+      {loading ?  
+      
+      <Box sx={{display:'flex', alignItems:'center', justifyContent:'center',height:'100vh'}}>
+        <CircularProgress />
+      </Box>
+       :
+      <>
       {/* Header 4 Boxes */}
 
       {isHeader && (
@@ -225,13 +243,21 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
         sx={{
           width: "100%",
           maxWidth: { xs: 360, md: 500 },
-
+          
           paddingLeft: "10px",
         }}
       >
         <Typography variant="caption" display="block" gutterBottom>
           Choose the best answer
         </Typography>
+        {media? 
+        <Image
+            alt="quiz-image"
+            lazyLoadProps={{ height: 240 }}
+            src={media}
+            lazyLoad={true}
+            style={{ maxWidth: "100%", maxHeight:'240px' }}
+          /> : null}
         {quizOptions.map((value, index) => {
           // @ts-ignore
           const labelId = `checkbox-list-label-${value.id}`;
@@ -254,9 +280,10 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
                 >
                   <ListItemIcon sx={{ minWidth: "max-content" }}>
                     <Checkbox
+                    disabled={disable}
                       edge="start"
                       // checked={checked.indexOf(index) !== -1}
-                      checked={checked.indexOf(index) !== -1}
+                      checked={isChecked === index}
                       tabIndex={-1}
                       disableRipple
                       inputProps={{ "aria-labelledby": labelId }}
@@ -335,7 +362,8 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
         <TableContainer
           component={Paper}
           elevation={6}
-          sx={{ borderRadius: "5px", width: "60%", margin: "10px" }}
+          sx={{ borderRadius: "5px",  width: "100%",
+          maxWidth: { xs: 360, md: 500 }, margin: "10px" }}
         >
           <Table>
             <TableHead>
@@ -346,27 +374,29 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
                 >
                   # of times answered
                 </TableCell>
-                <TableCell sx={{ color: "inherit" }}>A</TableCell>
-                <TableCell sx={{ color: "inherit" }}>B</TableCell>
-                <TableCell sx={{ color: "inherit" }}>C</TableCell>
-                <TableCell sx={{ color: "inherit" }}>D</TableCell>
-                <TableCell sx={{ color: "inherit" }}>E</TableCell>
+                {answerStats?.map((item) => (
+
+                <TableCell sx={{ color: "inherit" }}>{item.key}</TableCell>
+                ))}
+               
               </TableRow>
             </TableHead>
             <TableBody>
               <TableRow>
                 <TableCell colSpan={isSmScreen ? 2 : 1}></TableCell>
-                <TableCell>2</TableCell>
-                <TableCell>3</TableCell>
-                <TableCell>4</TableCell>
-                <TableCell>5</TableCell>
-                <TableCell>6</TableCell>
+                {answerStats?.map((item) => (
+
+                <TableCell>{item.value}</TableCell>
+))}
+                
               </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
       ) : null}
       {children}
+      </>
+}
     </SideDrawer>
   );
 };

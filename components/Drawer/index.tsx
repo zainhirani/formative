@@ -10,12 +10,14 @@ import {
   HeaderWrapper,
   IconButtonWrapper,
 } from "./Styled";
+import { Skeleton } from "@material-ui/core";
 interface SideDrawerProps extends DrawerProps {
   open?: boolean;
   onClose?: () => void;
   children?: ReactNode;
   title?: string;
   isHelp?: boolean;
+  loading?:boolean
 }
 
 const SideDrawer: React.FC<SideDrawerProps> = ({
@@ -24,6 +26,7 @@ const SideDrawer: React.FC<SideDrawerProps> = ({
   children,
   title,
   isHelp,
+  loading,
   ...rest
 }) => {
   const theme = useTheme();
@@ -38,7 +41,8 @@ const SideDrawer: React.FC<SideDrawerProps> = ({
       {...rest}
     >
       <HeaderWrapper>
-        <Typography className="text">{title}</Typography>
+        {loading ? <Skeleton width={400}  /> :
+        <Typography className="text">{title}</Typography>  }
         <CloseIconWrapper>
           {isHelp ? (
             <Typography className="help-text">
