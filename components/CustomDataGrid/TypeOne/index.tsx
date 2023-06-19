@@ -89,6 +89,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
             onRowSelectionModelChange={(...e) => handleCheck(...e)}
             columnVisibilityModel={columnVisibilityModel}
             {...props}
+            sx={{minHeight:'400px'}}
           />
         </Grid>
         <BoxPaginate>

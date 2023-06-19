@@ -53,7 +53,7 @@ const TableSection = (props: any) => {
 
   console.log(selectNewCourse,'selectNewCourse')
 
-  const studentListing = useStudentListing({queryParams:{...(searchBy&&{searchBy:searchBy}),course:selectNewCourse,yop:yearOfGraduation?.toString(),program:program?.toString()}});
+  const studentListing = useStudentListing({yop:yearOfGraduation,program:program,SearchBy:searchBy});
  
 
   return (

@@ -72,6 +72,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
       ...provided,
       border: "none",
       padding: "0px",
+      zIndex:"9999"
     }),
 
     option: (provided: any, state: any) => ({

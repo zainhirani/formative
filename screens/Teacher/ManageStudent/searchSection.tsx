@@ -49,17 +49,17 @@ const cousrseData = useMemo(() => {
 
 //Select  Program Value
 const handleProgram = (programValue :any) =>{
-  setProgram(programValue.value)
+  setProgram(programValue?.value)
 }
 //Select Year Of Graduation Value
 const handleYearOfGraduation = (yearValue :any) =>{
-  setYearOfGraduation(yearValue.value)
+  setYearOfGraduation(yearValue?.value)
   console.log(yearValue)
 }
 
 const handleCourse = (courseValue :any) =>{
-  setCourse(courseValue.value)
-  console.log(courseValue.value,"jdlkfjsdlfkj")
+  setCourse(courseValue?.value)
+ 
 
 }
 

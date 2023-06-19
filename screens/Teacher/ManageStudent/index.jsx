@@ -12,7 +12,7 @@ const ManageStudents = () => {
   const [checked, setChecked] = useState(false);
   const [selectNewCourse, setSelectNewCourse] = useState("");
   const [userId,setUserId] = useState([])
-  const [searchChange, setSearchChange] = React.useState("");
+  const [searchChange, setSearchChange] = React.useState();
   
 
   return (

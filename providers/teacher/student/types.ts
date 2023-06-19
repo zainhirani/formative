@@ -14,7 +14,11 @@ export namespace Student {
   };
 
   //Listing
-  export type ListingProps = {};
+  export type ListingProps = {
+    yop?:number,
+    program?:string,
+    SearchBy?:string
+  };
   export type ListingResponse = [Item]
   export interface ListingAPIPayload extends ListingProps {}
 

@@ -100,7 +100,7 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
   // };
 
   return (
-    <SideDrawer open={isOpen} onClose={onClose} title={title}>
+    <SideDrawer open={isOpen} onClose={onClose} title={title} loading={loading}>
 
       {loading ?  
       

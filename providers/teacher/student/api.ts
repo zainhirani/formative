@@ -7,7 +7,8 @@ export async function listing(props?:Student.ListingAPIPayload):Promise<Student.
     return service ({
         method:'GET',
         url:`/user/students`,
-        ...props
+        queryParams:props
+        // ...props
     })
 }
 
