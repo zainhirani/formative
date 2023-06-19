@@ -6,7 +6,7 @@ import { BoxWrapper, SelectBoxWrapper } from "./Styled";
 
 interface CustomSelectProps {
   options: Array<{}>;
-  placeholder: string;
+  placeholder?: string;
   config?: string;
   controlText?: string;
   dropdownIcon?: ReactNode;
@@ -71,6 +71,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
       ...provided,
       border: "none",
       padding: "0px",
+      zIndex:99999
     }),
 
     option: (provided: any, state: any) => ({
@@ -94,6 +95,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
   return (
     <BoxWrapper>
       <AutoComplete
+      isClearable
         options={options}
         onChange={onChange}
         placeholder={placeholder}

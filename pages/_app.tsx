@@ -71,7 +71,7 @@ class MyApp extends App<{
   }
 
   componentDidMount(): void {
-    loadSideEffects();
+    // loadSideEffects();
   }
 
   render() {

@@ -12,12 +12,12 @@ import { Box, CircularProgress } from "@mui/material";
 import { signOut as logout, signIn, useSession } from "next-auth/react";
 import { AUTH_LOGIN_URL, TOKEN } from "configs";
 import { getAuthenticationToken, setAuthenticationHeader } from "services";
-import { register } from "services/auth";
+import { Register } from "providers/Auth/types";
 // import { FLEET_MANAGEMENT } from "constants/routes";
 // import OverlayLoader from "theme/Loader/OverlayLoader";
 
 interface AuthContextType {
-  currentUser: any;
+  currentUser: Register.Fields;
   signOut: () => void;
   signIn: (...args: any) => void;
 }
@@ -125,6 +125,7 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
       value={{
         signIn,
         signOut,
+        currentUser:session?.user
     
       }}
     >
