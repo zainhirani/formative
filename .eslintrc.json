@@ -1,54 +1,9 @@
 {
-  "extends": ["next/core-web-vitals", "plugin:prettier/recommended"],
-  "plugins": ["prettier"],
+  "extends": "next",
   "rules": {
-    "import/order": [
-      "error",
-      {
-        "groups": [
-          "builtin",
-          "external",
-          "internal"
-        ],
-        "pathGroups": [
-          {
-            "pattern": "jest",
-            "group": "external",
-            "position": "before"
-          },
-          {
-            "pattern": "react",
-            "group": "external",
-            "position": "before"
-          },
-          {
-            "pattern": "next/*",
-            "group": "external",
-            "position": "before"
-          },
-          {
-            "pattern": "@mui/*",
-            "group": "external",
-            "position": "before"
-          },
-          {
-            "pattern": "providers/*",
-            "group": "external",
-            "position": "before"
-          }
-        ],
-        "pathGroupsExcludedImportTypes": [
-          "react",
-          "next"
-        ],
-        "newlines-between": "ignore",
-        "alphabetize": {
-          "order": "asc",
-          "caseInsensitive": true
-        }
-      }
-    ],
-    // orders the items within a multiple member import declaration, ignores declarations because import/order sorts them
+    "react/no-unescaped-entities": "off",
+    "@next/next/no-page-custom-font": "off",
+    "import/order": "off",
     "sort-imports": [
       "error",
       {

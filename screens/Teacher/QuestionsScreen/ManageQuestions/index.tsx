@@ -24,7 +24,8 @@ import messages from "./messages";
 import CancelIcon from "@mui/icons-material/Cancel";
 import QuizQuestionFormat from "components/QuizQuestionFormat";
 import { UploadQuestions } from "components/UploadQuestions";
-const ManageQuestionsScreen = () => {
+
+const ManageQuestions = () => {
   const { enqueueSnackbar } = useSnackbar();
   const faculty = useFormattedMessage(messages.faculty);
   const facultyPlaceholder = useFormattedMessage(messages.facultyPlaceholder);
@@ -175,4 +176,4 @@ const ManageQuestionsScreen = () => {
   );
 };
 
-export default ManageQuestionsScreen;
+export default ManageQuestions;

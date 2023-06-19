@@ -1,9 +1,9 @@
 // @ts-nocheck
 
-import React, { useContext, useState } from "react";
+import React from "react";
 import App, { AppContext } from "next/app";
 import Head from "next/head";
-import { Router, useRouter } from "next/router";
+import { Router } from "next/router";
 import { SessionProvider } from "next-auth/react";
 import { SnackbarProvider } from "notistack";
 
@@ -17,22 +17,7 @@ import { AppStateProvider } from "contexts/AppStateContext";
 import { AuthContextProvider } from "contexts/AuthContext";
 import ThemeContextProvider from "contexts/ThemeContext";
 import { getLocale, getMessages } from "i18n";
-import { initFirebase } from "platform/initFirebase";
 import ThemeProvider from "theme/Provider";
-import { initAnalytics } from "../platform/analytics";
-
-const loadSideEffects = () => {
-  // firebase initialization
-  if (typeof window !== undefined) {
-    initFirebase()
-      .then(() => {
-        initAnalytics();
-      })
-      .catch((e) => {
-        console.warn(e);
-      });
-  }
-};
 
 const queryCache = new QueryCache();
 
