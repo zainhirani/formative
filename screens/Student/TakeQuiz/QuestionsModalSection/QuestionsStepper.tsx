@@ -27,6 +27,7 @@ const QuestionsStepper = (props: any) => {
 
   useEffect(() => {
     const timer = setInterval(() => {
+      // @ts-ignore
       setRemainingTime((prevTime) => {
         if (prevTime > 0) {
           return prevTime - 1;

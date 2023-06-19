@@ -11,9 +11,9 @@ import {
   IconButtonWrapper,
 } from "./Styled";
 interface SideDrawerProps extends DrawerProps {
-  open: boolean;
-  onClose: () => void;
-  children: ReactNode;
+  open?: boolean;
+  onClose?: () => void;
+  children?: ReactNode;
   title?: string;
   isHelp?: boolean;
 }

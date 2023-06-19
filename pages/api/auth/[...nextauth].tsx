@@ -22,7 +22,10 @@ export default NextAuth({
             password: credentials.password,
           });
           return Promise.resolve(
-            resp?.token ? { jwtToken: resp.token } : {},
+            resp?.token ? { jwtToken: resp?.token } : {},
+        
+         
+
           ) as any;
         } catch (e: any) {
           return Promise.reject(new Error(e?.msg || "Something Wrong"));
@@ -36,13 +39,19 @@ export default NextAuth({
   },
   callbacks: {
     async signIn({ user }: any) {
-      user.accessToken = user?.jwtToken;
-      return Promise.resolve(true);
+
+
+      if(user?.jwtToken){
+
+        return Promise.resolve(true);
+      }
+      return Promise.resolve(false);
     },
     async session({ session, token }: any) {
-      // if (!token.accessToken) {
-      //   return Promise.resolve(session);
-      // }
+
+      if (!token.accessToken) {
+        return Promise.resolve(session);
+      }
 
       session.accessToken = token.accessToken;
       // session.user = await getUser(token.accessToken as string);

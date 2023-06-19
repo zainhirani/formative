@@ -48,7 +48,6 @@ export default defineMessages({
   helpDescription: {
     id: `${scope}.helpDescription`,
     defaultMessage: "If you still need help then please send us an email to get email support. Thanks!",
-  },
-
+  }
   
 });
