@@ -11,6 +11,7 @@ import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCi
 import CustomSelect from "components/CustomSelect/CustomSelect";
 import { useSnackbar } from "notistack";
 import { class_of } from "mock-data/Teacher/ManageCourse";
+import { LoadingButtonWrapper } from "./Styled";
 
 const SearchBar = (props: any) => {
   const {
@@ -19,6 +20,7 @@ const SearchBar = (props: any) => {
     setSelectedClass,
     handleSubmitCourse,
     setSearchChange,
+    isLoading,
   } = props;
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
@@ -88,20 +90,30 @@ const SearchBar = (props: any) => {
         />
       </Box>
       <Box gridColumn="span 3">
-        <ButtonWrapper
+        <LoadingButtonWrapper
           startIcon={<AddCircleOutlineRoundedIcon />}
           variant="contained"
           disabled={checked ? false : true}
           onClick={handleSubmitCourse}
+          loadingPosition="start"
+          loading={isLoading}
           sx={{
+            width: { xs: "100%", md: "100%" },
+            ".MuiLoadingButton-loadingIndicator": {
+              top: "35%",
+              left: "20%",
+            },
             ":disabled": {
               background: (theme) => theme.palette.text.secondary,
               color: (theme) => theme.palette.primary.light,
             },
+            "&:hover": {
+              background: (theme) => theme.palette.secondary.main,
+            },
           }}
         >
           Add to course
-        </ButtonWrapper>
+        </LoadingButtonWrapper>
       </Box>
     </BoxWrapper>
   );

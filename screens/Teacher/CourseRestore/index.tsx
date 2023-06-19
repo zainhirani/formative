@@ -34,6 +34,7 @@ const CourseRestore = () => {
   const restoreCourse = useRestoreCourse();
 
   const [checked, setChecked] = useState(false);
+  const [selectedRowId, setSelectedRowId] = useState<number>(0);
 
   const showColumns = {
     id: false,
@@ -87,8 +88,12 @@ const CourseRestore = () => {
   ];
 
   const handleSelection = React.useCallback((ids: number[]) => {
-    setLastSelected(ids[ids.length - 1]);
-    setCheckedId([ids[ids?.length - 1]]);
+    if (ids.length === 0) {
+      setCheckedId([]);
+    } else {
+      setLastSelected(ids[ids.length - 1]);
+      setCheckedId([ids[ids.length - 1]]);
+    }
   }, []);
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -144,6 +149,11 @@ const CourseRestore = () => {
     }
   }, [restoreCourse.isSuccess]);
 
+  useEffect(() => {
+    checkedId.length === 0 && setSelectedRowId(0);
+    selectedRowId == undefined && setSelectedRowId(parseInt(checkedId));
+  }, [checkedId, selectedRowId]);
+
   return (
     // <PageLayout title="Courses"  icon={<HelpRoundedIcon />}>
     <Box>
@@ -161,6 +171,7 @@ const CourseRestore = () => {
           loading={getRestoreCourseListing.isFetching}
           selectedIds={checkedId}
           onRowSelect={handleSelection}
+          getSelectedId={(e) => setSelectedRowId(e?.[0]?.[e.length - 1])}
         />
       </TableWrapper>
       <Box

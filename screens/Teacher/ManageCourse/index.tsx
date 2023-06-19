@@ -24,11 +24,13 @@ import {
 import { useFormik } from "formik";
 import { useTargetCourse } from "providers/Courses/TargetCourse";
 import FooterButton from "./FooterButton";
+import FooterForm from "./FooterForm";
 
 const ManageCourseScreen = () => {
   const [selectedAudience, setSelectedAudience] = React.useState("");
   const [selectedClass, setSelectedClass] = React.useState("");
   const [searchChange, setSearchChange] = React.useState("");
+  const [addCourse, setAddCourse] = useState("");
   const router = useRouter();
   const getCourseListing = useCourseListing({
     queryParams: { SearchBy: searchChange, Limit: pageSizeManageCourse },
@@ -59,6 +61,15 @@ const ManageCourseScreen = () => {
     targetCourse.mutate(targetCourses);
   };
 
+  const handleAddCourse = () => {
+    createCourse.mutate({
+      course_name: addCourse,
+    });
+    setTimeout(() => {
+      setAddCourse("");
+    }, 3000);
+  };
+
   const handleDeleteCourse = () => {
     deleteCourse.mutate({ id: selectedRowId });
   };
@@ -71,11 +82,10 @@ const ManageCourseScreen = () => {
       setCheckedId([ids[ids.length - 1]]);
     }
   }, []);
-  console.log(checkedId, selectedRowId, "checkedId");
 
   useEffect(() => {
     if (createCourse.isSuccess) {
-      enqueueSnackbar(`Course "${values.course}" created successfully`, {
+      enqueueSnackbar(`Course "${addCourse}" created successfully`, {
         variant: "success",
         action: (key) => (
           <IconButton onClick={() => closeSnackbar(key)} size="small">
@@ -151,22 +161,10 @@ const ManageCourseScreen = () => {
     }
   }, [targetCourse.isError]);
 
-  const onSubmit = useCallback((data: any, { resetForm }: any) => {
-    createCourse.mutate({
-      course_name: data.course,
-    });
-    setTimeout(() => {
-      resetForm();
-    }, 3000);
-  }, []);
-
-  const { handleChange, handleSubmit, handleBlur, values, setFieldValue } =
-    useFormik({
-      initialValues: {
-        course: "",
-      },
-      onSubmit,
-    });
+  useEffect(() => {
+    checkedId.length === 0 && setSelectedRowId(0);
+    selectedRowId == undefined && setSelectedRowId(parseInt(checkedId));
+  }, [checkedId, selectedRowId]);
 
   return (
     // <PageLayout title="Courses"  icon={<HelpRoundedIcon />}>
@@ -177,6 +175,7 @@ const ManageCourseScreen = () => {
         setSelectedAudience={setSelectedAudience}
         handleSubmitCourse={handleSubmitCourse}
         setSearchChange={setSearchChange}
+        isLoading={targetCourse.isLoading}
       />
       <TableWrapper>
         <CustomDataGrid
@@ -201,52 +200,20 @@ const ManageCourseScreen = () => {
           justifyContent: "space-between",
         }}
       >
-        <form onSubmit={handleSubmit}>
-          <BoxWrapper display="grid" gridTemplateColumns="repeat(5, 1fr)">
-            <Box gridColumn="span 3">
-              <TextFieldStyled
-                id="course"
-                name="course"
-                placeholder="Enter Course Name here"
-                variant="outlined"
-                value={values.course}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                InputProps={{
-                  style: { border: "none", outline: "0px" },
-                }}
-              />
-            </Box>
-            <Box gridColumn="span 2">
-              <LoadingButtonWrapper
-                startIcon={<AddCircleOutlineRoundedIcon />}
-                variant="contained"
-                type="submit"
-                disabled={values.course === ""}
-                loading={createCourse.isLoading}
-                loadingPosition="start"
-                sx={{
-                  width: { xs: "100%", md: "max-content" },
-                  ".MuiLoadingButton-loadingIndicator": {
-                    top: "35%",
-                    left: "20%",
-                  },
-                  ":disabled": {
-                    background: (theme) => theme.palette.text.secondary,
-                    color: (theme) => theme.palette.primary.light,
-                  },
-                  "&:hover": {
-                    background: (theme) => theme.palette.secondary.main,
-                  },
-                }}
-              >
-                Create Course
-              </LoadingButtonWrapper>
-            </Box>
-          </BoxWrapper>
-        </form>
+        <BoxWrapper display="grid" gridTemplateColumns="repeat(5, 1fr)">
+          <FooterForm
+            handleAddCourse={handleAddCourse}
+            setAddCourse={setAddCourse}
+            isDisabled={addCourse === "" ? true : false}
+            isLoading={createCourse.isLoading}
+          />
+        </BoxWrapper>
         <Box>
-          <FooterButton checked={checked} deleteCourse={handleDeleteCourse} />
+          <FooterButton
+            deleteLoading={deleteCourse.isLoading}
+            checked={checked}
+            deleteCourse={handleDeleteCourse}
+          />
         </Box>
       </Box>
     </Box>

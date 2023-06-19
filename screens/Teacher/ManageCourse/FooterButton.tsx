@@ -1,16 +1,16 @@
 import React from "react";
-import { ButtonConfig } from "components/GroupedButton/types";
+import { LoadingButtonConfig } from "components/LoadingGroupedButton/types";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import RestoreFromTrashOutlinedIcon from "@mui/icons-material/RestoreFromTrashOutlined";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { Box } from "@material-ui/core";
 import { useRouter } from "next/router";
-import GroupedButton from "components/GroupedButton";
+import LoadingGroupedButton from "components/LoadingGroupedButton";
 
 const FooterButton = (props: any) => {
-  const { checked, deleteCourse } = props;
+  const { checked, deleteCourse, duplicateLoading, deleteLoading } = props;
   const router = useRouter();
-  const config: ButtonConfig[] = [
+  const config: LoadingButtonConfig[] = [
     {
       key: "restoreStudent",
       startIcon: <RestoreFromTrashOutlinedIcon />,
@@ -30,6 +30,7 @@ const FooterButton = (props: any) => {
       },
       onClick: () => {},
       disabled: checked ? false : true,
+      loading: duplicateLoading,
     },
     {
       key: "delete",
@@ -37,11 +38,12 @@ const FooterButton = (props: any) => {
       render: () => {
         return <Box>Delete</Box>;
       },
+      loading: deleteLoading,
       disabled: checked ? false : true,
       onClick: deleteCourse,
     },
   ];
-  return <GroupedButton config={config} />;
+  return <LoadingGroupedButton config={config} />;
 };
 
 export default FooterButton;
