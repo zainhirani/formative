@@ -17,9 +17,15 @@ import { GridColDef } from "@mui/x-data-grid";
 import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
 import messages from "./messages";
 
+interface TableSectionProps {
+  quizName?:string,
+  courseId?:number,
+  folderId?:number,
 
-const TableSection = () => {
-const quizResult = useQuizResultListing({})
+}
+
+const TableSection = ({quizName,courseId,folderId}:TableSectionProps) => {
+const quizResult = useQuizResultListing({quizName,courseId,folderId})
 
  const columnsQuizResults: GridColDef[] = useMemo(() =>  [
   {
@@ -75,7 +81,7 @@ const quizResult = useQuizResultListing({})
       const status = params?.row?.status;
       return (
         <Grid container spacing={3} alignItems="center">
-          {status === "Draft" ? (
+          {status !== "COMPLETE" ? (
             <Grid item xs>
               <Box
                 sx={{
@@ -154,7 +160,7 @@ const quizResult = useQuizResultListing({})
         columns={columnsQuizResults}
         pageSizeData={pageSizeManageQuiz}
         type={"1"}
-        loading={quizResult?.isFetching}
+        loading={quizResult?.isFetching}   
       />
     </BoxWrapper>
   );

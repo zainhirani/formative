@@ -37,7 +37,12 @@ export namespace QuizResult {
     }
 
       //Listing
-  export type ListingProps = {};
+  export type ListingProps = {
+    quizName?:string,
+    courseId?:number,
+    folderId?:number
+
+  };
   export type ListingResponse = Item[]
   export interface ListingAPIPayload extends ListingProps {}
 

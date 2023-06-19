@@ -10,3 +10,12 @@ import { QuestionAttempt } from "./types";
       url: `/question-attempt/attempts/${props.quizId}/student/${props.userId}`,
     });
   }
+
+  export async function questionAttemptListing(
+    props: QuestionAttempt.ListingAPIPayload,
+  ): Promise<QuestionAttempt.ListingResponse> {
+    return service({
+      method: "GET",
+      url: `/question-attempt/${props.questionId}`,
+    });
+  }

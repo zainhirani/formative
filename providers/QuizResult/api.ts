@@ -4,7 +4,8 @@ import { QuizResult } from "./types";
 export async function listing(props?:QuizResult.ListingAPIPayload):Promise<QuizResult.ListingResponse> {
     return service ({
         method:'GET',
-        url:`/quiz-result`
+        url:`/quiz-result`,
+        queryParams:props
     })
 }
 

@@ -27,3 +27,10 @@ export function useStudentAttempQuestion(
     return useQuery(getKeyFromProps(props, "DETAIL"), () => api.studentAttemptListing(props),{enabled:
     !!props.userId && !!props.quizId});
   }
+
+  export function useQuestionAttempQuestion(
+    props: QuestionAttempt.ListingProps,
+  ): UseQueryResult<QuestionAttempt.ListingResponse> {
+    return useQuery(getKeyFromProps(props, "DETAIL"), () => api.questionAttemptListing(props),{enabled:
+    !!props.questionId});
+  }

@@ -8,7 +8,7 @@ import TypeTwo from "./TypeTwo";
 
 interface CustomDataGridProps {
   pageSizeData?: number;
-  rows?: TableRow[];
+  rows?: any[] | TableRow[];
   columns?: TableColumn[];
   type?: string;
   buttonArray?: ButtonConfig[];

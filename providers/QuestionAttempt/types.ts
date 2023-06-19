@@ -7,8 +7,8 @@ export type Item = {
         id:number,
         title:string,
         detail:string,
-        media?:string | null,
-        options:string,
+        media?:string ,
+        option:string,
         answer:string
     }
 }
@@ -21,4 +21,29 @@ export type StudentListingProps = {
 }
 export type StudentListingResponse = Item[]
 export interface StudentListingAPIPayload extends StudentListingProps {}
+
+
+// attempt question listinf
+
+export type ListingProps = {
+    questionId:string 
+}
+export type ListingResponse = {
+    optionStatistics:{}
+    averageAttempts:string,
+    averageTime:string,
+    averageScore:string,
+    difficulty:string,
+    question:{
+        id:number,
+        title:string,
+        detail:string,
+        media?:string ,
+        option:string,
+        answer:string
+    }
+
+}
+export interface ListingAPIPayload extends ListingProps {}
+
 }
