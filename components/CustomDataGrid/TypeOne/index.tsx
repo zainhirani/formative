@@ -69,7 +69,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
     (page - 1) * pageSizeData,
     page * pageSizeData,
   );
-
+console.log(paginatedRows,"paginatedRows")
   return (
     <>
       <Grid container>

@@ -28,8 +28,9 @@ const SearchSection = (props: any) => {
   
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { checked,setProgram,setYearOfGraduation, setCourse,userIds,selectedCourse,setSearchChange } = props;
+  console.log(selectedCourse,"selectedCourse")
   const searchCourse = useFormattedMessage(messages.searchCourse);
-  
+
 
 //Course data 
 const courseListing = useCourseListing({});
