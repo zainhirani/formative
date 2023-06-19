@@ -16,6 +16,12 @@ const GroupedButton: FC<GroupedButtonProps> = ({ config }) => {
           onClick={button?.onClick}
           startIcon={button?.startIcon}
           disabled={button?.disabled}
+          sx={{
+            ":disabled": {
+              background: (theme) => theme.palette.text.secondary,
+              color: (theme) => theme.palette.primary.light,
+            },
+          }}
         >
           {button?.render()}
         </ButtonWrapper>

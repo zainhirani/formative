@@ -1,91 +1,196 @@
-import React, { useState } from "react";
-import PageLayout from "components/PageLayout";
-import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
-import { Box, Input, Button, IconButton } from "@mui/material";
-import SearchSection from "../ManageQuizScreen/searchSection";
+import React, { useCallback, useEffect, useState, memo } from "react";
+import { Box, IconButton } from "@mui/material";
 import {
   TextFieldStyled,
-  ButtonWrapper,
   BoxWrapper,
   TableWrapper,
+  LoadingButtonWrapper,
 } from "./Styled";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
-import GroupedButton from "components/GroupedButton";
-import { ButtonConfig } from "components/GroupedButton/types";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import RestoreFromTrashOutlinedIcon from "@mui/icons-material/RestoreFromTrashOutlined";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import CustomDataGrid from "components/CustomDataGrid";
 import {
   columnsManageCourse,
   pageSizeManageCourse,
-  rowsManageCourse,
 } from "mock-data/Teacher/ManageCourse";
 import { useSnackbar } from "notistack";
 import { useRouter } from "next/router";
 import SearchBar from "./searchBar";
 import CloseIcon from "@mui/icons-material/Close";
+import {
+  useCourseListing,
+  useCourseRemove,
+  useCreateCourse,
+} from "providers/Courses";
+import { useFormik } from "formik";
+import { useTargetCourse } from "providers/Courses/TargetCourse";
+import FooterButton from "./FooterButton";
+import FooterForm from "./FooterForm";
 
 const ManageCourseScreen = () => {
+  const [selectedAudience, setSelectedAudience] = React.useState("");
+  const [selectedClass, setSelectedClass] = React.useState("");
+  const [searchChange, setSearchChange] = React.useState("");
+  const [addCourse, setAddCourse] = useState("");
   const router = useRouter();
+  const getCourseListing = useCourseListing({
+    queryParams: { SearchBy: searchChange, Limit: pageSizeManageCourse },
+  });
+  const createCourse = useCreateCourse();
+  const deleteCourse = useCourseRemove();
+  const targetCourse = useTargetCourse();
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [checked, setChecked] = useState(false);
-  const [selectedRows, setSelectedRows] = useState([]);
-
-  const config: ButtonConfig[] = [
+  const [checkedId, setCheckedId] = useState<number[]>([]);
+  const [lastSelected, setLastSelected] = useState(-1);
+  const [selectedRowId, setSelectedRowId] = useState<number>(0);
+  const showColumns = {
+    id: false,
+    course_name: true,
+    target_students: true,
+  };
+  const targetCourses: any = [
     {
-      key: "addStudents",
-      startIcon: <RestoreFromTrashOutlinedIcon />,
-      render: () => {
-        return <Box>Restore</Box>;
-      },
-      onClick: () => {
-        // console.log("Add Students");
-        router.push("/teacher/courses/restore");
-      },
-    },
-    {
-      key: "save",
-      startIcon: <ContentCopyIcon />,
-      render: () => {
-        return <Box>Duplicate</Box>;
-      },
-      onClick: () => {
-        // console.log("Save");
-      },
-    },
-    {
-      key: "delete",
-      startIcon: <DeleteForeverIcon />,
-      render: () => {
-        return <Box>Delete</Box>;
-      },
-      onClick: () => {
-        // console.log("Selected Rows:", selectedRows);
-        enqueueSnackbar("Selected course has been successfully deleted.", {
-          variant: "error",
-          action: (key) => (
-            <IconButton onClick={() => closeSnackbar(key)} size="small">
-              <CloseIcon sx={{ color: "#fff" }} />
-            </IconButton>
-          ),
-        });
-      },
+      courseId: selectedRowId,
+      programs: selectedAudience,
+      clas: selectedClass.toString(),
     },
   ];
+
+  const handleSubmitCourse = () => {
+    targetCourse.mutate(targetCourses);
+  };
+
+  const handleAddCourse = () => {
+    createCourse.mutate({
+      course_name: addCourse,
+    });
+    setTimeout(() => {
+      setAddCourse("");
+    }, 3000);
+  };
+
+  const handleDeleteCourse = () => {
+    deleteCourse.mutate({ id: selectedRowId });
+  };
+
+  const handleSelection = React.useCallback((ids: number[]) => {
+    if (ids.length === 0) {
+      setCheckedId([]);
+    } else {
+      setLastSelected(ids[ids.length - 1]);
+      setCheckedId([ids[ids.length - 1]]);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (createCourse.isSuccess) {
+      enqueueSnackbar(`Course "${addCourse}" created successfully`, {
+        variant: "success",
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)} size="small">
+            <CloseIcon sx={{ color: "#fff" }} />
+          </IconButton>
+        ),
+      });
+    }
+  }, [createCourse.isSuccess]);
+
+  useEffect(() => {
+    if (createCourse.isError) {
+      enqueueSnackbar("Can't add course at the moment.", {
+        variant: "error",
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)} size="small">
+            <CloseIcon sx={{ color: "#fff" }} />
+          </IconButton>
+        ),
+      });
+    }
+  }, [createCourse.isError]);
+
+  useEffect(() => {
+    if (deleteCourse.isSuccess) {
+      enqueueSnackbar("Selected course has been successfully deleted.", {
+        variant: "error",
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)} size="small">
+            <CloseIcon sx={{ color: "#fff" }} />
+          </IconButton>
+        ),
+      });
+    }
+  }, [deleteCourse.isSuccess]);
+
+  useEffect(() => {
+    if (deleteCourse.isError) {
+      enqueueSnackbar("Can't delete course.", {
+        variant: "error",
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)} size="small">
+            <CloseIcon sx={{ color: "#fff" }} />
+          </IconButton>
+        ),
+      });
+    }
+  }, [deleteCourse.isError]);
+
+  useEffect(() => {
+    if (targetCourse.isSuccess) {
+      enqueueSnackbar("Updated selected courses and addedd to new course.", {
+        variant: "success",
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)} size="small">
+            <CloseIcon sx={{ color: "#fff" }} />
+          </IconButton>
+        ),
+      });
+    }
+  }, [targetCourse.isSuccess]);
+
+  useEffect(() => {
+    if (targetCourse.isError) {
+      enqueueSnackbar("Can't update the course.", {
+        variant: "error",
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)} size="small">
+            <CloseIcon sx={{ color: "#fff" }} />
+          </IconButton>
+        ),
+      });
+    }
+  }, [targetCourse.isError]);
+
+  useEffect(() => {
+    checkedId.length === 0 && setSelectedRowId(0);
+    selectedRowId == undefined && setSelectedRowId(parseInt(checkedId));
+  }, [checkedId, selectedRowId]);
+
   return (
     // <PageLayout title="Courses"  icon={<HelpRoundedIcon />}>
     <Box>
-      <SearchBar />
+      <SearchBar
+        checked={checked}
+        setSelectedClass={setSelectedClass}
+        setSelectedAudience={setSelectedAudience}
+        handleSubmitCourse={handleSubmitCourse}
+        setSearchChange={setSearchChange}
+        isLoading={targetCourse.isLoading}
+      />
       <TableWrapper>
         <CustomDataGrid
-          rows={rowsManageCourse}
+          rows={getCourseListing?.data || []}
+          getRowId={(row: any) => row.id}
           columns={columnsManageCourse}
           pageSizeData={pageSizeManageCourse}
           type={"1"}
           isCheckbox={true}
           setChecked={setChecked}
+          columnVisibilityModel={showColumns}
+          loading={getCourseListing.isFetching}
+          selectedIds={checkedId}
+          onRowSelect={handleSelection}
+          getSelectedId={(e) => setSelectedRowId(e?.[0]?.[e.length - 1])}
         />
       </TableWrapper>
       <Box
@@ -96,26 +201,19 @@ const ManageCourseScreen = () => {
         }}
       >
         <BoxWrapper display="grid" gridTemplateColumns="repeat(5, 1fr)">
-          <Box gridColumn="span 3">
-            <TextFieldStyled
-              placeholder="Enter Course Name here"
-              variant="outlined"
-              InputProps={{
-                style: { border: "none", outline: "0px" },
-              }}
-            />
-          </Box>
-          <Box gridColumn="span 2">
-            <ButtonWrapper
-              startIcon={<AddCircleOutlineRoundedIcon />}
-              variant="contained"
-            >
-              Create Course
-            </ButtonWrapper>
-          </Box>
+          <FooterForm
+            handleAddCourse={handleAddCourse}
+            setAddCourse={setAddCourse}
+            isDisabled={addCourse === "" ? true : false}
+            isLoading={createCourse.isLoading}
+          />
         </BoxWrapper>
         <Box>
-          <GroupedButton config={config} />
+          <FooterButton
+            deleteLoading={deleteCourse.isLoading}
+            checked={checked}
+            deleteCourse={handleDeleteCourse}
+          />
         </Box>
       </Box>
     </Box>
@@ -123,4 +221,4 @@ const ManageCourseScreen = () => {
   );
 };
 
-export default ManageCourseScreen;
+export default memo(ManageCourseScreen);

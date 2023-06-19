@@ -18,6 +18,7 @@ import Image from "theme/Image";
 import { COMMON_MENU, STUDENT_MENU, TEACHER_MENU } from "./sidebarData";
 import SidebarMultiMenuItem from "./SidebarIMultiMenuItem";
 import { DrawerHeader } from "./Styled";
+import { useAuthContext } from "contexts/AuthContext";
 
 interface BarComponentProps {
   open?: boolean;
@@ -26,6 +27,8 @@ interface BarComponentProps {
 
 const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
   const router = useRouter();
+  const signOut = useAuthContext();
+
   let MENU_ITEMS = 2 === 2 ? TEACHER_MENU : STUDENT_MENU;
   let COMMON_MENU_ITEMS = [COMMON_MENU.profile, COMMON_MENU.settings];
 
@@ -51,10 +54,10 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
             lazyLoad={true}
           />
         </Box>
-        {/* 
+        {/*
         <IconButton onClick={clickHandler}>
           <MenuIcon sx={{ color: (theme) => theme.palette.primary.light }} />
-        </IconButton> 
+        </IconButton>
         */}
       </DrawerHeader>
 
@@ -161,8 +164,14 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
       {/* Logout Button */}
       <List>
         <ListItem disablePadding>
-          <Link href="#" passHref={true}>
-            <ListItemButton>
+          <Link href="" passHref={true}>
+            <ListItemButton
+              onClick={() => {
+                signOut;
+                router.push("/login");
+                localStorage.clear();
+              }}
+            >
               <ListItemIcon
                 sx={{
                   color: (theme) => theme.palette.primary.light,

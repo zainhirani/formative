@@ -6,7 +6,7 @@ import { BoxWrapper, SelectBoxWrapper } from "./Styled";
 
 interface CustomSelectProps {
   options: Array<{}>;
-  placeholder: string;
+  placeholder?: string;
   config?: string;
   controlText?: string;
   dropdownIcon?: ReactNode;
@@ -114,6 +114,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
         }}
         customStyles={style}
         className="custom-select"
+        value={value}
       />
     </BoxWrapper>
   );
