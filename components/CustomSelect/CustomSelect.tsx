@@ -11,6 +11,7 @@ interface CustomSelectProps {
   controlText?: string;
   dropdownIcon?: ReactNode;
   onChange?: any;
+  value?: any;
 }
 
 const CustomDropdownIndicator = (props: any) => {
@@ -71,7 +72,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
       ...provided,
       border: "none",
       padding: "0px",
-      zIndex:99999
+      zIndex:"9999"
     }),
 
     option: (provided: any, state: any) => ({
@@ -93,7 +94,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
   };
 
   return (
-    <BoxWrapper>
+    <BoxWrapper sx={{zIndex:99999}}>
       <AutoComplete
       isClearable
         options={options}
