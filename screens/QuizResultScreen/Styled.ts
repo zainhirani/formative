@@ -24,6 +24,7 @@ export const TableWrapper = styled(MuiBox)<BoxProps>(
       overflow: "scroll",
       marginBottom: "20px",
       height: "40vh",
+      minHeight:'400px',
       marginBotton: "20px",
       borderRadius: "5px",
       boxShadow: "0px 0px 40px rgba(0, 0, 0, 0.1)",
@@ -44,6 +45,7 @@ export const BoxPaginate = styled(MuiBox)<BoxProps>(
       marginTop: "30px",
       marginBottom: "20px",
       width: "100%",
+      justifyContent:'space-between',
       background: 'linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 45%, rgba(255,255,255,0) 100%)',
       '.customPagination':{
         "button": {
@@ -124,3 +126,10 @@ export const ButtonWrapper = styled(Button)<ButtonProps>(
       width: "100%",
     } as any),
 ) as (props: ButtonProps) => JSX.Element;
+
+export const ShowingBox = styled(MuiBox)<BoxProps>(
+  ({ theme }) =>
+    ({
+      marginRight: "20px",
+    } as any),
+) as (props: BoxProps) => JSX.Element;

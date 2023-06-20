@@ -6,7 +6,8 @@ import { Course } from "./types";
 export async function listing(props?:Course.ListingAPIPayload):Promise<Course.ListingResponse> {
     return service ({
         method:'GET',
-        url:`/courses`
+        url:`/courses`,
+        queryParams:props
     })
 }
 

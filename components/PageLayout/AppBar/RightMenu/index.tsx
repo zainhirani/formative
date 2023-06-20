@@ -4,8 +4,10 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { USERIMAGE } from "configs";
+import { useAuthContext } from "contexts/AuthContext";
 
 const RightMenu = () => {
+  const { currentUser } = useAuthContext();
   return (
     <>
       {/* <ThemeSwitcher /> */}
@@ -33,7 +35,7 @@ const RightMenu = () => {
             fontWeight: "400",
           }}
         >
-          Hi, Kevin B.
+          Hi, {currentUser?.name}.
         </Typography>
       </Box>
     </>

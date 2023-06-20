@@ -29,7 +29,7 @@ import { useRouter } from "next/router";
 import { TOKEN } from "configs";
 
 const validationSchema = Yup.object().shape({
-  email: Yup.string().required().label("User Name"),
+  email: Yup.string().required().email().label("Email"),
   password: Yup.string().required().min(6).label("Password"),
 });
 
@@ -41,32 +41,33 @@ const LoginForm = () => {
   const [loading, setLoading] = useState(false);
 
   const onSubmit = useCallback(async (data: any) => {
+    const resp: any = await signIn("credentials", {
+      ...data,
+      redirect: false,
+    });
     try {
       setLoading(true);
-
-      const response: any = await signIn("credentials", {
-        ...data,
-        redirect: false,
-      });
-      setLoading(true);
-      if (!response?.ok) {
+      if (!resp?.ok) {
         setLoading(false);
         throw new Error("Request failed");
       }
-      // setLoading(false);
-      router.push("/dashboard");
-      enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
-        variant: "success",
-      });
-      localStorage.setItem(TOKEN, response?.data.token);
+      if (!resp.error) {
+        router.push("/dashboard");
+        enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
+          variant: "success",
+        });
+        // localStorage.setItem(TOKEN, resp?.data.token);
+      }
     } catch (error: any) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // enqueueSnackbar(errorMessage, {
-      //   variant: "error",
-      // });
-      console.log(errorMessage, "errorMessage");
+      if (resp.error) {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        enqueueSnackbar("Something went wrong", {
+          variant: "error",
+        });
+      }
     }
+    console.log(resp, "resp");
   }, []);
 
   // use formik

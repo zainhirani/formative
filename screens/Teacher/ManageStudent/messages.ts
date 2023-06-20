@@ -41,4 +41,8 @@ export default defineMessages({
     id: `${scope}.successMessage`,
     defaultMessage: "All selected students are enrolled in the selected course.",
   },
+  errorMessage: {
+    id: `${scope}.errorMessage`,
+    defaultMessage: "Error in enrolling student",
+  },
 });

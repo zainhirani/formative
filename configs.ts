@@ -13,6 +13,7 @@ export const NEXT_PUBLIC_MODE_ENV =
   process.env.NEXT_PUBLIC_MODE_ENV === "development";
 
 export const AUTH_LOGIN_URL = process.env.NEXT_PUBLIC_AUTH_LOGIN_URL || '/login';
+export const AUTH_SIGNUP_URL = process.env.NEXT_PUBLIC_AUTH_SIGNUP_URL || '/register';
 
 export const PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api-formative.appnofy.com/v1';
 export const LOGINBG = "/LoginBackGround.png";
