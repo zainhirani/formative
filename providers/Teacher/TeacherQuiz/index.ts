@@ -74,9 +74,10 @@ export function useScoringListing(
 
 //Scoring By ID
 export function useScoringByID(
-  props?: Quiz.ScoringByIDProps,
+  id:any
 ): UseQueryResult<Quiz.ScoringByIDResponse> {
-  return useQuery("QUERY_KEYS.SCORING_LISTING_id", () => api.getScoringByID(props),{
-    enabled:Boolean(props?.scoringId)
-  });
+
+  // console.log(id,"props id");
+  
+  return useQuery("QUERY_KEYS.SCORING_LISTING_ID", () => api.getScoringByID(id));
 }

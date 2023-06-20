@@ -27,6 +27,7 @@ import {
   useScoringByID,
   useScoringListing,
 } from "providers/Teacher/TeacherQuiz";
+import { useRouter } from "next/router";
 
 interface MyData {
   dynamicData: object;
@@ -41,23 +42,33 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const CusQuizDetails = (props: any) => {
   const { handleChange, setFieldValue, values } = props;
+  const router = useRouter();
+  const { id: quizEditId } = router.query;
   const scoringList = useScoringListing();
   const [scoringId, setScoringId] = useState(null);
   const {
     isLoading,
     data: scoringByIdData,
-    refetch: cusRefetch,
-  } = useScoringByID({
-    id: scoringId ? scoringId : null,
-    scoringId,
-  });
+    refetch,
+  } = useScoringByID(scoringId);
   const data = scoringByIdData?.dynamicData;
+  // console.log(values, "values");
 
-  // console.log(data, "data");
+  // Edit Page
+  useEffect(() => {
+    if (quizEditId) {
+      // console.log("useEffect");
+
+      var updatedId = values.scoringId.value;
+      // setScoringId(updatedId);
+      refetch(updatedId);
+    }
+  }, [values.scoringId.value]);
+  // Edit Page
 
   useEffect(() => {
     if (scoringId) {
-      cusRefetch(scoringId);
+      refetch(scoringId);
     }
   }, [scoringId]);
 
@@ -113,6 +124,7 @@ const CusQuizDetails = (props: any) => {
                 name="time"
                 fullWidth
                 type="number"
+                value={values?.timeLimitPerSec}
                 defaultValue={0}
                 inputProps={{ min: 0 }}
                 variant="standard"

@@ -62,163 +62,59 @@ const DraftQuizScreen: NextPage = () => {
     setFieldValue,
   } = useFormik({
     initialValues: {
-      name: "",
-      reviewable: "",
+      name: quizEditId ? quizByIdData?.name : null,
+      reviewable: quizEditId ? quizByIdData?.reviewable : null,
       courseId: {
-        value: "",
-        label: "",
+        value: quizEditId ? quizByIdData?.courses?.id : null,
+        label: quizEditId ? quizByIdData?.courses?.course_name : null,
       },
       folderId: {
-        value: "",
-        label: "",
+        value: quizEditId ? quizByIdData?.folders?.id : null,
+        label: quizEditId ? quizByIdData?.folders?.name : null,
       },
-      timeLimitPerSec: "",
+      timeLimitPerSec: quizEditId ? quizByIdData?.timeLimitPerSec : null,
       status: {
-        value: "",
-        label: "",
+        value: quizEditId ? quizByIdData?.status : null,
+        label: quizEditId ? quizByIdData?.status : null,
       },
       scoringId: {
-        value: "",
-        label: "",
+        value: quizEditId ? quizByIdData?.scoring?.id : null,
+        label: quizEditId ? quizByIdData?.scoring?.scheme : null,
       },
-      start_time: "",
-      end_time: "",
-      questionsId: "",
-      // firstName: registerDetail.data?.first_name || "",
+      start_time: quizEditId ? quizByIdData?.start_time : null,
+      end_time: quizEditId ? quizByIdData?.end_time : null,
+      questionsId: quizEditId ? quizByIdData?.questions : null,
+      // firstName: registerDetail.data?.first_name || null,
     },
     // validationSchema,
     enableReinitialize: true,
     onSubmit,
   });
-  console.log(values, "values");
-
-  // Quiz Data By id Memorize
-  const quizDataById = React.useMemo(() => {
-    return quizByIdData;
-  }, [quizByIdData]);
-  // Quiz Data By id Memorize
-
-  useEffect(() => {
-    console.log(quizByIdData);
-    if (quizByIdData?.id) {
-      setFieldValue("name", quizByIdData.name);
-      setFieldValue("reviewable", quizByIdData.reviewable);
-      setFieldValue("courseId", {
-        value: quizByIdData?.courses?.id,
-        label: quizByIdData?.courses?.course_name,
-      });
-      setFieldValue("folderId", {
-        value: quizByIdData?.folders?.id,
-        label: quizByIdData?.folders?.name,
-      });
-      setFieldValue("timeLimitPerSec", quizByIdData.timeLimitPerSec);
-      setFieldValue("status", {
-        value: quizByIdData.status,
-        label: quizByIdData.status,
-      });
-      setFieldValue("scoringId", {
-        value: quizByIdData?.scoring?.id,
-        label: quizByIdData?.scoring?.scheme,
-      });
-      setFieldValue("start_time", quizByIdData.start_time);
-      setFieldValue("end_time", quizByIdData.end_time);
-      setFieldValue("questionsId", quizByIdData.questions);
-    }
-  }, [quizByIdData]);
-
-  // Filters Com
-  const mValuesForName = React.useMemo(() => {
-    return {
-      name: values.name,
-    };
-  }, [values.name]);
-
-  const mValuesForCourseId = React.useMemo(() => {
-    return {
-      courseId: values.courseId,
-    };
-  }, [values.courseId]);
-  const mValuesForFolderId = React.useMemo(() => {
-    return {
-      folderId: values.folderId,
-    };
-  }, [values.folderId]);
-  const mValuesForStatus = React.useMemo(() => {
-    return {
-      status: values.status,
-    };
-  }, [values.status]);
-  // Filters Com
-
-  // CusQuizDetails Com
-  const mValuesForScoringId = React.useMemo(() => {
-    return {
-      scoringId: values.scoringId,
-    };
-  }, [values.scoringId]);
-
-  const mValuesForReviewable = React.useMemo(() => {
-    return {
-      reviewable: values.reviewable,
-    };
-  }, [values.reviewable]);
-
-  const mValuesForTimeLimitPerSec = React.useMemo(() => {
-    return {
-      timeLimitPerSec: values.timeLimitPerSec,
-    };
-  }, [values.timeLimitPerSec]);
-  // CusQuizDetails Com
-
-  // TableSection Com
-  const mValuesForStartTime = React.useMemo(() => {
-    return {
-      start_time: values.start_time,
-    };
-  }, [values.start_time]);
-
-  const mValuesForEndTime = React.useMemo(() => {
-    return {
-      end_time: values.end_time,
-    };
-  }, [values.end_time]);
-
-  const mValues = React.useMemo(() => {
-    return values;
-  }, [values]);
-  // TableSection Com
-
+  // console.log(values, "values");
   return (
     // <PageLayout title="All Quiz" icon={<ArrowForwardIcon />}>
     <Box>
       <form onSubmit={handleSubmit}>
         <FiltersSection
           setFieldValue={setFieldValue}
-          // mValuesForName={mValuesForName}
-          // mValuesForCourseId={mValuesForCourseId}
-          // mValuesForFolderId={mValuesForFolderId}
-          // mValuesForStatus={mValuesForStatus}
-          values={mValues}
+          values={values}
           setNameInput={setNameInput}
           nameInput={nameInput}
           handleBlur={handleBlur}
           handleChange={handleChange}
-          quizDataById={quizDataById}
+          quizDataById={quizByIdData}
         />
         <CusQuizDetails
+          values={values}
           handleChange={handleChange}
           setFieldValue={setFieldValue}
-          mValuesForScoringId={mValuesForScoringId}
-          mValuesForReviewable={mValuesForReviewable}
-          mValuesForTimeLimitPerSec={mValuesForTimeLimitPerSec}
-          quizDataById={quizDataById}
+          quizDataById={quizByIdData}
         />
         <TableSection
           handleChange={handleChange}
           setFieldValue={setFieldValue}
-          mValuesForStartTime={mValuesForStartTime}
-          mValuesForEndTime={mValuesForEndTime}
-          quizDataById={quizDataById}
+          values={values}
+          quizDataById={quizByIdData}
         />
       </form>
     </Box>

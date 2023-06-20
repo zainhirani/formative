@@ -54,7 +54,7 @@ export namespace Quiz {
   //Scoring By ID
   export type ScoringByIDProps = {id:number|null,scoringId:number|null};
   export type ScoringByIDResponse = {
-    id: null,
+    id: number|null,
     scheme: "",
     createdAt: "",
     updatedAt: "",

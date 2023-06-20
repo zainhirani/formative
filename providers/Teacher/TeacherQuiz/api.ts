@@ -65,11 +65,11 @@ export async function allScoring(
 
 // Get Scoring By ID
 export async function getScoringByID(
-  props?: Quiz.ScoringByIDAPIPayload,
+  id?: any,
 ): Promise<Quiz.ScoringByIDResponse> {
   return service({
     method: "GET",
-    url: `/scoring/${props?.id}`,
+    url: `/scoring/${id}`,
   });
 }
 // Create

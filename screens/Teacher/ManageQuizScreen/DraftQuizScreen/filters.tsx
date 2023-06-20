@@ -32,8 +32,6 @@ const FiltersSection = (props: any) => {
   //   // setQuizNo(count);
   // }, []);
 
-  console.log(values, "values");
-
   const optionsFolder = useMemo(() => {
     return foldersList?.data?.map((item: any) => ({
       value: item?.id,
