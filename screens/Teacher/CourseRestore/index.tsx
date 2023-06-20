@@ -31,12 +31,18 @@ const CourseRestore = () => {
   const [checkedId, setCheckedId] = useState<number[]>([]);
   const [lastSelected, setLastSelected] = useState(-1);
   const getRestoreCourseListing = useRestoreCourseListing();
-  const restoreCourse = useRestoreCourse();
+  const [page, setPage] = useState(1);
+  const [selectedAudience, setSelectedAudience] = React.useState("");
+  const [selectedClass, setSelectedClass] = React.useState("");
+  const [searchChange, setSearchChange] = React.useState();
+  const restoreCourse = useRestoreCourse({
+    Limit: pageSizeManageCourse,
+    Page: page,
+    ...(searchChange && { SearchBy: searchChange }),
+  });
 
   const [checked, setChecked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState<number>(0);
-  const [selectedAudience, setSelectedAudience] = React.useState("");
-  const [selectedClass, setSelectedClass] = React.useState("");
 
   const showColumns = {
     id: false,
@@ -159,6 +165,7 @@ const CourseRestore = () => {
       <SearchBar
         setSelectedClass={setSelectedClass}
         setSelectedAudience={setSelectedAudience}
+        setSearchChange={setSearchChange}
       />
       <TableWrapper>
         <CustomDataGrid
@@ -174,6 +181,9 @@ const CourseRestore = () => {
           selectedIds={checkedId}
           onRowSelect={handleSelection}
           getSelectedId={(e) => setSelectedRowId(e?.[0]?.[e.length - 1])}
+          page={page}
+          handlePageChange={(_, v) => setPage(v)}
+          totalRows={getRestoreCourseListing?.count}
         />
       </TableWrapper>
       <Box

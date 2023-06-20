@@ -32,9 +32,11 @@ const ManageCourseScreen = () => {
   const [selectedClass, setSelectedClass] = React.useState("");
   const [searchChange, setSearchChange] = React.useState();
   const [addCourse, setAddCourse] = useState("");
+  const [page, setPage] = useState(1);
   const router = useRouter();
   const getCourseListing = useCourseListing({
     Limit: pageSizeManageCourse,
+    Page: page,
     ...(searchChange && { SearchBy: searchChange }),
   });
   const createCourse = useCreateCourse();
@@ -198,6 +200,9 @@ const ManageCourseScreen = () => {
           selectedIds={checkedId}
           onRowSelect={handleSelection}
           getSelectedId={(e) => setSelectedRowId(e?.[0]?.[e.length - 1])}
+          page={page}
+          handlePageChange={(_, v) => setPage(v)}
+          totalRows={getCourseListing?.count}
         />
       </TableWrapper>
       <Box

@@ -20,6 +20,7 @@ export namespace Course {
   export type ListingProps = {
     SearchBy: string | null;
     Limit: number | null;
+    Page?: number;
   };
   export type ListingResponse = [Item];
   export interface ListingAPIPayload extends ListingProps {}

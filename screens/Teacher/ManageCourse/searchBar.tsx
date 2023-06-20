@@ -92,7 +92,6 @@ const SearchBar = (props: any) => {
           controlText="Target Audience: School/Program: "
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={target_audience}
-          value={{ label: targetCourse, value: targetCourse }}
           onChange={handleSelectAudienceChange}
         />
       </Box>
@@ -101,7 +100,6 @@ const SearchBar = (props: any) => {
           controlText="Class of: "
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={class_of}
-          value={{ label: targetClass, value: targetClass }}
           onChange={handleSelectClassChange}
         />
       </Box>
