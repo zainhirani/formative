@@ -2,9 +2,8 @@ const APP_ROUTES = {
   // ===========TEACHER PORTAL ===========
 
   // Quiz Section
-  ADD_QUIZ: "/add-quiz",
-  DRAFT_QUIZ: "teacher/quiz/draft",
-  DRAFT_QUIZ_EDIT: "teacher/quiz/draft/[id]",
+  ADD_QUIZ: "/teacher/quiz/add",
+  EDIT_QUIZ: "/teacher/quiz/edit/[id]",
   MANAGE_QUIZ: "/teacher/quiz",
   QUIZ_RESULTS: "/teacher/quiz/quiz-results",
   // - Question Section

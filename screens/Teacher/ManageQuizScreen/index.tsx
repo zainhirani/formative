@@ -21,7 +21,7 @@ const ManageQuizScreen = () => {
   return (
     // <PageLayout title="All Quiz" icon={<HelpRoundedIcon />}>
     <Box>
-      <Typography
+      {/* <Typography
         onClick={() => {
           signOut;
           router.push("/login");
@@ -29,7 +29,7 @@ const ManageQuizScreen = () => {
         }}
       >
         Logout
-      </Typography>
+      </Typography> */}
       <SearchSection />
       <TableSection />
     </Box>

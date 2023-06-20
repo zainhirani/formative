@@ -10,13 +10,16 @@ import { Form, Formik, useFormik } from "formik";
 import { useRouter } from "next/router";
 import { enqueueSnackbar } from "notistack";
 import { TextField } from "@mui/material";
+import { useQuizById } from "providers/Teacher/TeacherQuiz";
 
 const DraftQuizScreen: NextPage = () => {
   // console.log("Draft Main file");
-
   const [nameInput, setNameInput] = useState("");
   const router = useRouter();
+  const { id: quizEditId } = router.query;
+  const { data: quizByIdData } = useQuizById({ id: quizEditId });
   const quizUpdate = "useQuizUpdate()";
+
   // useEffect(() => {
   //   if (quizUpdate.isSuccess) {
   //     enqueueSnackbar("Success", {
@@ -70,21 +73,58 @@ const DraftQuizScreen: NextPage = () => {
         label: "",
       },
       timeLimitPerSec: "",
-      status: "",
+      status: {
+        value: "",
+        label: "",
+      },
       scoringId: {
         value: "",
-        label: "Bonus Test (ave=3.75)",
+        label: "",
       },
       start_time: "",
       end_time: "",
-      questionsId: [],
+      questionsId: "",
       // firstName: registerDetail.data?.first_name || "",
     },
     // validationSchema,
     enableReinitialize: true,
     onSubmit,
   });
-  // console.log(values, "values");
+  console.log(values, "values");
+
+  // Quiz Data By id Memorize
+  const quizDataById = React.useMemo(() => {
+    return quizByIdData;
+  }, [quizByIdData]);
+  // Quiz Data By id Memorize
+
+  useEffect(() => {
+    console.log(quizByIdData);
+    if (quizByIdData?.id) {
+      setFieldValue("name", quizByIdData.name);
+      setFieldValue("reviewable", quizByIdData.reviewable);
+      setFieldValue("courseId", {
+        value: quizByIdData?.courses?.id,
+        label: quizByIdData?.courses?.course_name,
+      });
+      setFieldValue("folderId", {
+        value: quizByIdData?.folders?.id,
+        label: quizByIdData?.folders?.name,
+      });
+      setFieldValue("timeLimitPerSec", quizByIdData.timeLimitPerSec);
+      setFieldValue("status", {
+        value: quizByIdData.status,
+        label: quizByIdData.status,
+      });
+      setFieldValue("scoringId", {
+        value: quizByIdData?.scoring?.id,
+        label: quizByIdData?.scoring?.scheme,
+      });
+      setFieldValue("start_time", quizByIdData.start_time);
+      setFieldValue("end_time", quizByIdData.end_time);
+      setFieldValue("questionsId", quizByIdData.questions);
+    }
+  }, [quizByIdData]);
 
   // Filters Com
   const mValuesForName = React.useMemo(() => {
@@ -92,6 +132,7 @@ const DraftQuizScreen: NextPage = () => {
       name: values.name,
     };
   }, [values.name]);
+
   const mValuesForCourseId = React.useMemo(() => {
     return {
       courseId: values.courseId,
@@ -141,6 +182,10 @@ const DraftQuizScreen: NextPage = () => {
       end_time: values.end_time,
     };
   }, [values.end_time]);
+
+  const mValues = React.useMemo(() => {
+    return values;
+  }, [values]);
   // TableSection Com
 
   return (
@@ -149,14 +194,16 @@ const DraftQuizScreen: NextPage = () => {
       <form onSubmit={handleSubmit}>
         <FiltersSection
           setFieldValue={setFieldValue}
-          mValuesForName={mValuesForName}
-          mValuesForCourseId={mValuesForCourseId}
-          mValuesForFolderId={mValuesForFolderId}
-          mValuesForStatus={mValuesForStatus}
+          // mValuesForName={mValuesForName}
+          // mValuesForCourseId={mValuesForCourseId}
+          // mValuesForFolderId={mValuesForFolderId}
+          // mValuesForStatus={mValuesForStatus}
+          values={mValues}
           setNameInput={setNameInput}
           nameInput={nameInput}
           handleBlur={handleBlur}
           handleChange={handleChange}
+          quizDataById={quizDataById}
         />
         <CusQuizDetails
           handleChange={handleChange}
@@ -164,12 +211,14 @@ const DraftQuizScreen: NextPage = () => {
           mValuesForScoringId={mValuesForScoringId}
           mValuesForReviewable={mValuesForReviewable}
           mValuesForTimeLimitPerSec={mValuesForTimeLimitPerSec}
+          quizDataById={quizDataById}
         />
         <TableSection
           handleChange={handleChange}
           setFieldValue={setFieldValue}
           mValuesForStartTime={mValuesForStartTime}
           mValuesForEndTime={mValuesForEndTime}
+          quizDataById={quizDataById}
         />
       </form>
     </Box>

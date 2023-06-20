@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect, useState } from "react";
 import {
   BoxWrapper,
   InputBoxWrapper,
@@ -12,15 +12,27 @@ import Typography from "@mui/material/Typography";
 import {
   useCourseListing,
   useFoldersListing,
+  useQuizNo,
   useScoringListing,
 } from "providers/Teacher/TeacherQuiz";
 import optionsStatus from "constants/Teacher/QuizConstant";
+import { allTeacherQuizNo } from "providers/Teacher/TeacherQuiz/api";
 
 const FiltersSection = (props: any) => {
+  const { setFieldValue, values, handleChange, quizDataById, mValuesForName } =
+    props;
+  // const [quizNo, setQuizNo] = useState<undefined>();
   const coursesList = useCourseListing();
   const foldersList = useFoldersListing();
+  const { data: quizNo } = useQuizNo();
 
-  const { setFieldValue, values, handleChange } = props;
+  // useEffect(() => {
+  //   const response = allTeacherQuizNo();
+  //   setQuizNo(response);
+  //   // setQuizNo(count);
+  // }, []);
+
+  console.log(values, "values");
 
   const optionsFolder = useMemo(() => {
     return foldersList?.data?.map((item: any) => ({
@@ -35,6 +47,7 @@ const FiltersSection = (props: any) => {
       label: item?.course_name,
     }));
   }, [coursesList?.data]);
+  // console.log(quizDataById, "quizDataById filter");
 
   return (
     <BoxWrapper display="grid" gridTemplateColumns="repeat(11, 1fr)">
@@ -105,7 +118,7 @@ const FiltersSection = (props: any) => {
             Quiz No.
           </Typography>
           <Typography gutterBottom className="custom-name-2">
-            303
+            {quizNo?.count}
           </Typography>
         </QuizNoBoxWrapper>
       </SelectBoxWrapper>
@@ -113,4 +126,4 @@ const FiltersSection = (props: any) => {
   );
 };
 
-export default React.memo(FiltersSection);
+export default FiltersSection;

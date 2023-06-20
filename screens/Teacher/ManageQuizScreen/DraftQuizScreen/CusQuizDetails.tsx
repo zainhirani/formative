@@ -36,45 +36,24 @@ const Item = styled(Paper)(({ theme }) => ({
   textAlign: "center",
   color: theme.palette.text.secondary,
   boxShadow: "none",
-  margin: "0px 50px",
-  "&:first-of-type": {
-    margin: "0px 50px 0px 0px",
-  },
-  [theme.breakpoints.between("sm", "xl")]: {
-    margin: "0px 30px",
-    "&:first-of-type": {
-      margin: "0px 30px 0px 0px",
-    },
-  },
-}));
-const ItemTwo = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-  boxShadow: "none",
-  margin: "0px 60px",
-  "&:first-of-type": {
-    margin: "0px 60px 0px 0px",
-  },
-  [theme.breakpoints.between("sm", "xl")]: {
-    margin: "0px 54px",
-    "&:first-of-type": {
-      margin: "0px 54px 0px 0px",
-    },
-  },
+  margin: "0px 30px 0px 0px",
 }));
 
 const CusQuizDetails = (props: any) => {
   const { handleChange, setFieldValue, values } = props;
   const scoringList = useScoringListing();
   const [scoringId, setScoringId] = useState(null);
-  const { data: scoringByIdData, refetch: cusRefetch } = useScoringByID({
+  const {
+    isLoading,
+    data: scoringByIdData,
+    refetch: cusRefetch,
+  } = useScoringByID({
     id: scoringId ? scoringId : null,
     scoringId,
   });
   const data = scoringByIdData?.dynamicData;
 
-  console.log(data, "data");
+  // console.log(data, "data");
 
   useEffect(() => {
     if (scoringId) {
@@ -137,6 +116,10 @@ const CusQuizDetails = (props: any) => {
                 defaultValue={0}
                 inputProps={{ min: 0 }}
                 variant="standard"
+                required
+                onChange={(e: any) => {
+                  setFieldValue("timeLimitPerSec", e.target.value);
+                }}
                 sx={{
                   maxWidth: "28px",
                   paddingLeft: "1px",
@@ -150,19 +133,20 @@ const CusQuizDetails = (props: any) => {
                   },
                 }}
               />
-              {/* <CustomSelect
-                placeholder="120"
-                controlText="Time Limit per response (sec):"
-                dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-                options={optionsScheme}
-              /> */}
             </SchemeBoxWrapper>
           </Grid>
           <Grid item className="item" md={2}>
             <SchemeBoxWrapper gridColumn="span 2">
               <FormControlLabel
                 value="Reviewable:"
-                control={<Checkbox />}
+                control={
+                  <Checkbox
+                    checked={values?.reviewable}
+                    onClick={(e: any) => {
+                      setFieldValue("reviewable", e.target.checked);
+                    }}
+                  />
+                }
                 label="Reviewable:"
                 labelPlacement="start"
                 style={{ padding: 0 }}
@@ -176,110 +160,48 @@ const CusQuizDetails = (props: any) => {
         <BoxMatrixWrapper className="customBorder">
           <Stack
             direction="row"
-            divider={<Divider orientation="vertical" flexItem />}
             justifyContent="space-between"
             alignItems="center"
+            sx={{ flexWrap: "wrap", gap: "25px", justifyContent: "flex-start" }}
           >
-            {/* {data?.map((item: any, index: number) => {
-              return (
-                <Item key={item?.id}>
-                  <BoxMatrix className="boxMatrix-b">
-                    <Typography
-                      variant="h2"
-                      component="h2"
-                      className="heading-h2"
-                    >
-                      {index == 0
-                        ? "Two:"
-                        : index == 1
-                        ? "Three:"
-                        : index == 2
-                        ? "Four:"
-                        : index == 3
-                        ? "Five"
-                        : index == 4
-                        ? "Six"
-                        : index == 5
-                        ? "Seven:"
-                        : index == 6
-                        ? "Eight"
-                        : ""}
-                      Two:
-                    </Typography>
-                    <Typography className="heading-p">{item?.value}</Typography>
-                  </BoxMatrix>
-                </Item>
-              );
-            })} */}
-            <Item>
-              <BoxMatrix className="boxMatrix-b">
-                <Typography variant="h2" component="h2" className="heading-h2">
-                  Two:
-                </Typography>
-                <Typography className="heading-p">11 :0</Typography>
-              </BoxMatrix>
-            </Item>
-            <Item>
-              <BoxMatrix className="boxMatrix-b">
-                <Typography variant="h2" component="h2" className="heading-h2">
-                  Three:
-                </Typography>
-                <Typography className="heading-p">13 :3 :0</Typography>
-              </BoxMatrix>
-            </Item>
-            <Item>
-              <BoxMatrix className="boxMatrix-b">
-                <Typography variant="h2" component="h2" className="heading-h2">
-                  Four:
-                </Typography>
-                <Typography className="heading-p">13 :7 :2 :0</Typography>
-              </BoxMatrix>
-            </Item>
-            <Item>
-              <BoxMatrix className="boxMatrix-b">
-                <Typography variant="h2" component="h2" className="heading-h2">
-                  Five:
-                </Typography>
-                <Typography className="heading-p">13 :8.5 :5 :1 :0</Typography>
-              </BoxMatrix>
-            </Item>
-            <Item>
-              <BoxMatrix className="boxMatrix-b">
-                <Typography variant="h2" component="h2" className="heading-h2">
-                  Six:
-                </Typography>
-                <Typography className="heading-p">13 :9 :6.5</Typography>
-              </BoxMatrix>
-            </Item>
-          </Stack>
-        </BoxMatrixWrapper>
-
-        <BoxMatrixWrapper>
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <ItemTwo>
-              <BoxMatrix>
-                <Typography variant="h2" component="h2" className="heading-h2">
-                  Seven:
-                </Typography>
-                <Typography className="heading-p">
-                  13 :9 :8 :5 :3 :1 :0
-                </Typography>
-              </BoxMatrix>
-            </ItemTwo>
-            <ItemTwo>
-              <BoxMatrix>
-                <Typography variant="h2" component="h2" className="heading-h2">
-                  Eight:
-                </Typography>
-                <Typography className="heading-p">
-                  13 :9.5 :8 :6 :4 :3 :1 :0
-                </Typography>
-              </BoxMatrix>
-            </ItemTwo>
+            {data ? (
+              data?.map((item: any, index: number) => {
+                return (
+                  <Item key={index} sx={{ margin: "0px 30px 0px 0px" }}>
+                    <BoxMatrix className="boxMatrix-b">
+                      <Typography
+                        variant="h2"
+                        component="h2"
+                        className="heading-h2"
+                      >
+                        {index == 0
+                          ? "Two:"
+                          : index == 1
+                          ? "Three:"
+                          : index == 2
+                          ? "Four:"
+                          : index == 3
+                          ? "Five"
+                          : index == 4
+                          ? "Six"
+                          : index == 5
+                          ? "Seven:"
+                          : index == 6
+                          ? "Eight"
+                          : ""}
+                      </Typography>
+                      <Typography className="heading-p">
+                        {item?.value}
+                      </Typography>
+                    </BoxMatrix>
+                  </Item>
+                );
+              })
+            ) : (
+              <Typography sx={{ color: "#8c2531" }}>
+                Please select the scheme
+              </Typography>
+            )}
           </Stack>
         </BoxMatrixWrapper>
       </BoxScoringWrapper>

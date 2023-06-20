@@ -34,6 +34,22 @@ export function getFormProviderKey(
   throw new Error("Function not implemented.");
 }
 
+//Quiz Get By Id
+export function useQuizById(
+  props?: Quiz.QuizByIdProps,
+): UseQueryResult<Quiz.QuizByIdResponse> {
+  return useQuery(QUERY_KEYS.QUIZ_BY_ID, () => api.allTeacherQuizById(props), {
+    enabled:Boolean(props?.id)
+  });
+}
+
+//Quiz No
+export function useQuizNo(
+  props?: Quiz.QuizNoProps,
+): UseQueryResult<Quiz.QuizNoResponse> {
+  return useQuery(QUERY_KEYS.QUIZ_NO, () => api.allTeacherQuizNo(props));
+}
+
 //Course Listing
 export function useCourseListing(
   props?: Quiz.CourseListingProps,

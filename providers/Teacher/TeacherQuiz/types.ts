@@ -75,6 +75,54 @@ export namespace Quiz {
 
   export interface CoursesAPIPayload extends CoursesProps {}
 
+  //Get Quiz By Id
+
+  export type QuizByIdProps ={id: number | string | string[] | undefined,}
+  export type QuizByIdResponse = {
+    id: number,
+    name: string,
+    reviewable: boolean,
+    status: string,
+    timeLimitPerSec: number,
+    duration: number,
+    start_time: string,
+    end_time: string,
+    folderId:number,
+    courseId:number,
+    scoringId:number,
+    userId:number,
+    createdAt: string,
+    updatedAt: string,
+    deletedAt: null,
+    questions: [
+    ],
+    scoring: {
+        id: number,
+        scheme: string
+    },
+    folders: {
+        id: number,
+        name: string
+    },
+    student: [],
+    courses: {
+        id: number,
+        course_name: string
+    }
+}
+
+  export interface QuizByIdAPIPayload extends QuizByIdProps {}
+
+  //Get Quiz No
+
+  export type QuizNoProps ={}
+  export type QuizNoResponse = {
+    "count":number,
+  }
+
+  export interface QuizNoAPIPayload extends QuizNoProps {}
+
+
   //Get User
 
   export type QuizProps ={}

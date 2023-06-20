@@ -12,6 +12,7 @@ import FormattedMessage from "theme/FormattedMessage";
 import messages from "screens/Teacher/ManageQuizScreen/messages";
 import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import Link from "next/link";
+import APP_ROUTES from "constants/RouteConstants";
 
 export const pageSizeManageQuiz = 12;
 
@@ -123,8 +124,7 @@ export const columnsManageQuiz: GridColDef[] = [
       return (
         <Grid container spacing={3}>
           <Grid item xs>
-            {/* href={`${APP_ROUTES.DRAFT_QUIZ_EDIT.replace("[id]", params?.id)}`} */}
-            <Link href={"/teacher/quiz/draft"}>
+            <Link href={`${APP_ROUTES.EDIT_QUIZ.replace("[id]", params?.id)}`}>
               <IconButton>
                 <Image alt="quiz-logo" src={editSvg} />
               </IconButton>

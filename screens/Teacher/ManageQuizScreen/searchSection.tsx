@@ -40,7 +40,7 @@ const SearchSection = () => {
   }, [coursesList?.data]);
 
   const createNewHandler = () => {
-    router.push(APP_ROUTES.DRAFT_QUIZ);
+    router.push(APP_ROUTES.ADD_QUIZ);
   };
 
   return (

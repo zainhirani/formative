@@ -3,6 +3,26 @@ import { Quiz } from "./types";
 
 //Quiz API Integration
 
+// Get Quiz By Id
+export async function allTeacherQuizById(
+  props?: Quiz.QuizByIdAPIPayload,
+): Promise<Quiz.QuizByIdResponse> {
+  return await service({
+    method: "GET",
+    url: `/quiz/${props?.id}`,
+  });
+}
+
+// Get Quiz No
+export async function allTeacherQuizNo(
+  props?: Quiz.QuizNoAPIPayload,
+): Promise<Quiz.QuizNoResponse> {
+  return await service({
+    method: "GET",
+    url: `/quiz/next/no`,
+  });
+}
+
 // Get Quiz
 export async function allTeacherQuiz(
   props?: Quiz.QuizAPIPayload,
