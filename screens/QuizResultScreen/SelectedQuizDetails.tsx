@@ -273,7 +273,7 @@ const SelectedQuizDetails = () => {
     <>
       <TableWrapper component={Paper}>
         <CustomDataGrid
-        //@ts-ignore
+          //@ts-ignore
           getRowId={(row: any) => row.std_id}
           onRowClick={(e) => handleOnRowClick(e)}
           buttonArray={configExport}
@@ -289,12 +289,13 @@ const SelectedQuizDetails = () => {
         sx={{
           overflow: "scroll",
           height: "40vh",
-          minHeight:'400px',
+          minHeight: "400px",
           borderRadius: "5px",
         }}
         component={Paper}
         elevation={6}
       >
+        {/* @ts-ignore */}
         <CustomDataGrid
           rows={quizResultDetail?.data?.questions || []}
           columns={columnsQuizQuestions}

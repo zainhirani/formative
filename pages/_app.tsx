@@ -70,10 +70,6 @@ class MyApp extends App<{
     return fullProps;
   }
 
-  componentDidMount(): void {
-    // loadSideEffects();
-  }
-
   render() {
     const {
       Component,
