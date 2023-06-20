@@ -15,6 +15,7 @@ import {
 } from "configs";
 import messages from "./messages";
 import SideDrawer from "components/Drawer";
+import APP_ROUTES from "constants/RouteConstants";
 
 // Teacher's Dashboard Content
 const teachersDashboardContent = [
@@ -219,7 +220,7 @@ const DashboardScreen = () => {
           </Typography>
         </Box>
         <Box sx={{ display: "flex", flexWrap: "wrap", gap: "20px" }} mt={1}>
-          {boxContent.map((item, index) => (
+          {teachersDashboardContent.map((item, index) => (
             <Paper
               key={index}
               sx={{
@@ -241,48 +242,9 @@ const DashboardScreen = () => {
       {/* // </PageLayout> */}
 
       {/* Student Dashboard Screen */}
-      <Box sx={{ flexGrow: 1 }}>
-        {/* <DataTable data={collegesData} config={config} /> */}
-
-        <Box>
-          <Typography
-            gutterBottom
-            variant="h5"
-            sx={{
-              fontSize: "48px",
-              lineHeight: "56px",
-              fontWeight: "300",
-              maxWidth: "380px",
-            }}
-          >
-            <FormattedMessage {...messages.title} />
-          </Typography>
-          <Typography variant="body2">
-            <FormattedMessage {...messages.pitch} />
-          </Typography>
-        </Box>
-        <Box sx={{ display: "flex", flexWrap: "wrap", gap: "20px" }} mt={1}>
-          {studentBoxContent.map((item, index) => (
-            <Paper
-              key={index}
-              sx={{
-                padding: 0,
-                borderRadius: "none",
-                boxShadow: "none",
-                width: "48%",
-              }}
-            >
-              <Iconbox
-                title={item.title}
-                description={item.description}
-                image={item.image}
-              ></Iconbox>
-            </Paper>
-          ))}
-        </Box>
-      </Box>
+    
     </>
   );
 };
 
-export default Dashboard;
+export default DashboardScreen;
