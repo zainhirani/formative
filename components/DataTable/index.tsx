@@ -23,8 +23,9 @@ interface DataTableProps {
 }
 
 const DataTable: React.FC<DataTableProps> = ({ config = [], data = [] }) => {
-  if (!config.length || !data.length) return null;
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
+
+  if (!config.length || !data.length) return null;
 
   const handleRowClick = (index: number) => {
     if (selectedRows?.includes(index)) {

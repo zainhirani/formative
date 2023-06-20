@@ -28,6 +28,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useCourseListing } from "providers/Courses";
 
 const ManageCourseScreen = () => {
+  // @ts-ignore
   const getCourseListing = useCourseListing();
   // console.log(getCourseListing, "getCourseListing");
 

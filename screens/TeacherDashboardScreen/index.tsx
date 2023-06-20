@@ -7,6 +7,7 @@ import { BoxWrapper } from "./Styled";
 
 const HomeScreen: React.FC = () => {
   const { currentUser } = useContext(AuthContext);
+  // @ts-ignore
   if (currentUser !== "teacher") {
     <p>You are not authorized to access this page.</p>;
   }

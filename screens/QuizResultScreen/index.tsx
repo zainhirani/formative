@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
-import { Tooltip } from "react-tooltip";
 
 import HelpModal from "components/HelpPage";
 import PageLayout from "components/PageLayout";

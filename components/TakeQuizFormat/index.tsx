@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from "react";
+import React from "react";
 import { Box, Checkbox, FormControlLabel, Typography } from "@mui/material";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
@@ -31,7 +31,7 @@ type ITakeQuizProps = {
   timer: any;
 };
 
-const TakeQuizFormat: FC<ITakeQuizProps> = ({
+const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
   question,
   image,
   options,
@@ -48,18 +48,10 @@ const TakeQuizFormat: FC<ITakeQuizProps> = ({
   remainingTime,
   timer,
 }): JSX.Element => {
-  const [ansCorrect, setAnsCorrect] = useState(false);
-  const handleOnChange = (position: any, e: any) => {
-    if (checkedStateAns.filter((i: any) => i).length >= 1 && e.target.checked)
-      return;
-    const updatedCheckedStateAns = checkedStateAns.map(
-      (item: any, index: number) => (index === position ? !item : item),
-    );
-    setCheckedStateAns(updatedCheckedStateAns);
-  };
+  const [ansCorrect, setAnsCorrect] = React.useState(false);
 
   // Timer
-  useEffect(() => {
+  React.useEffect(() => {
     const timer = setInterval(() => {
       setRemainingTime((prevTime: number | undefined) => {
         const currentTime = prevTime ?? 0;
@@ -75,9 +67,18 @@ const TakeQuizFormat: FC<ITakeQuizProps> = ({
     };
   }, [ansCorrect]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     setRemainingTime(timer);
   }, [ansCorrect]);
+
+  const handleOnChange = (position: any, e: any) => {
+    if (checkedStateAns.filter((i: any) => i).length >= 1 && e.target.checked)
+      return;
+    const updatedCheckedStateAns = checkedStateAns.map(
+      (item: any, index: number) => (index === position ? !item : item),
+    );
+    setCheckedStateAns(updatedCheckedStateAns);
+  };
 
   const getTimeColor = () => {
     if (remainingTime <= 10) {

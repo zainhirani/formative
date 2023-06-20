@@ -18,6 +18,7 @@ import Image from "theme/Image";
 import { COMMON_MENU, STUDENT_MENU, TEACHER_MENU } from "./sidebarData";
 import SidebarMultiMenuItem from "./SidebarIMultiMenuItem";
 import { DrawerHeader } from "./Styled";
+import { useAuthContext } from "contexts/AuthContext";
 
 interface BarComponentProps {
   open?: boolean;
@@ -26,7 +27,8 @@ interface BarComponentProps {
 
 const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
   const router = useRouter();
-  let MENU_ITEMS = 3 === 3 ? TEACHER_MENU : STUDENT_MENU;
+  const { signOut } = useAuthContext();
+  let MENU_ITEMS = 2 === 2 ? TEACHER_MENU : STUDENT_MENU;
   let COMMON_MENU_ITEMS = [COMMON_MENU.profile, COMMON_MENU.settings];
 
   const isActiveRoute = (route: string) => {
@@ -161,31 +163,31 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
       {/* Logout Button */}
       <List>
         <ListItem disablePadding>
-          <Link href="#" passHref={true}>
-            <ListItemButton>
-              <ListItemIcon
-                sx={{
-                  color: (theme) => theme.palette.primary.light,
-                  minWidth: "40px",
-                  "& .lazyload-wrapper": {
-                    display: "flex",
-                  },
-                }}
-              >
-                <PowerSettingsNewOutlinedIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary="Logout"
-                sx={{
-                  color: (theme) => theme.palette.primary.light,
+          {/* <Link href="#" passHref={true}> */}
+          <ListItemButton onClick={() => signOut()}>
+            <ListItemIcon
+              sx={{
+                color: (theme) => theme.palette.primary.light,
+                minWidth: "40px",
+                "& .lazyload-wrapper": {
+                  display: "flex",
+                },
+              }}
+            >
+              <PowerSettingsNewOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary="Logout"
+              sx={{
+                color: (theme) => theme.palette.primary.light,
+                fontSize: "14px",
+                "& span": {
                   fontSize: "14px",
-                  "& span": {
-                    fontSize: "14px",
-                  },
-                }}
-              />
-            </ListItemButton>
-          </Link>
+                },
+              }}
+            />
+          </ListItemButton>
+          {/* </Link> */}
         </ListItem>
       </List>
     </>

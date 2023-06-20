@@ -11,11 +11,13 @@ interface TypeOneProps {
   columns: TableColumn[];
   buttonArray?: ButtonConfig[];
   checkboxSelection?: boolean;
-  onRowClick?: () => void;
+  onRowClick?: (e?:any) => void;
   // setChecked?:  ((value: string) => void) | undefined;
   onRowSelect?: (ids: number[], details: any) => void;
   setChecked?: any;
   columnVisibilityModel: any;
+  loading?: boolean;
+  getSelectedId?: (e?: any) => void;
 
   // isChecked?:
 }
@@ -29,7 +31,9 @@ const TypeOne: React.FC<TypeOneProps> = ({
   setChecked = () => {},
   columnVisibilityModel,
   selectedIds,
+  loading,
   onRowSelect,
+  getSelectedId = () => {},
   ...props
 }) => {
   const [page, setPage] = useState(1);
@@ -38,7 +42,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
 
   // console.log(checked, "checked");
 
-  const totalRows = rows.length;
+  const totalRows = rows?.length;
   const totalPages = Math.ceil(totalRows / pageSizeData);
 
   const handleCheck = useCallback((e: any, details: any) => {
@@ -61,7 +65,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
     return 50;
   };
 
-  const paginatedRows = rows.slice(
+  const paginatedRows = rows?.slice(
     (page - 1) * pageSizeData,
     page * pageSizeData,
   );
@@ -74,7 +78,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
             onRowClick={onRowClick}
             pagination
             hideFooter
-            rows={paginatedRows}
+            rows={paginatedRows || []}
             columns={columns}
             getRowHeight={getRowHeight}
             disableColumnMenu
@@ -85,6 +89,8 @@ const TypeOne: React.FC<TypeOneProps> = ({
             onRowSelectionModelChange={(...e) => handleCheck(...e)}
             columnVisibilityModel={columnVisibilityModel}
             {...props}
+            sx={{minHeight:'400px'}}
+            loading={loading}
           />
         </Grid>
         <BoxPaginate>
@@ -100,7 +106,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
           </Grid>
           <Grid item xs={6} className="showing-text">
             <ShowingBox>
-              Showing {paginatedRows.length} of {rows.length}
+              Showing {paginatedRows?.length} of {rows?.length}
             </ShowingBox>
             {buttonArray?.map((button) => {
               return (

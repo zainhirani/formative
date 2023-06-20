@@ -1,11 +1,8 @@
 import React, { useState } from "react";
-import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Iconbox from "components/IconBox";
-import PageLayout from "components/PageLayout";
-import DataTable from "components/DataTable";
 import FormattedMessage from "theme/FormattedMessage";
 import {
   QUIZ,
@@ -18,54 +15,62 @@ import {
 } from "configs";
 import messages from "./messages";
 import SideDrawer from "components/Drawer";
-import { useAuthContext } from "contexts/AuthContext";
-import { useRouter } from "next/router";
+import APP_ROUTES from "constants/RouteConstants";
 
-const boxContent = [
+// Teacher's Dashboard Content
+const teachersDashboardContent = [
   {
     title: "Quiz",
     description: "Create new quiz or make an edit to an existing quiz",
     image: QUIZ,
+    link: APP_ROUTES.MANAGE_QUIZ,
   },
   {
     title: "Courses",
     description: "Manage existing courses or create a new course.",
     image: COURSES,
+    link: APP_ROUTES.COURSES,
   },
   {
     title: "Students",
     description: "Enroll or remove students from a course.",
     image: STUDENTS,
+    link: APP_ROUTES.STUDENTS,
   },
   {
     title: "Questions",
     description: "Edit existing questions or add new questions.",
     image: QUESTIONS,
+    link: APP_ROUTES.QUESTIONS_CREATE_NEW,
   },
 ];
 
-//Student Screen Dashboard
+//Student's Dashboard Content
 
-const studentBoxContent = [
+const studentsDashboardContent = [
   {
     title: "Take Quiz",
     description: "Take a quiz to test your abilities of the subjects.",
     image: QUIZ,
+    link: APP_ROUTES.TAKE_QUIZ,
   },
   {
     title: "Test Yourself",
     description: "Ask yourself a questions to test your skills.",
     image: TESTYOURSELF,
+    link: APP_ROUTES.TEST_YOUR_SELF,
   },
   {
     title: "How Am I Doing?",
     description: "Review your grade report and see how you are doing.",
     image: HOW_AM_I_DOING,
+    link: APP_ROUTES.HOW_AM_I_DOING,
   },
   {
     title: "Profile",
     description: "Update your details or change your password.",
     image: PROFILE,
+    link: APP_ROUTES.PROFILE,
   },
 ];
 
@@ -161,8 +166,6 @@ const collegesData = [
 ];
 
 const DashboardScreen = () => {
-  const signOut = useAuthContext();
-  const router = useRouter();
   let config = [
     {
       columnName: COLUMN_NAME.ID,
@@ -198,10 +201,7 @@ const DashboardScreen = () => {
 
   return (
     <>
-      {/* <PageLayout title={"Dashboard"}> */}
       <Box sx={{ flexGrow: 1 }}>
-        {/* <DataTable data={collegesData} config={config} /> */}
-
         <Box>
           <Typography
             gutterBottom
@@ -220,7 +220,7 @@ const DashboardScreen = () => {
           </Typography>
         </Box>
         <Box sx={{ display: "flex", flexWrap: "wrap", gap: "20px" }} mt={1}>
-          {boxContent.map((item, index) => (
+          {teachersDashboardContent.map((item, index) => (
             <Paper
               key={index}
               sx={{
@@ -242,55 +242,7 @@ const DashboardScreen = () => {
       {/* // </PageLayout> */}
 
       {/* Student Dashboard Screen */}
-      <Box sx={{ flexGrow: 1 }}>
-        {/* <DataTable data={collegesData} config={config} /> */}
-
-        <Box>
-          <Typography
-            gutterBottom
-            variant="h5"
-            sx={{
-              fontSize: "48px",
-              lineHeight: "56px",
-              fontWeight: "300",
-              maxWidth: "380px",
-            }}
-          >
-            <FormattedMessage {...messages.title} />
-          </Typography>
-          <Typography variant="body2">
-            <FormattedMessage {...messages.pitch} />
-          </Typography>
-          <Button
-            onClick={() => {
-              signOut;
-              router.push("/login");
-              localStorage.clear();
-            }}
-          >
-            Logout
-          </Button>
-        </Box>
-        <Box sx={{ display: "flex", flexWrap: "wrap", gap: "20px" }} mt={1}>
-          {studentBoxContent.map((item, index) => (
-            <Paper
-              key={index}
-              sx={{
-                padding: 0,
-                borderRadius: "none",
-                boxShadow: "none",
-                width: "48%",
-              }}
-            >
-              <Iconbox
-                title={item.title}
-                description={item.description}
-                image={item.image}
-              ></Iconbox>
-            </Paper>
-          ))}
-        </Box>
-      </Box>
+    
     </>
   );
 };
