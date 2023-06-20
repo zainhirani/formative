@@ -49,8 +49,6 @@ export const columnsManageStudent: GridColDef[] = [
 const TableSection = (props: any) => {
   const { setChecked,program,yearOfGraduation, isCheckbox,setUserId,searchBy,selectNewCourse} = props;
 
-  console.log(selectNewCourse,'selectNewCourse')
-
   const studentListing = useStudentListing({queryParams:{...(searchBy&&{searchBy:searchBy}),course:selectNewCourse,yop:yearOfGraduation?.toString(),program:program?.toString()}});
  
 

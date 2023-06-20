@@ -12,7 +12,8 @@ const ManageStudents = () => {
   const [selectNewCourse, setSelectNewCourse] = useState("");
   const [userId,setUserId] = useState([])
   const [searchChange, setSearchChange] = React.useState("");
-  
+  const [program,setProgram] = useState("")
+  const [yearOfGraduation , setYearOfGraduation] = useState("")
 
   console.log(checked,'checked custom');
   return (

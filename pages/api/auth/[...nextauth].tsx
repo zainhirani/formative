@@ -37,17 +37,6 @@ export default NextAuth({
   },
   callbacks: {
     async signIn({ user }: any) {
-<<<<<<< HEAD
-      if (user?.jwtToken) {
-        return Promise.resolve(true);
-      }
-      return Promise.resolve(false);
-    },
-    async session({ session, token }: any) {
-      if (!token.accessToken) {
-        return Promise.resolve(session);
-      }
-=======
       user.accessToken = user?.jwtToken;
       return Promise.resolve(true);
     },
@@ -55,7 +44,6 @@ export default NextAuth({
       // if (!token.accessToken) {
       //   return Promise.resolve(session);
       // }
->>>>>>> f7d0cd8 (feat: done get course api)
 
       session.accessToken = token.accessToken;
       session.user = token.user as any;

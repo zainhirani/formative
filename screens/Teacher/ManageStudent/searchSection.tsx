@@ -27,7 +27,7 @@ import {
 const SearchSection = (props: any) => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { checked,setProgram,setYearOfGraduation, setCourse,userIds,selectedCourse,setSearchChange } = props;
-  console.log(selectedCourse,"selectedCourse")
+  // console.log(selectedCourse,"selectedCourse")
   const searchCourse = useFormattedMessage(messages.searchCourse);
 
 
@@ -48,7 +48,7 @@ const cousrseData = useMemo(() => {
 
 //Select  Program Value
 const handleProgram = (programValue :any) =>{
-  setProgram(programValue.value)
+  setProgram(programValue?.value)
 }
 //Select Year Of Graduation Value
 const handleYearOfGraduation = (yearValue :any) =>{
@@ -139,6 +139,7 @@ const handleSearchChange = (search: any) => {
           controlText="School/Program:"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={programs}
+          onChange={handleProgram}
         />
       </Box>
       <Box gridColumn="span 3">
