@@ -17,6 +17,7 @@ import { useRouter } from "next/router";
 import SearchBar from "./searchBar";
 import CloseIcon from "@mui/icons-material/Close";
 import {
+  useCourseDuplicate,
   useCourseListing,
   useCourseRemove,
   useCreateCourse,
@@ -39,6 +40,7 @@ const ManageCourseScreen = () => {
   const createCourse = useCreateCourse();
   const deleteCourse = useCourseRemove();
   const targetCourse = useTargetCourse();
+  const duplicateCourse = useCourseDuplicate();
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [checked, setChecked] = useState(false);
@@ -73,6 +75,10 @@ const ManageCourseScreen = () => {
 
   const handleDeleteCourse = () => {
     deleteCourse.mutate({ id: selectedRowId });
+  };
+
+  const handleDuplicateCourse = () => {
+    duplicateCourse.mutate({ id: selectedRowId });
   };
 
   const handleSelection = React.useCallback((ids: number[]) => {
@@ -212,8 +218,10 @@ const ManageCourseScreen = () => {
         <Box>
           <FooterButton
             deleteLoading={deleteCourse.isLoading}
+            duplicateLoading={duplicateCourse.isLoading}
             checked={checked}
             deleteCourse={handleDeleteCourse}
+            duplicateCourse={handleDuplicateCourse}
           />
         </Box>
       </Box>

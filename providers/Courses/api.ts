@@ -54,3 +54,13 @@ export async function remove(
     url: `/courses/${props.id}`,
   });
 }
+
+// Duplicate
+export async function duplicate(
+  props: Course.DuplicateAPIPayload,
+): Promise<Course.DuplicateResponse> {
+  return service({
+    method: "POST",
+    url: `/courses/${props.id}/duplicate`,
+  });
+}

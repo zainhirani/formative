@@ -8,7 +8,13 @@ import { useRouter } from "next/router";
 import LoadingGroupedButton from "components/LoadingGroupedButton";
 
 const FooterButton = (props: any) => {
-  const { checked, deleteCourse, duplicateLoading, deleteLoading } = props;
+  const {
+    checked,
+    deleteCourse,
+    duplicateCourse,
+    duplicateLoading,
+    deleteLoading,
+  } = props;
   const router = useRouter();
   const config: LoadingButtonConfig[] = [
     {
@@ -23,12 +29,12 @@ const FooterButton = (props: any) => {
       },
     },
     {
-      key: "save",
+      key: "duplicate",
       startIcon: <ContentCopyIcon />,
       render: () => {
         return <Box>Duplicate</Box>;
       },
-      onClick: () => {},
+      onClick: duplicateCourse,
       disabled: checked ? false : true,
       loading: duplicateLoading,
     },

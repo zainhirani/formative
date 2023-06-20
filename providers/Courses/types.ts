@@ -86,4 +86,14 @@ export namespace Course {
     id: number;
   };
   export interface RemoveAPIPayload extends RemoveMutationPayload {}
+
+  //Duplicate
+  export type DuplicateProps = {};
+  export type DuplicateResponse = {
+    data: boolean;
+  };
+  export type DuplicateMutationPayload = {
+    id: number;
+  };
+  export interface DuplicateAPIPayload extends DuplicateMutationPayload {}
 }

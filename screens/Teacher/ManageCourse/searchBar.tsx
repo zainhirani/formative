@@ -12,6 +12,7 @@ import CustomSelect from "components/CustomSelect/CustomSelect";
 import { useSnackbar } from "notistack";
 import { class_of } from "mock-data/Teacher/ManageCourse";
 import { LoadingButtonWrapper } from "./Styled";
+import { debounce } from "lodash";
 
 const SearchBar = (props: any) => {
   const {
@@ -35,9 +36,15 @@ const SearchBar = (props: any) => {
     setSelectedClass(selectedOption.label);
     setTargetClass(selectedOption.value);
   };
-  const handleSearchChange = (search: any) => {
-    setSearchChange(search.target.value);
+
+  const debouncedSearch = debounce((criteria) => {
+    setSearchChange(criteria);
+  }, 400);
+
+  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    debouncedSearch(e.target.value);
   };
+
   const target_audience = [
     { value: "chp/bms", label: "CHP/BMS" },
     { value: "chp/dpt", label: "CHP/DPT" },
@@ -58,7 +65,7 @@ const SearchBar = (props: any) => {
         <TextFieldStyled
           placeholder="Search Course"
           variant="outlined"
-          onChange={handleSearchChange}
+          onChange={onInputChange}
           InputProps={{
             style: { border: "none", outline: "0px" },
             endAdornment: (
