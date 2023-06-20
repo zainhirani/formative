@@ -66,6 +66,7 @@ const SearchBar = (props: any) => {
           placeholder="Search Course"
           variant="outlined"
           onChange={onInputChange}
+          autoComplete="off"
           InputProps={{
             style: { border: "none", outline: "0px" },
             endAdornment: (

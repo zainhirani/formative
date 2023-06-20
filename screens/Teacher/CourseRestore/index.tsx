@@ -191,6 +191,7 @@ const CourseRestore = () => {
               InputProps={{
                 style: { border: "none", outline: "0px" },
               }}
+              autoComplete="off"
             />
           </Box>
           <Box gridColumn="span 2">
