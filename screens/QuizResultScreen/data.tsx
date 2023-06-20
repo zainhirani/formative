@@ -5,10 +5,10 @@ export const selectCourseOption = [
   { id: 3, name: "Cannabis 2026" },
 ];
 export const selectFolderOption = [
-  { id: 0, name: "/ Daily" },
-  { id: 1, name: "/ Daily 1" },
-  { id: 2, name: "/ Daily 2" },
-  { id: 3, name: "/ Daily 3" },
+  { value: 0, label: "/ Daily" },
+  { value: 1, label: "/ Daily 1" },
+  { value: 2, label: "/ Daily 2" },
+  { value: 3, label: "/ Daily 3" },
 ];
 export const selectStatusOption = [
   { id: 0, name: "Completed" },
