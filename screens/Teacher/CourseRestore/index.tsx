@@ -181,6 +181,7 @@ const CourseRestore = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          flexDirection: { md: "row", xs: "column" },
         }}
       >
         <BoxWrapper display="grid" gridTemplateColumns="repeat(5, 1fr)">

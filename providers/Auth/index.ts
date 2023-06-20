@@ -47,7 +47,8 @@ export function useRegister(
   return useMutation((payload) => api.create({ ...props, data: payload }), {
     mutationKey: `${KEY}|Create`,
     onSuccess: () => {
-      queryClient.invalidateQueries(getKeyFromProps(props, "LISTING"));
+      console.log(getKeyFromProps(props, "LISTING"));
+      queryClient.invalidateQueries([KEY]);
     },
     retry: 0,
   });
@@ -69,7 +70,8 @@ export function useRegisterUpdate(
     {
       mutationKey: `${KEY}|Create`,
       onSuccess: () => {
-        queryClient.invalidateQueries(getKeyFromProps(props, "LISTING"));
+        console.log(getKeyFromProps(props, "LISTING"));
+        queryClient.invalidateQueries([KEY]);
       },
       retry: 0,
     },

@@ -114,7 +114,7 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
       nick_name: data.nickName,
       gender: data.gender,
       rfu_id: data.rfuID,
-      year_of_graduation: data.graduation,
+      year_of_graduation: Number(data.graduation),
       // year_of_graduation: 2021,
       program: data.program,
       birth_place: data.birthPlace,
@@ -144,7 +144,7 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
       email: "",
       rfuID: "",
       program: "",
-      graduation: "2022",
+      graduation: 2022,
       birthPlace: "",
       userName: "",
       password: "",
@@ -417,7 +417,10 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
               <InputLabelWrapper htmlFor="graduation">
                 <FormattedMessage {...messages.graduationLabel} />
               </InputLabelWrapper>
-              <Box gridColumn="span 2">
+              <Box
+                sx={{ borderBottom: "1px solid", marginTop: "-10px" }}
+                gridColumn="span 2"
+              >
                 <CustomSelect
                   name="graduation"
                   placeholder="2004"
@@ -462,7 +465,7 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
                     </InputAdornment>
                   ),
                 }}
-              /> 
+              />
               {touched.graduation && errors.graduation && (
                 <FormHelperText
                   error

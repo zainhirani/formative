@@ -683,8 +683,9 @@ export const ProfileTab = ({}) => {
             alignItems: "center",
             mt: "120px",
             background: "transparent",
-            width: "max-content",
+            width: { sm: "100%", xs: "max-content", md: "max-content" },
             position: "relative",
+            flexDirection: { sm: "column", xs: "row", md: "row" },
           }}
         >
           <TextField
@@ -701,7 +702,8 @@ export const ProfileTab = ({}) => {
             sx={{
               background: (theme) => theme.palette.primary.light,
               borderRadius: "0",
-              width: { md: "350px", xs: "250px" },
+              width: { md: "350px", sm: "100%", xs: "250px" },
+              height: { sm: "50px", xs: "100%", md: "100%" },
               position: "relative",
               px: "10px",
               ".MuiInputBase-root": {
@@ -740,6 +742,7 @@ export const ProfileTab = ({}) => {
             sx={{
               borderTopRightRadius: (theme) => theme.borderRadius.radius1,
               borderBottomRightRadius: (theme) => theme.borderRadius.radius1,
+              width: { sm: "100%", xs: "max-content", md: "max-content" },
             }}
             startIcon={<HighlightOffIcon />}
             variant="contained"

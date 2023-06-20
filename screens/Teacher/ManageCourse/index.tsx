@@ -34,8 +34,8 @@ const ManageCourseScreen = () => {
   const [addCourse, setAddCourse] = useState("");
   const router = useRouter();
   const getCourseListing = useCourseListing({
-    SearchBy: searchChange,
     Limit: pageSizeManageCourse,
+    ...(searchChange && { SearchBy: searchChange }),
   });
   const createCourse = useCreateCourse();
   const deleteCourse = useCourseRemove();
@@ -205,9 +205,13 @@ const ManageCourseScreen = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          flexDirection: { md: "row", xs: "column" },
         }}
       >
-        <BoxWrapper display="grid" gridTemplateColumns="repeat(5, 1fr)">
+        <BoxWrapper
+          sx={{ display: { md: "grid", xs: "flex" }, alignItems: "center" }}
+          gridTemplateColumns="repeat(5, 1fr)"
+        >
           <FooterForm
             handleAddCourse={handleAddCourse}
             setAddCourse={setAddCourse}

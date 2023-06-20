@@ -35,7 +35,7 @@ const FooterForm: FC<FooterFormProps> = ({
           autoComplete="off"
         />
       </Box>
-      <Box gridColumn="span 2">
+      <Box sx={{ height: "100%" }} gridColumn="span 2">
         <LoadingButtonWrapper
           startIcon={<AddCircleOutlineRoundedIcon />}
           variant="contained"

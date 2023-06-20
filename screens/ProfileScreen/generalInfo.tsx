@@ -106,7 +106,7 @@ export const GeneralInfo = () => {
       nick_name: data.nickName,
       gender: data.gender,
       rfu_id: data.rfuID,
-      year_of_graduation: data.graduation,
+      year_of_graduation: Number(data.graduation),
       program: data.program,
       birth_place: data.birthPlace,
     });
@@ -135,8 +135,8 @@ export const GeneralInfo = () => {
       email: registerDetail.data?.email || "",
       rfuID: registerDetail.data?.rfu_id || "",
       program: registerDetail.data?.program || "",
-      // graduation: registerDetail.data?.year_of_graduation || 0,
-      graduation: "2022",
+      graduation: registerDetail.data?.year_of_graduation || 0,
+      // graduation: 2022,
       birthPlace: registerDetail.data?.birth_place || "",
       userName: registerDetail.data?.username || "",
       password: "",
@@ -403,7 +403,10 @@ export const GeneralInfo = () => {
               <InputLabelWrapper htmlFor="graduation">
                 <FormattedMessage {...messages.graduationLabel} />
               </InputLabelWrapper>
-              <Box gridColumn="span 2">
+              <Box
+                sx={{ borderBottom: "1px solid", marginTop: "-10px" }}
+                gridColumn="span 2"
+              >
                 <CustomSelect
                   name="graduation"
                   placeholder="2004"
@@ -415,51 +418,6 @@ export const GeneralInfo = () => {
                   options={year_of_graduation}
                 />
               </Box>
-
-              {/* <TextField
-                id="graduation"
-                name="graduation"
-                placeholder={graduationPlaceholder}
-                fullWidth
-                type="number"
-                value={year || values.graduation}
-                onBlur={handleBlur}
-                onChange={(e) => {
-                  handleChange;
-                  setYear(parseInt(e.target.value));
-                }}
-                error={Boolean(touched.graduation && errors.graduation)}
-                variant="standard"
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        position: "absolute",
-                        right: 0,
-                        top: "5%",
-                      }}
-                      position="end"
-                    >
-                      <IconButtonWrapper onClick={increment}>
-                        <ArrowDropUpOutlinedIcon />
-                      </IconButtonWrapper>
-                      <IconButtonWrapper onClick={decrement}>
-                        <ArrowDropDownOutlinedIcon />
-                      </IconButtonWrapper>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              {touched.graduation && errors.graduation && (
-                <FormHelperText
-                  error
-                  id="standard-weight-helper-text-graduation"
-                >
-                  {errors.graduation}
-                </FormHelperText>
-              )} */}
             </Grid>
             <Grid item xs={12} md={3}>
               <InputLabelWrapper htmlFor="birth-place">
@@ -513,7 +471,7 @@ export const GeneralInfo = () => {
             mt: "40px",
             justifyContent: "start",
             width: "max-content",
-            padding: "40px",
+            padding: { md: "40px", sm: "20px", xs: "40px" },
             gap: "20px",
             flexDirection: "column",
             alignItems: "start",
@@ -620,8 +578,9 @@ export const GeneralInfo = () => {
             alignItems: "center",
             mt: "120px",
             background: "transparent",
-            width: "max-content",
+            width: { sm: "100%", xs: "max-content", md: "max-content" },
             position: "relative",
+            flexDirection: { sm: "column", xs: "row", md: "row" },
           }}
         >
           <TextField
@@ -638,7 +597,9 @@ export const GeneralInfo = () => {
             sx={{
               background: (theme) => theme.palette.primary.light,
               borderRadius: "0",
-              width: { md: "350px", xs: "250px" },
+              justifyContent: "center",
+              width: { md: "350px", sm: "100%", xs: "250px" },
+              height: { sm: "50px", xs: "100%", md: "100%" },
               position: "relative",
               px: "10px",
               ".MuiInputBase-root": {
@@ -680,6 +641,7 @@ export const GeneralInfo = () => {
             sx={{
               borderTopRightRadius: (theme) => theme.borderRadius.radius1,
               borderBottomRightRadius: (theme) => theme.borderRadius.radius1,
+              width: { sm: "100%", xs: "max-content", md: "max-content" },
             }}
             startIcon={<HighlightOffIcon />}
             variant="contained"

@@ -60,7 +60,15 @@ const SearchBar = (props: any) => {
   const onChange = () => {};
 
   return (
-    <BoxWrapper display="grid" gridTemplateColumns="repeat(12, 1fr)">
+    <BoxWrapper
+      sx={{
+        display: { md: "grid", xs: "flex" },
+        flexDirection: { xs: "column", md: "row" },
+        padding: { md: "0", xs: "20px" },
+      }}
+      display="grid"
+      gridTemplateColumns="repeat(12, 1fr)"
+    >
       <Box gridColumn="span 3">
         <TextFieldStyled
           placeholder="Search Course"
