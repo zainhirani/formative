@@ -35,6 +35,8 @@ const CourseRestore = () => {
 
   const [checked, setChecked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState<number>(0);
+  const [selectedAudience, setSelectedAudience] = React.useState("");
+  const [selectedClass, setSelectedClass] = React.useState("");
 
   const showColumns = {
     id: false,
@@ -154,7 +156,10 @@ const CourseRestore = () => {
   return (
     // <PageLayout title="Courses"  icon={<HelpRoundedIcon />}>
     <Box>
-      <SearchBar />
+      <SearchBar
+        setSelectedClass={setSelectedClass}
+        setSelectedAudience={setSelectedAudience}
+      />
       <TableWrapper>
         <CustomDataGrid
           rows={getRestoreCourseListing?.data || []}
