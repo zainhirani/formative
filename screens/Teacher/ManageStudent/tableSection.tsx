@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BoxWrapper } from "./Styled";
 import { pageSizeManageQuiz } from "mock-data/Teacher/ManageStudent";
 import { GridColDef } from "@mui/x-data-grid";
@@ -45,21 +45,21 @@ export const columnsManageStudent: GridColDef[] = [
     flex: 1,
   },
 ];
-
 const TableSection = (props: any) => {
-  const { setChecked,program,yearOfGraduation, isCheckbox,setUserId,searchBy,selectNewCourse} = props;
+  const { setChecked,program,yearOfGraduation, isCheckbox,setUserId,searchBy,selectNewCourse,} = props;
 
-  const studentListing = useStudentListing({queryParams:{...(searchBy&&{searchBy:searchBy}),course:selectNewCourse,yop:yearOfGraduation?.toString(),program:program?.toString()}});
- 
-
+  const studentListing = useStudentListing({yop:yearOfGraduation,program:program,Limit:10,Page:2,
+   ...(searchBy&&{SearchBy:searchBy})
+  });
   return (
     <BoxWrapper>
+      {/* @ts-ignore */}
       <CustomDataGrid
         rows={studentListing.data  || []}
         columns={columnsManageStudent}
         pageSizeData={pageSizeManageQuiz}
         type={"1"}
-        isCheckbox={true}
+        isCheckbox={isCheckbox}
         setChecked={setChecked}
         loading={studentListing.isFetching}
         getSelectedId={(e) => setUserId(e?.[0])}

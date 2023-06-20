@@ -16,6 +16,7 @@ import { GridCloseIcon } from "@mui/x-data-grid";
 import { useCourseListing } from "providers/Courses";
 import { useStudentEnroll } from "providers/teacher/student";
 import { year_of_graduation ,programs} from "constants/index";
+import { debounce } from "lodash";
 
 import messages from "./messages";
 import {
@@ -25,9 +26,10 @@ import {
 } from "./Styled";
 
 const SearchSection = (props: any) => {
+  
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { checked,setProgram,setYearOfGraduation, setCourse,userIds,selectedCourse,setSearchChange } = props;
-  // console.log(selectedCourse,"selectedCourse")
+  
   const searchCourse = useFormattedMessage(messages.searchCourse);
 
 
@@ -52,14 +54,11 @@ const handleProgram = (programValue :any) =>{
 }
 //Select Year Of Graduation Value
 const handleYearOfGraduation = (yearValue :any) =>{
-  setYearOfGraduation(yearValue.value)
-  console.log(yearValue)
+  setYearOfGraduation(yearValue?.value)  
 }
 
 const handleCourse = (courseValue :any) =>{
-  setCourse(courseValue.value)
-  console.log(courseValue.value,"jdlkfjsdlfkj")
-
+  setCourse(courseValue?.value)
 }
 
 useEffect(() => {
@@ -90,11 +89,14 @@ useEffect(() => {
     }
 },[enrollStudent?.isError])
 
-const handleSearchChange = (search: any) => {
-  setSearchChange(search.target.value);
-  console.log(search.target.value)
-};
 
+const debouncedSearch = debounce((criteria) => {
+  setSearchChange(criteria);
+}, 400);
+
+const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  debouncedSearch(e.target.value);
+};
 
   return (
     <BoxWrapper display="grid" gridTemplateColumns="repeat(12, 1fr)">
@@ -102,7 +104,7 @@ const handleSearchChange = (search: any) => {
         <TextFieldStyled
           placeholder={searchCourse}
           variant="outlined"
-          onChange={handleSearchChange}
+          onChange={onInputChange}
           InputProps={{
             style: { border: "none", outline: "0px" },
             endAdornment: (
@@ -120,7 +122,8 @@ const handleSearchChange = (search: any) => {
           placeholder="Select Course"
           controlText="New Course:"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-            options={cousrseData || [] }
+          options={cousrseData || [] }
+          onChange={handleCourse}
           
         />
       </Box>
@@ -131,6 +134,7 @@ const handleSearchChange = (search: any) => {
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={year_of_graduation}
           onChange={handleYearOfGraduation}
+          
         />
       </Box>
       <Box gridColumn="span 2">

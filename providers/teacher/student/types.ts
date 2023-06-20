@@ -14,7 +14,14 @@ export namespace Student {
   };
 
   //Listing
-  export type ListingProps = {};
+  export type ListingProps = {
+    yop?:number,
+    program?:string,
+    SearchBy?:string,
+    Page?:number,
+    Limit?:number
+  };
+
   export type ListingResponse = [Item]
   export interface ListingAPIPayload extends ListingProps {}
 
@@ -32,4 +39,8 @@ export namespace Student {
     data: EnrollMutationPayload
   }
 
+
+
 }
+
+
