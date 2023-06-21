@@ -33,7 +33,7 @@ export default NextAuth({
   ],
   pages: {
     signIn: "/login",
-    newUser: "/register",
+    newUser:'/register'
   },
   callbacks: {
     async signIn({ user }: any) {

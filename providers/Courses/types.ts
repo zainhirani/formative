@@ -18,8 +18,8 @@ export namespace Course {
 
   //Listing
   export type ListingProps = {
-    SearchBy: string | null;
-    Limit: number | null;
+    SearchBy?: string | null;
+    Limit?: number | null;
     Page?: number;
   };
   export type ListingResponse = [Item];

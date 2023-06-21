@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Typography, Box } from "@mui/material";
-import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
+import  { useFormattedMessage } from "theme/FormattedMessage";
 import messages from "../messages";
 import { BoxWrapper, ButtonWrapper, TypographyStyled } from "../Styled";
-import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import { questionData } from "mock-data/Student/TakeQuiz";
-import TakeQuizFormat from "components/TakeQuizFormat";
 import Question from "components/QuizMultiQuestionsFormat";
 
 const QuestionsStepper = (props: any) => {
@@ -20,7 +18,6 @@ const QuestionsStepper = (props: any) => {
   const questionNo = useFormattedMessage(messages.questionNo);
   const remainingTimeText = useFormattedMessage(messages.remainingTime);
   const quizScore = useFormattedMessage(messages.quizScore);
-  const submit = useFormattedMessage(messages.submit);
   const quizScoreText = useFormattedMessage(messages.quizScoreText);
   const quizScorePoints = useFormattedMessage(messages.quizScorePoints);
   const percentage = useFormattedMessage(messages.percentage);
@@ -29,7 +26,6 @@ const QuestionsStepper = (props: any) => {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      // @ts-ignore
       setRemainingTime((prevTime) => {
         if (prevTime > 0) {
           return prevTime - 1;
@@ -48,10 +44,6 @@ const QuestionsStepper = (props: any) => {
   }, [activeStep]);
 
   const handleNext = () => {
-    console.log("Workingggggggg");
-    console.log(activeStep, "activeStep");
-    console.log(steps.length, "steps.length");
-
     if (activeStep === steps.length - 1) {
       setModalTitle(quizScoreTitle);
     }

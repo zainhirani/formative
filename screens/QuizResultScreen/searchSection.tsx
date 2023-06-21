@@ -25,7 +25,6 @@ const SearchSection = ({
 }: SearchSectionProps) => {
   const searchQuiz = useFormattedMessage(messages.searchQuiz);
 
-  // @ts-ignore
   const courseListing = useCourseListing({});
   const cousrseData = useMemo(() => {
     return courseListing?.data?.map((item) => ({

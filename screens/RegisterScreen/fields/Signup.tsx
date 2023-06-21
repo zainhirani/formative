@@ -372,9 +372,6 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
               >
                 <CustomSelect
                   name="graduation"
-                  // placeholder="2004"
-                  // controlText="Year of Graduation:"
-                  value={{ label: year, value: year }}
                   onBlur={handleBlur}
                   onChange={handleSetYear}
                   dropdownIcon={<ExpandMoreIcon />}

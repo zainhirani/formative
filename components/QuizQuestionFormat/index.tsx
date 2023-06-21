@@ -27,7 +27,7 @@ type QuizQuestionFormatProps = {
   title?: string;
   questionContext?: string;
   actualQuestion?: string;
-  quizOptions?: object[];
+  quizOptions?: {id:number,optionText:string}[];
   timeSpent?: string | number;
   score?: string | number;
   isHeader?: boolean;
@@ -265,7 +265,7 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
               />
             ) : null}
             {quizOptions.map((value, index) => {
-              // @ts-ignore
+             
               const labelId = `checkbox-list-label-${value.id}`;
 
               return (
@@ -303,8 +303,8 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
                       </ListItemIcon>
                       <ListItemText
                         id={labelId}
-                        // @ts-ignore
-                        primary={`${value.optionText}`}
+                        
+                        primary={`${value?.optionText}`}
                         sx={{ color: textColors[index] }}
                       />
                     </ListItemButton>

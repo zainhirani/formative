@@ -30,8 +30,6 @@ const SearchSection = (props: any) => {
   console.log(selectedCourse, "selectedCourse");
   const searchCourse = useFormattedMessage(messages.searchCourse);
 
-  //Course data
-  // @ts-ignore
   const courseListing = useCourseListing({});
   const enrollStudent = useStudentEnroll({});
 

@@ -39,7 +39,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
   getSelectedId = () => {},
   page = 1,
   handlePageChange,
-  totalRows = rows.length,
+  totalRows = rows?.length,
   ...props
 }) => {
   const totalPages = Math.ceil(totalRows / pageSizeData);
@@ -98,7 +98,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
           <DataGrid
             onRowClick={onRowClick}
             pagination
-            rows={rows || []}
+            rows={rows || []} 
             columns={columns}
             getRowHeight={getRowHeight}
             disableColumnMenu

@@ -348,7 +348,6 @@ export const GeneralInfo = () => {
                 <CustomSelect
                   name="graduation"
                   // controlText="Year of Graduation:"
-                  value={{ label: values.graduation, value: values.graduation }}
                   onBlur={handleBlur}
                   onChange={handleSetYear}
                   dropdownIcon={<ExpandMoreIcon />}
