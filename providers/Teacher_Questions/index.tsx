@@ -24,7 +24,7 @@ export const useQuestionsListing = (props: any) => {
 
 export const useQuestionDetails = (props: any) => {
   return useQuery(
-    getKeyFromProps(props, "VIEWQUESTIONDETAIL"),
+    getKeyFromProps(props, "DETAIL"),
     () => getQuestionById(props.questionId),
     { enabled: !!props.questionId },
   );

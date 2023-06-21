@@ -58,6 +58,7 @@ const ViewQuestion = ({
         loading={questionDetails?.isFetching}
         answerStats={answerStats}
         media={questionDetails?.data?.media}
+        quizAnswers={questionDetails?.data?.answer}
       />
     </>
   );

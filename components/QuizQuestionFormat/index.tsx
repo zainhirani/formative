@@ -45,6 +45,7 @@ type QuizQuestionFormatProps = {
   isChecked?: boolean | number;
   media?: string;
   timeUnit?: string;
+  quizAnswers: unknown;
 };
 
 const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
@@ -57,6 +58,7 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
     { id: 3, optionText: "Option 3" },
     { id: 4, optionText: "Option 4" },
   ],
+  quizAnswers = [],
   timeSpent = "21 Seconds",
   score = "12 Points",
   isHeader = true,
@@ -292,7 +294,8 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
                           disabled={disable}
                           edge="start"
                           // checked={checked.indexOf(index) !== -1}
-                          checked={isChecked === index}
+                          // @ts-ignore
+                          checked={quizAnswers.includes(value.value)}
                           tabIndex={-1}
                           disableRipple
                           inputProps={{ "aria-labelledby": labelId }}

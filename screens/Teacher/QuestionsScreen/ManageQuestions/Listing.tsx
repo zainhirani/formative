@@ -16,10 +16,26 @@ import { isStringNotURL, removeHTMLTags } from "utils";
 import ImagePreviewModal from "components/ImagePreviewModal";
 import ViewQuestion from "./ViewQuestion";
 
-interface ListingProp {}
+interface ListingProp {
+  folder: any;
+  facultyCategory: any;
+  enumType: any;
+  category: any;
+}
+// @ts-ignore
+const Listing: React.FC = ({
+  category,
+  enumType,
+  facultyCategory,
+  folder,
+}: ListingProp) => {
+  let questions = useQuestionsListing({
+    ...(facultyCategory?.length > 0 && { facultyId: facultyCategory }),
+    ...(folder && { folderId: folder }),
+    ...(enumType && { type: enumType }),
+    ...(category && { categories: category }),
+  });
 
-const Listing: React.FC = ({}: ListingProp) => {
-  let questions = useQuestionsListing({});
   let [image, setImage] = useState<string>("");
   const [questionId, setQuestionId] = useState<string | undefined>(undefined);
   const [questiondrawer, setQuestionDrawer] = useState(false);
@@ -144,9 +160,9 @@ const Listing: React.FC = ({}: ListingProp) => {
     <BoxWrapper>
       {/* @ts-ignore */}
       <CustomDataGrid
-        rows={questions?.data}
+        rows={questions?.data?.data}
         columns={COLUMNS_CONFIG}
-        totalRows={questions?.data?.length || 0}
+        totalRows={questions?.data?.data?.length || 0}
         pageSizeData={10}
         type={"1"}
         buttonArray={FOOTER_CONFIG}

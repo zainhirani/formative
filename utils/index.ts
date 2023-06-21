@@ -19,7 +19,8 @@ export function timeFormatter(time: any) {
 
   }
 
-  export const removeHTMLTags = (html: string): string=> {
+  export const removeHTMLTags = (html: string): any=> {
+    if(!html)return
     // Regex pattern to match HTML tags
     const regex = /<[^>]+>/g; 
     return html.replace(regex, '');
@@ -27,7 +28,8 @@ export function timeFormatter(time: any) {
 
 
 
-export const  isStringNotURL = (str: string): boolean=>  {
+export const  isStringNotURL = (str: string): any=>  {
+  if(!str)return
   const isNotURL: RegExp = /^(?!(?:https?:\/\/|www\.)[^\s.]+\.[^\s]{2,})/;
 
   return isNotURL.test(str);

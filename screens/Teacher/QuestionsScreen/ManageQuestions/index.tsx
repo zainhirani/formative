@@ -1,5 +1,6 @@
+// @ts-nocheck
+import React, { useState, useEffect } from "react";
 import { Box } from "@material-ui/core";
-import React, { useState } from "react";
 import Listing from "./Listing";
 import Filters from "./Filters";
 
@@ -8,6 +9,10 @@ const ManageQuestions = () => {
   const [facultyCategory, setFacultyCategory] = useState("");
   const [enumType, setEnumType] = useState("");
   const [category, setCategory] = useState("");
+
+  useEffect(() => {
+    console.log("facultyCategory", facultyCategory);
+  }, [facultyCategory]);
 
   return (
     // <PageLayout

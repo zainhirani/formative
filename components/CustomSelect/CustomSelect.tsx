@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { FC, ReactNode } from "react";
 import { Tooltip } from "@mui/material";
 import { components } from "react-select";
@@ -104,8 +105,8 @@ const CustomSelect: FC<CustomSelectProps> = ({
 
   return (
     <BoxWrapper sx={{ zIndex: 99999 }}>
-      {/* @ts-ignore */}
       <AutoComplete
+        isMulti={isMulti}
         onBlur={onBlur}
         name={name}
         isClearable
