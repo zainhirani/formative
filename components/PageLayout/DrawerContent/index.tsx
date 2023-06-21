@@ -27,7 +27,7 @@ interface BarComponentProps {
 
 const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
   const router = useRouter();
-  const {signOut} = useAuthContext();
+  const { signOut } = useAuthContext();
   let MENU_ITEMS = 2 === 2 ? TEACHER_MENU : STUDENT_MENU;
   let COMMON_MENU_ITEMS = [COMMON_MENU.profile, COMMON_MENU.settings];
 
@@ -53,10 +53,10 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
             lazyLoad={true}
           />
         </Box>
-        {/* 
+        {/*
         <IconButton onClick={clickHandler}>
           <MenuIcon sx={{ color: (theme) => theme.palette.primary.light }} />
-        </IconButton> 
+        </IconButton>
         */}
       </DrawerHeader>
 
@@ -164,29 +164,29 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
       <List>
         <ListItem disablePadding>
           {/* <Link href="#" passHref={true}> */}
-            <ListItemButton onClick={() => signOut()}>
-              <ListItemIcon
-                sx={{
-                  color: (theme) => theme.palette.primary.light,
-                  minWidth: "40px",
-                  "& .lazyload-wrapper": {
-                    display: "flex",
-                  },
-                }}
-              >
-                <PowerSettingsNewOutlinedIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary="Logout"
-                sx={{
-                  color: (theme) => theme.palette.primary.light,
+          <ListItemButton onClick={() => signOut()}>
+            <ListItemIcon
+              sx={{
+                color: (theme) => theme.palette.primary.light,
+                minWidth: "40px",
+                "& .lazyload-wrapper": {
+                  display: "flex",
+                },
+              }}
+            >
+              <PowerSettingsNewOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary="Logout"
+              sx={{
+                color: (theme) => theme.palette.primary.light,
+                fontSize: "14px",
+                "& span": {
                   fontSize: "14px",
-                  "& span": {
-                    fontSize: "14px",
-                  },
-                }}
-              />
-            </ListItemButton>
+                },
+              }}
+            />
+          </ListItemButton>
           {/* </Link> */}
         </ListItem>
       </List>

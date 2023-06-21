@@ -7,15 +7,19 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { SelectBoxWrapper } from "./Styled";
 
 type ICustomeDatePicker = {
-  label: string | React.ReactElement;
-  value?: null | Date;
+  label?: string | React.ReactElement;
+  value?: null | Date | string;
   onChange?: (e?: any) => void;
+  sx?: any;
+  components?: any;
 };
 
 const CustomeDatePicker: FC<ICustomeDatePicker> = ({
   label,
   value,
   onChange,
+  components,
+  sx,
 }) => {
   return (
     <SelectBoxWrapper gridColumn="span 3">
@@ -25,6 +29,8 @@ const CustomeDatePicker: FC<ICustomeDatePicker> = ({
           label={label}
           value={value}
           onChange={onChange}
+          sx={sx}
+          components={components}
         />
       </LocalizationProvider>
     </SelectBoxWrapper>

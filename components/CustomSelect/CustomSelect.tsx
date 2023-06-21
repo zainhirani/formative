@@ -44,6 +44,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
   options,
   placeholder,
   onChange,
+  value,
   defaultValue,
   onBlur,
   name,
@@ -116,8 +117,8 @@ const CustomSelect: FC<CustomSelectProps> = ({
         }}
         customStyles={style}
         className="custom-select"
+        value={value}
         defaultValue={defaultValue}
-        name={name}
       />
     </BoxWrapper>
   );

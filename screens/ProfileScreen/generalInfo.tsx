@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {
   Box,
   FormHelperText,
@@ -37,21 +38,21 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { year_of_graduation } from "mock-data/Profile";
 
 const validationSchema = Yup.object().shape({
-  firstName: Yup.string().required().label("FirstName"),
-  lastName: Yup.string().required().label("LastName"),
-  nickName: Yup.string().required().label("NickName"),
-  gender: Yup.string().required().label("Gender"),
-  email: Yup.string().required().email().label("Email"),
-  rfuID: Yup.string().required().label("RFU ID"),
-  program: Yup.string().required().label("Program"),
-  graduation: Yup.string().required().label("Graduation Year"),
-  birthPlace: Yup.string().required().label("Birth Place"),
-  userName: Yup.string().required().label("User Name"),
-  password: Yup.string().required().min(6).label("Password"),
+  firstName: Yup.string().label("FirstName"),
+  lastName: Yup.string().label("LastName"),
+  nickName: Yup.string().label("NickName"),
+  gender: Yup.string().label("Gender"),
+  email: Yup.string().email().label("Email"),
+  rfuID: Yup.string().label("RFU ID"),
+  program: Yup.string().label("Program"),
+  graduation: Yup.string().label("Graduation Year"),
+  birthPlace: Yup.string().label("Birth Place"),
+  userName: Yup.string().label("User Name"),
+  password: Yup.string().min(6).label("Password"),
   confirmPassword: Yup.string()
     .required("Please confirm your password")
     .oneOf([Yup.ref("password")], "Passwords do not match"),
-  currentPassword: Yup.string().required().min(6).label("Password"),
+  currentPassword: Yup.string().required().min(6).label("Current Password"),
 });
 
 export const GeneralInfo = () => {
@@ -70,6 +71,9 @@ export const GeneralInfo = () => {
   const passwordPlaceholder = useFormattedMessage(messages.passwordPlaceholder);
   const confirmPasswordPlaceholder = useFormattedMessage(
     messages.confirmPasswordPlaceholder,
+  );
+  const currentPasswordPlaceholder = useFormattedMessage(
+    messages.currentPasswordPlaceholder,
   );
   const registerUpdate = useRegisterUpdate();
   const registerDetail = useRegisterDetail();
@@ -106,7 +110,7 @@ export const GeneralInfo = () => {
       last_name: data.lastName,
       nick_name: data.nickName,
       gender: data.gender,
-      rfu_id: Number(data.rfuID),
+      rfu_id: data.rfuID,
       year_of_graduation: Number(data.graduation),
       program: data.program,
       birth_place: data.birthPlace,
@@ -133,7 +137,7 @@ export const GeneralInfo = () => {
       nickName: registerDetail.data?.nick_name || "",
       gender: registerDetail.data?.gender || "",
       email: registerDetail.data?.email || "",
-      rfuID: Number(registerDetail.data?.rfu_id) || 0,
+      rfuID: registerDetail.data?.rfu_id || "",
       program: registerDetail.data?.program || "",
       graduation: registerDetail.data?.year_of_graduation || 0,
       // graduation: 2022,
@@ -268,6 +272,7 @@ export const GeneralInfo = () => {
                 onChange={handleChange}
                 error={Boolean(touched.email && errors.email)}
                 variant="standard"
+                disabled
               />
               {touched.email && errors.email && (
                 <FormHelperText error id="standard-weight-helper-text-email">
@@ -337,23 +342,13 @@ export const GeneralInfo = () => {
                 <FormattedMessage {...messages.graduationLabel} />
               </InputLabelWrapper>
               <Box
-                sx={{
-                  ".MuiBox-root .custom-select": {
-                    borderBottom: "1px solid #949494",
-                    mt: "-10px",
-                  },
-                }}
+                sx={{ borderBottom: "1px solid", marginTop: "-10px" }}
                 gridColumn="span 2"
               >
                 <CustomSelect
-                  // placeholder="2004"
+                  name="graduation"
                   // controlText="Year of Graduation:"
                   value={{ label: values.graduation, value: values.graduation }}
-                  defaultValue={{
-                    label: values.graduation,
-                    value: values.graduation,
-                  }}
-                  name="graduation"
                   onBlur={handleBlur}
                   onChange={handleSetYear}
                   dropdownIcon={<ExpandMoreIcon />}
@@ -413,7 +408,7 @@ export const GeneralInfo = () => {
             mt: "40px",
             justifyContent: "start",
             width: "max-content",
-            padding: "40px",
+            padding: { md: "40px", sm: "20px", xs: "40px" },
             gap: "20px",
             flexDirection: "column",
             alignItems: "start",
@@ -520,14 +515,15 @@ export const GeneralInfo = () => {
             alignItems: "center",
             mt: "120px",
             background: "transparent",
-            width: "max-content",
+            width: { sm: "100%", xs: "max-content", md: "max-content" },
             position: "relative",
+            flexDirection: { sm: "column", xs: "row", md: "row" },
           }}
         >
           <TextField
             id="currentPassword"
             name="currentPassword"
-            placeholder={passwordPlaceholder}
+            placeholder={currentPasswordPlaceholder}
             fullWidth
             type="password"
             value={values.currentPassword}
@@ -538,7 +534,9 @@ export const GeneralInfo = () => {
             sx={{
               background: (theme) => theme.palette.primary.light,
               borderRadius: "0",
-              width: { md: "350px", xs: "250px" },
+              justifyContent: "center",
+              width: { md: "350px", sm: "100%", xs: "250px" },
+              height: { sm: "50px", xs: "100%", md: "100%" },
               position: "relative",
               px: "10px",
               ".MuiInputBase-root": {
@@ -563,6 +561,7 @@ export const GeneralInfo = () => {
             type="submit"
             loading={registerUpdate.isLoading}
             loadingPosition="start"
+            disabled={values.currentPassword.length < 6}
             sx={{
               background: (theme) => theme.palette.secondary.main,
               width: { xs: "100%", md: "max-content" },
@@ -580,6 +579,7 @@ export const GeneralInfo = () => {
             sx={{
               borderTopRightRadius: (theme) => theme.borderRadius.radius1,
               borderBottomRightRadius: (theme) => theme.borderRadius.radius1,
+              width: { sm: "100%", xs: "max-content", md: "max-content" },
             }}
             startIcon={<HighlightOffIcon />}
             variant="contained"

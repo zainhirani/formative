@@ -99,7 +99,6 @@ const TypeOne: React.FC<TypeOneProps> = ({
             onRowClick={onRowClick}
             pagination
             rows={rows || []}
-            
             columns={columns}
             getRowHeight={getRowHeight}
             disableColumnMenu
@@ -107,7 +106,10 @@ const TypeOne: React.FC<TypeOneProps> = ({
             disableDensitySelector
             disableRowSelectionOnClick
             rowSelectionModel={selectedIds}
-            onRowSelectionModelChange={(...e) => handleCheck(...e)}
+            onRowSelectionModelChange={(...e) => {
+              handleCheck(...e);
+              getSelectedId(e);
+            }}
             columnVisibilityModel={columnVisibilityModel}
             {...props}
             sx={{ minHeight: "400px" }}

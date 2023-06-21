@@ -238,6 +238,7 @@ const CreateNewScreen = () => {
                 >
                   <Box sx={{ width: "100%" }}>
                     <CustomSelect
+                      name="questions"
                       placeholder={questionPlaceholder}
                       controlText={question}
                       dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
@@ -255,6 +256,7 @@ const CreateNewScreen = () => {
                 >
                   <Box sx={{ width: "100%" }}>
                     <CustomSelect
+                      name="type"
                       placeholder={typePlaceholder}
                       controlText={type}
                       dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
@@ -345,6 +347,7 @@ const CreateNewScreen = () => {
                 >
                   <Box sx={{ width: "100%" }}>
                     <CustomSelect
+                      name="folder"
                       placeholder={folderPlaceholder}
                       controlText={folder}
                       dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
@@ -372,6 +375,7 @@ const CreateNewScreen = () => {
                 >
                   <Box sx={{ width: "100%" }}>
                     <CustomSelect
+                      name="category"
                       placeholder={categoryPlaceholder}
                       controlText={category}
                       dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
@@ -400,6 +404,7 @@ const CreateNewScreen = () => {
                 >
                   <Box sx={{ width: "100%" }}>
                     <CustomSelect
+                      name="faculty"
                       placeholder={facultyPlaceholder}
                       controlText={faculty}
                       dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
@@ -522,6 +527,7 @@ const CreateNewScreen = () => {
                   >
                     <Box sx={{ width: "100%" }}>
                       <CustomSelect
+                        name="questions"
                         placeholder={questionPlaceholder}
                         controlText={question}
                         dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
@@ -539,6 +545,7 @@ const CreateNewScreen = () => {
                   >
                     <Box sx={{ width: "100%" }}>
                       <CustomSelect
+                        name="type"
                         placeholder={typePlaceholder}
                         controlText={type}
                         dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
@@ -629,6 +636,7 @@ const CreateNewScreen = () => {
                   >
                     <Box sx={{ width: "100%" }}>
                       <CustomSelect
+                        name="folder"
                         placeholder={folderPlaceholder}
                         controlText={folder}
                         dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
@@ -656,6 +664,7 @@ const CreateNewScreen = () => {
                   >
                     <Box sx={{ width: "100%" }}>
                       <CustomSelect
+                        name="category"
                         placeholder={categoryPlaceholder}
                         controlText={category}
                         dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
@@ -684,6 +693,7 @@ const CreateNewScreen = () => {
                   >
                     <Box sx={{ width: "100%" }}>
                       <CustomSelect
+                        name="faculty"
                         placeholder={facultyPlaceholder}
                         controlText={faculty}
                         dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}

@@ -13,7 +13,7 @@ export namespace Register {
     year_of_graduation: number;
     program: string;
     birth_place: string;
-    name?:string
+    name?: string;
   };
 
   // Create

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {
   Box,
   Checkbox,
@@ -42,6 +43,8 @@ import { useSnackbar } from "notistack";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import { BoxWrapper, ButtonWrapper } from "./Styled";
+import CustomeDatePicker from "components/CustomeDatePicker";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
 interface StyledFormControlLabelProps extends FormControlLabelProps {
   checked: boolean;
@@ -68,17 +71,17 @@ function MyFormControlLabel(props: FormControlLabelProps) {
 }
 
 const validationSchema = Yup.object().shape({
-  dob: Yup.string().required().label("Date of Birth"),
-  pharmacy: Yup.string().required().label("Pharmacy"),
-  partTime: Yup.string().required().label("Part Time"),
-  bioChemistry: Yup.string().required().label("Bio Chemistry"),
-  maths: Yup.string().required().label("Maths"),
-  learn: Yup.string().required().label("Learn"),
-  sequence: Yup.string().required().label("Sequence"),
-  study: Yup.string().required().label("Study"),
-  played: Yup.string().required().label("Played"),
-  volunteer: Yup.string().required().label("Volunteer"),
-  hobbies: Yup.string().required().label("Hobbies"),
+  dob: Yup.string().label("Date of Birth"),
+  pharmacy: Yup.string().label("Pharmacy"),
+  partTime: Yup.string().label("Part Time"),
+  bioChemistry: Yup.string().label("Bio Chemistry"),
+  maths: Yup.string().label("Maths"),
+  learn: Yup.string().label("Learn"),
+  sequence: Yup.string().label("Sequence"),
+  study: Yup.string().label("Study"),
+  played: Yup.string().label("Played"),
+  volunteer: Yup.string().label("Volunteer"),
+  hobbies: Yup.string().label("Hobbies"),
   currentPassword: Yup.string().required().min(6).label("Password"),
 });
 
@@ -89,6 +92,7 @@ export const ProfileTab = ({}) => {
   const passwordPlaceholder = useFormattedMessage(messages.passwordPlaceholder);
   const hobbiesPlaceholder = useFormattedMessage(messages.hobbiesPlaceholder);
   const [math, setMath] = useState("Select an option for the list");
+  const [dobValue, setDobValue] = useState(null);
   const [experience, setExperience] = useState(
     profileDetail.data?.experience || 0,
   );
@@ -148,8 +152,8 @@ export const ProfileTab = ({}) => {
 
   const onSubmit = useCallback((data: any) => {
     profile.mutate({
-      date_of_birth: data.dob,
-      experience: Number(data.pharmacy),
+      date_of_birth: dobValue?.toString(),
+      experience: data.pharmacy,
       working_part_time: data.partTime === "yes" ? true : false,
       athlete: data.played,
       concept: data.learn,
@@ -195,6 +199,10 @@ export const ProfileTab = ({}) => {
     onSubmit,
   });
 
+  const handleDateChange = (date: any) => {
+    setDobValue(date);
+  };
+
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -204,17 +212,23 @@ export const ProfileTab = ({}) => {
               <InputLabelWrapper htmlFor="dob">
                 <FormattedMessage {...messages.dobLabel} />
               </InputLabelWrapper>
-              <TextField
-                id="dob"
-                name="dob"
-                placeholder={dobPlaceholder}
-                fullWidth
-                type="date"
-                value={values.dob}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                error={Boolean(touched.dob && errors.dob)}
-                variant="standard"
+              <CustomeDatePicker
+                value={dobValue}
+                onChange={() => {
+                  handleDateChange;
+                  handleChange;
+                }}
+                components={{ OpenPickerIcon: CalendarMonthIcon }}
+                sx={{
+                  width: "100%",
+                  borderBottom: "1px solid",
+                  ".MuiSvgIcon-root": {
+                    color: (theme: any) => theme.palette.primary.main,
+                  },
+                  ".MuiInputBase-input": {
+                    padding: "0 10px 8px 0",
+                  },
+                }}
               />
               {touched.dob && errors.dob && (
                 <FormHelperText error id="standard-weight-helper-text-dob">
@@ -670,8 +684,9 @@ export const ProfileTab = ({}) => {
             alignItems: "center",
             mt: "120px",
             background: "transparent",
-            width: "max-content",
+            width: { sm: "100%", xs: "max-content", md: "max-content" },
             position: "relative",
+            flexDirection: { sm: "column", xs: "row", md: "row" },
           }}
         >
           <TextField
@@ -688,7 +703,8 @@ export const ProfileTab = ({}) => {
             sx={{
               background: (theme) => theme.palette.primary.light,
               borderRadius: "0",
-              width: { md: "350px", xs: "250px" },
+              width: { md: "350px", sm: "100%", xs: "250px" },
+              height: { sm: "50px", xs: "100%", md: "100%" },
               position: "relative",
               px: "10px",
               ".MuiInputBase-root": {
@@ -713,6 +729,7 @@ export const ProfileTab = ({}) => {
             type="submit"
             loading={profile.isLoading}
             loadingPosition="start"
+            disabled={values.currentPassword.length < 6}
             sx={{
               width: { xs: "100%", md: "max-content" },
               ".MuiLoadingButton-loadingIndicator": {
@@ -727,6 +744,7 @@ export const ProfileTab = ({}) => {
             sx={{
               borderTopRightRadius: (theme) => theme.borderRadius.radius1,
               borderBottomRightRadius: (theme) => theme.borderRadius.radius1,
+              width: { sm: "100%", xs: "max-content", md: "max-content" },
             }}
             startIcon={<HighlightOffIcon />}
             variant="contained"

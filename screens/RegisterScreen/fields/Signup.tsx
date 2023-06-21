@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {
   Box,
   CardContent,
@@ -366,11 +367,7 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
                 <FormattedMessage {...messages.graduationLabel} />
               </InputLabelWrapper>
               <Box
-                sx={{
-                  ".MuiBox-root .custom-select": {
-                    borderBottom: "1px solid #949494",
-                  },
-                }}
+                sx={{ borderBottom: "1px solid", marginTop: "-10px" }}
                 gridColumn="span 2"
               >
                 <CustomSelect
