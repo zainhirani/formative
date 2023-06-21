@@ -202,7 +202,6 @@ export const ProfileTab = ({}) => {
   const handleDateChange = (e: any) => {
     setDobValue(e);
   };
-  console.log(dobValue?.toString(), ".............");
 
   return (
     <>
@@ -216,8 +215,6 @@ export const ProfileTab = ({}) => {
               <CustomeDatePicker
                 value={dayjs(`${profileDetail.data?.date_of_birth}`)}
                 onChange={(e: any) => {
-                  console.log();
-
                   handleDateChange(e);
                   handleChange;
                 }}
@@ -733,7 +730,7 @@ export const ProfileTab = ({}) => {
             loading={profile.isLoading}
             loadingPosition="start"
             disabled={
-              values.currentPassword.length < 6 &&
+              values.currentPassword.length < 6 ||
               isEqual(values, initialValues)
             }
             sx={{

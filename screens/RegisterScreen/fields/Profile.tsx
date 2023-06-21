@@ -96,8 +96,6 @@ export const StepTwo = ({}) => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
-  console.log(dobValue, "dovValue");
-
   const increment = () => {
     if (experience < 50) {
       setExperience((experience) => experience + 1);
@@ -181,12 +179,6 @@ export const StepTwo = ({}) => {
     onSubmit,
   });
 
-  const handleDateChange = (e: any) => {
-    setDobValue(e);
-  };
-
-  console.log(dobValue, ".............");
-
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -199,7 +191,6 @@ export const StepTwo = ({}) => {
               <CustomeDatePicker
                 value={dobValue}
                 onChange={(e: any) => {
-                  // handleDateChange(e);
                   setDobValue(e);
                   handleChange;
                 }}
@@ -277,7 +268,6 @@ export const StepTwo = ({}) => {
                 onChange={(e) => {
                   if (setFieldValue) {
                     setFieldValue("partTime", e.target.value);
-                    console.log(setFieldValue, "partTime");
                   }
                 }}
                 name="radio-buttons-group"

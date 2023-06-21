@@ -120,7 +120,6 @@ export const GeneralInfo = () => {
   const handleSetYear = (e: Object) => {
     setFieldValue("graduation", e?.value);
     setYear(e);
-    console.log(e);
   };
 
   const {
@@ -564,7 +563,7 @@ export const GeneralInfo = () => {
             loading={registerUpdate.isLoading}
             loadingPosition="start"
             disabled={
-              values.currentPassword.length < 6 &&
+              values.currentPassword.length < 6 ||
               isEqual(values, initialValues)
             }
             sx={{
