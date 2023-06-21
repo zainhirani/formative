@@ -11,9 +11,10 @@ interface CustomSelectProps {
   controlText?: string;
   dropdownIcon?: ReactNode;
   onChange?: any;
-  onBlur?: any;
   value?: any;
-  name?: any;
+  defaultValue?: any;
+  name: string;
+  onBlur?: any;
 }
 
 const CustomDropdownIndicator = (props: any) => {
@@ -44,6 +45,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
   placeholder,
   onChange,
   value,
+  defaultValue,
   onBlur,
   name,
 }) => {
@@ -116,6 +118,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
         customStyles={style}
         className="custom-select"
         value={value}
+        defaultValue={defaultValue}
       />
     </BoxWrapper>
   );

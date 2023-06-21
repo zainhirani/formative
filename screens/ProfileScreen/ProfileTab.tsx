@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {
   Box,
   Checkbox,
@@ -34,7 +35,7 @@ import {
   mathSkillsSelect,
 } from "../RegisterScreen/fields/data";
 import messages from "./messages";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, ChangeEvent } from "react";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
 import { useProfile, useProfileDetail } from "providers/Users";
@@ -176,7 +177,7 @@ export const ProfileTab = ({}) => {
   } = useFormik({
     initialValues: {
       dob: formatDate(profileDetail.data?.date_of_birth || "") || "",
-      pharmacy: profileDetail.data?.experience || "",
+      pharmacy: Number(profileDetail.data?.experience) || 0,
       partTime:
         (profileDetail.data?.working_part_time === true ? "Yes" : "No") ||
         false,
@@ -249,6 +250,7 @@ export const ProfileTab = ({}) => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 error={Boolean(touched.pharmacy && errors.pharmacy)}
+                inputProps={{ min: 0, max: 50 }}
                 variant="standard"
                 InputProps={{
                   endAdornment: (

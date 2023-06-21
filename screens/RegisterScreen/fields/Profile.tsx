@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {
   Box,
   Button,
@@ -43,7 +44,7 @@ import {
   mathSkillsSelect,
 } from "./data";
 import messages from "../messages";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, ChangeEvent } from "react";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
 import { useProfile } from "providers/Users";
@@ -170,7 +171,7 @@ export const StepTwo = ({}) => {
   } = useFormik({
     initialValues: {
       dob: "",
-      pharmacy: "",
+      pharmacy: 0,
       partTime: false,
       bioChemistry: false,
       maths: "",
@@ -233,7 +234,8 @@ export const StepTwo = ({}) => {
                 placeholder={pharmacyPlaceholder}
                 fullWidth
                 type="number"
-                value={experience}
+                defaultValue={experience}
+                inputProps={{ min: 0, max: 50 }}
                 onBlur={handleBlur}
                 onChange={handleChange}
                 error={Boolean(touched.pharmacy && errors.pharmacy)}

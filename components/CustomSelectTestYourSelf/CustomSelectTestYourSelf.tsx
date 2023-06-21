@@ -11,6 +11,7 @@ interface CustomSelectTestYourSelfProps {
   controlText?: string;
   dropdownIcon?: ReactNode;
   onChange?: any;
+  value: any;
 }
 
 const CustomDropdownIndicator = (props: any) => {
@@ -40,6 +41,7 @@ const CustomSelectTestYourSelf: FC<CustomSelectTestYourSelfProps> = ({
   options,
   placeholder,
   onChange,
+  value,
 }) => {
   const style = {
     control: (provided: any, state: any) => ({
@@ -104,6 +106,7 @@ const CustomSelectTestYourSelf: FC<CustomSelectTestYourSelfProps> = ({
         }}
         customStyles={style}
         className="custom-select"
+        value={value}
       />
     </BoxWrapper>
   );
