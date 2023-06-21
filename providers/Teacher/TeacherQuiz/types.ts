@@ -36,6 +36,11 @@ export namespace Quiz {
     data: CreateMutationPayload;
   }
 
+  //Teacher Quiz Listing
+  export type TeacherQuizListingProps = {};
+  export type TeacherQuizListingResponse = {data:[],count:number}
+  export interface TeacherQuizListingAPIPayload extends TeacherQuizListingProps {}
+
   //Courses Listing
   export type CourseListingProps = {};
   export type CourseListingResponse = []
@@ -172,4 +177,15 @@ export namespace Quiz {
     data:UpdateMutationPayload
   }
 
+  //Quiz Distribute
+  export type QuizDistributeProps = {id: number|undefined,  studentsId:[]|undefined};
+  export type QuizDistributeResponse = {
+   studentsId:[]|undefined
+  }
+  export type QuizDistributeMutationPayload = []
+  export interface QuizDistributeAPIPayload extends QuizDistributeProps {
+    studentsId: QuizDistributeMutationPayload
+  }
+
 }
+

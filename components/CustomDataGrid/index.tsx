@@ -20,6 +20,9 @@ interface CustomDataGridProps {
   columnVisibilityModel?: any;
   loading?: boolean;
   getSelectedId?: (e?: any) => void;
+  onRowSelectionModelChange?: any;
+  selectionModel?: any;
+  onSelectionModelChange?: any;
 }
 
 const CustomDataGrid: React.FC<CustomDataGridProps> = ({
@@ -76,6 +79,9 @@ const CustomDataGrid: React.FC<CustomDataGridProps> = ({
           pageSizeData={pageSizeData}
           buttonArray={buttonArray}
           checkboxSelection={isCheckbox}
+          onRowClick={onRowClick}
+          loading={loading}
+          {...props}
         />
       ) : (
         ""

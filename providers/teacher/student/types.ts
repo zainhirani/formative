@@ -19,7 +19,7 @@ export namespace Student {
     program?:string,
     SearchBy?:string
   };
-  export type ListingResponse = [Item]
+  export type ListingResponse = [Item]|undefined
   export interface ListingAPIPayload extends ListingProps {}
 
 

@@ -18,29 +18,54 @@ import { useFoldersListing } from "providers/Teacher/TeacherQuiz";
 import { useRouter } from "next/router";
 import APP_ROUTES from "constants/RouteConstants";
 import optionsStatus from "constants/Teacher/QuizConstant";
+import { debounce } from "lodash";
 
-const SearchSection = () => {
+const SearchSection = (props: any) => {
+  const { setSearchChange, setSelectCourse, setSelectFolder, setSelectStatus } =
+    props;
   const coursesList = useCourseListing();
   const foldersList = useFoldersListing();
   const searchQuiz = useFormattedMessage(messages.searchQuiz);
   const router = useRouter();
 
   const folderData = useMemo(() => {
-    return foldersList?.data?.map((item) => ({
+    return foldersList?.data?.data?.map((item) => ({
       value: item.id,
       label: item.name,
     }));
-  }, [foldersList?.data]);
+  }, [foldersList?.data?.data]);
 
   const courseData = useMemo(() => {
-    return coursesList?.data?.map((item) => ({
+    return coursesList?.data?.data?.map((item) => ({
       value: item.id,
       label: item.course_name,
     }));
-  }, [coursesList?.data]);
+  }, [coursesList?.data?.data]);
 
   const createNewHandler = () => {
     router.push(APP_ROUTES.ADD_QUIZ);
+  };
+
+  const handleSearchChange = (search: any) => {
+    setSearchChange(search.target.value);
+  };
+  const debouncedSearch = debounce((criteria) => {
+    setSearchChange(criteria);
+  }, 400);
+
+  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    debouncedSearch(e.target.value);
+  };
+
+  const handleCourse = (course: any) => {
+    setSelectCourse(course?.value);
+  };
+  const handleFolder = (folder: any) => {
+    setSelectFolder(folder?.value);
+  };
+
+  const handleStatus = (status: any) => {
+    setSelectStatus(status?.value);
   };
 
   return (
@@ -49,6 +74,7 @@ const SearchSection = () => {
         <TextFieldStyled
           placeholder={searchQuiz}
           variant="outlined"
+          onChange={onInputChange}
           InputProps={{
             style: { border: "none", outline: "0px" },
             endAdornment: (
@@ -65,21 +91,24 @@ const SearchSection = () => {
         <CustomSelect
           placeholder="Select Course"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-          options={courseData}
+          options={courseData || []}
+          onChange={handleCourse}
         />
       </SelectBoxWrapper>
       <SelectBoxWrapper gridColumn="span 2">
         <CustomSelect
           placeholder="Select Folder"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-          options={folderData}
+          options={folderData || []}
+          onChange={handleFolder}
         />
       </SelectBoxWrapper>
       <SelectBoxWrapper gridColumn="span 2">
         <CustomSelect
           placeholder="Select Status"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-          options={optionsStatus}
+          options={optionsStatus || []}
+          onChange={handleStatus}
         />
       </SelectBoxWrapper>
       <Box gridColumn="span 3">

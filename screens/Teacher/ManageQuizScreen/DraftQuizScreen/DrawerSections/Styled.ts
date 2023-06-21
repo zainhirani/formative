@@ -22,7 +22,7 @@ export const BoxItemWrapper = styled(MuiBox)<BoxProps>(
         borderColor: theme?.additionalColors?.primaryBorderGrey,
       },
       '& .item3':{
-        padding: '19.5px 20px',
+        padding: '12px 20px',
       },
     } as any),
 ) as (props: BoxProps) => JSX.Element;
@@ -38,15 +38,27 @@ export const BoxWrapper = styled(MuiBox)<BoxProps>(
     } as any),
 ) as (props: BoxProps) => JSX.Element;
 
-
 export const YearCheckBoxWrapper = styled(MuiBox)<BoxProps>(
   ({ theme }) =>
     ({
       display: 'flex',
       alignItems: 'center',
-      color: theme?.palette.text.secondary,
-      "& .text":{
-        color: theme?.palette.text.primary,
+      width: '100%',
+      // color: theme?.palette.text.secondary,
+      // "& .text":{
+      //   color: theme?.palette.text.primary,
+      // },
+      "& .customTextTol":{
+        maxWidth: "50%",
+      }
+    } as any),
+) as (props: BoxProps) => JSX.Element;
+
+export const ProgramCheckBoxWrapper = styled(MuiBox)<BoxProps>(
+  ({ theme }) =>
+    ({
+      "& .customTextTol":{
+        maxWidth: "60%",
       }
     } as any),
 ) as (props: BoxProps) => JSX.Element;

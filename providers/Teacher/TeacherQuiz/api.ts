@@ -25,11 +25,12 @@ export async function allTeacherQuizNo(
 
 // Get Quiz
 export async function allTeacherQuiz(
-  props?: Quiz.QuizAPIPayload,
-): Promise<Quiz.QuizResponse> {
+  props?: any,
+): Promise<Quiz.TeacherQuizListingResponse> {
   return service({
     method: "GET",
     url: `/quiz`,
+    queryParams:props
   });
 }
 
@@ -101,5 +102,21 @@ export async function detail(
   return service({
     method: "GET",
     url: `/quiz/${props.id}`,
+  });
+}
+
+// Quiz Distribute
+export async function quizDistribute(
+  props: Quiz.QuizDistributeAPIPayload,
+): Promise<Quiz.QuizDistributeResponse> {
+  
+  console.log(props,'props hook');
+  const dataStd =  {
+    studentsId: props?.data?.studentsId
+  }
+  return service({
+    method: "POST",
+    url: `/quiz/${props.data.id}/assign-student`,
+    body: dataStd,
   });
 }

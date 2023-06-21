@@ -10,6 +10,11 @@ interface TypeFourProps {
   columns: TableColumn[];
   buttonArray?: ButtonConfig[];
   checkboxSelection?: boolean;
+  onRowSelectionModelChange?: any;
+  selectionModel?: any;
+  onSelectionModelChange?: any;
+  onRowClick?: any;
+  loading?: boolean;
 }
 
 const TypeFour: React.FC<TypeFourProps> = ({
@@ -17,6 +22,8 @@ const TypeFour: React.FC<TypeFourProps> = ({
   rows,
   columns,
   buttonArray,
+  onRowClick,
+  loading,
   ...props
 }) => {
   return (
@@ -38,6 +45,9 @@ const TypeFour: React.FC<TypeFourProps> = ({
                   disableColumnSelector
                   disableDensitySelector
                   disableRowSelectionOnClick
+                  checkboxSelection
+                  onRowClick={onRowClick}
+                  loading={loading}
                   {...props}
                 />
               </Box>

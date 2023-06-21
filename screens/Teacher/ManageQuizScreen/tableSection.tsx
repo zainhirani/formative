@@ -11,10 +11,22 @@ import LocalPrintshopOutlinedIcon from "@mui/icons-material/LocalPrintshopOutlin
 import CachedIcon from "@mui/icons-material/Cached";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { allCourses, allTeacherQuiz } from "providers/Teacher/TeacherQuiz/api";
+import { useTeacherQuizListing } from "providers/Teacher/TeacherQuiz";
 
-const TableSection = () => {
-  const quizList = allTeacherQuiz();
-  // console.log(quizList, "quizList");
+const TableSection = (props: any) => {
+  const { searchChange, selectCourse, selectFolder, selectStatus } = props;
+  const quizList = useTeacherQuizListing({
+    courseId: selectCourse,
+    folder: selectFolder,
+    status: selectStatus,
+    Limit: 10,
+    Page: 1,
+    ...(searchChange && { SearchBy: searchChange }),
+  });
+  console.log(
+    { quizList, searchChange, selectCourse, selectFolder, selectStatus },
+    "quizList",
+  );
 
   const configManageQuiz = [
     {
@@ -77,11 +89,18 @@ const TableSection = () => {
     <BoxWrapper>
       {/* @ts-ignore */}
       <CustomDataGrid
-        rows={rowsManageQuiz}
+        // rows={rowsManageQuiz}
+        // columns={columnsManageQuiz}
+        // pageSizeData={pageSizeManageQuiz}
+        // type={"1"}
+        // isCheckbox={false}
+
+        rows={quizList?.data?.data || []}
         columns={columnsManageQuiz}
         pageSizeData={pageSizeManageQuiz}
         type={"1"}
         isCheckbox={false}
+        loading={quizList.isFetching}
       />
     </BoxWrapper>
   );

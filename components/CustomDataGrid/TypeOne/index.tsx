@@ -11,7 +11,7 @@ interface TypeOneProps {
   columns: TableColumn[];
   buttonArray?: ButtonConfig[];
   checkboxSelection?: boolean;
-  onRowClick?: (e?:any) => void;
+  onRowClick?: (e?: any) => void;
   // setChecked?:  ((value: string) => void) | undefined;
   onRowSelect?: (ids: number[], details: any) => void;
   setChecked?: any;
@@ -89,7 +89,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
             onRowSelectionModelChange={(...e) => handleCheck(...e)}
             columnVisibilityModel={columnVisibilityModel}
             {...props}
-            sx={{minHeight:'400px'}}
+            sx={{ minHeight: "400px" }}
             loading={loading}
           />
         </Grid>

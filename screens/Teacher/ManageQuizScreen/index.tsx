@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
 import SearchSection from "./searchSection";
 import TableSection from "./tableSection";
@@ -16,8 +16,14 @@ const PageLayout = dynamic(() => import("components/PageLayout"), {
 });
 
 const ManageQuizScreen = () => {
+  const [searchChange, setSearchChange] = useState("");
+  const [selectCourse, setSelectCourse] = useState("");
+  const [selectFolder, setSelectFolder] = useState("");
+  const [selectStatus, setSelectStatus] = useState("");
+
   const signOut = useAuthContext();
   const router = useRouter();
+
   return (
     // <PageLayout title="All Quiz" icon={<HelpRoundedIcon />}>
     <Box>
@@ -30,8 +36,18 @@ const ManageQuizScreen = () => {
       >
         Logout
       </Typography> */}
-      <SearchSection />
-      <TableSection />
+      <SearchSection
+        setSearchChange={setSearchChange}
+        setSelectCourse={setSelectCourse}
+        setSelectFolder={setSelectFolder}
+        setSelectStatus={setSelectStatus}
+      />
+      <TableSection
+        searchChange={searchChange}
+        selectCourse={selectCourse}
+        selectFolder={selectFolder}
+        selectStatus={selectStatus}
+      />
     </Box>
     // </PageLayout>
   );

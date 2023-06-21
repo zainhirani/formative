@@ -13,28 +13,10 @@ import { TextField } from "@mui/material";
 import { useQuizById } from "providers/Teacher/TeacherQuiz";
 
 const DraftQuizScreen: NextPage = () => {
-  // console.log("Draft Main file");
   const [nameInput, setNameInput] = useState("");
   const router = useRouter();
   const { id: quizEditId } = router.query;
   const { data: quizByIdData } = useQuizById({ id: quizEditId });
-  const quizUpdate = "useQuizUpdate()";
-
-  // useEffect(() => {
-  //   if (quizUpdate.isSuccess) {
-  //     enqueueSnackbar("Success", {
-  //       variant: "success",
-  //     });
-  //   }
-  // }, [quizUpdate.isSuccess]);
-
-  // useEffect(() => {
-  //   if (quizUpdate.isError) {
-  //     enqueueSnackbar("Error", {
-  //       variant: "error",
-  //     });
-  //   }
-  // }, [quizUpdate.isError]);
 
   const onSubmit = useCallback((data: any) => {
     // console.log(data, "data");
@@ -90,9 +72,8 @@ const DraftQuizScreen: NextPage = () => {
     enableReinitialize: true,
     onSubmit,
   });
-  // console.log(values, "values");
+  // console.log(quizByIdData?.start_time, "quizByIdData");
   return (
-    // <PageLayout title="All Quiz" icon={<ArrowForwardIcon />}>
     <Box>
       <form onSubmit={handleSubmit}>
         <FiltersSection
@@ -102,23 +83,22 @@ const DraftQuizScreen: NextPage = () => {
           nameInput={nameInput}
           handleBlur={handleBlur}
           handleChange={handleChange}
-          quizDataById={quizByIdData}
+          quizByIdData={quizByIdData}
         />
         <CusQuizDetails
           values={values}
           handleChange={handleChange}
           setFieldValue={setFieldValue}
-          quizDataById={quizByIdData}
+          quizByIdData={quizByIdData}
         />
         <TableSection
           handleChange={handleChange}
           setFieldValue={setFieldValue}
           values={values}
-          quizDataById={quizByIdData}
+          quizByIdData={quizByIdData}
         />
       </form>
     </Box>
-    // </PageLayout>
   );
 };
 

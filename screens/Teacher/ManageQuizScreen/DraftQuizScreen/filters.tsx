@@ -21,30 +21,23 @@ import { allTeacherQuizNo } from "providers/Teacher/TeacherQuiz/api";
 const FiltersSection = (props: any) => {
   const { setFieldValue, values, handleChange, quizDataById, mValuesForName } =
     props;
-  // const [quizNo, setQuizNo] = useState<undefined>();
   const coursesList = useCourseListing();
   const foldersList = useFoldersListing();
   const { data: quizNo } = useQuizNo();
 
-  // useEffect(() => {
-  //   const response = allTeacherQuizNo();
-  //   setQuizNo(response);
-  //   // setQuizNo(count);
-  // }, []);
-
   const optionsFolder = useMemo(() => {
-    return foldersList?.data?.map((item: any) => ({
+    return foldersList?.data?.data?.map((item: any) => ({
       value: item?.id,
       label: item?.name,
     }));
-  }, [foldersList?.data]);
+  }, [foldersList?.data?.data]);
 
   const optionsCourse = useMemo(() => {
-    return coursesList?.data?.map((item: any) => ({
+    return coursesList?.data?.data?.map((item: any) => ({
       value: item?.id,
       label: item?.course_name,
     }));
-  }, [coursesList?.data]);
+  }, [coursesList?.data?.data]);
   // console.log(quizDataById, "quizDataById filter");
 
   return (
@@ -69,10 +62,11 @@ const FiltersSection = (props: any) => {
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={optionsCourse}
           value={values?.courseId}
+          isClearable={false}
           onChange={(e: any) => {
             const obj = {
-              value: e.value,
-              label: e.label,
+              value: e?.value,
+              label: e?.label,
             };
             setFieldValue("courseId", obj);
           }}
@@ -85,10 +79,11 @@ const FiltersSection = (props: any) => {
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={optionsFolder}
           value={values?.folderId}
+          isClearable={false}
           onChange={(e: any) => {
             const obj = {
-              value: e.value,
-              label: e.label,
+              value: e?.value,
+              label: e?.label,
             };
             setFieldValue("folderId", obj);
           }}
@@ -101,10 +96,11 @@ const FiltersSection = (props: any) => {
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={optionsStatus}
           value={values?.status}
+          isClearable={false}
           onChange={(e: any) => {
             const obj = {
-              value: e.value,
-              label: e.label,
+              value: e?.value,
+              label: e?.label,
             };
             setFieldValue("status", obj);
           }}

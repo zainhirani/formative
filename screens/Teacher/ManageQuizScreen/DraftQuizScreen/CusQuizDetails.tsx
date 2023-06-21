@@ -55,15 +55,15 @@ const CusQuizDetails = (props: any) => {
   // console.log(values, "values");
 
   // Edit Page
-  useEffect(() => {
-    if (quizEditId) {
-      // console.log("useEffect");
+  // useEffect(() => {
+  // if (quizEditId) {
+  // console.log("useEffect");
 
-      var updatedId = values.scoringId.value;
-      // setScoringId(updatedId);
-      refetch(updatedId);
-    }
-  }, [values.scoringId.value]);
+  // var updatedId = values.scoringId.value;
+  // setScoringId(updatedId);
+  // refetch(updatedId);
+  // }
+  // }, [quizEditId, values.scoringId.value]);
   // Edit Page
 
   useEffect(() => {
@@ -81,10 +81,10 @@ const CusQuizDetails = (props: any) => {
 
   const onChangeScoring = (e: any) => {
     const obj = {
-      value: e.value,
-      label: e.label,
+      value: e?.value,
+      label: e?.label,
     };
-    setScoringId(e.value);
+    setScoringId(e?.value);
     setFieldValue("scoringId", obj);
   };
 
@@ -106,6 +106,7 @@ const CusQuizDetails = (props: any) => {
                 options={optionsScoring}
                 value={values?.scoringId}
                 onChange={onChangeScoring}
+                isClearable={false}
               />
             </SchemeBoxWrapper>
           </Grid>

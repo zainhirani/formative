@@ -27,9 +27,10 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import { useRouter } from "next/router";
 import { enqueueSnackbar } from "notistack";
+import dayjs from "dayjs";
 
 const TableSection = (props: any) => {
-  const { handleChange, setFieldValue, values } = props;
+  const { handleChange, setFieldValue, values, quizByIdData } = props;
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [drawerOpenStudents, setDrawerOpenStudents] = useState(false);
   const [afterDatevalue, setAfterDatevalue] = useState(null);
@@ -137,7 +138,7 @@ const TableSection = (props: any) => {
     }
   };
 
-  // console.log("table section component is re-render");
+  // console.log(quizByIdData?.start_time, "table section component is re-render");
   return (
     <>
       <BoxWrapper>
@@ -155,12 +156,12 @@ const TableSection = (props: any) => {
         <Box sx={{ display: "flex" }}>
           <CustomeDateTimePicker
             label="Start Time"
-            value={beforeDatevalue}
+            value={editId ? dayjs(`${quizByIdData?.start_time}`) : ""}
             onChange={setBeforeDatevalue}
           />
           <CustomeDateTimePicker
             label="Stop Time:"
-            value={afterDatevalue}
+            value={dayjs(`${quizByIdData?.end_time}`)}
             onChange={setAfterDatevalue}
           />
         </Box>
@@ -213,7 +214,7 @@ const TableSection = (props: any) => {
         open={drawerOpenStudents}
         onClose={handleDrawerCloseStudents}
       >
-        <DrawerStudentsSection />
+        <DrawerStudentsSection quizByIdData={quizByIdData} />
       </SideDrawer>
 
       <DrawerQuestionsSection

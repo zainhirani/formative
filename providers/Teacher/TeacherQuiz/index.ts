@@ -34,6 +34,14 @@ export function getFormProviderKey(
   throw new Error("Function not implemented.");
 }
 
+
+//Teacher Quiz Listing
+export function useTeacherQuizListing(
+  props?:any,
+): UseQueryResult<Quiz.TeacherQuizListingResponse> {
+  return useQuery(QUERY_KEYS.QUIZ, () => api.allTeacherQuiz(props));
+}
+
 //Quiz Get By Id
 export function useQuizById(
   props?: Quiz.QuizByIdProps,
@@ -52,7 +60,7 @@ export function useQuizNo(
 
 //Course Listing
 export function useCourseListing(
-  props?: Quiz.CourseListingProps,
+  props?:any,
 ): UseQueryResult<Quiz.CourseListingResponse> {
   return useQuery(QUERY_KEYS.COURSES_LISTING, () => api.allCourses(props));
 }
@@ -76,8 +84,31 @@ export function useScoringListing(
 export function useScoringByID(
   id:any
 ): UseQueryResult<Quiz.ScoringByIDResponse> {
-
-  // console.log(id,"props id");
-  
   return useQuery("QUERY_KEYS.SCORING_LISTING_ID", () => api.getScoringByID(id));
+}
+
+
+
+// Distribute
+//Enroll
+export function useQuizDistribute(
+  props: Quiz.QuizDistributeProps,
+): UseMutationResult<
+  Quiz.QuizDistributeResponse,
+  {
+    message?: string;
+  },
+  Quiz.QuizDistributeMutationPayload
+> {
+  const queryClient = useQueryClient();
+  
+  return useMutation((payload) => api.quizDistribute({ ...props,data: payload }), {
+    mutationKey: QUERY_KEYS.QUIZ_DISTRIBUTE,
+    onSuccess: () => {
+      console.log('distribute success');
+      
+      // queryClient.invalidateQueries(['Students']);
+    },
+    retry: 0,
+  });
 }
