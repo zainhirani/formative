@@ -36,6 +36,7 @@ import CustomSelect from "components/CustomSelect/CustomSelect";
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { year_of_graduation } from "mock-data/Profile";
+import { isEqual } from "lodash";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().label("FirstName"),
@@ -127,6 +128,7 @@ export const GeneralInfo = () => {
     handleSubmit,
     handleBlur,
     errors,
+    initialValues,
     values,
     touched,
     setFieldValue,
@@ -352,6 +354,7 @@ export const GeneralInfo = () => {
                   onChange={handleSetYear}
                   dropdownIcon={<ExpandMoreIcon />}
                   options={year_of_graduation}
+                  value={{ value: values.graduation, label: values.graduation }}
                 />
               </Box>
             </Grid>
@@ -560,7 +563,10 @@ export const GeneralInfo = () => {
             type="submit"
             loading={registerUpdate.isLoading}
             loadingPosition="start"
-            disabled={values.currentPassword.length < 6}
+            disabled={
+              values.currentPassword.length < 6 &&
+              isEqual(values, initialValues)
+            }
             sx={{
               background: (theme) => theme.palette.secondary.main,
               width: { xs: "100%", md: "max-content" },

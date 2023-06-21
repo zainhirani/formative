@@ -366,10 +366,7 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
               <InputLabelWrapper htmlFor="graduation">
                 <FormattedMessage {...messages.graduationLabel} />
               </InputLabelWrapper>
-              <Box
-                sx={{ borderBottom: "1px solid", marginTop: "-10px" }}
-                gridColumn="span 2"
-              >
+              <Box sx={{ borderBottom: "1px solid" }} gridColumn="span 2">
                 <CustomSelect
                   name="graduation"
                   onBlur={handleBlur}

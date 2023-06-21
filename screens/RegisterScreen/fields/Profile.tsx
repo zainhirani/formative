@@ -2,8 +2,6 @@
 import {
   Box,
   Button,
-  ButtonGroup,
-  Card,
   CardContent,
   Checkbox,
   FormControlLabel,
@@ -12,13 +10,10 @@ import {
   Grid,
   InputAdornment,
   MenuItem,
-  OutlinedInput,
   Radio,
   RadioGroup,
   Select,
-  SelectChangeEvent,
   TextField,
-  Typography,
   styled,
   useRadioGroup,
 } from "@mui/material";
@@ -26,7 +21,6 @@ import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined
 import ArrowDropUpOutlinedIcon from "@mui/icons-material/ArrowDropUpOutlined";
 
 import {
-  CardHeaderWrapper,
   IconButtonWrapper,
   InputLabelWrapper,
   LoadingButtonWrapper,
@@ -34,7 +28,6 @@ import {
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import * as Yup from "yup";
-import { RegisterProps } from "./formProps";
 import {
   learnRadioGroup,
   radioChoice,
@@ -78,7 +71,7 @@ function MyFormControlLabel(props: FormControlLabelProps) {
 }
 
 const validationSchema = Yup.object().shape({
-  dob: Yup.string().required().label("Date of Birth"),
+  dob: Yup.string().label("Date of Birth"),
   pharmacy: Yup.string().required().label("Pharmacy"),
   partTime: Yup.string().required().label("Part Time"),
   bioChemistry: Yup.string().required().label("Bio Chemistry"),
@@ -102,6 +95,8 @@ export const StepTwo = ({}) => {
   const profile = useProfile();
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
+
+  console.log(dobValue, "dovValue");
 
   const increment = () => {
     if (experience < 50) {
@@ -144,21 +139,21 @@ export const StepTwo = ({}) => {
     }
   }, [profile.isError]);
 
-  const onSubmit = useCallback((data: any) => {
+  const onSubmit = (data: any) => {
     profile.mutate({
-      date_of_birth: dobValue?.toString(),
+      date_of_birth: dobValue,
       experience: data.pharmacy,
-      working_part_time: data.partTime === "yes" ? true : false,
+      working_part_time: data.partTime === "Yes" ? true : false,
       athlete: data.played,
       concept: data.learn,
       hobbies: data.hobbies,
       learning_sequence: data.sequence,
       math_skills: data.maths,
       study_prefer: data.study,
-      taken_biochemistry: data.bioChemistry === "yes" ? true : false,
-      volunteer: data.volunteer === "yes" ? true : false,
+      taken_biochemistry: data.bioChemistry === "Yes" ? true : false,
+      volunteer: data.volunteer === "Yes" ? true : false,
     });
-  }, []);
+  };
 
   const {
     handleChange,
@@ -186,9 +181,11 @@ export const StepTwo = ({}) => {
     onSubmit,
   });
 
-  const handleDateChange = (date: any) => {
-    setDobValue(date);
+  const handleDateChange = (e: any) => {
+    setDobValue(e);
   };
+
+  console.log(dobValue, ".............");
 
   return (
     <>
@@ -201,8 +198,9 @@ export const StepTwo = ({}) => {
               </InputLabelWrapper>
               <CustomeDatePicker
                 value={dobValue}
-                onChange={() => {
-                  handleDateChange;
+                onChange={(e: any) => {
+                  // handleDateChange(e);
+                  setDobValue(e);
                   handleChange;
                 }}
                 components={{ OpenPickerIcon: CalendarMonthIcon }}
@@ -279,6 +277,7 @@ export const StepTwo = ({}) => {
                 onChange={(e) => {
                   if (setFieldValue) {
                     setFieldValue("partTime", e.target.value);
+                    console.log(setFieldValue, "partTime");
                   }
                 }}
                 name="radio-buttons-group"
@@ -675,8 +674,8 @@ export const StepTwo = ({}) => {
               variant="contained"
               type="submit"
               disabled={
-                (values.dob &&
-                  values.pharmacy &&
+                // values.dob &&
+                (values.pharmacy &&
                   values.partTime &&
                   values.bioChemistry &&
                   values.maths &&

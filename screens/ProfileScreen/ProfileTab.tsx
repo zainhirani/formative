@@ -22,7 +22,6 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDownOutlined
 import * as Yup from "yup";
 import {
   LoadingButtonWrapper,
-  CardHeaderWrapper,
   IconButtonWrapper,
   InputLabelWrapper,
 } from "./Styled";
@@ -45,6 +44,8 @@ import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOu
 import { BoxWrapper, ButtonWrapper } from "./Styled";
 import CustomeDatePicker from "components/CustomeDatePicker";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import dayjs from "dayjs";
+import isEqual from "lodash/isEqual";
 
 interface StyledFormControlLabelProps extends FormControlLabelProps {
   checked: boolean;
@@ -87,7 +88,6 @@ const validationSchema = Yup.object().shape({
 
 export const ProfileTab = ({}) => {
   const profileDetail = useProfileDetail();
-  const dobPlaceholder = useFormattedMessage(messages.dobPlaceholder);
   const pharmacyPlaceholder = useFormattedMessage(messages.pharmacyPlaceholder);
   const passwordPlaceholder = useFormattedMessage(messages.passwordPlaceholder);
   const hobbiesPlaceholder = useFormattedMessage(messages.hobbiesPlaceholder);
@@ -137,7 +137,6 @@ export const ProfileTab = ({}) => {
           variant: "success",
         },
       );
-      router.push("/dashboard");
     }
   }, [profile.isSuccess]);
 
@@ -150,21 +149,21 @@ export const ProfileTab = ({}) => {
     }
   }, [profile.isError]);
 
-  const onSubmit = useCallback((data: any) => {
+  const onSubmit = (data: any) => {
     profile.mutate({
-      date_of_birth: dobValue?.toString(),
+      date_of_birth: dobValue,
       experience: data.pharmacy,
-      working_part_time: data.partTime === "yes" ? true : false,
+      working_part_time: data.partTime === "Yes" ? true : false,
       athlete: data.played,
       concept: data.learn,
       hobbies: data.hobbies,
       learning_sequence: data.sequence,
       math_skills: data.maths,
       study_prefer: data.study,
-      taken_biochemistry: data.bioChemistry === "yes" ? true : false,
-      volunteer: data.volunteer === "yes" ? true : false,
+      taken_biochemistry: data.bioChemistry === "Yes" ? true : false,
+      volunteer: data.volunteer === "Yes" ? true : false,
     });
-  }, []);
+  };
 
   const {
     handleChange,
@@ -173,6 +172,7 @@ export const ProfileTab = ({}) => {
     errors,
     values,
     touched,
+    initialValues,
     setFieldValue,
   } = useFormik({
     initialValues: {
@@ -199,9 +199,10 @@ export const ProfileTab = ({}) => {
     onSubmit,
   });
 
-  const handleDateChange = (date: any) => {
-    setDobValue(date);
+  const handleDateChange = (e: any) => {
+    setDobValue(e);
   };
+  console.log(dobValue?.toString(), ".............");
 
   return (
     <>
@@ -213,9 +214,11 @@ export const ProfileTab = ({}) => {
                 <FormattedMessage {...messages.dobLabel} />
               </InputLabelWrapper>
               <CustomeDatePicker
-                value={dobValue}
-                onChange={() => {
-                  handleDateChange;
+                value={dayjs(`${profileDetail.data?.date_of_birth}`)}
+                onChange={(e: any) => {
+                  console.log();
+
+                  handleDateChange(e);
                   handleChange;
                 }}
                 components={{ OpenPickerIcon: CalendarMonthIcon }}
@@ -729,7 +732,10 @@ export const ProfileTab = ({}) => {
             type="submit"
             loading={profile.isLoading}
             loadingPosition="start"
-            disabled={values.currentPassword.length < 6}
+            disabled={
+              values.currentPassword.length < 6 &&
+              isEqual(values, initialValues)
+            }
             sx={{
               width: { xs: "100%", md: "max-content" },
               ".MuiLoadingButton-loadingIndicator": {
