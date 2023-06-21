@@ -70,17 +70,17 @@ function MyFormControlLabel(props: FormControlLabelProps) {
 }
 
 const validationSchema = Yup.object().shape({
-  dob: Yup.string().required().label("Date of Birth"),
-  pharmacy: Yup.string().required().label("Pharmacy"),
-  partTime: Yup.string().required().label("Part Time"),
-  bioChemistry: Yup.string().required().label("Bio Chemistry"),
-  maths: Yup.string().required().label("Maths"),
-  learn: Yup.string().required().label("Learn"),
-  sequence: Yup.string().required().label("Sequence"),
-  study: Yup.string().required().label("Study"),
-  played: Yup.string().required().label("Played"),
-  volunteer: Yup.string().required().label("Volunteer"),
-  hobbies: Yup.string().required().label("Hobbies"),
+  dob: Yup.string().label("Date of Birth"),
+  pharmacy: Yup.string().label("Pharmacy"),
+  partTime: Yup.string().label("Part Time"),
+  bioChemistry: Yup.string().label("Bio Chemistry"),
+  maths: Yup.string().label("Maths"),
+  learn: Yup.string().label("Learn"),
+  sequence: Yup.string().label("Sequence"),
+  study: Yup.string().label("Study"),
+  played: Yup.string().label("Played"),
+  volunteer: Yup.string().label("Volunteer"),
+  hobbies: Yup.string().label("Hobbies"),
   currentPassword: Yup.string().required().min(6).label("Password"),
 });
 
@@ -219,7 +219,6 @@ export const ProfileTab = ({}) => {
                 }}
                 components={{ OpenPickerIcon: CalendarMonthIcon }}
                 sx={{
-                  ".MuiBox-root": { borderLeft: "none" },
                   width: "100%",
                   borderBottom: "1px solid",
                   ".MuiSvgIcon-root": {
@@ -728,6 +727,7 @@ export const ProfileTab = ({}) => {
             type="submit"
             loading={profile.isLoading}
             loadingPosition="start"
+            disabled={values.currentPassword.length < 6}
             sx={{
               width: { xs: "100%", md: "max-content" },
               ".MuiLoadingButton-loadingIndicator": {

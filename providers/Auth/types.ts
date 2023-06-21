@@ -9,11 +9,11 @@ export namespace Register {
     last_name: string;
     nick_name: string;
     gender: string;
-    rfu_id: number | string;
+    id: number | string;
     year_of_graduation: number;
     program: string;
     birth_place: string;
-    name?:string
+    name?: string;
   };
 
   // Create
@@ -30,7 +30,7 @@ export namespace Register {
     last_name: string;
     nick_name: string;
     gender: string;
-    rfu_id: number | string;
+    id: number | string;
     year_of_graduation: number;
     program: string;
     birth_place: string;
