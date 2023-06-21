@@ -172,7 +172,7 @@ const CourseRestore = () => {
       />
       <TableWrapper>
         <CustomDataGrid
-          rows={getRestoreCourseListing?.data || []}
+          rows={getRestoreCourseListing?.data?.data || []}
           /* @ts-ignore */
           getRowId={(row: any) => row.id}
           columns={columnsManageCourse}
@@ -188,7 +188,7 @@ const CourseRestore = () => {
           page={page}
           handlePageChange={(_, v) => setPage(v)}
           /* @ts-ignore */
-          totalRows={getRestoreCourseListing?.count}
+          totalRows={getRestoreCourseListing?.data?.count}
         />
       </TableWrapper>
       <Box
