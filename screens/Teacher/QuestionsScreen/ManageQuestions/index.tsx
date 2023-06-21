@@ -2,7 +2,6 @@ import { Box } from "@material-ui/core";
 import React, { useState } from "react";
 import Listing from "./Listing";
 import Filters from "./Filters";
-import ViewQuestion from "./ViewQuestion";
 
 const ManageQuestions = () => {
   const [folder, setFolder] = useState("");
@@ -31,7 +30,6 @@ const ManageQuestions = () => {
         enumType={enumType}
         category={category}
       />
-      <ViewQuestion />
     </Box>
     // </PageLayout>
   );

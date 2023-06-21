@@ -5,7 +5,7 @@ import {
   useQuery,
   useQueryClient,
 } from "react-query";
-import { getQuestions } from "./api";
+import { getQuestionById, getQuestions } from "./api";
 
 const KEY = "Questions";
 
@@ -20,4 +20,12 @@ export function getKeyFromProps(
 
 export const useQuestionsListing = (props: any) => {
   return useQuery(getKeyFromProps(props, "LISTING"), () => getQuestions(props));
+};
+
+export const useQuestionDetails = (props: any) => {
+  return useQuery(
+    getKeyFromProps(props, "VIEWQUESTIONDETAIL"),
+    () => getQuestionById(props.questionId),
+    { enabled: !!props.questionId },
+  );
 };

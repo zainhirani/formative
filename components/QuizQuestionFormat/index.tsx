@@ -44,6 +44,7 @@ type QuizQuestionFormatProps = {
   disable?: boolean;
   isChecked?: boolean | number;
   media?: string;
+  timeUnit?: string;
 };
 
 const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
@@ -61,7 +62,8 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
   isHeader = true,
   questionIdNum = "1",
   avgAttemps = "4",
-  avgTime = "18 Sec",
+  avgTime = "18",
+  timeUnit = " Sec",
   difficulty = "Hard",
   isShowScoreBar = true,
   answerStats,
@@ -173,6 +175,7 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
                         sx={{ marginLeft: "0.5rem" }}
                       >
                         {avgTime}
+                        {timeUnit}
                       </Typography>
                     </Box>
                   </Box>

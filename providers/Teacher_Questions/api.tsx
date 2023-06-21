@@ -20,9 +20,9 @@ export const getQuestions = (props: any) => {
     queryParams: props,
   });
 };
-export const getQuestionById = async (id: any) => {
-  return await service({
-    url: TEACHER__GET_QUESTIONS_BY_ID,
+export const getQuestionById = (id: any) => {
+  return service({
+    url: `${TEACHER__GET_QUESTIONS_BY_ID}${id}`,
     method: "GET",
   });
 };

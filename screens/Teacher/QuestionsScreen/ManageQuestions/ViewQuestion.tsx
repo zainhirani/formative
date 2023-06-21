@@ -1,33 +1,63 @@
-import React, { useState, useEffect } from "react";
+import React, { useMemo, useEffect } from "react";
 import QuizQuestionFormat from "components/QuizQuestionFormat";
+import { useAuthContext } from "contexts/AuthContext";
+import { useQuestionDetails } from "providers/Teacher_Questions";
+import { removeHTMLTags } from "utils";
 
-interface ViewQuestionFormat {
-  questionId: any;
+interface IQuestionDrawerProps {
+  isOpen: boolean;
+  onClose: (e?: any) => void;
+  questionId: string;
 }
 
-const ViewQuestion: React.FC = ({ questionId = "" }: ViewQuestionFormat) => {
-  const [open, setOpen] = useState<boolean>(false);
+const ViewQuestion = ({
+  isOpen,
+  onClose,
+  questionId,
+}: IQuestionDrawerProps) => {
+  const { currentUser } = useAuthContext();
+  const questionDetails = useQuestionDetails({
+    questionId: questionId,
+  });
+  console.log(
+    "🚀 ~ file: ViewQuestion.tsx:21 ~ questionDetails:",
+    questionDetails,
+  );
 
-  useEffect(() => {
-    // do api call and when ever id changes
-  }, [questionId]);
+  const quizOptions = useMemo(() => {
+    if (questionDetails?.data?.option) {
+      const jsonData = JSON.parse(questionDetails?.data?.option);
+      return jsonData.map((item: any) => ({
+        value: item.key,
+        optionText: item.value,
+      }));
+    }
+  }, [questionDetails?.data]);
 
+  const answerStats = useMemo(() => {
+    if (questionDetails?.data?.optionStatistics) {
+      return Object.entries(questionDetails?.data?.optionStatistics).map(
+        ([key, value]) => ({ key, value }),
+      );
+    }
+  }, [questionDetails?.data]);
   return (
     <>
       <QuizQuestionFormat
+        title={` ${currentUser.name} this is how Question ${questionDetails?.data?.id} appears to student`}
+        isOpen={isOpen}
+        onClose={onClose}
         isShowScoreBar={false}
-        isOpen={open}
-        onClose={() => setOpen(false)}
-        title="Dr. Kevin B. this is how Question 10/2 appers to student"
-        questionContext={`In the child's poem "...,..., sugar is sweet! and so are you!"`}
-        actualQuestion="What is the first phrase?"
-        quizOptions={[
-          { id: 1, optionText: "Roses are red!" },
-          { id: 2, optionText: "Grass is green!" },
-          { id: 3, optionText: "Violets are blue!" },
-          { id: 4, optionText: "Roses are violet!" },
-          { id: 5, optionText: "Humpty Dumpty sat on a wall!" },
-        ]}
+        quizOptions={quizOptions}
+        questionContext={removeHTMLTags(questionDetails?.data?.detail)}
+        actualQuestion={questionDetails?.data?.title}
+        difficulty={questionDetails?.data?.difficulty}
+        avgAttemps={questionDetails?.data?.averageAttempts}
+        avgTime={questionDetails?.data?.timelimit}
+        questionIdNum={questionDetails?.data?.id}
+        loading={questionDetails?.isFetching}
+        answerStats={answerStats}
+        media={questionDetails?.data?.media}
       />
     </>
   );

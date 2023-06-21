@@ -1,26 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import { BoxWrapper } from "./Styled";
 import CustomDataGrid from "components/CustomDataGrid";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import {
-  pageSizeManageQuestion,
-  rowsManageQuestion,
-} from "mock-data/Teacher/ManageQuestion";
 import editSvg from "/public/quiz/edit.svg";
 import copySvg from "/public/quiz/copy.svg";
 import trashSvg from "/public/quiz/trash.svg";
+import viewSvg from "/public/view.svg";
 import imagePlaceholder from "/public/image_placeholder.svg";
 import FormattedMessage from "theme/FormattedMessage";
 import messages from "./messages";
 import { Grid, IconButton, Box } from "@mui/material";
 import Image from "next/image";
 import { useQuestionsListing } from "providers/Teacher_Questions";
-import { removeHTMLTags } from "utils";
+import { isStringNotURL, removeHTMLTags } from "utils";
+import ImagePreviewModal from "components/ImagePreviewModal";
+import ViewQuestion from "./ViewQuestion";
 
 interface ListingProp {}
 
 const Listing: React.FC = ({}: ListingProp) => {
   let questions = useQuestionsListing({});
+  let [image, setImage] = useState<string>("");
+  const [questionId, setQuestionId] = useState<string | undefined>(undefined);
+  const [questiondrawer, setQuestionDrawer] = useState(false);
+
+  const handleSetImage = (imageName: string) => {
+    let url = "";
+    if (isStringNotURL(imageName)) {
+      url = `${process.env.NEXT_PUBLIC_IMAGE_URL}${imageName}`;
+    } else {
+      url = imageName;
+    }
+    setImage(url);
+  };
+
+  const handleRemoveImage = () => setImage("");
 
   let COLUMNS_CONFIG = [
     {
@@ -61,10 +75,14 @@ const Listing: React.FC = ({}: ListingProp) => {
       flex: 1,
       renderCell: (data: any) => {
         if (data.row.media) {
+          if (!isStringNotURL(data.row.media)) {
+            return;
+          }
+
           return (
-            <IconButton>
+            <IconButton onClick={() => handleSetImage(data.row.media)}>
               <Image
-                alt="quiz-logo"
+                alt="question-image"
                 src={imagePlaceholder}
                 width={20}
                 height={20}
@@ -79,18 +97,26 @@ const Listing: React.FC = ({}: ListingProp) => {
       headerName: "Quick Actions",
       width: 200,
       headerClassName: "super-app-theme--header",
-      renderCell: (params: any) => {
+      renderCell: (data: any) => {
         return (
           <Grid container spacing={3}>
             <Grid item xs>
-              <IconButton>
-                <Image alt="quiz-logo" src={editSvg} />
+              <IconButton
+                onClick={() => {
+                  setQuestionDrawer(true);
+                  setQuestionId(data.row.id);
+                }}
+              >
+                <Image alt="view" src={viewSvg} width={15} height={15} />
               </IconButton>
               <IconButton>
-                <Image alt="quiz-logo" src={copySvg} />
+                <Image alt="edit" src={editSvg} width={15} height={15} />
               </IconButton>
               <IconButton>
-                <Image alt="quiz-logo" src={trashSvg} />
+                <Image alt="copy" src={copySvg} width={15} height={15} />
+              </IconButton>
+              <IconButton>
+                <Image alt="delete" src={trashSvg} width={15} height={15} />
               </IconButton>
             </Grid>
           </Grid>
@@ -120,10 +146,21 @@ const Listing: React.FC = ({}: ListingProp) => {
       <CustomDataGrid
         rows={questions?.data}
         columns={COLUMNS_CONFIG}
-        // pageSizeData={pageSizeManageQuestion}
+        totalRows={questions?.data?.length || 0}
+        pageSizeData={10}
         type={"1"}
         buttonArray={FOOTER_CONFIG}
         loading={questions?.isFetching}
+      />
+      <ImagePreviewModal
+        open={Boolean(image)}
+        onClose={handleRemoveImage}
+        src={image}
+      />
+      <ViewQuestion
+        isOpen={questiondrawer}
+        onClose={() => setQuestionDrawer(false)}
+        questionId={questionId?.toString() || ""}
       />
     </BoxWrapper>
   );
