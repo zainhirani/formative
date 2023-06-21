@@ -189,7 +189,7 @@ const ManageCourseScreen = () => {
       />
       <TableWrapper>
         <CustomDataGrid
-          rows={getCourseListing?.data || []}
+          rows={getCourseListing?.data?.data || []}
           // @ts-ignore
           getRowId={(row: any) => row.id}
           columns={columnsManageCourse}
@@ -205,7 +205,7 @@ const ManageCourseScreen = () => {
           page={page}
           handlePageChange={(_, v) => setPage(v)}
           // @ts-ignore
-          totalRows={getCourseListing?.count}
+          totalRows={getCourseListing?.data?.count}
         />
       </TableWrapper>
       <Box
