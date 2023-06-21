@@ -21,7 +21,7 @@ export namespace RestoreCourse {
     Limit: number | null;
     Page?: number;
   };
-  export type ListingResponse = [Item];
+  export type ListingResponse = { data: Item[] };
   export interface ListingAPIPayload extends ListingProps {}
 
   //Create
