@@ -78,7 +78,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
             onRowClick={onRowClick}
             pagination
             hideFooter
-            rows={paginatedRows}
+            rows={paginatedRows || []}
             columns={columns}
             getRowHeight={getRowHeight}
             disableColumnMenu
@@ -93,6 +93,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
             columnVisibilityModel={columnVisibilityModel}
             {...props}
             sx={{ minHeight: "400px" }}
+            loading={loading}
           />
         </Grid>
         <BoxPaginate>
@@ -108,7 +109,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
           </Grid>
           <Grid item xs={6} className="showing-text">
             <ShowingBox>
-              Showing {paginatedRows.length} of {rows.length}
+              Showing {paginatedRows?.length} of {rows?.length}
             </ShowingBox>
             {buttonArray?.map((button) => {
               return (

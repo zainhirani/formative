@@ -31,6 +31,10 @@ const ManageCourseScreen = () => {
   const [selectedClass, setSelectedClass] = React.useState("");
   const [searchChange, setSearchChange] = React.useState("");
   const [addCourse, setAddCourse] = useState("");
+  // @ts-ignore
+  // const getCourseListing = useCourseListing();
+  // console.log(getCourseListing, "getCourseListing");
+
   const router = useRouter();
   const getCourseListing = useCourseListing({
     SearchBy: searchChange,

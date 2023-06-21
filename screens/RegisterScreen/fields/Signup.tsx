@@ -119,16 +119,14 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
       program: data.program,
       birth_place: data.birthPlace,
     });
-    console.log(data)
-  
+    console.log(data);
   }, []);
 
-
-  const  handleSetYear = (e:Object) =>{
-    setFieldValue("graduation", e?.value)
-    setYear(e)
-    console.log(e)
-  }
+  const handleSetYear = (e: any) => {
+    setFieldValue("graduation", e?.value);
+    setYear(e);
+    console.log(e);
+  };
   const {
     handleChange,
     handleSubmit,

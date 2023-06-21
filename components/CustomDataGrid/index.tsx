@@ -8,14 +8,14 @@ import TypeTwo from "./TypeTwo";
 
 interface CustomDataGridProps {
   pageSizeData?: number;
-  rows?: any[] | TableRow[];
+  rows?: any[];
   columns?: TableColumn[];
   type?: string;
   buttonArray?: ButtonConfig[];
   isCheckbox?: boolean;
   onRowClick?: (e?: any) => void;
-  selectedIds: number[];
-  setChecked: any;
+  selectedIds?: number[];
+  setChecked?: any;
   onRowSelect?: (ids: number[], details: any) => void;
   columnVisibilityModel?: any;
   loading?: boolean;

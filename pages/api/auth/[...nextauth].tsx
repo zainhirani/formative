@@ -4,6 +4,7 @@ import CredentialProvider from "next-auth/providers/credentials";
 import { getUser, login } from "services/auth";
 
 export default NextAuth({
+  secret: "INp6HjGDyOpYnGAEdLoQSDDPKAlwLEdnDcCkFvA8QSPR",
   providers: [
     CredentialProvider({
       name: "credentials",
@@ -30,7 +31,6 @@ export default NextAuth({
       },
     }),
   ],
-  secret: "test",
   pages: {
     signIn: "/login",
     newUser: "/register",
@@ -50,14 +50,13 @@ export default NextAuth({
       session.accessToken = token.accessToken;
       session.user = token.user as any;
       // session.user = await getUser(token.accessToken as string);
-      session.user = {};
       return Promise.resolve(session);
     },
     async jwt({ token, user }: any) {
-      if (user?.accessToken) {
+      if (user?.jwtToken) {
         // eslint-disable-next-line
         token = {
-          accessToken: user.accessToken,
+          accessToken: user.jwtToken,
         };
       }
 

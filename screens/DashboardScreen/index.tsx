@@ -99,25 +99,27 @@ const Dashboard = () => {
         </Box>
         <Box sx={{ display: "flex", flexWrap: "wrap", gap: "20px" }} mt={1}>
           {teachersDashboardContent.map((item, index) => (
-            <Link href={item.link} passHref key={index}>
-              <Paper
-                sx={{
-                  padding: 0,
-                  borderRadius: "none",
-                  boxShadow: "none",
-                  width: "48%",
-                }}
-              >
-                <Iconbox
-                  title={item.title}
-                  description={item.description}
-                  image={item.image}
-                ></Iconbox>
-              </Paper>
-            </Link>
+            <Paper
+              key={index}
+              sx={{
+                padding: 0,
+                borderRadius: "none",
+                boxShadow: "none",
+                width: "48%",
+              }}
+            >
+              <Iconbox
+                title={item.title}
+                description={item.description}
+                image={item.image}
+              ></Iconbox>
+            </Paper>
           ))}
         </Box>
       </Box>
+      {/* // </PageLayout> */}
+
+      {/* Student Dashboard Screen */}
     </>
   );
 };
