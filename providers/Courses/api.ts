@@ -3,14 +3,12 @@ import { Course } from "./types";
 
 //GET Listing
 
-export async function listing(
-  props?: Course.ListingAPIPayload,
-): Promise<Course.ListingResponse> {
-  return service({
-    method: "GET",
-    url: `/courses`,
-    ...props,
-  });
+export async function listing(props?:Course.ListingAPIPayload):Promise<Course.ListingResponse> {
+    return service ({
+        method:'GET',
+        url:`/courses`,
+        queryParams:props
+    })
 }
 
 // Create

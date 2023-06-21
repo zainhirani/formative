@@ -1,7 +1,7 @@
 import { BorderColor } from "@mui/icons-material";
+import { LoadingButton, LoadingButtonProps } from "@mui/lab";
 import { TextFieldProps,TextField, Select, SelectProps } from "@mui/material";
 import MuiBox, { BoxProps } from "@mui/material/Box";
-import Button, { ButtonProps } from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 
 export const BoxWrapper = styled(MuiBox)<BoxProps>(
@@ -84,7 +84,7 @@ export const SelectStyled = styled(Select)<SelectProps>(
     } as any),
 ) as (props: SelectProps) => JSX.Element;
 
-export const ButtonWrapper = styled(Button)<ButtonProps>(
+export const ButtonWrapper = styled(LoadingButton)<LoadingButtonProps>(
   ({ theme }) =>
     ({
       display: "flex",
@@ -103,4 +103,4 @@ export const ButtonWrapper = styled(Button)<ButtonProps>(
       textTransform: "capitalize",
       width: "100%",
     } as any),
-) as (props: ButtonProps) => JSX.Element;
+) as (props: LoadingButtonProps) => JSX.Element;

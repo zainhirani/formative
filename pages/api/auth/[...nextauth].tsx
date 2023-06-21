@@ -33,6 +33,7 @@ export default NextAuth({
   secret: "test",
   pages: {
     signIn: "/login",
+    newUser: "/register",
   },
   callbacks: {
     async signIn({ user }: any) {

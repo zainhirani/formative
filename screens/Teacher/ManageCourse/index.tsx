@@ -33,7 +33,8 @@ const ManageCourseScreen = () => {
   const [addCourse, setAddCourse] = useState("");
   const router = useRouter();
   const getCourseListing = useCourseListing({
-    queryParams: { SearchBy: searchChange, Limit: pageSizeManageCourse },
+    SearchBy: searchChange,
+    Limit: pageSizeManageCourse,
   });
   const createCourse = useCreateCourse();
   const deleteCourse = useCourseRemove();

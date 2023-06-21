@@ -17,6 +17,7 @@ import {
 import messages from "./messages";
 import Link from "next/link";
 import APP_ROUTES from "constants/RouteConstants";
+import SideDrawer from "components/Drawer";
 
 // Teacher's Dashboard Content
 const teachersDashboardContent = [
