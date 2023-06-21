@@ -11,7 +11,7 @@ interface TypeOneProps {
   columns: TableColumn[];
   buttonArray?: ButtonConfig[];
   checkboxSelection?: boolean;
-  onRowClick?: () => void;
+  onRowClick?: (e?:any) => void;
   // setChecked?:  ((value: string) => void) | undefined;
   onRowSelect?: (ids: number[], details: any) => void;
   setChecked?: any;
@@ -68,6 +68,38 @@ const TypeOne: React.FC<TypeOneProps> = ({
     page * pageSizeData,
   );
 
+  function CustomPagination(){
+return <BoxPaginate>
+<Grid item xs={6}>
+  <Pagination
+    count={totalPages}
+    page={page}
+    onChange={handlePageChange}
+    variant="outlined"
+    shape="rounded"
+    className="customPagination"
+  />
+</Grid>
+<Grid item xs={6} className="showing-text">
+  <ShowingBox>
+    Showing {paginatedRows.length} of {rows.length}
+  </ShowingBox>
+  {buttonArray?.map((button) => {
+    return (
+      <ButtonWrapper
+        key={button?.key}
+        onClick={button?.onClick}
+        startIcon={button?.startIcon}
+        className={`print_arrow_btn ${button?.customClass}`}
+      >
+        {button?.render()}
+      </ButtonWrapper>
+    );
+  })}
+</Grid>
+</BoxPaginate>
+  }
+
   return (
     <>
       <Grid container>
@@ -75,7 +107,6 @@ const TypeOne: React.FC<TypeOneProps> = ({
           <DataGrid
             onRowClick={onRowClick}
             pagination
-            hideFooter
             rows={paginatedRows}
             columns={columns}
             getRowHeight={getRowHeight}
@@ -89,38 +120,13 @@ const TypeOne: React.FC<TypeOneProps> = ({
               getSelectedId(e);
             }}
             columnVisibilityModel={columnVisibilityModel}
+            sx={{minHeight:'400px'}}
             {...props}
+            slots={{pagination:CustomPagination}}
+            
           />
         </Grid>
-        <BoxPaginate>
-          <Grid item xs={6}>
-            <Pagination
-              count={totalPages}
-              page={page}
-              onChange={handlePageChange}
-              variant="outlined"
-              shape="rounded"
-              className="customPagination"
-            />
-          </Grid>
-          <Grid item xs={6} className="showing-text">
-            <ShowingBox>
-              Showing {paginatedRows.length} of {rows.length}
-            </ShowingBox>
-            {buttonArray?.map((button) => {
-              return (
-                <ButtonWrapper
-                  key={button?.key}
-                  onClick={button?.onClick}
-                  startIcon={button?.startIcon}
-                  className={`print_arrow_btn ${button?.customClass}`}
-                >
-                  {button?.render()}
-                </ButtonWrapper>
-              );
-            })}
-          </Grid>
-        </BoxPaginate>
+        
       </Grid>
     </>
   );

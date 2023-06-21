@@ -77,6 +77,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
       ...provided,
       border: "none",
       padding: "0px",
+      zIndex: 99999,
     }),
 
     option: (provided: any, state: any) => ({
@@ -103,6 +104,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
         isMulti={isMulti}
         isLoading={isFetching}
         value={value}
+        isClearable
         options={options}
         onChange={onChange}
         placeholder={placeholder}
