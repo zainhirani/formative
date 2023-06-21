@@ -51,6 +51,7 @@ import {
 import { setAuthenticationHeader } from "services";
 import { useRegisterDetail } from "providers/Auth";
 import { formatArrayOfObjectsForFormData } from "utils";
+import { useAuthContext } from "contexts/AuthContext";
 
 const TYPE_OPTIONS = [
   { value: "SA", label: "SA" },
@@ -71,7 +72,12 @@ const STATUS = {
 const AddQuestion = () => {
   let { data: currentUser } = useSession();
   setAuthenticationHeader(currentUser?.accessToken);
-  let userDetails = useRegisterDetail(currentUser.accessToken);
+  let userDetails = useRegisterDetail(currentUser?.accessToken);
+  // let { currentUser: userDetails } = useAuthContext();
+  // console.log(
+  //   "🚀 ~ file: index.tsx:77 ~ AddQuestion ~ userDetails:",
+  //   userDetails,
+  // );
 
   const foldersData = useQuery(["FOLDERS"], getFolders);
   const categoriesData = useQuery(["CATEGORIES"], getCategories);

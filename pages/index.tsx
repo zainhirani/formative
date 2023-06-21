@@ -12,9 +12,9 @@ const Home: NextPage = () => {
 
   // Redirect to '/dashboard' when the page loads
 
-  useEffect(() => {
-    router.push(APP_ROUTES.DASHBOARD);
-  }, [router]);
+  // useEffect(() => {
+  //   router.push(APP_ROUTES.DASHBOARD);
+  // }, [router]);
 
   return (
     <>
