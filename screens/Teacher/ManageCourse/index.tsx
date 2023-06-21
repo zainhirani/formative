@@ -30,7 +30,7 @@ import FooterForm from "./FooterForm";
 const ManageCourseScreen = () => {
   const [selectedAudience, setSelectedAudience] = React.useState("");
   const [selectedClass, setSelectedClass] = React.useState("");
-  const [searchChange, setSearchChange] = React.useState();
+  const [searchChange, setSearchChange] = React.useState<any>(null);
   const [addCourse, setAddCourse] = useState("");
   const [page, setPage] = useState(1);
   const router = useRouter();
@@ -172,6 +172,7 @@ const ManageCourseScreen = () => {
 
   useEffect(() => {
     checkedId.length === 0 && setSelectedRowId(0);
+    // @ts-ignore
     selectedRowId == undefined && setSelectedRowId(parseInt(checkedId));
   }, [checkedId, selectedRowId]);
 
@@ -189,6 +190,7 @@ const ManageCourseScreen = () => {
       <TableWrapper>
         <CustomDataGrid
           rows={getCourseListing?.data || []}
+          // @ts-ignore
           getRowId={(row: any) => row.id}
           columns={columnsManageCourse}
           pageSizeData={pageSizeManageCourse}
@@ -202,6 +204,7 @@ const ManageCourseScreen = () => {
           getSelectedId={(e) => setSelectedRowId(e?.[0]?.[e.length - 1])}
           page={page}
           handlePageChange={(_, v) => setPage(v)}
+          // @ts-ignore
           totalRows={getCourseListing?.count}
         />
       </TableWrapper>

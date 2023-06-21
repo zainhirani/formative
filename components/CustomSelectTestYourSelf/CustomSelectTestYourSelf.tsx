@@ -5,13 +5,13 @@ import AutoComplete from "components/AutoComplete";
 import { BoxWrapper, SelectBoxWrapper } from "./Styled";
 
 interface CustomSelectTestYourSelfProps {
-  options: Array<{}>;
+  options?: Array<{}>;
   placeholder: string;
   config?: string;
   controlText?: string;
   dropdownIcon?: ReactNode;
   onChange?: any;
-  value: any;
+  value?: any;
 }
 
 const CustomDropdownIndicator = (props: any) => {

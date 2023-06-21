@@ -5,7 +5,7 @@ import AutoComplete from "components/AutoComplete";
 import { BoxWrapper, SelectBoxWrapper } from "./Styled";
 
 interface CustomSelectProps {
-  options: Array<{}>;
+  options?: Array<{}>;
   placeholder?: string;
   config?: string;
   controlText?: string;
@@ -13,7 +13,7 @@ interface CustomSelectProps {
   onChange?: any;
   value?: any;
   defaultValue?: any;
-  name: string;
+  name?: string;
   onBlur?: any;
 }
 

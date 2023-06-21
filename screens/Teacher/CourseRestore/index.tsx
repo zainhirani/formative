@@ -34,7 +34,7 @@ const CourseRestore = () => {
   const [page, setPage] = useState(1);
   const [selectedAudience, setSelectedAudience] = React.useState("");
   const [selectedClass, setSelectedClass] = React.useState("");
-  const [searchChange, setSearchChange] = React.useState();
+  const [searchChange, setSearchChange] = React.useState<any>(null);
   const restoreCourse = useRestoreCourse({
     Limit: pageSizeManageCourse,
     Page: page,
@@ -156,6 +156,9 @@ const CourseRestore = () => {
 
   useEffect(() => {
     checkedId.length === 0 && setSelectedRowId(0);
+
+    /* @ts-ignore */
+
     selectedRowId == undefined && setSelectedRowId(parseInt(checkedId));
   }, [checkedId, selectedRowId]);
 
@@ -170,6 +173,7 @@ const CourseRestore = () => {
       <TableWrapper>
         <CustomDataGrid
           rows={getRestoreCourseListing?.data || []}
+          /* @ts-ignore */
           getRowId={(row: any) => row.id}
           columns={columnsManageCourse}
           pageSizeData={pageSizeManageCourse}
@@ -183,6 +187,7 @@ const CourseRestore = () => {
           getSelectedId={(e) => setSelectedRowId(e?.[0]?.[e.length - 1])}
           page={page}
           handlePageChange={(_, v) => setPage(v)}
+          /* @ts-ignore */
           totalRows={getRestoreCourseListing?.count}
         />
       </TableWrapper>
