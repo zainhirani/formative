@@ -57,7 +57,7 @@ const TableSection = (props: any) => {
   return (
     <BoxWrapper>
       <CustomDataGrid
-        rows={studentListing.data  || []}
+        rows={studentListing?.data?.data  || []}
         columns={columnsManageStudent}
         pageSizeData={10}
         type={"1"}
@@ -67,9 +67,7 @@ const TableSection = (props: any) => {
         getSelectedId={(e) => setUserId(e?.[0])}
         page={page}
         handlePageChange={(_,v) => setPage(v)}
-        totalRows={14}
-        
-      
+        totalRows={studentListing?.data.count}
       />
     </BoxWrapper>
   );
