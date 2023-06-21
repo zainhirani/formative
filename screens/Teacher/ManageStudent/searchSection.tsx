@@ -1,17 +1,16 @@
 import React, { useMemo, useEffect, useState } from "react";
 
-import { Box, IconButton, InputAdornment } from "@mui/material";
-import { Search } from "@mui/icons-material";
+import { Box, IconButton } from "@mui/material";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
-// import AutoComplete from "components/AutoComplete";
 import { useSnackbar } from "notistack";
 import CustomSelect from "components/CustomSelect/CustomSelect";
 import { GridCloseIcon } from "@mui/x-data-grid";
 import { useCourseListing } from "providers/Courses";
 import { useStudentEnroll } from "providers/teacher/student";
 import { year_of_graduation, programs } from "constants/index";
+// import { debounce } from "lodash";
 
 import messages from "./messages";
 import { BoxWrapper, ButtonWrapper, TextFieldStyled } from "./Styled";
@@ -25,19 +24,37 @@ const SearchSection = (props: any) => {
     setCourse,
     userIds,
     selectedCourse,
-    setSearchChange,
   } = props;
-  console.log(selectedCourse, "selectedCourse");
-  const searchCourse = useFormattedMessage(messages.searchCourse);
 
+  const searchCourse = useFormattedMessage(messages.searchCourse);
+  // const [searchValue , setSearchValue] = useState("")
+
+  //Course data
   const courseListing = useCourseListing({});
   const enrollStudent = useStudentEnroll({});
+  // const cousrseData = useMemo(() => {
+  //  return courseListing?.data?.map((item) => (
+  //     {
 
+  //       value:item.id,
+  //       label:item.course_name
+  //     }
+  //     ))
+  // },[courseListing?.data])
+
+  const defaultCourse = {
+    value: "",
+    label: "New Course",
+  };
   const cousrseData = useMemo(() => {
-    return courseListing?.data?.data.map((item) => ({
+    const courses = courseListing?.data?.data.map((item) => ({
       value: item.id,
       label: item.course_name,
     }));
+    if (courses) {
+      return [defaultCourse, ...courses];
+    }
+    return [defaultCourse];
   }, [courseListing?.data]);
 
   //Select  Program Value
@@ -47,11 +64,11 @@ const SearchSection = (props: any) => {
   //Select Year Of Graduation Value
   const handleYearOfGraduation = (yearValue: any) => {
     setYearOfGraduation(yearValue?.value);
-    console.log(yearValue);
   };
 
   const handleCourse = (courseValue: any) => {
     setCourse(courseValue?.value);
+    console.log(courseValue?.value,"courseValue.value");
   };
 
   useEffect(() => {
@@ -86,42 +103,49 @@ const SearchSection = (props: any) => {
     }
   }, [enrollStudent?.isError]);
 
-  const handleSearchChange = (search: any) => {
-    setSearchChange(search.target.value);
-    console.log(search.target.value);
+  const onInputChange = (e: any) => {
+    
+    if (!cousrseData.some((course) => course.label === selectedCourse)) {
+      setCourse(e.target.value);
+    }
+    if (selectedCourse === "New Course") {
+      setCourse(e.target.value);
+    }
   };
 
   return (
-    <BoxWrapper display="grid" gridTemplateColumns="repeat(12, 1fr)">
+    <BoxWrapper  display="grid" gridTemplateColumns="repeat(12, 1fr)">
       <Box gridColumn="span 3">
         <TextFieldStyled
           placeholder={searchCourse}
           variant="outlined"
-          onChange={handleSearchChange}
-          InputProps={{
-            style: { border: "none", outline: "0px" },
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton aria-label="visibility" edge="end">
-                  <Search />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
+          value={selectedCourse}
+          onChange={onInputChange}
+          // InputProps={{
+          //   style: { border: "none", outline: "0px" },
+          //   endAdornment: (
+          //     <InputAdornment position="end">
+          //       <IconButton aria-label="visibility" edge="end">
+          //         <Search />
+          //       </IconButton>
+          //     </InputAdornment>
+          //   ),
+          // }}
         />
       </Box>
       <Box gridColumn="span 2">
         <CustomSelect
-          placeholder="Select Course"
+          // placeholder="New Course:"
           controlText="New Course:"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={cousrseData || []}
+          // value={cousrseData[0]}
           onChange={handleCourse}
         />
       </Box>
       <Box gridColumn="span 2">
         <CustomSelect
-          placeholder="2004"
+          // placeholder="Year of Graduation:"
           controlText="Year of Graduation:"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={year_of_graduation}
@@ -130,7 +154,7 @@ const SearchSection = (props: any) => {
       </Box>
       <Box gridColumn="span 2">
         <CustomSelect
-          placeholder="COP"
+          // placeholder="School/Program:"
           controlText="School/Program:"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={programs}
