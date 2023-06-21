@@ -13,8 +13,8 @@ import {
   TEACHER__GET_QUESTION_COUNT_ID,
 } from "providers/endpoints";
 
-export const getQuestions = async (props: any) => {
-  return await service({
+export const getQuestions = (props: any) => {
+  return service({
     url: TEACHER__GET_QUESTIONS,
     method: "GET",
     queryParams: props,

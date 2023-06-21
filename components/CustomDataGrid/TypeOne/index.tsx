@@ -65,10 +65,9 @@ const TypeOne: React.FC<TypeOneProps> = ({
     return 50;
   };
 
-  const paginatedRows = rows?.slice(
-    (page - 1) * pageSizeData,
-    page * pageSizeData,
-  );
+  const paginatedRows = rows.length
+    ? rows?.slice((page - 1) * pageSizeData, page * pageSizeData)
+    : null;
 
   return (
     <>

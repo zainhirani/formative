@@ -18,3 +18,8 @@ export function timeFormatter(time: any) {
 
 
   }
+
+  export const removeHTMLTags = (html: string): string=> {
+    const regex = /<[^>]+>/g; // Regex pattern to match HTML tags
+    return html.replace(regex, '');
+  }

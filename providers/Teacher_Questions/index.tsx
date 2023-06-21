@@ -5,8 +5,7 @@ import {
   useQuery,
   useQueryClient,
 } from "react-query";
-import * as api from "./api";
-import { QuizResult } from "./types";
+import { getQuestions } from "./api";
 
 const KEY = "Questions";
 
@@ -20,7 +19,5 @@ export function getKeyFromProps(
 }
 
 export const useQuestionsListing = (props: any) => {
-  return useQuery(getKeyFromProps(props, "LISTING"), () =>
-    api.getQuestions(props),
-  );
+  return useQuery(getKeyFromProps(props, "LISTING"), () => getQuestions(props));
 };
