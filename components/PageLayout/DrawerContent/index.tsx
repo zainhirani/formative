@@ -53,10 +53,10 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
             lazyLoad={true}
           />
         </Box>
-        {/* 
+        {/*
         <IconButton onClick={clickHandler}>
           <MenuIcon sx={{ color: (theme) => theme.palette.primary.light }} />
-        </IconButton> 
+        </IconButton>
         */}
       </DrawerHeader>
 

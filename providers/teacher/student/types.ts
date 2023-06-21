@@ -17,9 +17,11 @@ export namespace Student {
   export type ListingProps = {
     yop?:number,
     program?:string,
-    SearchBy?:string
+    SearchBy?:string,
+    Limit?:number,
+    Page?:number
   };
-  export type ListingResponse = [Item]|undefined
+  export type ListingResponse = [Item]
   export interface ListingAPIPayload extends ListingProps {}
 
 

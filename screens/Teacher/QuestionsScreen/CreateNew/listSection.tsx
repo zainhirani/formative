@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Delete } from "@mui/icons-material";
 import {
   List,
@@ -5,9 +6,6 @@ import {
   ListItemText,
   FormControlLabel,
   Checkbox,
-  ListItemSecondaryAction,
-  IconButton,
-  Typography,
   Button,
   Box,
 } from "@mui/material";
@@ -17,6 +15,9 @@ import FormattedMessage from "theme/FormattedMessage";
 import { TextFieldWrapper } from "./Styled";
 import messages from "./messages";
 
+interface AnswerOptionsProps {
+  onChange: () => void;
+}
 interface ListItemData {
   id: string;
   text: string;
@@ -27,14 +28,16 @@ interface ListItemData {
 
 const initialItems: ListItemData[] = [
   { id: "1", text: "Option A", correct: false, locked: false, inputText: "" },
-  { id: "2", text: "Option B", correct: false, locked: false, inputText: "" },
-  { id: "3", text: "Option C", correct: false, locked: false, inputText: "" },
-  { id: "4", text: "Option D", correct: false, locked: false, inputText: "" },
 ];
 
-const QuestionListSection = () => {
+const AnswerOptions = (props: AnswerOptionsProps) => {
+  let { onChange = () => {} } = props;
   const [items, setItems] = useState<ListItemData[]>(initialItems);
   const [counter, setCounter] = useState(initialItems.length + 1);
+
+  useEffect(() => {
+    onChange(items);
+  }, [items]);
 
   const getNextOptionText = () => {
     const lastOption = items[items.length - 1];
@@ -177,4 +180,4 @@ const QuestionListSection = () => {
   );
 };
 
-export default QuestionListSection;
+export default AnswerOptions;

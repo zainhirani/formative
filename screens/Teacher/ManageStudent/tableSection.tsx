@@ -46,27 +46,41 @@ export const columnsManageStudent: GridColDef[] = [
   },
 ];
 
-
+const LIMIT = 10;
 
 const TableSection = (props: any) => {
-  const { setChecked,program,yearOfGraduation, isCheckbox,setUserId,searchBy,selectNewCourse} = props;
-
-  console.log(selectNewCourse,'selectNewCourse')
-
-  const studentListing = useStudentListing({yop:yearOfGraduation,program:program,SearchBy:searchBy});
- 
+  const {
+    setChecked,
+    program,
+    yearOfGraduation,
+    isCheckbox,
+    setUserId,
+    searchBy,
+    selectNewCourse,
+  } = props;
+  const [page, setPage] = useState(1);
+  const studentListing = useStudentListing({
+    yop: yearOfGraduation,
+    program: program,
+    SearchBy: searchBy,
+    Limit: LIMIT,
+    Page: page,
+  });
 
   return (
     <BoxWrapper>
       <CustomDataGrid
-        rows={studentListing.data  || []}
+        rows={studentListing.data || []}
         columns={columnsManageStudent}
-        pageSizeData={pageSizeManageQuiz}
+        pageSizeData={10}
         type={"1"}
         isCheckbox={isCheckbox}
         setChecked={setChecked}
         loading={studentListing.isFetching}
         getSelectedId={(e) => setUserId(e?.[0])}
+        page={page}
+        handlePageChange={(_, v) => setPage(v)}
+        totalRows={14}
       />
     </BoxWrapper>
   );

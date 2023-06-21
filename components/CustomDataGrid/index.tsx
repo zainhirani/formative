@@ -23,6 +23,9 @@ interface CustomDataGridProps {
   onRowSelectionModelChange?: any;
   selectionModel?: any;
   onSelectionModelChange?: any;
+  page?: number;
+  handlePageChange?: (event: React.ChangeEvent<unknown>, value: number) => void;
+  totalRows?: number;
 }
 
 const CustomDataGrid: React.FC<CustomDataGridProps> = ({
@@ -37,6 +40,9 @@ const CustomDataGrid: React.FC<CustomDataGridProps> = ({
   setChecked,
   loading,
   getSelectedId,
+  handlePageChange,
+  page,
+  totalRows,
   ...props
 }) => {
   return (
@@ -53,6 +59,9 @@ const CustomDataGrid: React.FC<CustomDataGridProps> = ({
           columnVisibilityModel={columnVisibilityModel}
           loading={loading}
           getSelectedId={getSelectedId}
+          page={page}
+          handlePageChange={handlePageChange}
+          totalRows={totalRows}
           {...props}
         />
       ) : type == "2" ? (

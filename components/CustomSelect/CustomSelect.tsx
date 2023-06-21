@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { FC, ReactNode } from "react";
 import { Tooltip } from "@mui/material";
 import { components } from "react-select";
@@ -16,6 +17,8 @@ interface CustomSelectProps {
   name?: any;
   isClearable?: any;
   isDisabled?: Boolean | undefined;
+  isFetching?: boolean;
+  isMulti?: boolean;
 }
 
 const CustomDropdownIndicator = (props: any) => {
@@ -52,6 +55,9 @@ const CustomSelect: FC<CustomSelectProps> = ({
   name,
   isClearable,
   isDisabled,
+  isFetching,
+  isMulti,
+  onBlur,
   ...rest
 }) => {
   const style = {
@@ -107,9 +113,10 @@ const CustomSelect: FC<CustomSelectProps> = ({
   return (
     <BoxWrapper sx={{ zIndex: 99999, width: "100%" }}>
       <AutoComplete
+        isMulti={isMulti}
         onBlur={onBlur}
         name={name}
-        isClearable={isClearable}
+        isClearable
         options={options}
         onChange={onChange}
         placeholder={placeholder}
