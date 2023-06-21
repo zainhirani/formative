@@ -13,10 +13,11 @@ import {
   TEACHER__GET_QUESTION_COUNT_ID,
 } from "providers/endpoints";
 
-export const getQuestions = async () => {
+export const getQuestions = async (props: any) => {
   return await service({
     url: TEACHER__GET_QUESTIONS,
     method: "GET",
+    queryParams: props,
   });
 };
 export const getQuestionById = async (id: any) => {
@@ -47,7 +48,7 @@ export const getFaculties = async () => {
   });
 };
 
-export const addQuestion = async (payload) => {
+export const addQuestion = async (payload: any) => {
   return service({
     method: "POST",
     url: TEACHER__ADD_QUESTION,
