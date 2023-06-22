@@ -6,7 +6,7 @@ import AutoComplete from "components/AutoComplete";
 import { BoxWrapper, SelectBoxWrapper } from "./Styled";
 
 interface CustomSelectProps {
-  options: Array<{}>;
+  options?: Array<{}>;
   placeholder?: string;
   config?: string;
   controlText?: string;
@@ -17,6 +17,7 @@ interface CustomSelectProps {
   isFetching?: boolean;
   isMulti?: boolean;
   name?: any;
+  defaultValue?: any;
 }
 
 const CustomDropdownIndicator = (props: any) => {
@@ -49,6 +50,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
   value,
   isFetching,
   isMulti,
+  defaultValue,
   onBlur,
   name,
 }) => {
@@ -122,6 +124,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
         customStyles={style}
         className="custom-select"
         value={value}
+        defaultValue={defaultValue}
       />
     </BoxWrapper>
   );

@@ -89,3 +89,23 @@ export function useCourseRemove(props?: Course.RemoveProps): UseMutationResult<
     retry: 0,
   });
 }
+
+// Duplicate
+export function useCourseDuplicate(
+  props?: Course.DuplicateProps,
+): UseMutationResult<
+  Course.DuplicateResponse,
+  {
+    message?: string;
+  },
+  Course.DuplicateMutationPayload
+> {
+  const queryClient = useQueryClient();
+  return useMutation((payload) => api.duplicate(payload), {
+    mutationKey: `${KEY}|Duplicate`,
+    onSuccess: () => {
+      queryClient.invalidateQueries([KEY]);
+    },
+    retry: 0,
+  });
+}

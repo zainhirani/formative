@@ -19,6 +19,7 @@ interface AutoCompleteProps<OptionType = any> extends SelectProps<OptionType> {
   closeMenuOnSelect?: boolean;
   customComponents?: CustomComponents;
   isMulti: boolean;
+  value: any;
 }
 
 const AutoComplete = <OptionType extends any = any>({

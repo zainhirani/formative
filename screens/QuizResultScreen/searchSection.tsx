@@ -16,14 +16,18 @@ interface SearchSectionProps {
   setValue: (e?: any) => void;
   setCourse: (e?: any) => void;
   setFolder: (e?: any) => void;
-
 }
 
-const SearchSection = ({ setValue, setCourse,setFolder }: SearchSectionProps) => {
+const SearchSection = ({
+  setValue,
+  setCourse,
+  setFolder,
+}: SearchSectionProps) => {
   const searchQuiz = useFormattedMessage(messages.searchQuiz);
+
   const courseListing = useCourseListing({});
   const cousrseData = useMemo(() => {
-    return courseListing?.data?.map((item) => ({
+    return courseListing?.data?.data?.map((item) => ({
       value: item.id,
       label: item.course_name,
     }));

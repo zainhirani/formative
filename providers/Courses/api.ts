@@ -3,12 +3,14 @@ import { Course } from "./types";
 
 //GET Listing
 
-export async function listing(props?:Course.ListingAPIPayload):Promise<Course.ListingResponse> {
-    return service ({
-        method:'GET',
-        url:`/courses`,
-        queryParams:props
-    })
+export async function listing(
+  props?: Course.ListingAPIPayload,
+): Promise<Course.ListingResponse> {
+  return service({
+    method: "GET",
+    url: `/courses`,
+    queryParams: props,
+  });
 }
 
 // Create
@@ -50,5 +52,15 @@ export async function remove(
   return service({
     method: "DELETE",
     url: `/courses/${props.id}`,
+  });
+}
+
+// Duplicate
+export async function duplicate(
+  props: Course.DuplicateAPIPayload,
+): Promise<Course.DuplicateResponse> {
+  return service({
+    method: "POST",
+    url: `/courses/${props.id}/duplicate`,
   });
 }

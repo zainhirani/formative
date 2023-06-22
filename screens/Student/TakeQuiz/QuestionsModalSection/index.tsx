@@ -14,7 +14,7 @@ const QuestionsModal = (props: any) => {
   const { drawerOpen, setDrawerOpen } = props;
   const [showQuestionScreen, setShowQuestionScreen] = useState(false);
   const underTakingTitle = useFormattedMessage(messages.underTakingTitle);
-  const modalTitle = useFormattedMessage(messages.modalTitle);
+  const modalTitleHead = useFormattedMessage(messages.modalTitle);
   const underTakingDesc = useFormattedMessage(messages.underTakingDesc);
   const underTakingLongDesc = useFormattedMessage(messages.underTakingLongDesc);
   const confirmUnderTaking = useFormattedMessage(messages.confirmUnderTaking);
@@ -22,10 +22,12 @@ const QuestionsModal = (props: any) => {
   const questionNo = useFormattedMessage(messages.questionNo);
   const quizScore = useFormattedMessage(messages.quizScore);
   const submit = useFormattedMessage(messages.submit);
+  const [modalTitle, setModalTitle] = useState(underTakingTitle);
   const handleDrawerCloseQuestion = () => {
-    setDrawerOpen((prev: any) => !prev);
+    setDrawerOpen(false);
     props?.onClose && props.onClose();
-    setShowQuestionScreen((prev) => !prev);
+    setShowQuestionScreen(false);
+    setModalTitle(underTakingTitle);
   };
   const config = [
     {
@@ -39,7 +41,8 @@ const QuestionsModal = (props: any) => {
         );
       },
       onClick: () => {
-        setShowQuestionScreen((prev) => !prev);
+        setShowQuestionScreen(true);
+        setModalTitle(modalTitleHead);
       },
     },
     {
@@ -56,17 +59,34 @@ const QuestionsModal = (props: any) => {
     },
   ];
 
+  const handleStepperComplete = () => {
+    console.log("working");
+
+    setModalTitle(quizScoreTitle);
+    handleDrawerCloseQuestion;
+  };
+
+  const handleConsole = () => {
+    console.log("Submitted");
+    setModalTitle(quizScoreTitle);
+  };
+
   return (
     <>
       <SideDrawer
-        title={showQuestionScreen ? modalTitle : underTakingTitle}
+        // title={showQuestionScreen ? modalTitle : underTakingTitle}
+        title={modalTitle}
         open={drawerOpen}
         onClose={handleDrawerCloseQuestion}
       >
         <Box sx={{ p: "30px 20px" }}>
           {showQuestionScreen ? (
             <Box>
-              <QuestionsStepper handleChangeState={handleDrawerCloseQuestion} />
+              <QuestionsStepper
+                handleChangeState={handleDrawerCloseQuestion}
+                setModalTitle={setModalTitle}
+              />
+              {/* <QuestionsStepper handleChangeState={handleStepperComplete} /> */}
             </Box>
           ) : (
             <Box>

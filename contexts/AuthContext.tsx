@@ -27,7 +27,7 @@ interface AuthContextProps {
 
 const AuthContext = createContext({} as AuthContextType);
 
-const AUTHENTICATION_PATH = [AUTH_LOGIN_URL,AUTH_SIGNUP_URL];
+const AUTHENTICATION_PATH = [AUTH_LOGIN_URL, AUTH_SIGNUP_URL];
 
 const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
   const { data: session, status } = useSession();
@@ -57,9 +57,6 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
   //@ts-ignore
   const currToken: any = session?.accessToken;
 
-
-
-
   if (currToken && prevToken !== `Bearer ${currToken}`) {
     setAuthenticationHeader(currToken);
   }
@@ -76,8 +73,6 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
   //   }, 3000);
   // }
   // getTokenFunction();
-
-
 
   if (loading) {
     return (
@@ -125,8 +120,7 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
       value={{
         signIn,
         signOut,
-        currentUser:session?.user
-    
+        currentUser: session?.user,
       }}
     >
       {children}

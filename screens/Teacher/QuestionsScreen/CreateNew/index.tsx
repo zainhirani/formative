@@ -404,6 +404,15 @@ const AddQuestion = ({ qId }: QuestionProps) => {
                     variant="standard"
                     fullWidth
                   />
+                  <Box sx={{ width: "100%" }}>
+                    <CustomSelect
+                      name="questions"
+                      placeholder={questionPlaceholder}
+                      controlText={question}
+                      dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
+                      options={questionSelect}
+                    />
+                  </Box>
                 </FieldBoxWrapper>
                 <FieldBoxWrapper
                   sx={{
@@ -516,6 +525,7 @@ const AddQuestion = ({ qId }: QuestionProps) => {
                 >
                   <Box sx={{ width: "100%" }}>
                     <CustomSelect
+                      name="folder"
                       placeholder={folderPlaceholder}
                       controlText={folder}
                       dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
@@ -550,6 +560,7 @@ const AddQuestion = ({ qId }: QuestionProps) => {
                 >
                   <Box sx={{ width: "100%" }}>
                     <CustomSelect
+                      name="category"
                       placeholder={categoryPlaceholder}
                       controlText={category}
                       dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
@@ -585,6 +596,7 @@ const AddQuestion = ({ qId }: QuestionProps) => {
                   <Box sx={{ width: "100%" }}>
                     <CustomSelect
                       isMulti
+                      name="faculty"
                       placeholder={facultyPlaceholder}
                       controlText={faculty}
                       dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}

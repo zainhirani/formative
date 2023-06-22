@@ -30,7 +30,15 @@ const CourseRestore = () => {
   const router = useRouter();
   const [checkedId, setCheckedId] = useState<number[]>([]);
   const [lastSelected, setLastSelected] = useState(-1);
-  const getRestoreCourseListing = useRestoreCourseListing();
+  const [page, setPage] = useState(1);
+  const [selectedAudience, setSelectedAudience] = React.useState("");
+  const [selectedClass, setSelectedClass] = React.useState("");
+  const [searchChange, setSearchChange] = React.useState<any>(null);
+  const getRestoreCourseListing = useRestoreCourseListing({
+    Limit: pageSizeManageCourse,
+    Page: page,
+    ...(searchChange && { SearchBy: searchChange }),
+  });
   const restoreCourse = useRestoreCourse();
 
   const [checked, setChecked] = useState(false);
@@ -62,9 +70,6 @@ const CourseRestore = () => {
       flex: 1,
       renderCell: (params: any) => {
         return params.value?.map((item: any) => item.programs);
-        // .slice(2, -2)
-        // .replaceAll(/[""]/g, "")
-        // .toUpperCase();
       },
     },
     {
@@ -151,16 +156,24 @@ const CourseRestore = () => {
 
   useEffect(() => {
     checkedId.length === 0 && setSelectedRowId(0);
+
+    /* @ts-ignore */
+
     selectedRowId == undefined && setSelectedRowId(parseInt(checkedId));
   }, [checkedId, selectedRowId]);
 
   return (
     // <PageLayout title="Courses"  icon={<HelpRoundedIcon />}>
     <Box>
-      <SearchBar />
+      <SearchBar
+        setSelectedClass={setSelectedClass}
+        setSelectedAudience={setSelectedAudience}
+        setSearchChange={setSearchChange}
+      />
       <TableWrapper>
         <CustomDataGrid
-          rows={getRestoreCourseListing?.data || []}
+          rows={getRestoreCourseListing?.data?.data || []}
+          /* @ts-ignore */
           getRowId={(row: any) => row.id}
           columns={columnsManageCourse}
           pageSizeData={pageSizeManageCourse}
@@ -172,6 +185,10 @@ const CourseRestore = () => {
           selectedIds={checkedId}
           onRowSelect={handleSelection}
           getSelectedId={(e) => setSelectedRowId(e?.[0]?.[e.length - 1])}
+          page={page}
+          handlePageChange={(_, v) => setPage(v)}
+          /* @ts-ignore */
+          totalRows={getRestoreCourseListing?.data?.count}
         />
       </TableWrapper>
       <Box
@@ -179,6 +196,7 @@ const CourseRestore = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          flexDirection: { md: "row", xs: "column" },
         }}
       >
         <BoxWrapper display="grid" gridTemplateColumns="repeat(5, 1fr)">
@@ -189,6 +207,7 @@ const CourseRestore = () => {
               InputProps={{
                 style: { border: "none", outline: "0px" },
               }}
+              autoComplete="off"
             />
           </Box>
           <Box gridColumn="span 2">
