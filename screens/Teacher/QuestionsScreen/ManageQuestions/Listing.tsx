@@ -15,6 +15,11 @@ import { useQuestionsListing } from "providers/Teacher_Questions";
 import { isStringNotURL, removeHTMLTags } from "utils";
 import ImagePreviewModal from "components/ImagePreviewModal";
 import ViewQuestion from "./ViewQuestion";
+import { useRouter } from "next/router";
+import APP_ROUTES from "constants/RouteConstants";
+
+import { duplicateQuestion } from "providers/Teacher_Questions/api";
+import { useMutation, useQueryClient } from "react-query";
 
 interface ListingProp {
   folder: any;
@@ -29,6 +34,8 @@ const Listing: React.FC = ({
   facultyCategory,
   folder,
 }: ListingProp) => {
+  const client = useQueryClient();
+  let router = useRouter();
   let questions = useQuestionsListing({
     ...(facultyCategory?.length > 0 && { facultyId: facultyCategory }),
     ...(folder && { folderId: folder }),
@@ -39,6 +46,15 @@ const Listing: React.FC = ({
   let [image, setImage] = useState<string>("");
   const [questionId, setQuestionId] = useState<string | undefined>(undefined);
   const [questiondrawer, setQuestionDrawer] = useState(false);
+  const mutation = useMutation({
+    mutationFn: (id) => {
+      return duplicateQuestion(id);
+    },
+    onError: () => {},
+    onSuccess: () => {
+      client.invalidateQueries(["TEACHER_QUESTIONS_LISTINGS"]);
+    },
+  });
 
   const handleSetImage = (imageName: string) => {
     let url = "";
@@ -128,7 +144,7 @@ const Listing: React.FC = ({
               <IconButton>
                 <Image alt="edit" src={editSvg} width={15} height={15} />
               </IconButton>
-              <IconButton>
+              <IconButton onClick={() => mutation.mutate(data.row.id)}>
                 <Image alt="copy" src={copySvg} width={15} height={15} />
               </IconButton>
               <IconButton>
@@ -153,7 +169,7 @@ const Listing: React.FC = ({
           </Box>
         );
       },
-      onClick: () => {},
+      onClick: () => router.push(APP_ROUTES.QUESTIONS_CREATE_NEW),
     },
   ];
   return (
@@ -166,7 +182,7 @@ const Listing: React.FC = ({
         pageSizeData={10}
         type={"1"}
         buttonArray={FOOTER_CONFIG}
-        loading={questions?.isFetching}
+        loading={questions?.isFetching || mutation.isLoading}
       />
       <ImagePreviewModal
         open={Boolean(image)}

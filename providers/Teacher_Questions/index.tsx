@@ -5,13 +5,13 @@ import {
   useQuery,
   useQueryClient,
 } from "react-query";
-import { getQuestionById, getQuestions } from "./api";
+import { duplicateQuestion, getQuestionById, getQuestions } from "./api";
 
 const KEY = "Questions";
 
 export function getKeyFromProps(
   props: any,
-  type: "LISTING" | "DETAIL",
+  type: "LISTING" | "DETAIL" | "DUPLICATE_QUESTION",
 ): string[] {
   const key = [KEY, type];
   key.push(props);
@@ -19,7 +19,7 @@ export function getKeyFromProps(
 }
 
 export const useQuestionsListing = (props: any) => {
-  return useQuery(getKeyFromProps(props, "LISTING"), () => getQuestions(props));
+  return useQuery("TEACHER_QUESTIONS_LISTINGS", () => getQuestions(props));
 };
 
 export const useQuestionDetails = (props: any) => {
@@ -29,3 +29,11 @@ export const useQuestionDetails = (props: any) => {
     { enabled: !!props.questionId },
   );
 };
+
+// export const useDuplicateQuestion = (questionId: any) => {
+//   return useMutation((questionId) => duplicateQuestion(questionId), {
+//     mutationKey: getKeyFromProps(questionId, "DUPLICATE_QUESTION"),
+//     onSuccess: () => {},
+//     retry: 1,
+//   });
+// };

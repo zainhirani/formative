@@ -27,6 +27,13 @@ export const getQuestionById = (id: any) => {
   });
 };
 
+export const duplicateQuestion = (id: any) => {
+  return service({
+    url: `/questions/${id}/duplicate`,
+    method: "POST",
+  });
+};
+
 export const getCategories = async () => {
   return await service({
     url: TEACHER__GET_CATEGORIES,
