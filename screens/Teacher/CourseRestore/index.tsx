@@ -30,16 +30,16 @@ const CourseRestore = () => {
   const router = useRouter();
   const [checkedId, setCheckedId] = useState<number[]>([]);
   const [lastSelected, setLastSelected] = useState(-1);
-  const getRestoreCourseListing = useRestoreCourseListing();
   const [page, setPage] = useState(1);
   const [selectedAudience, setSelectedAudience] = React.useState("");
   const [selectedClass, setSelectedClass] = React.useState("");
   const [searchChange, setSearchChange] = React.useState<any>(null);
-  const restoreCourse = useRestoreCourse({
+  const getRestoreCourseListing = useRestoreCourseListing({
     Limit: pageSizeManageCourse,
     Page: page,
     ...(searchChange && { SearchBy: searchChange }),
   });
+  const restoreCourse = useRestoreCourse();
 
   const [checked, setChecked] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState<number>(0);
