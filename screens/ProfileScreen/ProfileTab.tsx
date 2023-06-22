@@ -93,9 +93,11 @@ export const ProfileTab = ({}) => {
   const hobbiesPlaceholder = useFormattedMessage(messages.hobbiesPlaceholder);
   const [math, setMath] = useState("Select an option for the list");
   const [dobValue, setDobValue] = useState(null);
-  const [experience, setExperience] = useState(
-    profileDetail.data?.experience || 0,
-  );
+  const athleteArray = [];
+  const athleteSeperatedArray = profileDetail.data?.athlete.split(", ");
+  athleteArray.push(...athleteSeperatedArray);
+  const [checkedValues, setCheckedValues] = useState(athleteArray);
+  const [experience, setExperience] = useState(profileDetail.data?.experience);
   const profile = useProfile();
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
@@ -103,13 +105,27 @@ export const ProfileTab = ({}) => {
   function formatDate(dateString: string): string {
     const date = new Date(dateString);
     const day = date.getDate();
-    const month = date.getMonth() + 1; // Month starts from 0, so we add 1
+    const month = date.getMonth() + 1;
     const year = date.getFullYear();
 
     return `${year}-${month.toString().padStart(2, "0")}-${day
       .toString()
       .padStart(2, "0")}`;
   }
+
+  const handleExperienceChange = (event) => {
+    const newValue = parseInt(event.target.value);
+    if (!isNaN(newValue)) {
+      setExperience(newValue);
+    }
+  };
+  const handleCheckboxChange = (value) => {
+    if (checkedValues.includes(value)) {
+      setCheckedValues(checkedValues.filter((item) => item !== value));
+    } else {
+      setCheckedValues([...checkedValues, value]);
+    }
+  };
 
   const increment = () => {
     if (experience < 50) {
@@ -152,9 +168,9 @@ export const ProfileTab = ({}) => {
   const onSubmit = (data: any) => {
     profile.mutate({
       date_of_birth: dobValue,
-      experience: data.pharmacy,
+      experience: experience,
       working_part_time: data.partTime === "Yes" ? true : false,
-      athlete: data.played,
+      athlete: checkedValues.join(", "),
       concept: data.learn,
       hobbies: data.hobbies,
       learning_sequence: data.sequence,
@@ -162,6 +178,7 @@ export const ProfileTab = ({}) => {
       study_prefer: data.study,
       taken_biochemistry: data.bioChemistry === "Yes" ? true : false,
       volunteer: data.volunteer === "Yes" ? true : false,
+      password: data.currentPassword,
     });
   };
 
@@ -246,9 +263,9 @@ export const ProfileTab = ({}) => {
                 placeholder={pharmacyPlaceholder}
                 fullWidth
                 type="number"
-                value={values.pharmacy}
+                value={experience}
                 onBlur={handleBlur}
-                onChange={handleChange}
+                onChange={handleExperienceChange}
                 error={Boolean(touched.pharmacy && errors.pharmacy)}
                 inputProps={{ min: 0, max: 50 }}
                 variant="standard"
@@ -305,9 +322,6 @@ export const ProfileTab = ({}) => {
                       marginRight: 0,
                       borderBottom: "1px solid",
                       color: (theme) => theme.palette.secondary.dark,
-                      // ".MuiFormControlLabel-label": checked && {
-                      //   color: "red",
-                      // },
                     }}
                     value={choice.name}
                     control={
@@ -581,20 +595,13 @@ export const ProfileTab = ({}) => {
                       onChange={(e) => {
                         if (setFieldValue) {
                           setFieldValue("played", e.target.value);
+                          handleCheckboxChange(e.target.value);
                         }
                       }}
-                      checked={values.played === play.name}
-                      // value={values.played}
+                      checked={checkedValues.includes(play.name)}
                     />
                   }
                   label={play.name}
-                  // sx={{
-                  //   color: Object.values(checkedItems).some(
-                  //     (isChecked) => isChecked,
-                  //   )
-                  //     ? (theme) => theme.additionalColors?.primaryBlack
-                  //     : (theme) => theme.palette.secondary.dark,
-                  // }}
                 />
               ))}
               {touched.played && errors.played && (
@@ -625,9 +632,6 @@ export const ProfileTab = ({}) => {
                       marginRight: 0,
                       borderBottom: "1px solid",
                       color: (theme) => theme.palette.secondary.dark,
-                      // ".MuiFormControlLabel-label": checked && {
-                      //   color: (theme) => theme.palette.primary.main,
-                      // },
                     }}
                     value={choice.name}
                     control={

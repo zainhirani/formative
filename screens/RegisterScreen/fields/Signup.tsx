@@ -117,7 +117,6 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
       gender: data.gender,
       rfu_id: Number(data.rfuID),
       year_of_graduation: Number(data.graduation),
-      // year_of_graduation: 2021,
       program: data.program,
       birth_place: data.birthPlace,
     });
@@ -153,20 +152,6 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
     validationSchema,
     onSubmit,
   });
-
-  //year of graduation
-
-  // const increment = () => {
-  //   if (year < 2200) {
-  //     setYear((year) => year + 1);
-  //   }
-  // };
-
-  // const decrement = () => {
-  //   if (year > 1950) {
-  //     setYear((year) => year - 1);
-  //   }
-  // };
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -185,7 +170,6 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 error={Boolean(touched.firstName && errors.firstName)}
-                // disabled={disable}
                 variant="standard"
               />
               {touched.firstName && errors.firstName && (
@@ -210,7 +194,6 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 error={Boolean(touched.lastName && errors.lastName)}
-                // disabled={disable}
                 variant="standard"
               />
               {touched.lastName && errors.lastName && (
@@ -232,7 +215,6 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 error={Boolean(touched.nickName && errors.nickName)}
-                // disabled={disable}
                 variant="standard"
               />
               {touched.nickName && errors.nickName && (
@@ -255,7 +237,6 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
                   }
                   setGenders(e.target.value);
                 }}
-                // disabled={disable}
                 variant="standard"
                 fullWidth
                 IconComponent={KeyboardArrowDownIcon}
@@ -291,7 +272,6 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 error={Boolean(touched.email && errors.email)}
-                // disabled={disable}
                 variant="standard"
               />
               {touched.email && errors.email && (
@@ -314,7 +294,6 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 error={Boolean(touched.rfuID && errors.rfuID)}
-                // disabled={disable}
                 variant="standard"
               />
               {touched.rfuID && errors.rfuID && (
@@ -338,7 +317,6 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
                     setPrograms(e.target.value);
                   }
                 }}
-                // disabled={disable}
                 variant="standard"
                 fullWidth
                 sx={{
@@ -387,7 +365,6 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 error={Boolean(touched.birthPlace && errors.birthPlace)}
-                // disabled={disable}
                 variant="standard"
                 sx={{ mt: "10px" }}
               />
@@ -413,7 +390,6 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 error={Boolean(touched.userName && errors.userName)}
-                // disabled={disable}
                 variant="standard"
               />
               {touched.userName && errors.userName && (
@@ -436,7 +412,6 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 error={Boolean(touched.password && errors.password)}
-                // disabled={disable}
                 variant="standard"
                 InputProps={{
                   endAdornment: (
@@ -478,7 +453,6 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
                 error={Boolean(
                   touched.confirmPassword && errors.confirmPassword,
                 )}
-                // disabled={disable}
                 variant="standard"
                 InputProps={{
                   endAdornment: (
@@ -525,7 +499,6 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
               left: "35%",
             },
           }}
-          // onClick={handleNext}
           disabled={
             (values.firstName &&
               values.lastName &&

@@ -34,7 +34,7 @@ const SearchSection = (props: any) => {
   const enrollStudent = useStudentEnroll({});
 
   const cousrseData = useMemo(() => {
-    return courseListing?.data?.map((item) => ({
+    return courseListing?.data?.data?.map((item) => ({
       value: item.id,
       label: item.course_name,
     }));
