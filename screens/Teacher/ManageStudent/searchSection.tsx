@@ -7,15 +7,17 @@ import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import { useSnackbar } from "notistack";
 import CustomSelect from "components/CustomSelect/CustomSelect";
 import { GridCloseIcon } from "@mui/x-data-grid";
-import { useCourseListing } from "providers/Courses";
+import { useCourseListing, useCreateCourse } from "providers/Courses";
 import { useStudentEnroll } from "providers/teacher/student";
 import { year_of_graduation, programs } from "constants/index";
+import CloseIcon from "@mui/icons-material/Close";
 // import { debounce } from "lodash";
 
 import messages from "./messages";
 import { BoxWrapper, ButtonWrapper, TextFieldStyled } from "./Styled";
 
 const SearchSection = (props: any) => {
+  const [selected, setSelected] = useState("");
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const {
     checked,
@@ -24,26 +26,18 @@ const SearchSection = (props: any) => {
     setCourse,
     userIds,
     selectedCourse,
+    setAddCourse,
+    addCourse,
   } = props;
 
   const searchCourse = useFormattedMessage(messages.searchCourse);
-  // const [searchValue , setSearchValue] = useState("")
 
   //Course data
   const courseListing = useCourseListing({});
   const enrollStudent = useStudentEnroll({});
-  // const cousrseData = useMemo(() => {
-  //  return courseListing?.data?.map((item) => (
-  //     {
-
-  //       value:item.id,
-  //       label:item.course_name
-  //     }
-  //     ))
-  // },[courseListing?.data])
 
   const defaultCourse = {
-    value: "",
+    value: 1001101,
     label: "New Course",
   };
   const cousrseData = useMemo(() => {
@@ -67,25 +61,30 @@ const SearchSection = (props: any) => {
   };
 
   const handleCourse = (courseValue: any) => {
-    setCourse(courseValue?.value);
-    console.log(courseValue?.value,"courseValue.value");
+    setSelected(courseValue);
+    setCourse(courseValue);
   };
 
   useEffect(() => {
     if (enrollStudent?.isSuccess) {
-      enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
-        variant: "success",
-        autoHideDuration: 3000,
-        action: (key) => (
-          <IconButton onClick={() => closeSnackbar(key)}>
-            <GridCloseIcon
-              sx={{ color: (theme) => theme.palette.primary.light }}
-            />
-          </IconButton>
-        ),
-      });
+      enqueueSnackbar(
+        `Checked students are now enrolled in ${selected.label}`,
+        {
+          variant: "success",
+          autoHideDuration: 3000,
+          action: (key) => (
+            <IconButton onClick={() => closeSnackbar(key)}>
+              <GridCloseIcon
+                sx={{ color: (theme) => theme.palette.primary.light }}
+              />
+            </IconButton>
+          ),
+        },
+      );
     }
   }, [enrollStudent?.isSuccess]);
+  console.log(enrollStudent?.isSuccess,"isSuccess")
+
 
   useEffect(() => {
     if (enrollStudent?.isError) {
@@ -103,49 +102,31 @@ const SearchSection = (props: any) => {
     }
   }, [enrollStudent?.isError]);
 
-  const onInputChange = (e: any) => {
-    
-    if (!cousrseData.some((course) => course.label === selectedCourse)) {
-      setCourse(e.target.value);
-    }
-    if (selectedCourse === "New Course") {
-      setCourse(e.target.value);
-    }
+  const onInputChange = (e?: any) => {
+    setCourse(e.target.value);
   };
 
   return (
-    <BoxWrapper  display="grid" gridTemplateColumns="repeat(12, 1fr)">
+    <BoxWrapper display="grid" gridTemplateColumns="repeat(12, 1fr)">
       <Box gridColumn="span 3">
         <TextFieldStyled
           placeholder={searchCourse}
           variant="outlined"
-          value={selectedCourse}
+          value={selectedCourse?.label || null}
           onChange={onInputChange}
-          // InputProps={{
-          //   style: { border: "none", outline: "0px" },
-          //   endAdornment: (
-          //     <InputAdornment position="end">
-          //       <IconButton aria-label="visibility" edge="end">
-          //         <Search />
-          //       </IconButton>
-          //     </InputAdornment>
-          //   ),
-          // }}
+          disabled={selected?.value != 1001101}
         />
       </Box>
       <Box gridColumn="span 2">
         <CustomSelect
-          // placeholder="New Course:"
           controlText="New Course:"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={cousrseData || []}
-          // value={cousrseData[0]}
           onChange={handleCourse}
         />
       </Box>
       <Box gridColumn="span 2">
         <CustomSelect
-          // placeholder="Year of Graduation:"
           controlText="Year of Graduation:"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={year_of_graduation}
@@ -154,7 +135,6 @@ const SearchSection = (props: any) => {
       </Box>
       <Box gridColumn="span 2">
         <CustomSelect
-          // placeholder="School/Program:"
           controlText="School/Program:"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={programs}
@@ -167,9 +147,14 @@ const SearchSection = (props: any) => {
           startIcon={<AddCircleOutlineRoundedIcon />}
           variant="contained"
           disabled={checked ? false : true}
-          onClick={() =>
-            enrollStudent.mutate({ courseId: selectedCourse, userIds })
-          }
+          onClick={() => {
+            enrollStudent.mutate({
+              courseName: selectedCourse.label
+                ? selectedCourse.label
+                : selectedCourse,
+              userIds,
+            });
+          }}
         >
           <FormattedMessage {...messages.enrollStudent} />
         </ButtonWrapper>

@@ -10,6 +10,8 @@ const ManageStudents = () => {
   const [checked, setChecked] = useState(false);
   const [selectNewCourse, setSelectNewCourse] = useState("");
   const [userId, setUserId] = useState([]);
+  const [addCourse , setAddCourse] = useState("")
+  
 
   return (
     <>
@@ -21,11 +23,13 @@ const ManageStudents = () => {
         checked={checked}
         setProgram={setProgram}
         setYearOfGraduation={setYearOfGraduation}
+        addCourse={addCourse}
+        setAddCourse={setAddCourse}
       />
       <TableSection
         setUserId={setUserId}
-        selectNewCourse={selectNewCourse}
-        isCheckbox={!!selectNewCourse}
+        selectNewCourse={selectNewCourse?.label}
+        isCheckbox={selectNewCourse||selectNewCourse?.label}
         setChecked={setChecked}
         program={program}
         yearOfGraduation={yearOfGraduation}

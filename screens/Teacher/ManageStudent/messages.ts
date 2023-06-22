@@ -3,7 +3,7 @@
  *
  * This contains all the text for the ManageQuizScreen
  */
-
+ 
 import { defineMessages } from "react-intl";
 
 export const scope = "app.screens.ManageQuizScreen";

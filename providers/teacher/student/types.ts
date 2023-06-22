@@ -31,7 +31,7 @@ export namespace Student {
    data:boolean
   }
   export type EnrollMutationPayload = {
-    courseId:string
+    courseName:string
     userIds:string[]
   }
   export interface EnrollAPIPayload extends EnrollProps {

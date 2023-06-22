@@ -3,6 +3,7 @@ import { BoxWrapper } from "./Styled";
 import { GridColDef } from "@mui/x-data-grid";
 import CustomDataGrid from "components/CustomDataGrid";
 import { useStudentListing } from "providers/teacher/student";
+import { BoxItemWrapper } from "../ManageQuizScreen/DraftQuizScreen/DrawerSections/Styled";
 
 export const columnsManageStudent: GridColDef[] = [
   {
@@ -52,6 +53,7 @@ const TableSection = (props: any) => {
     program,
     yearOfGraduation,
     setUserId,
+    isCheckbox
   } = props;
   const [page, setPage] = useState(1);
   const studentListing = useStudentListing({
@@ -68,7 +70,7 @@ const TableSection = (props: any) => {
         columns={columnsManageStudent}
         pageSizeData={10}
         type={"1"}
-        isCheckbox
+        isCheckbox={isCheckbox}
         setChecked={setChecked}
         loading={studentListing.isFetching}
         getSelectedId={(e) => setUserId(e?.[0])}
