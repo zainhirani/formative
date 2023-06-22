@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useEffect } from "react";
 import {
   Box,
@@ -11,8 +12,8 @@ import {
   Typography,
 } from "@mui/material";
 import PageLayout from "components/PageLayout";
-import ImageSection from "./addImage";
-import AnswerOptions from "./listSection";
+import ImagePreview from "./ImagePreview";
+import AnswerOptions from "./Answers";
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
 import messages from "./messages";
@@ -41,17 +42,24 @@ import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCi
 import { facultySelect } from "mock-data/Teacher/ManageQuestion";
 import { initialValues, validationSchema } from "./Form";
 import { useSession } from "next-auth/react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+
 import {
   addQuestion,
+  editQuestion,
   getCategories,
   getFolders,
   getQuestionCountId,
 } from "providers/Teacher_Questions/api";
 import { setAuthenticationHeader } from "services";
 import { useRegisterDetail } from "providers/Auth";
-import { formatArrayOfObjectsForFormData } from "utils";
+import {
+  formatArrayOfObjectsForFormData,
+  formatOptions,
+  isStringNotURL,
+} from "utils";
 import { useAuthContext } from "contexts/AuthContext";
+import { useQuestionDetails } from "providers/Teacher_Questions";
 
 const TYPE_OPTIONS = [
   { value: "SA", label: "SA" },
@@ -69,15 +77,17 @@ const STATUS = {
   DRAFT: "DRAFT",
 };
 
-const AddQuestion = () => {
+interface QuestionProps {
+  qId?: unknown;
+}
+
+const AddQuestion = ({ qId }: QuestionProps) => {
+  const questionDetails = useQuestionDetails({
+    questionId: qId,
+  });
   let { data: currentUser } = useSession();
   setAuthenticationHeader(currentUser?.accessToken);
   let userDetails = useRegisterDetail(currentUser?.accessToken);
-  // let { currentUser: userDetails } = useAuthContext();
-  // console.log(
-  //   "🚀 ~ file: index.tsx:77 ~ AddQuestion ~ userDetails:",
-  //   userDetails,
-  // );
 
   const foldersData = useQuery(["FOLDERS"], getFolders);
   const categoriesData = useQuery(["CATEGORIES"], getCategories);
@@ -110,6 +120,16 @@ const AddQuestion = () => {
   const authorNamePlaceholder = useFormattedMessage(messages.authorName);
   const [content, setContent] = useState("");
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
+
+  const mutation = useMutation({
+    mutationFn: (payload) => {
+      return editQuestion(payload);
+    },
+    onError: () => {},
+    onSuccess: () => {
+      client.invalidateQueries(["TEACHER_QUESTIONS_LISTINGS"]);
+    },
+  });
 
   const handleSelectChange = (e: any) => {
     const selectedValue = e.label;
@@ -178,10 +198,10 @@ const AddQuestion = () => {
         value: item.inputText,
       };
     });
-    let formattedCategoryIds = selectedfacultyCategoryIds.map(
-      (item) => item.value,
+    let formattedCategoryIds = selectedfacultyCategoryIds.map((item) =>
+      Number(item.value),
     );
-
+    // formdata.append("tries", "3");
     formdata.append("folderId", selectedFolder.value);
     formdata.append("timelimit", timelimit);
     formdata.append("detail", detail);
@@ -189,15 +209,19 @@ const AddQuestion = () => {
     formdata.append("isPublic", isPublic);
     formdata.append("title", title);
     formdata.append("categoryId", selectedCategory.value);
-    formdata.append("facultyIds", formattedCategoryIds);
-    // formdata.append("tries", "3");
+    formdata.append("facultyId", formattedCategoryIds);
     formdata.append("type", enumType.value);
     formdata.append("answer", `${correctAnswer.join(",")}`);
     formatArrayOfObjectsForFormData("option", formatedOptions, formdata);
+    if (media) {
+      formdata.append("img", media);
+    }
 
-    // formdata.append("img", media);
-    // return;
-    await addQuestion(formdata);
+    if (qId) {
+      mutation.mutate({ formdata, qId });
+    } else {
+      await addQuestion(formdata);
+    }
   };
 
   useEffect(() => {
@@ -206,6 +230,41 @@ const AddQuestion = () => {
     );
     setQuestionId(questionCountData.data?.count + 1);
   }, [userDetails, questionCountData]);
+
+  useEffect(() => {
+    if (qId && questionDetails.data) {
+      const details = questionDetails.data;
+
+      if (details.media) {
+        let url = "";
+        if (!isStringNotURL(details.media)) {
+          return;
+        }
+        url = `${process.env.NEXT_PUBLIC_IMAGE_URL}${details.media}`;
+        setMedia(url);
+      }
+
+      setStatus(details?.status);
+      setTitle(details?.title);
+      setQuestionId(details?.id);
+      setEnumType({ label: details?.type, value: details?.type });
+      setIsPublic(details.isPublic);
+      setTimelimit(details.timelimit);
+      setSelectedFolder({
+        label: details?.folders.name,
+        value: details?.folders.id,
+      });
+      setSelectedCategory({
+        label: details?.categories.name,
+        value: details?.categories.id,
+      });
+      setSelectedFacultyCategoryIds([
+        { label: details?.categories.name, value: details?.categories.id },
+      ]);
+      setDetail(details.detail);
+      setAnswerOptions(formatOptions(details?.option, details?.answer));
+    }
+  }, [questionDetails.data, qId]);
 
   return (
     <>
@@ -288,6 +347,7 @@ const AddQuestion = () => {
                 borderTop: "1px solid #EAEAEA",
               }}
             >
+              {/* Title */}
               <Box sx={{ display: "flex", width: "100%" }}>
                 <FieldBoxWrapper
                   sx={{
@@ -459,7 +519,7 @@ const AddQuestion = () => {
                       placeholder={folderPlaceholder}
                       controlText={folder}
                       dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-                      options={foldersData?.data?.map((folder) => ({
+                      options={foldersData?.data?.data?.map((folder) => ({
                         label: folder.name,
                         value: folder.id,
                       }))}
@@ -493,7 +553,7 @@ const AddQuestion = () => {
                       placeholder={categoryPlaceholder}
                       controlText={category}
                       dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-                      options={categoriesData?.data?.map((category) => ({
+                      options={categoriesData?.data?.data?.map((category) => ({
                         label: category.name,
                         value: category.id,
                       }))}
@@ -528,7 +588,7 @@ const AddQuestion = () => {
                       placeholder={facultyPlaceholder}
                       controlText={faculty}
                       dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-                      options={categoriesData?.data?.map((category) => ({
+                      options={categoriesData?.data?.data?.map((category) => ({
                         label: category.name,
                         value: category.id,
                       }))}
@@ -586,22 +646,25 @@ const AddQuestion = () => {
               }}
             >
               <TinyMCEEditor
-                initialValue={detail}
+                value={detail}
                 onChange={(val) => setDetail(val)}
               />
             </BoxWrapper>
             {/* Upload Image */}
             <Box>
-              <ImageSection
+              <ImagePreview
+                src={media}
                 onImageUpload={(uploadedImage) => {
-                  console.log(uploadedImage);
                   setMedia(uploadedImage);
                 }}
               />
             </Box>
+            {/* Answers  */}
             <BoxWrapper sx={{ p: "20px" }}>
               <AnswerOptions
+                isEdit={qId}
                 onChange={(options) => setAnswerOptions(options)}
+                options={answerOptions}
               />
             </BoxWrapper>
           </Box>

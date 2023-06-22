@@ -56,7 +56,7 @@ export const getFaculties = async () => {
 };
 
 export const addQuestion = async (payload: any) => {
-  return service({
+  return await service({
     method: "POST",
     url: TEACHER__ADD_QUESTION,
     body: payload,
@@ -71,10 +71,12 @@ export const getFolders = async () => {
   });
 };
 
-export const editQuestion = async () => {
-  return await service({
-    url: TEACHER__EDIT_QUESTIONS,
+export const editQuestion = (payload: any) => {
+  return service({
+    url: `/questions/${payload.qId}`,
     method: "PATCH",
+    body: payload.formdata,
+    formData: true,
   });
 };
 

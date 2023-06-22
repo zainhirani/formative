@@ -1,3 +1,4 @@
+// @ts-nocheck
 export function timeFormatter(time: any) {
     const newTime = time.split(".");
     return new Date(newTime[0]);
@@ -33,5 +34,32 @@ export const  isStringNotURL = (str: string): any=>  {
   const isNotURL: RegExp = /^(?!(?:https?:\/\/|www\.)[^\s.]+\.[^\s]{2,})/;
 
   return isNotURL.test(str);
+}
+
+
+export  const formatOptions = (options, answer)=>  {
+  // Parse the options and answer strings into objects and arrays
+  const parsedOptions = JSON.parse(options);
+  const parsedAnswer = JSON.parse(answer);
+
+  // Create an array to store the formatted options
+  const formattedOptions = [];
+
+  // Iterate through each option
+  parsedOptions.forEach((option, index) => {
+    console.log("🚀 ~ file: index.ts:50 ~ parsedOptions.forEach ~ option:", option)
+    // Create an object for the formatted option
+    const formattedOption = {
+      correct: parsedAnswer.includes(option.key),
+      id: (index + 1).toString(),
+      inputText: option.value,
+      locked: false,
+      text: "Option " + option.key,
+    };
+    // Add the formatted option to the array
+    formattedOptions.push(formattedOption);
+  });
+
+  return formattedOptions;
 }
 

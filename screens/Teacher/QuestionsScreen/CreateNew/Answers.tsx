@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useEffect } from "react";
 import { Delete } from "@mui/icons-material";
 import {
@@ -17,6 +18,7 @@ import messages from "./messages";
 
 interface AnswerOptionsProps {
   onChange: () => void;
+  isEdit?: any;
 }
 interface ListItemData {
   id: string;
@@ -24,6 +26,7 @@ interface ListItemData {
   correct: boolean;
   locked: boolean;
   inputText: string;
+  options?: any;
 }
 
 const initialItems: ListItemData[] = [
@@ -31,13 +34,19 @@ const initialItems: ListItemData[] = [
 ];
 
 const AnswerOptions = (props: AnswerOptionsProps) => {
-  let { onChange = () => {} } = props;
+  let { onChange = () => {}, options, isEdit } = props;
   const [items, setItems] = useState<ListItemData[]>(initialItems);
   const [counter, setCounter] = useState(initialItems.length + 1);
 
   useEffect(() => {
     onChange(items);
   }, [items]);
+
+  useEffect(() => {
+    if (options.length && isEdit) {
+      setItems(options);
+    }
+  }, [options]);
 
   const getNextOptionText = () => {
     const lastOption = items[items.length - 1];

@@ -17,7 +17,6 @@ import ImagePreviewModal from "components/ImagePreviewModal";
 import ViewQuestion from "./ViewQuestion";
 import { useRouter } from "next/router";
 import APP_ROUTES from "constants/RouteConstants";
-
 import { duplicateQuestion } from "providers/Teacher_Questions/api";
 import { useMutation, useQueryClient } from "react-query";
 
@@ -142,7 +141,17 @@ const Listing: React.FC = ({
                 <Image alt="view" src={viewSvg} width={15} height={15} />
               </IconButton>
               <IconButton>
-                <Image alt="edit" src={editSvg} width={15} height={15} />
+                <Image
+                  alt="edit"
+                  src={editSvg}
+                  width={15}
+                  height={15}
+                  onClick={() =>
+                    router.push(
+                      `${APP_ROUTES.QUESTIONS_EDIT_QUESTIONS}/${data.row.id}`,
+                    )
+                  }
+                />
               </IconButton>
               <IconButton onClick={() => mutation.mutate(data.row.id)}>
                 <Image alt="copy" src={copySvg} width={15} height={15} />
