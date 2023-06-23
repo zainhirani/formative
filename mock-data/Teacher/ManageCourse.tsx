@@ -77,11 +77,10 @@ export const columnsManageCourse = [
     flex: 1,
     renderCell: (params: any) => {
       return params.value?.map((item: any) =>
-        item.programs?.concat("-", item.clas, ";"),
+        item.programs
+          ? item.programs?.concat("-", item.clas, ";")
+          : item.clas.concat(";"),
       );
-      // .slice(2, -2)
-      // .replaceAll(/[""]/g, "")
-      // .toUpperCase()
     },
   },
 ];

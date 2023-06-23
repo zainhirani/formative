@@ -58,7 +58,7 @@ const ManageCourseScreen = () => {
     {
       courseId: selectedRowId,
       programs: selectedAudience,
-      clas: selectedClass.toString(),
+      clas: selectedClass?.toString(),
     },
   ];
 
