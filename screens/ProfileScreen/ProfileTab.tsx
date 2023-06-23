@@ -94,8 +94,10 @@ export const ProfileTab = ({}) => {
   const [math, setMath] = useState("Select an option for the list");
   const [dobValue, setDobValue] = useState(null);
   const athleteArray = [];
-  const athleteSeperatedArray = profileDetail.data?.athlete.split(", ");
-  athleteArray.push(...athleteSeperatedArray);
+  const athleteSeperatedArray = profileDetail.data?.athlete?.split(", ");
+  if (athleteSeperatedArray) {
+    athleteArray.push(...athleteSeperatedArray);
+  }
   const [checkedValues, setCheckedValues] = useState(athleteArray);
   const [experience, setExperience] = useState(profileDetail.data?.experience);
   const profile = useProfile();
@@ -733,10 +735,7 @@ export const ProfileTab = ({}) => {
             type="submit"
             loading={profile.isLoading}
             loadingPosition="start"
-            disabled={
-              values.currentPassword.length < 6 ||
-              isEqual(values, initialValues)
-            }
+            disabled={isEqual(values, initialValues)}
             sx={{
               width: { xs: "100%", md: "max-content" },
               ".MuiLoadingButton-loadingIndicator": {
