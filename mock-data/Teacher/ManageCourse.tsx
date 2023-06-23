@@ -78,8 +78,10 @@ export const columnsManageCourse = [
     renderCell: (params: any) => {
       return params.value?.map((item: any) =>
         item.programs
-          ? item.programs?.concat("-", item.clas, ";")
-          : item.clas.concat(";"),
+          ? item.programs?.concat(item.clas ? "-" + item.clas : "", ";")
+          : item.clas
+          ? item.clas?.concat(";")
+          : undefined,
       );
     },
   },
