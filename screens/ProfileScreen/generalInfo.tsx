@@ -551,10 +551,7 @@ export const GeneralInfo = () => {
             type="submit"
             loading={registerUpdate.isLoading}
             loadingPosition="start"
-            disabled={
-              values.currentPassword.length < 6 ||
-              isEqual(values, initialValues)
-            }
+            disabled={isEqual(values, initialValues)}
             sx={{
               background: (theme) => theme.palette.secondary.main,
               width: { xs: "100%", md: "max-content" },
