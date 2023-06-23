@@ -53,30 +53,35 @@ const TableSection = (props: any) => {
     program,
     yearOfGraduation,
     setUserId,
-    isCheckbox
+    isCheckbox,
+    checkedId,
+    handleSelection,
+    studentData,
+    loading,
+    totalCount,
+    page,
+    handlePageChange,
+    getRowId,
   } = props;
-  const [page, setPage] = useState(1);
-  const studentListing = useStudentListing({
-    yop: yearOfGraduation,
-    program: program,
-    Limit: LIMIT,
-    Page: page,
-  });
-
   return (
     <BoxWrapper>
       <CustomDataGrid
-        rows={studentListing?.data?.data || []}
+        rows={studentData}
+        //@ts-ignore
+        getRowId={getRowId}
         columns={columnsManageStudent}
         pageSizeData={10}
         type={"1"}
         isCheckbox={isCheckbox}
         setChecked={setChecked}
-        loading={studentListing.isFetching}
+        // loading={studentListing.isFetching}
+        loading={loading}
         getSelectedId={(e) => setUserId(e?.[0])}
         page={page}
-        handlePageChange={(_, v) => setPage(v)}
-        totalRows={studentListing?.data?.count}
+        selectedIds={checkedId}
+        onRowSelect={handleSelection}
+        handlePageChange={handlePageChange}
+        totalRows={totalCount}
       />
     </BoxWrapper>
   );

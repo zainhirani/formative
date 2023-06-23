@@ -12,11 +12,13 @@ import { useStudentEnroll } from "providers/teacher/student";
 import { year_of_graduation, programs } from "constants/index";
 import CloseIcon from "@mui/icons-material/Close";
 // import { debounce } from "lodash";
+import { useQueryClient } from "react-query";
 
 import messages from "./messages";
 import { BoxWrapper, ButtonWrapper, TextFieldStyled } from "./Styled";
 
 const SearchSection = (props: any) => {
+  const queryClient = useQueryClient();
   const [selected, setSelected] = useState("");
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const {
@@ -68,7 +70,8 @@ const SearchSection = (props: any) => {
   useEffect(() => {
     if (enrollStudent?.isSuccess) {
       enqueueSnackbar(
-        `Checked students are now enrolled in ${selected.label}`,
+        //@ts-ignore
+        `Checked students are now enrolled in ${selected?.label}`,
         {
           variant: "success",
           autoHideDuration: 3000,
@@ -81,10 +84,10 @@ const SearchSection = (props: any) => {
           ),
         },
       );
+      queryClient.invalidateQueries("Courses");
     }
   }, [enrollStudent?.isSuccess]);
-  console.log(enrollStudent?.isSuccess,"isSuccess")
-
+  console.log(enrollStudent?.isSuccess, "isSuccess");
 
   useEffect(() => {
     if (enrollStudent?.isError) {
@@ -107,13 +110,17 @@ const SearchSection = (props: any) => {
   };
 
   return (
-    <BoxWrapper display="grid" gridTemplateColumns="repeat(12, 1fr)">
+    <BoxWrapper
+      sx={{ display: { md: "grid", xs: "block" }, p: { md: 0, xs: "20px" } }}
+      gridTemplateColumns="repeat(12, 1fr)"
+    >
       <Box gridColumn="span 3">
         <TextFieldStyled
           placeholder={searchCourse}
           variant="outlined"
           value={selectedCourse?.label || null}
           onChange={onInputChange}
+          //@ts-ignore
           disabled={selected?.value != 1001101}
         />
       </Box>
