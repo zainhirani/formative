@@ -14,6 +14,7 @@ import { Grid, IconButton, Box } from "@mui/material";
 import Image from "next/image";
 import {
   useDeleteQuestion,
+  useDuplicateQuestion,
   useQuestionsListing,
 } from "providers/Teacher_Questions";
 import { isStringNotURL, removeHTMLTags } from "utils";
@@ -21,8 +22,7 @@ import ImagePreviewModal from "components/ImagePreviewModal";
 import ViewQuestion from "./ViewQuestion";
 import { useRouter } from "next/router";
 import APP_ROUTES from "constants/RouteConstants";
-import { duplicateQuestion } from "providers/Teacher_Questions/api";
-import { useMutation, useQueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { LIMIT } from "configs";
 
 interface ListingProp {
@@ -54,15 +54,8 @@ const Listing: React.FC = ({
   let [image, setImage] = useState<string>("");
   const [questionId, setQuestionId] = useState<string | undefined>(undefined);
   const [questiondrawer, setQuestionDrawer] = useState(false);
-  const mutation = useMutation({
-    mutationFn: (id) => {
-      return duplicateQuestion(id);
-    },
-    onError: () => {},
-    onSuccess: () => {
-      client.invalidateQueries(["TEACHER_QUESTIONS_LISTINGS"]);
-    },
-  });
+
+  const duplicateQuestionMutation = useDuplicateQuestion();
 
   const handleSetImage = (imageName: string) => {
     let url = "";
@@ -96,7 +89,7 @@ const Listing: React.FC = ({
       flex: 1,
     },
     {
-      field: "diff",
+      field: "difficulty",
       headerName: "Difficulty",
       minWidth: 150,
       flex: 1,
@@ -162,7 +155,9 @@ const Listing: React.FC = ({
                   }
                 />
               </IconButton>
-              <IconButton onClick={() => mutation.mutate(data.row.id)}>
+              <IconButton
+                onClick={() => duplicateQuestionMutation.mutate(data.row.id)}
+              >
                 <Image alt="copy" src={copySvg} width={15} height={15} />
               </IconButton>
               <IconButton>
@@ -209,7 +204,7 @@ const Listing: React.FC = ({
         buttonArray={FOOTER_CONFIG}
         loading={
           questions?.isFetching ||
-          mutation.isLoading ||
+          duplicateQuestionMutation.isLoading ||
           deleteMutation.isLoading
         }
       />
