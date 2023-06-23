@@ -29,12 +29,12 @@ const SearchBar = (props: any) => {
   const [targetClass, setTargetClass] = useState(1990);
 
   const handleSelectAudienceChange = (selectedOption: any) => {
-    setTargetCourse(selectedOption.label);
-    setSelectedAudience(selectedOption.value);
+    setTargetCourse(selectedOption?.label);
+    setSelectedAudience(selectedOption?.label);
   };
   const handleSelectClassChange = (selectedOption: any) => {
-    setSelectedClass(selectedOption.label);
-    setTargetClass(selectedOption.value);
+    setSelectedClass(selectedOption?.label);
+    setTargetClass(selectedOption?.value);
   };
 
   const debouncedSearch = debounce((criteria) => {
