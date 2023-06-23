@@ -21,7 +21,7 @@ export namespace Student {
     Limit?:number,
     Page?:number
   };
-  export type ListingResponse = [Item]
+  export type ListingResponse = {data:Item[],count:number}
   export interface ListingAPIPayload extends ListingProps {}
 
 
@@ -31,7 +31,7 @@ export namespace Student {
    data:boolean
   }
   export type EnrollMutationPayload = {
-    courseId:string
+    courseName:string
     userIds:string[]
   }
   export interface EnrollAPIPayload extends EnrollProps {
