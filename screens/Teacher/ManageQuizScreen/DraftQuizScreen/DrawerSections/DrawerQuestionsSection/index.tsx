@@ -32,18 +32,41 @@ import messages from "./messages";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { TextFieldStyled } from "../../Styled";
 import { Search } from "@mui/icons-material";
+import { useRouter } from "next/router";
+import APP_ROUTES from "constants/RouteConstants";
+import { isStringNotURL, removeHTMLTags } from "utils";
+import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
+import { useQuestionsListing } from "providers/Teacher_Questions";
 
 const DrawerQuestionsSection = (props: any) => {
-  const { drawerOpen, setDrawerOpen } = props;
+  const {
+    drawerOpen,
+    setDrawerOpen,
+    setSelectedQuestions,
+    selectedQuestions,
+    COLUMNS_CONFIG,
+  } = props;
+  const [folder, setFolder] = useState("");
+  const [facultyCategory, setFacultyCategory] = useState("");
+  const [enumType, setEnumType] = useState("");
+  const [category, setCategory] = useState("");
 
+  const router = useRouter();
+  let questions = useQuestionsListing({
+    ...(facultyCategory?.length > 0 && { facultyId: facultyCategory }),
+    ...(folder && { folderId: folder }),
+    ...(enumType && { type: enumType }),
+    ...(category && { categories: category }),
+  });
   const { enqueueSnackbar } = useSnackbar();
-  const faculty = useFormattedMessage(messages.faculty);
+  const faculty_name = useFormattedMessage(messages.faculty);
   const facultyPlaceholder = useFormattedMessage(messages.facultyPlaceholder);
-  const folder = useFormattedMessage(messages.folder);
+  const folder_name = useFormattedMessage(messages.folder);
   const folderPlaceholder = useFormattedMessage(messages.folderPlaceholder);
-  const type = useFormattedMessage(messages.type);
+  const type_name = useFormattedMessage(messages.type);
   const typePlaceholder = useFormattedMessage(messages.typePlaceholder);
-  const category = useFormattedMessage(messages.category);
+  const category_name = useFormattedMessage(messages.category);
   const categoryPlaceholder = useFormattedMessage(messages.categoryPlaceholder);
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
   const [open, setOpen] = useState(false);
@@ -58,6 +81,10 @@ const DrawerQuestionsSection = (props: any) => {
     setSelectedValues(selectedValues.filter((v) => v !== value));
   };
 
+  const handleDrawerCloseQuestion = () => {
+    setDrawerOpen(false);
+  };
+
   const config = [
     {
       key: "createNew",
@@ -70,18 +97,18 @@ const DrawerQuestionsSection = (props: any) => {
           </Box>
         );
       },
-      onClick: () => {},
+      onClick: () => {
+        router.push(APP_ROUTES.QUESTIONS_CREATE_NEW);
+      },
     },
   ];
-  const handleDrawerCloseQuestion = () => {
-    setDrawerOpen(false);
-  };
   return (
     <>
       <SideDrawer
-        title="Add Questions Test"
+        title="Add Questions"
         open={drawerOpen}
         onClose={handleDrawerCloseQuestion}
+        isHelp={true}
       >
         <Box>
           <TextFieldStyled
@@ -103,7 +130,7 @@ const DrawerQuestionsSection = (props: any) => {
               <SelectBoxWrapper>
                 <CustomSelect
                   placeholder={facultyPlaceholder}
-                  controlText={faculty}
+                  controlText={faculty_name}
                   dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
                   options={facultySelect}
                 />
@@ -111,7 +138,7 @@ const DrawerQuestionsSection = (props: any) => {
               <SelectBoxWrapper>
                 <CustomSelect
                   placeholder={folderPlaceholder}
-                  controlText={folder}
+                  controlText={folder_name}
                   dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
                   options={folderSelect}
                 />
@@ -119,17 +146,17 @@ const DrawerQuestionsSection = (props: any) => {
               <SelectBoxWrapper>
                 <CustomSelect
                   placeholder={typePlaceholder}
-                  controlText={type}
+                  controlText={type_name}
                   dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
                   options={typeSelect}
                 />
               </SelectBoxWrapper>
             </Box>
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              <SelectBoxWrapper sx={{ width: "48.5%" }}>
+              <SelectBoxWrapper sx={{ width: "48.5%", zIndex: "1" }}>
                 <CustomSelect
                   placeholder={categoryPlaceholder}
-                  controlText={category}
+                  controlText={category_name}
                   dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
                   options={categorySelect}
                   onChange={handleSelectChange}
@@ -165,11 +192,19 @@ const DrawerQuestionsSection = (props: any) => {
           </BoxWrapper>
           <BoxWrapper sx={{ m: "20px", width: "inherit" }}>
             <CustomDataGrid
-              rows={rowsManageQuestion}
-              columns={columnsManageQuestion}
-              pageSizeData={pageSizeManageQuestion}
+              // rows={rowsManageQuestion}
+              // columns={COLUMNS_CONFIG}
+              // pageSizeData={pageSizeManageQuestion}
+              // type={"1"}
+
+              rows={questions?.data?.data}
+              columns={COLUMNS_CONFIG}
+              totalRows={questions?.data?.data?.length || 0}
+              pageSizeData={10}
               type={"1"}
               buttonArray={config}
+              // buttonArray={FOOTER_CONFIG}
+              loading={questions?.isFetching}
             />
           </BoxWrapper>
         </Box>
@@ -178,4 +213,4 @@ const DrawerQuestionsSection = (props: any) => {
   );
 };
 
-export default DrawerQuestionsSection;
+export default React.memo(DrawerQuestionsSection);

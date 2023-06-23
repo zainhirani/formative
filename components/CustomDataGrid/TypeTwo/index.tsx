@@ -48,7 +48,7 @@ const TypeTwo: React.FC<TypeTwoProps> = ({
 
             <Grid item xs={3}>
               <Showed>
-                Showing {rows.length} of {rows.length}
+                Showing {rows?.length} of {rows?.length}
               </Showed>
             </Grid>
             <Grid item xs={9} className="table_row_btn">

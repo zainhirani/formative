@@ -94,7 +94,7 @@ const Filters: React.FC<FilterProps> = ({
             placeholder={folderPlaceholder}
             controlText={folder}
             dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-            options={foldersData?.data?.map((folder: any) => ({
+            options={foldersData?.data?.data?.map((folder: any) => ({
               label: folder.name,
               value: folder.id,
             }))}

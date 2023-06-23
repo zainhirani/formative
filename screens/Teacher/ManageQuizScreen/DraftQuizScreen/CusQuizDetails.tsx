@@ -28,6 +28,7 @@ import {
   useScoringListing,
 } from "providers/Teacher/TeacherQuiz";
 import { useRouter } from "next/router";
+import { useQueryClient } from "react-query";
 
 interface MyData {
   dynamicData: object;
@@ -41,36 +42,55 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const CusQuizDetails = (props: any) => {
-  const { handleChange, setFieldValue, values } = props;
+  const {
+    handleChange,
+    setFieldValue,
+    values,
+    quizByIdData,
+    quizByIdIsFetching,
+  } = props;
   const router = useRouter();
   const { id: quizEditId } = router.query;
+  const editPage = quizEditId == undefined ? false : true;
   const scoringList = useScoringListing();
   const [scoringId, setScoringId] = useState(null);
+  const [isScoringId, setIsScoringId] = useState<Boolean>(false);
   const {
     isLoading,
     data: scoringByIdData,
     refetch,
-  } = useScoringByID(scoringId);
+  } = useScoringByID(scoringId, isScoringId);
   const data = scoringByIdData?.dynamicData;
-  // console.log(values, "values");
+  const queryClient = useQueryClient();
 
   // Edit Page
-  // useEffect(() => {
-  // if (quizEditId) {
-  // console.log("useEffect");
 
-  // var updatedId = values.scoringId.value;
-  // setScoringId(updatedId);
-  // refetch(updatedId);
-  // }
-  // }, [quizEditId, values.scoringId.value]);
-  // Edit Page
+  useEffect(() => {
+    if (!editPage) {
+      queryClient.invalidateQueries("QUERY_KEYS.SCORING_LISTING_ID");
+    }
+  }, [!editPage]);
+
+  useEffect(() => {
+    if (quizByIdData?.scoringId) {
+      setScoringId(quizByIdData?.scoringId);
+    }
+  }, [quizByIdIsFetching]);
+
+  useEffect(() => {
+    if (scoringId == null) {
+      setIsScoringId(false);
+    } else {
+      refetch(scoringId);
+    }
+  }, [scoringId]);
 
   useEffect(() => {
     if (scoringId) {
       refetch(scoringId);
     }
-  }, [scoringId]);
+  }, [isScoringId]);
+  // Edit Page
 
   const optionsScoring = useMemo(() => {
     return scoringList?.data?.map((item: any) => ({
@@ -87,6 +107,8 @@ const CusQuizDetails = (props: any) => {
     setScoringId(e?.value);
     setFieldValue("scoringId", obj);
   };
+
+  console.log(values?.reviewable, "values?.reviewable");
 
   return (
     <BoxWrapper>

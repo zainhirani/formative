@@ -187,5 +187,39 @@ export namespace Quiz {
     studentsId: QuizDistributeMutationPayload
   }
 
+
+  
+
+  //Quiz Save
+  export type QuizSaveProps = {
+    name: string|undefined,
+    reviewable: boolean|undefined,
+    courseId: number|undefined,
+    folderId: number|undefined,
+    timeLimitPerSec: number|undefined,
+    status: string|undefined,
+    scoringId: number|undefined,
+    start_time: string|undefined,
+    end_time: string|undefined,
+    questionsId: number|undefined,
+  };
+  export type QuizSaveResponse = {
+    message?: string | undefined;
+  }
+  export type QuizSaveMutationPayload = []
+  export interface QuizSaveAPIPayload extends QuizSaveProps {
+    studentsId: QuizSaveMutationPayload
+  }
+
+  //Quiz Save Edit
+  export type QuizSaveEditProps = {};
+  export type QuizSaveEditResponse = {
+    message?: string | undefined;
+  }
+  export type QuizSaveEditMutationPayload = []
+  export interface QuizSaveEditAPIPayload extends QuizSaveEditProps {
+    quizId: QuizSaveEditMutationPayload
+  }
+
 }
 

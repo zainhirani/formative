@@ -34,7 +34,15 @@ export const BoxWrapper = styled(MuiBox)<BoxProps>(
       margin: "20px",
       borderRadius: "6px",
       border: "1px solid",
-      borderColor: theme?.additionalColors?.primaryBorderGrey
+      borderColor: theme?.additionalColors?.primaryBorderGrey,
+      ".MuiDataGrid-cellCheckbox,.MuiDataGrid-columnHeaderCheckbox": {
+        display: 'none !important',
+        width: "0px",
+        maxWidth: "0px",
+      },
+      ".custom-checkbox-selection":{
+        padding: "0px 0px 0px 10px !important"
+      }
     } as any),
 ) as (props: BoxProps) => JSX.Element;
 

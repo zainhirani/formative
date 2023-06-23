@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Button, ButtonGroup } from "@mui/material";
 import LocalPrintshopOutlinedIcon from "@mui/icons-material/LocalPrintshopOutlined";
 import CachedIcon from "@mui/icons-material/Cached";
@@ -28,69 +28,98 @@ import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOu
 import { useRouter } from "next/router";
 import { enqueueSnackbar } from "notistack";
 import dayjs from "dayjs";
+import { useQuizSave, useQuizSaveEdit } from "providers/Teacher/TeacherQuiz";
+import APP_ROUTES from "constants/RouteConstants";
 
 const TableSection = (props: any) => {
-  const { handleChange, setFieldValue, values, quizByIdData } = props;
+  const {
+    handleChange,
+    setFieldValue,
+    values,
+    quizByIdData,
+    selectedQuestions,
+    setSelectedQuestions,
+    COLUMNS_CONFIG,
+  } = props;
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [drawerOpenStudents, setDrawerOpenStudents] = useState(false);
   const [afterDatevalue, setAfterDatevalue] = useState(null);
   const [beforeDatevalue, setBeforeDatevalue] = useState(null);
   const router = useRouter();
-
   const { id: editId } = router.query;
+  const editPage = editId == undefined ? false : true;
+  const quizSave = useQuizSave({});
+  const quizSaveEdit = useQuizSaveEdit({});
 
-  const config: ButtonConfig[] = [
-    {
-      key: "addStudents",
-      startIcon: <ArrowCircleRightOutlinedIcon />,
-      render: () => {
-        return <Box>Add Students</Box>;
-      },
-      onClick: () => {
-        setDrawerOpenStudents(true);
-      },
-    },
-    {
-      key: "save",
-      startIcon: <ArrowCircleRightOutlinedIcon />,
-      render: () => {
-        return <Button type="submit">Save</Button>;
-      },
-      onClick: () => {
-        // console.log("Save");
-      },
-    },
-    {
-      key: "duplicate",
-      startIcon: <ArrowCircleRightOutlinedIcon />,
-      render: () => {
-        return <Box>Duplicate</Box>;
-      },
-      onClick: () => {
-        // console.log("Duplicate");
-      },
-    },
-    {
-      key: "withdraw",
-      startIcon: <ArrowCircleRightOutlinedIcon />,
-      render: () => {
-        return <Box>Withdraw</Box>;
-      },
-      onClick: () => {
-        // console.log("Withdraw");
-      },
-    },
-    {
-      key: "delete",
-      startIcon: <ArrowCircleRightOutlinedIcon />,
-      render: () => {
-        return <Box>Delete</Box>;
-      },
-      onClick: () => {
-        // console.log("Delete");
-      },
-    },
-  ];
+  useEffect(() => {
+    if (quizSave.isSuccess) {
+      router.push(APP_ROUTES.MANAGE_QUIZ);
+    }
+  }, [quizSave.isSuccess]);
+
+  // Save Payload
+  function extractIds(arr: any) {
+    var ids = [];
+    for (var i = 0; i < arr.length; i++) {
+      ids.push(arr[i].id);
+    }
+    return ids;
+  }
+
+  const name = values?.name;
+  const reviewable = values?.reviewable;
+  const courseIdForm = values?.courseId?.value;
+  const folderIdForm = values?.folderId?.value;
+  const timeLimitPerSec = values?.timeLimitPerSec;
+  const statusForm = values?.status?.value;
+  const scoringIdForm = values?.scoringId?.value;
+  const start_time_save = values?.start_time;
+  const end_time_save = values?.end_time;
+  const questionIds = extractIds(selectedQuestions);
+
+  const saveObject: any = {
+    name: name,
+    reviewable: reviewable,
+    courseId: courseIdForm,
+    folderId: folderIdForm,
+    timeLimitPerSec: timeLimitPerSec,
+    status: statusForm,
+    scoringId: scoringIdForm,
+    start_time: start_time_save,
+    end_time: end_time_save,
+    questionsId: questionIds,
+  };
+  console.log(saveObject, "saveObject");
+
+  const handelSaveQuiz = (e: any) => {
+    if (
+      !saveObject?.name &&
+      !saveObject?.reviewable &&
+      !saveObject?.courseId &&
+      !saveObject?.folderId &&
+      !saveObject?.timeLimitPerSec &&
+      !saveObject?.scoringId &&
+      !saveObject?.status &&
+      !saveObject?.start_time &&
+      !saveObject?.end_time &&
+      !saveObject?.questionsId
+      // !questionIds
+    ) {
+      enqueueSnackbar(`Please fill the fields`, {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
+    } else {
+      if (!editPage) {
+        quizSave.mutate(saveObject);
+      } else {
+        const quizId = quizByIdData?.id;
+        const newData: any = { saveObject, quizId };
+        quizSaveEdit.mutate(newData);
+      }
+    }
+  };
+  // Save Payload
   const configManageQuiz = [
     {
       key: "print",
@@ -98,9 +127,7 @@ const TableSection = (props: any) => {
       render: () => {
         return <Box>Print</Box>;
       },
-      onClick: () => {
-        // console.log("Print");
-      },
+      onClick: () => {},
     },
     {
       key: "refresh",
@@ -134,16 +161,27 @@ const TableSection = (props: any) => {
     } else {
       enqueueSnackbar("You must save first", {
         variant: "error",
+        autoHideDuration: 3000,
       });
     }
   };
 
-  // console.log(quizByIdData?.start_time, "table section component is re-render");
+  const startDateHandler = (date: any) => {
+    const formattedDate = date.toISOString();
+    setFieldValue("start_time", formattedDate);
+    setBeforeDatevalue(formattedDate);
+  };
+  const endDateHandler = (date: any) => {
+    const formattedDate = date.toISOString();
+    setFieldValue("end_time", formattedDate);
+    setAfterDatevalue(formattedDate);
+  };
+
   return (
     <>
       <BoxWrapper>
         <CustomDataGrid
-          rows={rowsManageQuizDraft}
+          rows={selectedQuestions}
           columns={columnsManageQuizDraft}
           pageSizeData={pageSizeManageQuizDraft}
           type={"2"}
@@ -156,13 +194,13 @@ const TableSection = (props: any) => {
         <Box sx={{ display: "flex" }}>
           <CustomeDateTimePicker
             label="Start Time"
-            value={editId ? dayjs(`${quizByIdData?.start_time}`) : ""}
-            onChange={setBeforeDatevalue}
+            value={editId ? dayjs(`${quizByIdData?.start_time}`) : null}
+            onChange={startDateHandler}
           />
           <CustomeDateTimePicker
             label="Stop Time:"
-            value={dayjs(`${quizByIdData?.end_time}`)}
-            onChange={setAfterDatevalue}
+            value={editId ? dayjs(`${quizByIdData?.end_time}`) : null}
+            onChange={endDateHandler}
           />
         </Box>
         <QuizGroupButtonBox>
@@ -182,31 +220,38 @@ const TableSection = (props: any) => {
               type="submit"
               startIcon={<SaveOutlinedIcon />}
               className="btn"
-              onClick={() => {}}
+              onClick={handelSaveQuiz}
             >
               Save
             </ButtonWrapper>
-            <ButtonWrapper
-              startIcon={<DifferenceOutlinedIcon />}
-              className="btn"
-            >
-              Duplicate
-            </ButtonWrapper>
+            {editId ? (
+              <ButtonWrapper
+                startIcon={<DifferenceOutlinedIcon />}
+                className="btn"
+              >
+                Duplicate
+              </ButtonWrapper>
+            ) : (
+              ""
+            )}
             <ButtonWrapper
               startIcon={<ArrowCircleLeftOutlinedIcon />}
               className="btn"
             >
               Withdraw
             </ButtonWrapper>
-            <ButtonWrapper
-              startIcon={<DeleteOutlineOutlinedIcon />}
-              className="btn"
-            >
-              Delete
-            </ButtonWrapper>
+            {editId ? (
+              <ButtonWrapper
+                startIcon={<DeleteOutlineOutlinedIcon />}
+                className="btn"
+              >
+                Delete
+              </ButtonWrapper>
+            ) : (
+              ""
+            )}
           </ButtonGroup>
         </QuizGroupButtonBox>
-        {/* <GroupedButton config={config} /> */}
       </BoxButtonWrapper>
 
       <SideDrawer
@@ -220,6 +265,9 @@ const TableSection = (props: any) => {
       <DrawerQuestionsSection
         drawerOpen={drawerOpen}
         setDrawerOpen={setDrawerOpen}
+        setSelectedQuestions={setSelectedQuestions}
+        selectedQuestions={selectedQuestions}
+        COLUMNS_CONFIG={COLUMNS_CONFIG}
       />
 
       <DrawerQuestionsDetailSection />

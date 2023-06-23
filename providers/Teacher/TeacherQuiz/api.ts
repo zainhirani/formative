@@ -107,10 +107,11 @@ export async function detail(
 
 // Quiz Distribute
 export async function quizDistribute(
-  props: Quiz.QuizDistributeAPIPayload,
+  props: any,
+  // props: Quiz.QuizDistributeAPIPayload,
 ): Promise<Quiz.QuizDistributeResponse> {
   
-  console.log(props,'props hook');
+  // console.log(props,'props hook');
   const dataStd =  {
     studentsId: props?.data?.studentsId
   }
@@ -118,5 +119,31 @@ export async function quizDistribute(
     method: "POST",
     url: `/quiz/${props.data.id}/assign-student`,
     body: dataStd,
+  });
+}
+
+// Quiz Save
+export async function quizSave(
+  props: any,
+  // props: Quiz.QuizSaveAPIPayload,
+): Promise<Quiz.QuizSaveResponse> {
+  return service({
+    method: "POST",
+    url: `/quiz`,
+    body: props?.data,
+  });
+}
+
+// Quiz Save Edit
+export async function quizSaveEdit(
+  // props: any,
+  // quizId:number
+  props:any
+  // props: Quiz.QuizSaveAPIPayload,
+): Promise<Quiz.QuizSaveEditResponse> {
+  return service({
+    method: "PATCH",
+    url: `/quiz/${props?.data?.quizId}`,
+    body: props?.data?.saveObject,
   });
 }

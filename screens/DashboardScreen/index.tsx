@@ -1,8 +1,5 @@
 import React, { useState } from "react";
-<<<<<<< HEAD
-=======
 import { Button } from "@mui/material";
->>>>>>> 3a6e88c32cc76095abf4440ae5263c6b842c2ec1
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
@@ -79,7 +76,7 @@ const studentsDashboardContent = [
   },
 ];
 
-const Dashboard = () => {
+const DashboardScreen = () => {
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>

@@ -149,14 +149,15 @@ const DrawerStudentsSection = (props: any) => {
   };
 
   const renderCheckboxHeader = (params: any) => (
-    <Checkbox
-      indeterminate={
-        selectedRows?.length > 0 &&
-        selectedRows?.length < (props?.rows && props?.rows?.length)
-      }
-      checked={selectedRows?.length === (props?.rows && props?.rows?.length)}
-      onChange={(event) => handleHeaderCheckClick(event, props?.rows)}
-    />
+    <></>
+    // <Checkbox
+    //   indeterminate={
+    //     selectedRows?.length > 0 &&
+    //     selectedRows?.length < (props?.rows && props?.rows?.length)
+    //   }
+    //   checked={selectedRows?.length === (props?.rows && props?.rows?.length)}
+    //   onChange={(event) => handleHeaderCheckClick(event, props?.rows)}
+    // />
   );
 
   const renderCheckboxCell = (params: any) => (
@@ -170,18 +171,19 @@ const DrawerStudentsSection = (props: any) => {
     setSelectedRows(studentListing?.data?.map((row: any) => row?.id) || []);
   }, [studentListing?.data, isSuccess]);
 
-  console.log(selectedRows, "selectedRows");
+  // console.log(selectedRows, "selectedRows");
 
   const columnsManageStudent = [
     {
       field: "selection",
       headerName: "Select",
-      minWidth: 100,
+      minWidth: 50,
       flex: 1,
       renderHeader: renderCheckboxHeader,
       renderCell: renderCheckboxCell,
       sortable: false,
       filterable: false,
+      cellClassName: "custom-checkbox-selection",
     },
     {
       field: "last_name",
@@ -216,7 +218,7 @@ const DrawerStudentsSection = (props: any) => {
     {
       field: "email",
       headerName: "E-mail",
-      minWidth: 100,
+      minWidth: 200,
       flex: 1,
     },
   ];
@@ -302,6 +304,7 @@ const DrawerStudentsSection = (props: any) => {
                   value={yogDefault}
                   sx={{ width: "100%" }}
                   isDisabled={yogCheck}
+                  isClearable={false}
                 />
               </YearCheckBoxWrapper>
             </Box>
@@ -315,6 +318,7 @@ const DrawerStudentsSection = (props: any) => {
                 options={optionSchool}
                 onChange={handleProgram}
                 isDisabled={yogCheck}
+                isClearable={false}
               />
             </ProgramCheckBoxWrapper>
           </Grid>

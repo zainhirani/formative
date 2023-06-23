@@ -10,6 +10,10 @@ import {
 import * as api from "./api";
 import { Quiz } from "./types";
 import QUERY_KEYS from 'queries/QueriesKeyConstant';
+import { enqueueSnackbar } from 'notistack';
+import { useRouter } from 'next/router';
+import APP_ROUTES from 'constants/RouteConstants';
+
 
 const KEY = "Quiz";
 
@@ -82,17 +86,16 @@ export function useScoringListing(
 
 //Scoring By ID
 export function useScoringByID(
-  id:any
+  id?:any,
+  isScoringId?:any
 ): UseQueryResult<Quiz.ScoringByIDResponse> {
-  return useQuery("QUERY_KEYS.SCORING_LISTING_ID", () => api.getScoringByID(id));
+  return useQuery("QUERY_KEYS.SCORING_LISTING_ID", () => api.getScoringByID(id), {enabled:isScoringId});
 }
 
-
-
 // Distribute
-//Enroll
 export function useQuizDistribute(
-  props: Quiz.QuizDistributeProps,
+  props: any,
+  // props: Quiz.QuizDistributeProps,
 ): UseMutationResult<
   Quiz.QuizDistributeResponse,
   {
@@ -105,9 +108,75 @@ export function useQuizDistribute(
   return useMutation((payload) => api.quizDistribute({ ...props,data: payload }), {
     mutationKey: QUERY_KEYS.QUIZ_DISTRIBUTE,
     onSuccess: () => {
-      console.log('distribute success');
-      
+      // console.log('distribute success');
       // queryClient.invalidateQueries(['Students']);
+    },
+    retry: 0,
+  });
+}
+
+
+
+// Save Quiz
+export function useQuizSave(
+  props: any,
+  // props: Quiz.QuizSaveProps,
+): UseMutationResult<
+  Quiz.QuizSaveResponse,
+  {
+    message?: string;
+  },
+  Quiz.QuizSaveMutationPayload
+> {
+  const queryClient = useQueryClient();
+  
+  return useMutation((payload) => api.quizSave({ ...props, data:payload }), {
+    mutationKey: QUERY_KEYS.QUIZ_SAVE,
+    onSuccess: (data) => {
+      // const router = useRouter();
+      enqueueSnackbar("Quiz Created Successfully", {
+        variant: "success",
+        autoHideDuration: 3000,
+      });
+      // router.push(APP_ROUTES.MANAGE_QUIZ)
+      console.log('Save success');
+      // queryClient.invalidateQueries(['Students']);
+    },
+    onError:(error) => {
+      enqueueSnackbar(error?.message, {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
+      console.log(error?.message,'onError success');
+      // queryClient.invalidateQueries(['Students']);
+    },
+    retry: 0,
+  });
+}
+
+
+// Save Quiz Edit
+export function useQuizSaveEdit(
+  props: any,
+  // props: Quiz.QuizSaveEditProps,
+): UseMutationResult<
+  Quiz.QuizSaveEditResponse,
+  { message?: string; },
+  Quiz.QuizSaveEditMutationPayload
+> {
+  return useMutation((payload) => api.quizSaveEdit({ ...props, data:payload }), {
+    mutationKey: QUERY_KEYS.QUIZ_SAVE,
+    onSuccess: (data) => {
+      enqueueSnackbar("Quiz Updated Successfully", {
+        variant: "success",
+        autoHideDuration: 3000,
+      });
+    },
+    onError:(error) => {
+      enqueueSnackbar(error?.message, {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
     },
     retry: 0,
   });

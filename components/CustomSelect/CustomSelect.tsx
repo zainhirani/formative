@@ -57,7 +57,6 @@ const CustomSelect: FC<CustomSelectProps> = ({
   isDisabled,
   isFetching,
   isMulti,
-  onBlur,
   ...rest
 }) => {
   const style = {
@@ -116,7 +115,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
         isMulti={isMulti}
         onBlur={onBlur}
         name={name}
-        isClearable
+        isClearable={isClearable}
         options={options}
         onChange={onChange}
         placeholder={placeholder}

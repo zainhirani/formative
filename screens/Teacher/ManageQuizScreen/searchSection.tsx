@@ -89,6 +89,7 @@ const SearchSection = (props: any) => {
       </Box>
       <SelectBoxWrapper gridColumn="span 2">
         <CustomSelect
+          isClearable={true}
           placeholder="Select Course"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={courseData || []}
@@ -97,6 +98,7 @@ const SearchSection = (props: any) => {
       </SelectBoxWrapper>
       <SelectBoxWrapper gridColumn="span 2">
         <CustomSelect
+          isClearable={true}
           placeholder="Select Folder"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={folderData || []}
@@ -105,6 +107,7 @@ const SearchSection = (props: any) => {
       </SelectBoxWrapper>
       <SelectBoxWrapper gridColumn="span 2">
         <CustomSelect
+          isClearable={true}
           placeholder="Select Status"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={optionsStatus || []}
