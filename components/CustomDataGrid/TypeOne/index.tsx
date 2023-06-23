@@ -20,7 +20,7 @@ interface TypeOneProps {
   getSelectedId?: (e?: any) => void;
   page?: number;
   handlePageChange: (event: React.ChangeEvent<unknown>, value: number) => void;
-  totalRows?: number;
+  totalRows?: number | undefined;
 
   // isChecked?:
 }
@@ -57,7 +57,6 @@ const TypeOne: React.FC<TypeOneProps> = ({
     return 50;
   };
 
-  console.log(totalPages, page);
   function customPagination() {
     return (
       <BoxPaginate>

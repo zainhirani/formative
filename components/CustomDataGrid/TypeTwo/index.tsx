@@ -48,22 +48,20 @@ const TypeTwo: React.FC<TypeTwoProps> = ({
 
             <Grid item xs={3}>
               <Showed>
-                Showing {rows.length} of {rows.length}
+                Showing {rows?.length} of {rows?.length}
               </Showed>
             </Grid>
             <Grid item xs={9} className="table_row_btn">
               {buttonArray?.map((button) => {
                 return (
-                  <>
-                    <ButtonWrapper
-                      key={button?.key}
-                      onClick={button?.onClick}
-                      startIcon={button?.startIcon}
-                      className={"print_arrow_btn"}
-                    >
-                      {button?.render()}
-                    </ButtonWrapper>
-                  </>
+                  <ButtonWrapper
+                    key={button?.key}
+                    onClick={button?.onClick}
+                    startIcon={button?.startIcon}
+                    className={"print_arrow_btn"}
+                  >
+                    {button?.render()}
+                  </ButtonWrapper>
                 );
               })}
             </Grid>

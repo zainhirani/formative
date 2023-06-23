@@ -11,6 +11,7 @@ import {
   TEACHER__GET_FOLDERS,
   TEACHER__GET_CATEGORIES,
   TEACHER__GET_QUESTION_COUNT_ID,
+  TEACHER__GET_QUESTIONS_ATTEMPT_BY_ID,
 } from "providers/endpoints";
 
 export const getQuestions = (props: any) => {
@@ -18,6 +19,12 @@ export const getQuestions = (props: any) => {
     url: TEACHER__GET_QUESTIONS,
     method: "GET",
     queryParams: props,
+  });
+};
+export const getQuestionByIdAtempt = (id: any) => {
+  return service({
+    url: `${TEACHER__GET_QUESTIONS_ATTEMPT_BY_ID}${id}`,
+    method: "GET",
   });
 };
 export const getQuestionById = (id: any) => {

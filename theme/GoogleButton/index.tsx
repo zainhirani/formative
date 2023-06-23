@@ -1,10 +1,11 @@
+import { Button } from "@mui/material";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 
 const GoogleButton = () => {
   const router = useRouter();
   return (
-    <button
+    <Button
       className="flex w-full justify-center gap-5 rounded bg-white py-4 px-4 text-sm font-bold drop-shadow-md hover:bg-gray-50"
       onClick={(e) => {
         e.preventDefault();
@@ -25,7 +26,7 @@ const GoogleButton = () => {
       ) : (
         <div>Sign up with Google</div>
       )}
-    </button>
+    </Button>
   );
 };
 

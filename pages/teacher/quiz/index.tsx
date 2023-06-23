@@ -1,8 +1,8 @@
 import type { NextPage } from "next";
 import ManageQuizScreen from "screens/Teacher/ManageQuizScreen";
 
-const TeacherDashboard: NextPage = () => {
+const TeacherQuiz: NextPage = () => {
   return <ManageQuizScreen />;
 };
 
-export default TeacherDashboard;
+export default TeacherQuiz;

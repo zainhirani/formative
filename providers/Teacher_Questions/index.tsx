@@ -33,6 +33,16 @@ export const useQuestionsListing = (props: any) => {
   );
 };
 
+// export const useQuestionDetailsAttempt = (props: any) => {
+//   return useQuery(
+//     "DETAIL_ATTEMPT",
+//     () => getQuestionByIdAtempt(props.questionId),
+//     {
+//       enabled: !!props.questionId,
+//     },
+//   );
+// };
+
 export const useQuestionDetails = (props: any) => {
   return useQuery(
     getKeyFromProps(props, "DETAIL"),

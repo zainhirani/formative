@@ -6,7 +6,7 @@ import AutoComplete from "components/AutoComplete";
 import { BoxWrapper, SelectBoxWrapper } from "./Styled";
 
 interface CustomSelectProps {
-  options?: Array<{}>;
+  options: Array<{}> | undefined;
   placeholder?: string;
   config?: string;
   controlText?: string;
@@ -14,9 +14,11 @@ interface CustomSelectProps {
   onChange?: any;
   onBlur?: any;
   value?: any;
+  name?: any;
+  isClearable?: any;
+  isDisabled?: Boolean | undefined;
   isFetching?: boolean;
   isMulti?: boolean;
-  name?: any;
   defaultValue?: any;
 }
 
@@ -34,7 +36,9 @@ const Control = (props: any) => {
   return (
     <components.Control {...props}>
       <Tooltip title={controlText} placement="top">
-        <SelectBoxWrapper>{controlText}</SelectBoxWrapper>
+        <SelectBoxWrapper className="customTextTol">
+          {controlText}
+        </SelectBoxWrapper>
       </Tooltip>
       {children}
     </components.Control>
@@ -53,12 +57,15 @@ const CustomSelect: FC<CustomSelectProps> = ({
   defaultValue,
   onBlur,
   name,
-}) => {
-  // const onChange = () => {};
+  isClearable,
+  isDisabled,
 
+  ...rest
+}) => {
   const style = {
     control: (provided: any, state: any) => ({
       ...provided,
+      background: isDisabled ? "transparent" : "transparent",
       boxShadow: "none",
       border: "none",
       color: "#404040 !important",
@@ -106,12 +113,12 @@ const CustomSelect: FC<CustomSelectProps> = ({
   };
 
   return (
-    <BoxWrapper sx={{ zIndex: 99999 }}>
+    <BoxWrapper sx={{ zIndex: 99999, width: "100%" }}>
       <AutoComplete
         isMulti={isMulti}
         onBlur={onBlur}
         name={name}
-        isClearable
+        isClearable={isClearable}
         options={options}
         onChange={onChange}
         placeholder={placeholder}
@@ -125,6 +132,8 @@ const CustomSelect: FC<CustomSelectProps> = ({
         className="custom-select"
         value={value}
         defaultValue={defaultValue}
+        isDisabled={isDisabled}
+        {...rest}
       />
     </BoxWrapper>
   );
