@@ -10,19 +10,12 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import {
-  CardHeaderWrapper,
-  InputLabelWrapper,
-  IconButtonWrapper,
-  LoadingButtonWrapper,
-} from "./Styled";
+import { InputLabelWrapper, LoadingButtonWrapper } from "./Styled";
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import { genderSelect, programSelect } from "../RegisterScreen/fields/data";
 import messages from "./messages";
 import { useState, useEffect, useCallback } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
-import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
-import ArrowDropUpOutlinedIcon from "@mui/icons-material/ArrowDropUpOutlined";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { BoxWrapper, ButtonWrapper } from "./Styled";
 import { useFormik } from "formik";
@@ -33,9 +26,9 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import { useRouter } from "next/router";
 import CustomSelect from "components/CustomSelect/CustomSelect";
-import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { year_of_graduation } from "mock-data/Profile";
+import { isEqual } from "lodash";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().label("FirstName"),
@@ -50,7 +43,7 @@ const validationSchema = Yup.object().shape({
   userName: Yup.string().label("User Name"),
   password: Yup.string().min(6).label("Password"),
   confirmPassword: Yup.string()
-    .required("Please confirm your password")
+    .label("Please confirm your password")
     .oneOf([Yup.ref("password")], "Passwords do not match"),
   currentPassword: Yup.string().required().min(6).label("Current Password"),
 });
@@ -63,9 +56,6 @@ export const GeneralInfo = () => {
   const nickNamePlaceholder = useFormattedMessage(messages.nickNamePlaceholder);
   const emailPlaceholder = useFormattedMessage(messages.emailPlaceholder);
   const rfuIDPlaceholder = useFormattedMessage(messages.rfuPlaceholder);
-  const graduationPlaceholder = useFormattedMessage(
-    messages.graduationPlaceholder,
-  );
   const birthPlaceholder = useFormattedMessage(messages.birthPlaceholder);
   const userPlaceholder = useFormattedMessage(messages.userPlaceholder);
   const passwordPlaceholder = useFormattedMessage(messages.passwordPlaceholder);
@@ -104,7 +94,7 @@ export const GeneralInfo = () => {
   const onSubmit = useCallback((data: any) => {
     registerUpdate.mutate({
       email: data.email,
-      password: data.password,
+      password: data.currentPassword,
       username: data.userName,
       first_name: data.firstName,
       last_name: data.lastName,
@@ -114,12 +104,13 @@ export const GeneralInfo = () => {
       year_of_graduation: Number(data.graduation),
       program: data.program,
       birth_place: data.birthPlace,
+      new_password: data.password,
+      new_confirm_password: data.confirmPassword,
     });
   }, []);
   const handleSetYear = (e: Object) => {
     setFieldValue("graduation", e?.value);
     setYear(e);
-    console.log(e);
   };
 
   const {
@@ -127,6 +118,7 @@ export const GeneralInfo = () => {
     handleSubmit,
     handleBlur,
     errors,
+    initialValues,
     values,
     touched,
     setFieldValue,
@@ -140,7 +132,6 @@ export const GeneralInfo = () => {
       rfuID: registerDetail.data?.rfu_id || "",
       program: registerDetail.data?.program || "",
       graduation: registerDetail.data?.year_of_graduation || 0,
-      // graduation: 2022,
       birthPlace: registerDetail.data?.birth_place || "",
       userName: registerDetail.data?.username || "",
       password: "",
@@ -347,11 +338,11 @@ export const GeneralInfo = () => {
               >
                 <CustomSelect
                   name="graduation"
-                  // controlText="Year of Graduation:"
                   onBlur={handleBlur}
                   onChange={handleSetYear}
                   dropdownIcon={<ExpandMoreIcon />}
                   options={year_of_graduation}
+                  value={{ value: values.graduation, label: values.graduation }}
                 />
               </Box>
             </Grid>
@@ -560,7 +551,7 @@ export const GeneralInfo = () => {
             type="submit"
             loading={registerUpdate.isLoading}
             loadingPosition="start"
-            disabled={values.currentPassword.length < 6}
+            disabled={isEqual(values, initialValues)}
             sx={{
               background: (theme) => theme.palette.secondary.main,
               width: { xs: "100%", md: "max-content" },

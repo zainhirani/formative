@@ -22,7 +22,6 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDownOutlined
 import * as Yup from "yup";
 import {
   LoadingButtonWrapper,
-  CardHeaderWrapper,
   IconButtonWrapper,
   InputLabelWrapper,
 } from "./Styled";
@@ -45,6 +44,8 @@ import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOu
 import { BoxWrapper, ButtonWrapper } from "./Styled";
 import CustomeDatePicker from "components/CustomeDatePicker";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import dayjs from "dayjs";
+import isEqual from "lodash/isEqual";
 
 interface StyledFormControlLabelProps extends FormControlLabelProps {
   checked: boolean;
@@ -87,15 +88,18 @@ const validationSchema = Yup.object().shape({
 
 export const ProfileTab = ({}) => {
   const profileDetail = useProfileDetail();
-  const dobPlaceholder = useFormattedMessage(messages.dobPlaceholder);
   const pharmacyPlaceholder = useFormattedMessage(messages.pharmacyPlaceholder);
   const passwordPlaceholder = useFormattedMessage(messages.passwordPlaceholder);
   const hobbiesPlaceholder = useFormattedMessage(messages.hobbiesPlaceholder);
   const [math, setMath] = useState("Select an option for the list");
   const [dobValue, setDobValue] = useState(null);
-  const [experience, setExperience] = useState(
-    profileDetail.data?.experience || 0,
-  );
+  const athleteArray = [];
+  const athleteSeperatedArray = profileDetail.data?.athlete?.split(", ");
+  if (athleteSeperatedArray) {
+    athleteArray.push(...athleteSeperatedArray);
+  }
+  const [checkedValues, setCheckedValues] = useState(athleteArray);
+  const [experience, setExperience] = useState(profileDetail.data?.experience);
   const profile = useProfile();
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
@@ -103,13 +107,27 @@ export const ProfileTab = ({}) => {
   function formatDate(dateString: string): string {
     const date = new Date(dateString);
     const day = date.getDate();
-    const month = date.getMonth() + 1; // Month starts from 0, so we add 1
+    const month = date.getMonth() + 1;
     const year = date.getFullYear();
 
     return `${year}-${month.toString().padStart(2, "0")}-${day
       .toString()
       .padStart(2, "0")}`;
   }
+
+  const handleExperienceChange = (event) => {
+    const newValue = parseInt(event.target.value);
+    if (!isNaN(newValue)) {
+      setExperience(newValue);
+    }
+  };
+  const handleCheckboxChange = (value) => {
+    if (checkedValues.includes(value)) {
+      setCheckedValues(checkedValues.filter((item) => item !== value));
+    } else {
+      setCheckedValues([...checkedValues, value]);
+    }
+  };
 
   const increment = () => {
     if (experience < 50) {
@@ -137,7 +155,6 @@ export const ProfileTab = ({}) => {
           variant: "success",
         },
       );
-      router.push("/dashboard");
     }
   }, [profile.isSuccess]);
 
@@ -150,21 +167,22 @@ export const ProfileTab = ({}) => {
     }
   }, [profile.isError]);
 
-  const onSubmit = useCallback((data: any) => {
+  const onSubmit = (data: any) => {
     profile.mutate({
-      date_of_birth: dobValue?.toString(),
-      experience: data.pharmacy,
-      working_part_time: data.partTime === "yes" ? true : false,
-      athlete: data.played,
+      date_of_birth: dobValue,
+      experience: experience,
+      working_part_time: data.partTime === "Yes" ? true : false,
+      athlete: checkedValues.join(", "),
       concept: data.learn,
       hobbies: data.hobbies,
       learning_sequence: data.sequence,
       math_skills: data.maths,
       study_prefer: data.study,
-      taken_biochemistry: data.bioChemistry === "yes" ? true : false,
-      volunteer: data.volunteer === "yes" ? true : false,
+      taken_biochemistry: data.bioChemistry === "Yes" ? true : false,
+      volunteer: data.volunteer === "Yes" ? true : false,
+      password: data.currentPassword,
     });
-  }, []);
+  };
 
   const {
     handleChange,
@@ -173,6 +191,7 @@ export const ProfileTab = ({}) => {
     errors,
     values,
     touched,
+    initialValues,
     setFieldValue,
   } = useFormik({
     initialValues: {
@@ -199,8 +218,8 @@ export const ProfileTab = ({}) => {
     onSubmit,
   });
 
-  const handleDateChange = (date: any) => {
-    setDobValue(date);
+  const handleDateChange = (e: any) => {
+    setDobValue(e);
   };
 
   return (
@@ -213,9 +232,9 @@ export const ProfileTab = ({}) => {
                 <FormattedMessage {...messages.dobLabel} />
               </InputLabelWrapper>
               <CustomeDatePicker
-                value={dobValue}
-                onChange={() => {
-                  handleDateChange;
+                value={dayjs(`${profileDetail.data?.date_of_birth}`)}
+                onChange={(e: any) => {
+                  handleDateChange(e);
                   handleChange;
                 }}
                 components={{ OpenPickerIcon: CalendarMonthIcon }}
@@ -246,9 +265,9 @@ export const ProfileTab = ({}) => {
                 placeholder={pharmacyPlaceholder}
                 fullWidth
                 type="number"
-                value={values.pharmacy}
+                value={experience}
                 onBlur={handleBlur}
-                onChange={handleChange}
+                onChange={handleExperienceChange}
                 error={Boolean(touched.pharmacy && errors.pharmacy)}
                 inputProps={{ min: 0, max: 50 }}
                 variant="standard"
@@ -305,9 +324,6 @@ export const ProfileTab = ({}) => {
                       marginRight: 0,
                       borderBottom: "1px solid",
                       color: (theme) => theme.palette.secondary.dark,
-                      // ".MuiFormControlLabel-label": checked && {
-                      //   color: "red",
-                      // },
                     }}
                     value={choice.name}
                     control={
@@ -581,20 +597,13 @@ export const ProfileTab = ({}) => {
                       onChange={(e) => {
                         if (setFieldValue) {
                           setFieldValue("played", e.target.value);
+                          handleCheckboxChange(e.target.value);
                         }
                       }}
-                      checked={values.played === play.name}
-                      // value={values.played}
+                      checked={checkedValues.includes(play.name)}
                     />
                   }
                   label={play.name}
-                  // sx={{
-                  //   color: Object.values(checkedItems).some(
-                  //     (isChecked) => isChecked,
-                  //   )
-                  //     ? (theme) => theme.additionalColors?.primaryBlack
-                  //     : (theme) => theme.palette.secondary.dark,
-                  // }}
                 />
               ))}
               {touched.played && errors.played && (
@@ -625,9 +634,6 @@ export const ProfileTab = ({}) => {
                       marginRight: 0,
                       borderBottom: "1px solid",
                       color: (theme) => theme.palette.secondary.dark,
-                      // ".MuiFormControlLabel-label": checked && {
-                      //   color: (theme) => theme.palette.primary.main,
-                      // },
                     }}
                     value={choice.name}
                     control={
@@ -729,7 +735,7 @@ export const ProfileTab = ({}) => {
             type="submit"
             loading={profile.isLoading}
             loadingPosition="start"
-            disabled={values.currentPassword.length < 6}
+            disabled={isEqual(values, initialValues)}
             sx={{
               width: { xs: "100%", md: "max-content" },
               ".MuiLoadingButton-loadingIndicator": {

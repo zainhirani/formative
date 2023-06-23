@@ -14,6 +14,8 @@ export namespace Register {
     program: string;
     birth_place: string;
     name?: string;
+    new_password: string;
+    new_confirm_password?: string;
   };
 
   // Create
@@ -34,6 +36,8 @@ export namespace Register {
     year_of_graduation: number;
     program: string;
     birth_place: string;
+    new_password: string;
+    new_confirm_password?: string;
   };
   export interface CreateAPIPayload extends CreateProps {
     data: CreateMutationPayload;

@@ -27,7 +27,7 @@ const SearchSection = ({
 
   const courseListing = useCourseListing({});
   const cousrseData = useMemo(() => {
-    return courseListing?.data?.map((item) => ({
+    return courseListing?.data?.data?.map((item) => ({
       value: item.id,
       label: item.course_name,
     }));

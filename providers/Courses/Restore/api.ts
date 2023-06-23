@@ -9,6 +9,7 @@ export async function listing(
   return service({
     method: "GET",
     url: `/courses/deleted/record`,
+    queryParams: props,
   });
 }
 

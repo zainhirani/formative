@@ -2,8 +2,6 @@
 import {
   Box,
   Button,
-  ButtonGroup,
-  Card,
   CardContent,
   Checkbox,
   FormControlLabel,
@@ -12,13 +10,10 @@ import {
   Grid,
   InputAdornment,
   MenuItem,
-  OutlinedInput,
   Radio,
   RadioGroup,
   Select,
-  SelectChangeEvent,
   TextField,
-  Typography,
   styled,
   useRadioGroup,
 } from "@mui/material";
@@ -26,7 +21,6 @@ import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined
 import ArrowDropUpOutlinedIcon from "@mui/icons-material/ArrowDropUpOutlined";
 
 import {
-  CardHeaderWrapper,
   IconButtonWrapper,
   InputLabelWrapper,
   LoadingButtonWrapper,
@@ -34,7 +28,6 @@ import {
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import * as Yup from "yup";
-import { RegisterProps } from "./formProps";
 import {
   learnRadioGroup,
   radioChoice,
@@ -78,7 +71,7 @@ function MyFormControlLabel(props: FormControlLabelProps) {
 }
 
 const validationSchema = Yup.object().shape({
-  dob: Yup.string().required().label("Date of Birth"),
+  dob: Yup.string().label("Date of Birth"),
   pharmacy: Yup.string().required().label("Pharmacy"),
   partTime: Yup.string().required().label("Part Time"),
   bioChemistry: Yup.string().required().label("Bio Chemistry"),
@@ -92,16 +85,30 @@ const validationSchema = Yup.object().shape({
 });
 
 export const StepTwo = ({}) => {
-  const dobPlaceholder = useFormattedMessage(messages.dobPlaceholder);
   const pharmacyPlaceholder = useFormattedMessage(messages.pharmacyPlaceholder);
-  const passwordPlaceholder = useFormattedMessage(messages.passwordPlaceholder);
   const hobbiesPlaceholder = useFormattedMessage(messages.hobbiesPlaceholder);
   const [math, setMath] = useState("Select an option for the list");
   const [experience, setExperience] = useState(0);
   const [dobValue, setDobValue] = useState(null);
+  const [checkedValues, setCheckedValues] = useState([]);
   const profile = useProfile();
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
+
+  const handleCheckboxChange = (value) => {
+    if (checkedValues.includes(value)) {
+      setCheckedValues(checkedValues.filter((item) => item !== value));
+    } else {
+      setCheckedValues([...checkedValues, value]);
+    }
+  };
+
+  const handleExperienceChange = (event) => {
+    const newValue = parseInt(event.target.value);
+    if (!isNaN(newValue)) {
+      setExperience(newValue);
+    }
+  };
 
   const increment = () => {
     if (experience < 50) {
@@ -130,8 +137,6 @@ export const StepTwo = ({}) => {
         },
       );
       router.replace("/");
-      // localStorage.setItem(TOKEN, profile?.data.token);
-      // handleNext();
     }
   }, [profile.isSuccess]);
 
@@ -144,21 +149,21 @@ export const StepTwo = ({}) => {
     }
   }, [profile.isError]);
 
-  const onSubmit = useCallback((data: any) => {
+  const onSubmit = (data: any) => {
     profile.mutate({
-      date_of_birth: dobValue?.toString(),
-      experience: data.pharmacy,
-      working_part_time: data.partTime === "yes" ? true : false,
-      athlete: data.played,
+      date_of_birth: dobValue,
+      experience: experience,
+      working_part_time: data.partTime === "Yes" ? true : false,
+      athlete: checkedValues.join(", "),
       concept: data.learn,
       hobbies: data.hobbies,
       learning_sequence: data.sequence,
       math_skills: data.maths,
       study_prefer: data.study,
-      taken_biochemistry: data.bioChemistry === "yes" ? true : false,
-      volunteer: data.volunteer === "yes" ? true : false,
+      taken_biochemistry: data.bioChemistry === "Yes" ? true : false,
+      volunteer: data.volunteer === "Yes" ? true : false,
     });
-  }, []);
+  };
 
   const {
     handleChange,
@@ -186,10 +191,6 @@ export const StepTwo = ({}) => {
     onSubmit,
   });
 
-  const handleDateChange = (date: any) => {
-    setDobValue(date);
-  };
-
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -201,8 +202,8 @@ export const StepTwo = ({}) => {
               </InputLabelWrapper>
               <CustomeDatePicker
                 value={dobValue}
-                onChange={() => {
-                  handleDateChange;
+                onChange={(e: any) => {
+                  setDobValue(e);
                   handleChange;
                 }}
                 components={{ OpenPickerIcon: CalendarMonthIcon }}
@@ -234,10 +235,10 @@ export const StepTwo = ({}) => {
                 placeholder={pharmacyPlaceholder}
                 fullWidth
                 type="number"
-                defaultValue={experience}
+                value={experience}
                 inputProps={{ min: 0, max: 50 }}
                 onBlur={handleBlur}
-                onChange={handleChange}
+                onChange={handleExperienceChange}
                 error={Boolean(touched.pharmacy && errors.pharmacy)}
                 variant="standard"
                 InputProps={{
@@ -292,9 +293,6 @@ export const StepTwo = ({}) => {
                       marginRight: 0,
                       borderBottom: "1px solid",
                       color: (theme) => theme.palette.secondary.dark,
-                      // ".MuiFormControlLabel-label": checked && {
-                      //   color: "red",
-                      // },
                     }}
                     value={choice.name}
                     control={
@@ -561,21 +559,27 @@ export const StepTwo = ({}) => {
                           },
                         },
                       }}
+                      checked={checkedValues.includes(play.name)}
                       onChange={(e) => {
                         if (setFieldValue) {
                           setFieldValue("played", e.target.value);
+                          handleCheckboxChange(e.target.value);
                         }
                       }}
                     />
                   }
                   label={play.name}
-                  // sx={{
-                  //   color: Object.values(checkedItems).some(
-                  //     (isChecked) => isChecked,
-                  //   )
-                  //     ? (theme) => theme.additionalColors?.primaryBlack
-                  //     : (theme) => theme.palette.secondary.dark,
-                  // }}
+                  sx={{
+                    color: checkedValues.includes(play.name)
+                      ? (theme) => theme.additionalColors?.primaryBlack
+                      : (theme) => theme.palette.secondary.dark,
+                    borderBottom: "1px solid",
+                    minWidth: "25%",
+                    marginLeft: "-7px",
+                    width: "max-content",
+                    marginRight: "7px",
+                    marginTop: "10px",
+                  }}
                 />
               ))}
               {touched.played && errors.played && (
@@ -605,9 +609,6 @@ export const StepTwo = ({}) => {
                       marginRight: 0,
                       borderBottom: "1px solid",
                       color: (theme) => theme.palette.secondary.dark,
-                      // ".MuiFormControlLabel-label": checked && {
-                      //   color: (theme) => theme.palette.primary.main,
-                      // },
                     }}
                     value={choice.name}
                     control={
@@ -675,8 +676,7 @@ export const StepTwo = ({}) => {
               variant="contained"
               type="submit"
               disabled={
-                (values.dob &&
-                  values.pharmacy &&
+                (values.pharmacy &&
                   values.partTime &&
                   values.bioChemistry &&
                   values.maths &&
