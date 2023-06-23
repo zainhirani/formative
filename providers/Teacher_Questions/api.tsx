@@ -80,9 +80,9 @@ export const editQuestion = (payload: any) => {
   });
 };
 
-export const deleteQuestion = async () => {
-  return await service({
-    url: TEACHER__DELETE_QUESTION,
+export const deleteQuestion = (id: any) => {
+  return service({
+    url: `/questions/${id}`,
     method: "DELETE",
   });
 };

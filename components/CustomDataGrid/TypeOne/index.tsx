@@ -57,6 +57,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
     return 50;
   };
 
+  console.log(totalPages, page);
   function customPagination() {
     return (
       <BoxPaginate>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
@@ -14,8 +14,9 @@ import {
   PROFILE,
 } from "configs";
 import messages from "./messages";
-import SideDrawer from "components/Drawer";
 import APP_ROUTES from "constants/RouteConstants";
+import { useAuthContext } from "contexts/AuthContext";
+import { generateGreetings } from "utils";
 
 // Teacher's Dashboard Content
 const teachersDashboardContent = [
@@ -74,130 +75,8 @@ const studentsDashboardContent = [
   },
 ];
 
-let COLUMN_NAME = {
-  ID: "Id",
-  COLLEGE_LOGO: "Logo",
-  COLLEGE_NAME: "College Name",
-  COLLEGE_LOCATION: "Location",
-  ACTIONS: "Actions",
-};
-
-const collegesData = [
-  {
-    Id: 1,
-    CollegeImageURL: "https://picsum.photos/200/300",
-    CollegeName: "College 1",
-    Location: "Location",
-    Address: "Abc Address",
-    Contact: "123456678",
-
-    TotalStudentsHired: "1",
-    Date: "01-01-2022",
-    Team: "",
-    Drives: [],
-  },
-  {
-    Id: 2,
-    CollegeName: "College 2",
-    CollegeImageURL: "https://picsum.photos/200/300",
-    Location: "Location",
-    Address: "Abc Address",
-    Contact: "123456678",
-
-    TotalStudentsHired: "2",
-    Date: "02-01-2022",
-    Team: "",
-    Drives: [],
-  },
-  {
-    Id: 3,
-    CollegeName: "College 3",
-    Location: "Location",
-    Address: "Abc Address",
-    Contact: "123456678",
-    TotalStudentsHired: "3",
-    Date: "03-01-2022",
-    Team: "",
-    CollegeImageURL: "https://picsum.photos/200/300",
-    Drives: [],
-  },
-  {
-    Id: 4,
-    CollegeName: "College 4",
-    Location: "Location",
-
-    Address: "Abc Address",
-    Contact: "123456678",
-
-    TotalStudentsHired: "4",
-    Date: "04-01-2022",
-    Team: "",
-    CollegeImageURL: "https://picsum.photos/200/300",
-    Drives: [],
-  },
-  {
-    Id: 5,
-    CollegeName: "College 5",
-    Location: "Location",
-
-    Address: "Abc Address",
-    Contact: "123456678",
-
-    TotalStudentsHired: "5",
-    Date: "05-01-2022",
-    Team: "",
-    CollegeImageURL: "https://picsum.photos/200/300",
-    Drives: [],
-  },
-  {
-    Id: 6,
-    CollegeName: "College 6",
-    Location: "Location",
-
-    Address: "Abc Address",
-    Contact: "123456678",
-
-    TotalStudentsHired: "6",
-    Date: "06-01-2022",
-    Team: "",
-    CollegeImageURL: "https://picsum.photos/200/300",
-    Drives: [],
-  },
-];
-
 const DashboardScreen = () => {
-  let config = [
-    {
-      columnName: COLUMN_NAME.ID,
-      render: () => {
-        return "-";
-      },
-    },
-    {
-      columnName: COLUMN_NAME.COLLEGE_LOGO,
-      render: () => {
-        return "-";
-      },
-    },
-    {
-      columnName: COLUMN_NAME.COLLEGE_NAME,
-      render: () => {
-        return "-";
-      },
-    },
-    {
-      columnName: COLUMN_NAME.COLLEGE_LOCATION,
-      render: () => {
-        return "-";
-      },
-    },
-    {
-      columnName: COLUMN_NAME.ACTIONS,
-      render: () => {
-        return "-";
-      },
-    },
-  ];
+  const { currentUser } = useAuthContext();
 
   return (
     <>
@@ -213,7 +92,10 @@ const DashboardScreen = () => {
               maxWidth: "380px",
             }}
           >
-            <FormattedMessage {...messages.title} />
+            <div>
+              Welcome {currentUser.first_name + " " + currentUser.last_name}
+            </div>
+            <div>{generateGreetings()}</div>
           </Typography>
           <Typography variant="body2">
             <FormattedMessage {...messages.pitch} />
@@ -239,9 +121,6 @@ const DashboardScreen = () => {
           ))}
         </Box>
       </Box>
-      {/* // </PageLayout> */}
-
-      {/* Student Dashboard Screen */}
     </>
   );
 };

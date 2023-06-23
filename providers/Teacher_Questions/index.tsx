@@ -1,17 +1,21 @@
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import {
-  UseMutationResult,
-  UseQueryResult,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "react-query";
-import { duplicateQuestion, getQuestionById, getQuestions } from "./api";
+  deleteQuestion,
+  duplicateQuestion,
+  getQuestionById,
+  getQuestions,
+} from "./api";
 
 const KEY = "Questions";
 
 export function getKeyFromProps(
   props: any,
-  type: "LISTING" | "DETAIL" | "DUPLICATE_QUESTION",
+  type:
+    | "LISTING"
+    | "DETAIL"
+    | "DUPLICATE_QUESTION"
+    | "TEACHER_QUESTIONS_LISTINGS"
+    | "DELETE_QUESTION",
 ): string[] {
   const key = [KEY, type];
   key.push(props);
@@ -19,7 +23,9 @@ export function getKeyFromProps(
 }
 
 export const useQuestionsListing = (props: any) => {
-  return useQuery("TEACHER_QUESTIONS_LISTINGS", () => getQuestions(props));
+  return useQuery(getKeyFromProps(props, "TEACHER_QUESTIONS_LISTINGS"), () =>
+    getQuestions(props),
+  );
 };
 
 export const useQuestionDetails = (props: any) => {
@@ -30,10 +36,14 @@ export const useQuestionDetails = (props: any) => {
   );
 };
 
-// export const useDuplicateQuestion = (questionId: any) => {
-//   return useMutation((questionId) => duplicateQuestion(questionId), {
-//     mutationKey: getKeyFromProps(questionId, "DUPLICATE_QUESTION"),
-//     onSuccess: () => {},
-//     retry: 1,
-//   });
-// };
+export const useDeleteQuestion = (questionId: any) => {
+  const client = useQueryClient();
+
+  return useMutation((questionId) => deleteQuestion(questionId), {
+    mutationKey: getKeyFromProps(questionId, "DELETE_QUESTION"),
+    onSuccess: () => {
+      client.invalidateQueries(["TEACHER_QUESTIONS_LISTINGS"]);
+    },
+    retry: 1,
+  });
+};
