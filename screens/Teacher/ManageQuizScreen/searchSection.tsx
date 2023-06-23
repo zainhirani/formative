@@ -14,7 +14,7 @@ import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import messages from "./messages";
 import CustomSelect from "components/CustomSelect/CustomSelect";
 import { useCourseListing } from "providers/Courses";
-import { useFoldersListing } from "providers/Teacher/TeacherQuiz";
+import { useFoldersListing } from "providers/teacher/TeacherQuiz";
 import { useRouter } from "next/router";
 import APP_ROUTES from "constants/RouteConstants";
 import optionsStatus from "constants/Teacher/QuizConstant";
