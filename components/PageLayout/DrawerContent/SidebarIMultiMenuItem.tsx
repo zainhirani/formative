@@ -11,37 +11,52 @@ import {
   ListItemText,
 } from "@mui/material";
 
-const SidebarMultiMenuItem = ({ item }: any) => {
-  const [itemName, setItemName] = useState({
-    toggle: false,
-    title: "",
-  });
+interface SubmenuItem {
+  id: number;
+  title: string;
+  link: string;
+}
+
+interface MenuItem {
+  id: number;
+  title: string;
+  link: string;
+  icon: React.ReactNode;
+  subitems?: SubmenuItem[];
+}
+
+const SidebarMultiMenuItem: React.FC<{ item: MenuItem }> = ({ item }) => {
+  const [open, setOpen] = useState(false);
   const router = useRouter();
+
+  const handleClick = () => {
+    setOpen(!open);
+  };
+
   const isActiveRoute = (route: string) => {
     return router.pathname === route;
   };
 
+  const hasSubmenu = item.subitems && item.subitems.length > 0;
+
   return (
     <ListItem
-      key={item?.title}
+      key={item.title}
       disablePadding
-      onClick={() =>
-        setItemName({
-          ...itemName,
-          title: item?.title,
-          toggle: !itemName?.toggle,
-        })
-      }
       sx={{
-        background:
-          itemName?.title === item.title && itemName.toggle ? "#68151E" : "",
+        background: isActiveRoute(item.link) ? "#68151E" : "",
         "&:hover": {
           background: "#68151E",
         },
+        "&.has-submenu": {
+          flexWrap: "wrap",
+          background: "#68151E"
+        },
       }}
+      className={hasSubmenu && open ? "has-submenu" : ""}
     >
-      {/* <Link href={item.link} key={item.title} passHref={true}> */}
       <ListItemButton
+        onClick={handleClick}
         sx={{
           flexWrap: "wrap",
           backgroundColor: isActiveRoute(item.link) ? "#68151E" : "initial",
@@ -68,46 +83,63 @@ const SidebarMultiMenuItem = ({ item }: any) => {
             },
           }}
         />
-        {itemName?.title === item.title && itemName.toggle ? (
-          <ExpandLess sx={{ color: "#fff" }} />
-        ) : (
-          <ExpandMore sx={{ color: "#fff" }} />
+        {hasSubmenu && ( // Render the expand/collapse icons only if there's a submenu
+          open ? (
+            <ExpandLess sx={{ color: "#fff" }} />
+          ) : (
+            <ExpandMore sx={{ color: "#fff" }} />
+          )
         )}
-        <Collapse
-          key={item.id}
-          className="subMenuUl"
-          component="ul"
-          in={itemName?.title === item.title && itemName.toggle}
-          timeout="auto"
-          unmountOnExit
-          sx={{
-            paddingLeft: "24px",
-          }}
-        >
-          <List disablePadding>
-            {item.subitems.map((sitem: any) => {
-              return (
-                <ListItem button key={sitem.id}>
-                  <Link href={sitem.link} key={item.title} passHref={true}>
-                    <ListItemText
-                      key={sitem.id}
-                      primary={sitem.title}
-                      sx={{
-                        color: (theme) => theme.palette.primary.light,
-                        fontSize: "14px",
-                        "& span": {
-                          fontSize: "14px",
-                        },
-                      }}
-                    />
-                  </Link>
-                </ListItem>
-              );
-            })}
-          </List>
-        </Collapse>
       </ListItemButton>
-      {/* </Link> */}
+      <Collapse
+        in={open}
+        timeout="auto"
+        className="subMenuUl"
+        unmountOnExit
+        sx={{
+          paddingLeft: "16px",
+          paddingRight: "16px",
+          width: "100%",
+        }}
+      >
+        {item.subitems && (
+          <List disablePadding sx={{ paddingTop: "20px" }}>
+            {item.subitems.map((sitem: SubmenuItem) => (
+              <ListItem
+                button
+                key={sitem.id}
+                sx={{
+                  backgroundColor: isActiveRoute(sitem.link)
+                    ? "#8C2531"
+                    : "initial",
+                  borderLeft: isActiveRoute(sitem.link)
+                    ? "2px solid #fff"
+                    : "initial",
+                  marginBottom: "10px",
+                  paddingLeft: "38px",
+                  "&:hover": {
+                    backgroundColor: "#8C2531",
+                  },
+                }}
+              >
+                <Link href={sitem.link} passHref>
+                  <ListItemText
+                    primary={sitem.title}
+                    sx={{
+                      color: (theme) => theme.palette.primary.light,
+                      fontSize: "14px",
+                      margin: "0 !important",
+                      "& span": {
+                        fontSize: "14px",
+                      },
+                    }}
+                  />
+                </Link>
+              </ListItem>
+            ))}
+          </List>
+        )}
+      </Collapse>
     </ListItem>
   );
 };

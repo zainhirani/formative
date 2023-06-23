@@ -18,6 +18,7 @@ import Image from "theme/Image";
 import { COMMON_MENU, STUDENT_MENU, TEACHER_MENU } from "./sidebarData";
 import SidebarMultiMenuItem from "./SidebarIMultiMenuItem";
 import { DrawerHeader } from "./Styled";
+import MenuIcon from "@mui/icons-material/Menu";
 import { useAuthContext } from "contexts/AuthContext";
 
 interface BarComponentProps {
@@ -53,11 +54,11 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
             lazyLoad={true}
           />
         </Box>
-        {/* 
-        <IconButton onClick={clickHandler}>
+        
+        {/* <IconButton onClick={clickHandler}>
           <MenuIcon sx={{ color: (theme) => theme.palette.primary.light }} />
-        </IconButton> 
-        */}
+        </IconButton>  */}
+       
       </DrawerHeader>
 
       <List sx={{ height: "100%" }}>
@@ -115,6 +116,7 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
             width: "80%",
             margin: "0 auto",
             marginTop: "3rem",
+            marginBottom: "2rem"
           }}
         />
 
