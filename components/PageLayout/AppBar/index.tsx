@@ -5,6 +5,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Typography from "@mui/material/Typography";
 import RightMenu from "./RightMenu";
 import { AppBar, BoxWrapper, Toolbar } from "./Styled";
+import Breadcrumb from "components/Breadcrumb";
 
 interface BarComponentProps {
   open?: boolean;
@@ -63,6 +64,7 @@ const AppBarComponent: React.FC<BarComponentProps> = ({
                 sx={{ color: (theme) => theme.palette.primary.light }}
               />
             </IconButton>
+            <Breadcrumb />
             {iconAngle ? (
               <>
                 <Typography

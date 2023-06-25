@@ -24,6 +24,7 @@ const SearchSection = ({
   setFolder,
 }: SearchSectionProps) => {
   const searchQuiz = useFormattedMessage(messages.searchQuiz);
+
   const courseListing = useCourseListing({});
   const cousrseData = useMemo(() => {
     return courseListing?.data?.data?.map((item) => ({

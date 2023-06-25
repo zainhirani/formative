@@ -17,6 +17,7 @@ import { useRouter } from "next/router";
 import SearchBar from "./searchBar";
 import CloseIcon from "@mui/icons-material/Close";
 import {
+  useCourseDuplicate,
   useCourseListing,
   useCourseRemove,
   useCreateCourse,
@@ -29,20 +30,19 @@ import FooterForm from "./FooterForm";
 const ManageCourseScreen = () => {
   const [selectedAudience, setSelectedAudience] = React.useState("");
   const [selectedClass, setSelectedClass] = React.useState("");
-  const [searchChange, setSearchChange] = React.useState("");
+  const [searchChange, setSearchChange] = React.useState<any>(null);
   const [addCourse, setAddCourse] = useState("");
-  // @ts-ignore
-  // const getCourseListing = useCourseListing();
-  // console.log(getCourseListing, "getCourseListing");
-
+  const [page, setPage] = useState(1);
   const router = useRouter();
   const getCourseListing = useCourseListing({
-    SearchBy: searchChange,
     Limit: pageSizeManageCourse,
+    Page: page,
+    ...(searchChange && { SearchBy: searchChange }),
   });
   const createCourse = useCreateCourse();
   const deleteCourse = useCourseRemove();
   const targetCourse = useTargetCourse();
+  const duplicateCourse = useCourseDuplicate();
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [checked, setChecked] = useState(false);
@@ -58,7 +58,7 @@ const ManageCourseScreen = () => {
     {
       courseId: selectedRowId,
       programs: selectedAudience,
-      clas: selectedClass.toString(),
+      clas: selectedClass?.toString(),
     },
   ];
 
@@ -77,6 +77,10 @@ const ManageCourseScreen = () => {
 
   const handleDeleteCourse = () => {
     deleteCourse.mutate({ id: selectedRowId });
+  };
+
+  const handleDuplicateCourse = () => {
+    duplicateCourse.mutate({ id: selectedRowId });
   };
 
   const handleSelection = React.useCallback((ids: number[]) => {
@@ -168,6 +172,7 @@ const ManageCourseScreen = () => {
 
   useEffect(() => {
     checkedId.length === 0 && setSelectedRowId(0);
+    // @ts-ignore
     selectedRowId == undefined && setSelectedRowId(parseInt(checkedId));
   }, [checkedId, selectedRowId]);
 
@@ -184,7 +189,8 @@ const ManageCourseScreen = () => {
       />
       <TableWrapper>
         <CustomDataGrid
-          rows={getCourseListing?.data || []}
+          rows={getCourseListing?.data?.data || []}
+          // @ts-ignore
           getRowId={(row: any) => row.id}
           columns={columnsManageCourse}
           pageSizeData={pageSizeManageCourse}
@@ -196,6 +202,10 @@ const ManageCourseScreen = () => {
           selectedIds={checkedId}
           onRowSelect={handleSelection}
           getSelectedId={(e) => setSelectedRowId(e?.[0]?.[e.length - 1])}
+          page={page}
+          handlePageChange={(_, v) => setPage(v)}
+          // @ts-ignore
+          totalRows={getCourseListing?.data?.count}
         />
       </TableWrapper>
       <Box
@@ -203,9 +213,13 @@ const ManageCourseScreen = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          flexDirection: { md: "row", xs: "column" },
         }}
       >
-        <BoxWrapper display="grid" gridTemplateColumns="repeat(5, 1fr)">
+        <BoxWrapper
+          sx={{ display: { md: "grid", xs: "flex" }, alignItems: "center" }}
+          gridTemplateColumns="repeat(5, 1fr)"
+        >
           <FooterForm
             handleAddCourse={handleAddCourse}
             setAddCourse={setAddCourse}
@@ -216,8 +230,10 @@ const ManageCourseScreen = () => {
         <Box>
           <FooterButton
             deleteLoading={deleteCourse.isLoading}
+            duplicateLoading={duplicateCourse.isLoading}
             checked={checked}
             deleteCourse={handleDeleteCourse}
+            duplicateCourse={handleDuplicateCourse}
           />
         </Box>
       </Box>

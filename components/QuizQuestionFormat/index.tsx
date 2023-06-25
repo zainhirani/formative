@@ -28,6 +28,7 @@ type QuizQuestionFormatProps = {
   questionContext?: string;
   actualQuestion?: string;
   quizOptions?: object[];
+  // quizOptions?: {id:number,optionText:string}[];
   timeSpent?: string | number;
   score?: string | number;
   isHeader?: boolean;

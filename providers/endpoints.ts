@@ -11,6 +11,7 @@ export const TEACHER__GET_QUESTION_COUNT_ID =  '/questions/next/no';
 export const TEACHER__EDIT_QUESTIONS =  '/questions/'; //{id}
 export const TEACHER__DELETE_QUESTION =  '/questions/'; //{id}
 export const TEACHER__GET_QUESTIONS_BY_ID =  '/questions/';//{id}
+export const TEACHER__DUPLICATE_QUESTION =  '/questions/';//{id}
 export const TEACHER__GET_QUESTIONS_ATTEMPT_BY_ID =  '/question-attempt/';//{id}
 export const TEACHER__GET_QUESTIONS_BY_CATEGORY_ID =  '/questions/category/';//{id}
 

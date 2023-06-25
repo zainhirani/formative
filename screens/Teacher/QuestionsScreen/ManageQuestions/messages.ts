@@ -15,7 +15,7 @@ export default defineMessages({
   },
   facultyPlaceholder: {
     id: `${scope}.facultyPlaceholder`,
-    defaultMessage: "David Harrison",
+    defaultMessage: "Select faculty",
   },
   folder: {
     id: `${scope}.folder`,
@@ -23,7 +23,7 @@ export default defineMessages({
   },
   folderPlaceholder: {
     id: `${scope}.folderPlaceholder`,
-    defaultMessage: "MedChem",
+    defaultMessage: "Select folder",
   },
   type: {
     id: `${scope}.type`,
@@ -31,7 +31,7 @@ export default defineMessages({
   },
   typePlaceholder: {
     id: `${scope}.typePlaceholder`,
-    defaultMessage: "Select",
+    defaultMessage: "Select type",
   },
   category: {
     id: `${scope}.category`,
@@ -39,7 +39,7 @@ export default defineMessages({
   },
   categoryPlaceholder: {
     id: `${scope}.categoryPlaceholder`,
-    defaultMessage: "Select Multiple",
+    defaultMessage: "Select Categories",
   },
   categories: {
     id: `${scope}.categories`,

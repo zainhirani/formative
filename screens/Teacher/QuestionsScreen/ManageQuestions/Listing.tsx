@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState } from "react";
 import { BoxWrapper } from "./Styled";
 import CustomDataGrid from "components/CustomDataGrid";
@@ -11,10 +12,18 @@ import FormattedMessage from "theme/FormattedMessage";
 import messages from "./messages";
 import { Grid, IconButton, Box } from "@mui/material";
 import Image from "next/image";
-import { useQuestionsListing } from "providers/Teacher_Questions";
+import {
+  useDeleteQuestion,
+  useDuplicateQuestion,
+  useQuestionsListing,
+} from "providers/Teacher_Questions";
 import { isStringNotURL, removeHTMLTags } from "utils";
 import ImagePreviewModal from "components/ImagePreviewModal";
 import ViewQuestion from "./ViewQuestion";
+import { useRouter } from "next/router";
+import APP_ROUTES from "constants/RouteConstants";
+import { useQueryClient } from "react-query";
+import { LIMIT } from "configs";
 
 interface ListingProp {
   folder: any;
@@ -22,23 +31,31 @@ interface ListingProp {
   enumType: any;
   category: any;
 }
-// @ts-ignore
+
 const Listing: React.FC = ({
   category,
   enumType,
   facultyCategory,
   folder,
 }: ListingProp) => {
+  const [page, setPage] = useState(1);
+  const client = useQueryClient();
+  let router = useRouter();
   let questions = useQuestionsListing({
     ...(facultyCategory?.length > 0 && { facultyId: facultyCategory }),
     ...(folder && { folderId: folder }),
     ...(enumType && { type: enumType }),
     ...(category && { categories: category }),
+    Limit: LIMIT,
+    Page: page,
   });
+  let deleteMutation = useDeleteQuestion();
 
   let [image, setImage] = useState<string>("");
   const [questionId, setQuestionId] = useState<string | undefined>(undefined);
   const [questiondrawer, setQuestionDrawer] = useState(false);
+
+  const duplicateQuestionMutation = useDuplicateQuestion();
 
   const handleSetImage = (imageName: string) => {
     let url = "";
@@ -72,7 +89,7 @@ const Listing: React.FC = ({
       flex: 1,
     },
     {
-      field: "diff",
+      field: "difficulty",
       headerName: "Difficulty",
       minWidth: 150,
       flex: 1,
@@ -126,13 +143,31 @@ const Listing: React.FC = ({
                 <Image alt="view" src={viewSvg} width={15} height={15} />
               </IconButton>
               <IconButton>
-                <Image alt="edit" src={editSvg} width={15} height={15} />
+                <Image
+                  alt="edit"
+                  src={editSvg}
+                  width={15}
+                  height={15}
+                  onClick={() =>
+                    router.push(
+                      `${APP_ROUTES.QUESTIONS_EDIT_QUESTIONS}/${data.row.id}`,
+                    )
+                  }
+                />
               </IconButton>
-              <IconButton>
+              <IconButton
+                onClick={() => duplicateQuestionMutation.mutate(data.row.id)}
+              >
                 <Image alt="copy" src={copySvg} width={15} height={15} />
               </IconButton>
               <IconButton>
-                <Image alt="delete" src={trashSvg} width={15} height={15} />
+                <Image
+                  alt="delete"
+                  src={trashSvg}
+                  width={15}
+                  height={15}
+                  onClick={() => deleteMutation.mutate(data.row.id)}
+                />
               </IconButton>
             </Grid>
           </Grid>
@@ -153,20 +188,25 @@ const Listing: React.FC = ({
           </Box>
         );
       },
-      onClick: () => {},
+      onClick: () => router.push(APP_ROUTES.QUESTIONS_CREATE_NEW),
     },
   ];
   return (
     <BoxWrapper>
-      {/* @ts-ignore */}
       <CustomDataGrid
+        page={page}
+        handlePageChange={(_, v) => setPage(v)}
+        totalRows={questions?.data?.count}
         rows={questions?.data?.data}
         columns={COLUMNS_CONFIG}
-        totalRows={questions?.data?.data?.length || 0}
         pageSizeData={10}
         type={"1"}
         buttonArray={FOOTER_CONFIG}
-        loading={questions?.isFetching}
+        loading={
+          questions?.isFetching ||
+          duplicateQuestionMutation.isLoading ||
+          deleteMutation.isLoading
+        }
       />
       <ImagePreviewModal
         open={Boolean(image)}

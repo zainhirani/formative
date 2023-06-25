@@ -10,6 +10,8 @@ const APP_ROUTES = {
   QUESTIONS_CREATE_NEW: "/teacher/questions/add",
   QUESTIONS_UPLOAD_QUESTIONS: "/teacher/questions/upload",
   QUESTIONS_MANAGE_QUESTIONS: "/teacher/questions/manage",
+  QUESTIONS_EDIT_QUESTIONS: "/teacher/questions/edit/",
+
   // - Students Section
   STUDENTS: "/teacher/students",
   // - Courses Section

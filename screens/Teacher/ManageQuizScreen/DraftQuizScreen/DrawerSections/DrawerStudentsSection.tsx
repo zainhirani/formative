@@ -26,7 +26,7 @@ import CustomSelect from "components/CustomSelect/CustomSelect";
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
 import { yearsSelectOptions } from "utils";
 import FormattedDate from "theme/FormattedDate";
-import { useStudentListing } from "providers/teacher/student";
+import { useStudentListing } from "providers/Teacher/student";
 import { useQuizDistribute } from "providers/Teacher/TeacherQuiz";
 import { enqueueSnackbar } from "notistack";
 import { GridCloseIcon } from "@mui/x-data-grid";
@@ -245,7 +245,7 @@ const DrawerStudentsSection = (props: any) => {
       onClick: () => {
         quizDistribute.mutate({ id: 3, studentsId: selectedRows });
         // selectedRows
-        console.log("Click Distribute");
+        // console.log("Click Distribute");
       },
     },
   ];

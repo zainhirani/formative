@@ -39,7 +39,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
   getSelectedId = () => {},
   page = 1,
   handlePageChange,
-  totalRows,
+  totalRows = rows?.length,
   ...props
 }) => {
   const totalPages = Math.ceil(totalRows / pageSizeData);

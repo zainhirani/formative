@@ -34,6 +34,13 @@ export const getQuestionById = (id: any) => {
   });
 };
 
+export const duplicateQuestion = (id: any) => {
+  return service({
+    url: `/questions/${id}/duplicate`,
+    method: "POST",
+  });
+};
+
 export const getCategories = async () => {
   return await service({
     url: TEACHER__GET_CATEGORIES,
@@ -56,7 +63,7 @@ export const getFaculties = async () => {
 };
 
 export const addQuestion = async (payload: any) => {
-  return service({
+  return await service({
     method: "POST",
     url: TEACHER__ADD_QUESTION,
     body: payload,
@@ -71,16 +78,18 @@ export const getFolders = async () => {
   });
 };
 
-export const editQuestion = async () => {
-  return await service({
-    url: TEACHER__EDIT_QUESTIONS,
+export const editQuestion = (payload: any) => {
+  return service({
+    url: `/questions/${payload.qId}`,
     method: "PATCH",
+    body: payload.formdata,
+    formData: true,
   });
 };
 
-export const deleteQuestion = async () => {
-  return await service({
-    url: TEACHER__DELETE_QUESTION,
+export const deleteQuestion = (id: any) => {
+  return service({
+    url: `/questions/${id}`,
     method: "DELETE",
   });
 };

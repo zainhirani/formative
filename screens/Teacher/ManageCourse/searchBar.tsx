@@ -12,6 +12,7 @@ import CustomSelect from "components/CustomSelect/CustomSelect";
 import { useSnackbar } from "notistack";
 import { class_of } from "mock-data/Teacher/ManageCourse";
 import { LoadingButtonWrapper } from "./Styled";
+import { debounce } from "lodash";
 
 const SearchBar = (props: any) => {
   const {
@@ -28,16 +29,22 @@ const SearchBar = (props: any) => {
   const [targetClass, setTargetClass] = useState(1990);
 
   const handleSelectAudienceChange = (selectedOption: any) => {
-    setTargetCourse(selectedOption.label);
-    setSelectedAudience(selectedOption.value);
+    setTargetCourse(selectedOption?.label);
+    setSelectedAudience(selectedOption?.label);
   };
   const handleSelectClassChange = (selectedOption: any) => {
-    setSelectedClass(selectedOption.label);
-    setTargetClass(selectedOption.value);
+    setSelectedClass(selectedOption?.label);
+    setTargetClass(selectedOption?.value);
   };
-  const handleSearchChange = (search: any) => {
-    setSearchChange(search.target.value);
+
+  const debouncedSearch = debounce((criteria) => {
+    setSearchChange(criteria);
+  }, 400);
+
+  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    debouncedSearch(e.target.value);
   };
+
   const target_audience = [
     { value: "chp/bms", label: "CHP/BMS" },
     { value: "chp/dpt", label: "CHP/DPT" },
@@ -53,12 +60,21 @@ const SearchBar = (props: any) => {
   const onChange = () => {};
 
   return (
-    <BoxWrapper display="grid" gridTemplateColumns="repeat(12, 1fr)">
+    <BoxWrapper
+      sx={{
+        display: { md: "grid", xs: "flex" },
+        flexDirection: { xs: "column", md: "row" },
+        padding: { md: "0", xs: "20px" },
+      }}
+      display="grid"
+      gridTemplateColumns="repeat(12, 1fr)"
+    >
       <Box gridColumn="span 3">
         <TextFieldStyled
           placeholder="Search Course"
           variant="outlined"
-          onChange={handleSearchChange}
+          onChange={onInputChange}
+          autoComplete="off"
           InputProps={{
             style: { border: "none", outline: "0px" },
             endAdornment: (
@@ -76,7 +92,6 @@ const SearchBar = (props: any) => {
           controlText="Target Audience: School/Program: "
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={target_audience}
-          value={{ label: targetCourse, value: targetCourse }}
           onChange={handleSelectAudienceChange}
         />
       </Box>
@@ -85,7 +100,6 @@ const SearchBar = (props: any) => {
           controlText="Class of: "
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={class_of}
-          value={{ label: targetClass, value: targetClass }}
           onChange={handleSelectClassChange}
         />
       </Box>

@@ -27,10 +27,15 @@ const DraftQuizScreen: NextPage = () => {
     data: quizByIdData,
     isFetching: quizByIdIsFetching,
     isSuccess,
+    refetch,
   } = useQuizById({
     id: quizEditId,
   });
   const editPage = quizEditId == undefined ? false : true;
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   useEffect(() => {
     if (editPage) {

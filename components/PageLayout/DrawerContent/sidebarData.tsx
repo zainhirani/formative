@@ -94,11 +94,11 @@ export const TEACHER_MENU = [
         title: "Create New",
         link: APP_ROUTES.QUESTIONS_CREATE_NEW,
       },
-      {
-        id: 2,
-        title: "Upload Questions",
-        link: APP_ROUTES.QUESTIONS_UPLOAD_QUESTIONS,
-      },
+      // {
+      //   id: 2,
+      //   title: "Upload Questions",
+      //   link: APP_ROUTES.QUESTIONS_UPLOAD_QUESTIONS,
+      // },
       {
         id: 3,
         title: "Manage Questions",

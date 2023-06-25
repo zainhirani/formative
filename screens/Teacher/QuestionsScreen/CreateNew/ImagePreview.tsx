@@ -1,34 +1,4 @@
-// import React from "react";
-// import { BoxWrapper } from "./Styled";
-// import { Box, Button, Typography } from "@mui/material";
-// import FormattedMessage from "theme/FormattedMessage";
-// import messages from "./messages";
-// import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
-
-// const ImageSection = () => {
-//   return (
-//     <BoxWrapper sx={{ p: "20px" }}>
-//       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-//         <Typography>
-//           <FormattedMessage {...messages.imageLabel} />
-//         </Typography>
-//         <Button
-//           sx={{ textTransform: "capitalize" }}
-//           startIcon={<AddCircleOutlineRoundedIcon />}
-//         >
-//           <FormattedMessage {...messages.addImageButton} />
-//         </Button>
-//       </Box>
-//       <Typography>
-//         <FormattedMessage {...messages.addImageText} />
-//       </Typography>
-//     </BoxWrapper>
-//   );
-// };
-
-// export default ImageSection;
-
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Grid, IconButton, Paper, Typography } from "@mui/material";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
@@ -36,10 +6,12 @@ import messages from "./messages";
 
 interface ImageUploadProps {
   onImageUpload?: (image: File | null) => void;
+  src?: any;
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({
   onImageUpload = () => {},
+  src = null,
 }) => {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
@@ -63,6 +35,12 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 
     onImageUpload(null);
   };
+
+  useEffect(() => {
+    if (src) {
+      setPreviewImage(src);
+    }
+  }, [src]);
 
   return (
     <Paper

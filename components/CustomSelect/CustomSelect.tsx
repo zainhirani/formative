@@ -19,6 +19,7 @@ interface CustomSelectProps {
   isDisabled?: Boolean | undefined;
   isFetching?: boolean;
   isMulti?: boolean;
+  defaultValue?: any;
 }
 
 const CustomDropdownIndicator = (props: any) => {
@@ -51,12 +52,13 @@ const CustomSelect: FC<CustomSelectProps> = ({
   placeholder,
   onChange,
   value,
+  isFetching,
+  isMulti,
+  defaultValue,
   onBlur,
   name,
   isClearable,
   isDisabled,
-  isFetching,
-  isMulti,
   ...rest
 }) => {
   const style = {
@@ -128,6 +130,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
         customStyles={style}
         className="custom-select"
         value={value}
+        defaultValue={defaultValue}
         isDisabled={isDisabled}
         {...rest}
       />

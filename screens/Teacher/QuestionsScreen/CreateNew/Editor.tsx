@@ -70,12 +70,12 @@ import Paper from "@mui/material/Paper";
 import { Editor } from "@tinymce/tinymce-react";
 
 interface EditorComponentProps {
-  initialValue: string;
+  value: string;
   onChange: (content: string) => void;
 }
 
 const EditorComponent: React.FC<EditorComponentProps> = ({
-  initialValue,
+  value,
   onChange,
 }) => {
   const handleEditorChange = (content: string, editor: any) => {
@@ -85,8 +85,8 @@ const EditorComponent: React.FC<EditorComponentProps> = ({
   return (
     <Paper elevation={3} sx={{ width: "100%", height: "400px" }}>
       <Editor
-        apiKey="n5dfl588dfdndu2dda1rtm9h9g5fwbbj21lzjf99a72k5xzz"
-        initialValue={initialValue}
+        apiKey={process.env.NEXT_PUBLIC_EDITOR_API_KEY}
+        value={value}
         init={{
           toolbar_mode: "wrap",
           height: 400,

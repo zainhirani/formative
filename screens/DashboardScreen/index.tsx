@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { Button } from "@mui/material";
+import React from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
@@ -15,9 +14,9 @@ import {
   PROFILE,
 } from "configs";
 import messages from "./messages";
-import Link from "next/link";
 import APP_ROUTES from "constants/RouteConstants";
-import SideDrawer from "components/Drawer";
+import { useAuthContext } from "contexts/AuthContext";
+import { generateGreetings } from "utils";
 
 // Teacher's Dashboard Content
 const teachersDashboardContent = [
@@ -77,6 +76,8 @@ const studentsDashboardContent = [
 ];
 
 const DashboardScreen = () => {
+  const { currentUser } = useAuthContext();
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -91,7 +92,10 @@ const DashboardScreen = () => {
               maxWidth: "380px",
             }}
           >
-            <FormattedMessage {...messages.title} />
+            <div>
+              Welcome {currentUser.first_name + " " + currentUser.last_name}
+            </div>
+            <div>{generateGreetings()}</div>
           </Typography>
           <Typography variant="body2">
             <FormattedMessage {...messages.pitch} />
@@ -117,9 +121,6 @@ const DashboardScreen = () => {
           ))}
         </Box>
       </Box>
-      {/* // </PageLayout> */}
-
-      {/* Student Dashboard Screen */}
     </>
   );
 };

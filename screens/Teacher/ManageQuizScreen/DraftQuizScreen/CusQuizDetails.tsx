@@ -108,7 +108,7 @@ const CusQuizDetails = (props: any) => {
     setFieldValue("scoringId", obj);
   };
 
-  console.log(values?.reviewable, "values?.reviewable");
+  // console.log(values?.reviewable, "values?.reviewable");
 
   return (
     <BoxWrapper>

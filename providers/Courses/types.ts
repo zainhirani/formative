@@ -17,8 +17,12 @@ export namespace Course {
   };
 
   //Listing
-  export type ListingProps = {};
-  export type ListingResponse = [Item];
+  export type ListingProps = {
+    SearchBy?: string | null;
+    Limit?: number | null;
+    Page?: number;
+  };
+  export type ListingResponse = { data: Item[]; count: number };
   export interface ListingAPIPayload extends ListingProps {}
 
   //Create
@@ -83,4 +87,14 @@ export namespace Course {
     id: number;
   };
   export interface RemoveAPIPayload extends RemoveMutationPayload {}
+
+  //Duplicate
+  export type DuplicateProps = {};
+  export type DuplicateResponse = {
+    data: boolean;
+  };
+  export type DuplicateMutationPayload = {
+    id: number;
+  };
+  export interface DuplicateAPIPayload extends DuplicateMutationPayload {}
 }

@@ -89,7 +89,7 @@ const TableSection = (props: any) => {
     end_time: end_time_save,
     questionsId: questionIds,
   };
-  console.log(saveObject, "saveObject");
+  // console.log(saveObject, "saveObject");
 
   const handelSaveQuiz = (e: any) => {
     if (

@@ -19,10 +19,6 @@ const ViewQuestion = ({
   const questionDetails = useQuestionDetails({
     questionId: questionId,
   });
-  console.log(
-    "🚀 ~ file: ViewQuestion.tsx:21 ~ questionDetails:",
-    questionDetails,
-  );
 
   const quizOptions = useMemo(() => {
     if (questionDetails?.data?.option) {
