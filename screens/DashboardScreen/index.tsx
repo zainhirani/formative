@@ -16,6 +16,9 @@ import {
 import messages from "./messages";
 import SideDrawer from "components/Drawer";
 import APP_ROUTES from "constants/RouteConstants";
+import { useAuthContext } from "contexts/AuthContext";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 // Teacher's Dashboard Content
 const teachersDashboardContent = [
@@ -166,6 +169,8 @@ const collegesData = [
 ];
 
 const DashboardScreen = () => {
+  const { currentUser } = useAuthContext();
+  const router = useRouter();
   let config = [
     {
       columnName: COLUMN_NAME.ID,
@@ -220,29 +225,54 @@ const DashboardScreen = () => {
           </Typography>
         </Box>
         <Box sx={{ display: "flex", flexWrap: "wrap", gap: "20px" }} mt={1}>
-          {teachersDashboardContent.map((item, index) => (
-            <Paper
-              key={index}
-              sx={{
-                padding: 0,
-                borderRadius: "none",
-                boxShadow: "none",
-                width: "48%",
-              }}
-            >
-              <Iconbox
-                title={item.title}
-                description={item.description}
-                image={item.image}
-              ></Iconbox>
-            </Paper>
-          ))}
+          {currentUser?.type === "ADMIN"
+            ? teachersDashboardContent.map((item, index) => (
+                <Link href={item.link}>
+                  <Paper
+                    key={index}
+                    // onClick={() => router.push(item.link)}
+                    sx={{
+                      padding: 0,
+                      borderRadius: "none",
+                      boxShadow: "none",
+                      width: "48%",
+                    }}
+                  >
+                    <Iconbox
+                      title={item.title}
+                      description={item.description}
+                      image={item.image}
+                      // url={item.link}
+                    ></Iconbox>
+                  </Paper>
+                </Link>
+              ))
+            : studentsDashboardContent.map((item, index) => (
+                <Link href={item.link}>
+                  <Paper
+                    key={index}
+                    onClick={() => router.push(item.link)}
+                    sx={{
+                      padding: 0,
+                      borderRadius: "none",
+                      boxShadow: "none",
+                      width: "48%",
+                    }}
+                  >
+                    <Iconbox
+                      title={item.title}
+                      description={item.description}
+                      image={item.image}
+                      url={item.link}
+                    ></Iconbox>
+                  </Paper>
+                </Link>
+              ))}
         </Box>
       </Box>
       {/* // </PageLayout> */}
 
       {/* Student Dashboard Screen */}
-    
     </>
   );
 };
