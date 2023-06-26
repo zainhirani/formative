@@ -147,8 +147,9 @@ const CusQuizDetails = (props: any) => {
                 name="time"
                 fullWidth
                 type="number"
+                // defaultValue={values?.timeLimitPerSec}
                 value={values?.timeLimitPerSec}
-                defaultValue={0}
+                // defaultValue={0}
                 inputProps={{ min: 0 }}
                 variant="standard"
                 required

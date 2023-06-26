@@ -28,7 +28,12 @@ import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOu
 import { useRouter } from "next/router";
 import { enqueueSnackbar } from "notistack";
 import dayjs from "dayjs";
-import { useQuizSave, useQuizSaveEdit } from "providers/Teacher/TeacherQuiz";
+import {
+  useQuizDuplicate,
+  useQuizRemove,
+  useQuizSave,
+  useQuizSaveEdit,
+} from "providers/Teacher/TeacherQuiz";
 import APP_ROUTES from "constants/RouteConstants";
 
 const TableSection = (props: any) => {
@@ -45,17 +50,20 @@ const TableSection = (props: any) => {
   const [drawerOpenStudents, setDrawerOpenStudents] = useState(false);
   const [afterDatevalue, setAfterDatevalue] = useState(null);
   const [beforeDatevalue, setBeforeDatevalue] = useState(null);
+  const [loadingTable, setLoadingTable] = useState(false);
   const router = useRouter();
   const { id: editId } = router.query;
   const editPage = editId == undefined ? false : true;
   const quizSave = useQuizSave({});
   const quizSaveEdit = useQuizSaveEdit({});
+  const deleteQuiz = useQuizRemove();
+  const duplicateQuiz = useQuizDuplicate();
 
   useEffect(() => {
-    if (quizSave.isSuccess) {
+    if ((quizSave.isSuccess, deleteQuiz.isSuccess, duplicateQuiz.isSuccess)) {
       router.push(APP_ROUTES.MANAGE_QUIZ);
     }
-  }, [quizSave.isSuccess]);
+  }, [quizSave.isSuccess, deleteQuiz.isSuccess, duplicateQuiz.isSuccess]);
 
   // Save Payload
   function extractIds(arr: any) {
@@ -127,7 +135,9 @@ const TableSection = (props: any) => {
       render: () => {
         return <Box>Print</Box>;
       },
-      onClick: () => {},
+      onClick: () => {
+        window.print();
+      },
     },
     {
       key: "refresh",
@@ -136,7 +146,10 @@ const TableSection = (props: any) => {
         return <Box>Refresh</Box>;
       },
       onClick: () => {
-        // console.log("Refresh");
+        setLoadingTable(true);
+        setTimeout(() => {
+          setLoadingTable(false);
+        }, 1000);
       },
     },
     {
@@ -176,6 +189,27 @@ const TableSection = (props: any) => {
     setFieldValue("end_time", formattedDate);
     setAfterDatevalue(formattedDate);
   };
+  const handleDeleteQuiz = async () => {
+    const result: any = await deleteQuiz.mutateAsync({ id: editId });
+    if (result?.data) {
+      router.push(APP_ROUTES.MANAGE_QUIZ);
+    }
+    enqueueSnackbar("Quiz Deleted Successfully", {
+      variant: "success",
+      autoHideDuration: 3000,
+    });
+  };
+  const handleDuplicateQuiz = async () => {
+    const result: any = await duplicateQuiz.mutateAsync({ id: editId });
+    if (result?.id) {
+      router.push(APP_ROUTES.MANAGE_QUIZ);
+    }
+    enqueueSnackbar("Quiz Duplicate Successfully", {
+      variant: "success",
+      autoHideDuration: 3000,
+    });
+  };
+  const currentDate = editPage ? dayjs(`${quizByIdData?.start_time}`) : dayjs();
 
   return (
     <>
@@ -187,6 +221,7 @@ const TableSection = (props: any) => {
           type={"2"}
           isCheckbox={false}
           buttonArray={configManageQuiz}
+          loading={loadingTable}
         />
       </BoxWrapper>
 
@@ -196,6 +231,7 @@ const TableSection = (props: any) => {
             label="Start Time"
             value={editId ? dayjs(`${quizByIdData?.start_time}`) : null}
             onChange={startDateHandler}
+            currentDate={currentDate}
           />
           <CustomeDateTimePicker
             label="Stop Time:"
@@ -207,7 +243,7 @@ const TableSection = (props: any) => {
           <ButtonGroup
             className="quizButtonGroup"
             variant="contained"
-            aria-label="Grouped button"
+            // aria-label="Grouped button"
           >
             <ButtonWrapper
               startIcon={<AddCircleOutlineOutlinedIcon />}
@@ -228,6 +264,7 @@ const TableSection = (props: any) => {
               <ButtonWrapper
                 startIcon={<DifferenceOutlinedIcon />}
                 className="btn"
+                onClick={handleDuplicateQuiz}
               >
                 Duplicate
               </ButtonWrapper>
@@ -244,6 +281,7 @@ const TableSection = (props: any) => {
               <ButtonWrapper
                 startIcon={<DeleteOutlineOutlinedIcon />}
                 className="btn"
+                onClick={handleDeleteQuiz}
               >
                 Delete
               </ButtonWrapper>

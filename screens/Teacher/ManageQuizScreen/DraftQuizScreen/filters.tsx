@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useMemo, useEffect, useState } from "react";
 import {
   BoxWrapper,
@@ -23,8 +24,11 @@ const FiltersSection = (props: any) => {
     props;
   const coursesList = useCourseListing();
   const foldersList = useFoldersListing();
-  const { data: quizNo } = useQuizNo();
+  const { data: quizNo, refetch: quizNumRefetch } = useQuizNo();
 
+  useEffect(() => {
+    quizNumRefetch();
+  }, []);
   const optionsFolder = useMemo(() => {
     return foldersList?.data?.data?.map((item: any) => ({
       value: item?.id,

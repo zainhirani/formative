@@ -11,6 +11,7 @@ interface TypeTwoProps {
   buttonArray?: ButtonConfig[];
   checkboxSelection?: boolean;
   onRowClick?: () => void;
+  loading?: boolean;
 }
 
 const TypeTwo: React.FC<TypeTwoProps> = ({
@@ -18,6 +19,7 @@ const TypeTwo: React.FC<TypeTwoProps> = ({
   rows,
   columns,
   buttonArray,
+  loading,
   onRowClick = () => {},
   ...props
 }) => {
@@ -41,6 +43,7 @@ const TypeTwo: React.FC<TypeTwoProps> = ({
                   disableColumnSelector
                   disableDensitySelector
                   disableRowSelectionOnClick
+                  loading={loading}
                   {...props}
                 />
               </Box>

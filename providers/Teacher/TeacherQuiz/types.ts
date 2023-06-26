@@ -43,7 +43,7 @@ export namespace Quiz {
 
   //Courses Listing
   export type CourseListingProps = {};
-  export type CourseListingResponse = []
+  export type CourseListingResponse = [data:[] |undefined,count: number |undefined]
   export interface CourseListingAPIPayload extends CourseListingProps {}
     
   //Folder Listing
@@ -220,6 +220,28 @@ export namespace Quiz {
   export interface QuizSaveEditAPIPayload extends QuizSaveEditProps {
     quizId: QuizSaveEditMutationPayload
   }
+
+
+  //Quiz Remove
+
+  export type RemoveProps = {};
+  export type RemoveResponse = {
+    data: boolean;
+  };
+  export type RemoveMutationPayload = {
+    id: number |string | string[] | undefined;
+  };
+  export interface RemoveAPIPayload extends RemoveMutationPayload {}
+
+  //Quiz Duplicate
+  export type DuplicateProps = {};
+  export type DuplicateResponse = {
+    data: boolean;
+  };
+  export type DuplicateMutationPayload = {
+    id: number |string | string[] | undefined;
+  };
+  export interface DuplicateAPIPayload extends DuplicateMutationPayload {}
 
 }
 

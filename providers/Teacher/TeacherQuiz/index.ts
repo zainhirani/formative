@@ -181,3 +181,43 @@ export function useQuizSaveEdit(
     retry: 0,
   });
 }
+
+
+
+//Quiz Remove
+export function useQuizRemove(props?: Quiz.RemoveProps): UseMutationResult<
+  Quiz.RemoveResponse,
+  {
+    message?: string;
+  },
+  Quiz.RemoveMutationPayload
+> {
+  const queryClient = useQueryClient();
+  return useMutation((payload) => api.remove(payload), {
+    mutationKey: `${KEY}|Remove`,
+    onSuccess: () => {
+      queryClient.invalidateQueries([KEY]);
+    },
+    retry: 0,
+  });
+}
+
+//Quiz Duplicate
+export function useQuizDuplicate(
+  props?: Quiz.DuplicateProps,
+): UseMutationResult<
+  Quiz.DuplicateResponse,
+  {
+    message?: string;
+  },
+  Quiz.DuplicateMutationPayload
+> {
+  const queryClient = useQueryClient();
+  return useMutation((payload) => api.duplicate(payload), {
+    mutationKey: `${KEY}|Duplicate`,
+    onSuccess: () => {
+      queryClient.invalidateQueries([KEY]);
+    },
+    retry: 0,
+  });
+}

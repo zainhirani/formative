@@ -29,7 +29,7 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
 const Breadcrumb = () => {
   const router = useRouter();
   const pathnames = router.asPath.split("/").filter((x) => x);
-  console.log(router);
+  // console.log(router);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [drawerOpenTooltip, setDrawerOpenTooltip] = useState(false);
 
@@ -78,7 +78,7 @@ const Breadcrumb = () => {
         {pathnames.map((pathname, index) => {
           const routeTo = `/${pathnames.slice(0, index + 1).join("/")}`;
           const isLast = index === pathnames.length - 1;
-          console.log(isLast);
+          // console.log(isLast);
           return isLast ? (
             <Typography sx={{ color: "#404040" }} key={pathname}>
               {capitalizeFirstLetter(pathname)}

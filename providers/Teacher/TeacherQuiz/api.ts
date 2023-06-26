@@ -147,3 +147,25 @@ export async function quizSaveEdit(
     body: props?.data?.saveObject,
   });
 }
+
+
+
+// Remove
+export async function remove(
+  props: Quiz.RemoveAPIPayload,
+): Promise<Quiz.RemoveResponse> {
+  return service({
+    method: "DELETE",
+    url: `/quiz/${props.id}`,
+  });
+}
+
+// Duplicate
+export async function duplicate(
+  props: Quiz.DuplicateAPIPayload,
+): Promise<Quiz.DuplicateResponse> {
+  return service({
+    method: "POST",
+    url: `/quiz/${props.id}/duplicate`,
+  });
+}

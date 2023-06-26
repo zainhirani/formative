@@ -72,6 +72,7 @@ const CustomDataGrid: React.FC<CustomDataGridProps> = ({
           pageSizeData={pageSizeData}
           buttonArray={buttonArray}
           checkboxSelection={isCheckbox}
+          loading={loading}
         />
       ) : type == "3" ? (
         <TypeThree
