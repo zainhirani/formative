@@ -5,7 +5,7 @@ import {
   pageSizeManageQuiz,
 } from "mock-data/Teacher/ManageQuiz";
 import CustomDataGrid from "components/CustomDataGrid";
-import { useTeacherQuizListing } from "providers/teacher/TeacherQuiz";
+import { useTeacherQuizListing } from "providers/Teacher/TeacherQuiz";
 
 const TableSection = (props: any) => {
   const { searchChange, selectCourse, selectFolder, selectStatus } = props;
