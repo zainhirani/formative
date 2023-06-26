@@ -14,21 +14,27 @@ interface IOptionProps {
 }
 
 type ITakeQuizProps = {
-  id: string;
-  QNo: string;
-  question: string;
+  id?: string;
+  QNo?: string;
+  question?: string;
   image?: string;
-  options: IOptionProps[];
+  options?: IOptionProps[];
   time?: number;
-  questionSelected: boolean;
-  setSubmit: any;
-  submit: boolean;
-  setCheckedStateAns: any;
-  checkedStateAns: any;
-  questionData: any;
-  setRemainingTime: any;
-  remainingTime: any;
-  timer: any;
+  questionSelected?: boolean;
+  setSubmit?: any;
+  submit?: boolean;
+  setCheckedStateAns?: any;
+  checkedStateAns?: any;
+  questionData?: any;
+  setRemainingTime?: any;
+  remainingTime?: any;
+  timer?: any;
+  questionTitle?: string;
+  questionID?: number;
+  questionDetail?: string;
+  questionMedia?: File;
+  questionOption?: string;
+  timelimit?: number;
 };
 
 const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
@@ -47,6 +53,12 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
   setRemainingTime,
   remainingTime,
   timer,
+  questionTitle,
+  questionID,
+  questionDetail,
+  questionMedia,
+  questionOption,
+  timelimit,
 }): JSX.Element => {
   const [ansCorrect, setAnsCorrect] = React.useState(false);
 
@@ -137,35 +149,29 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
               fontSize={14}
               sx={{ color: (theme) => theme.palette.text.secondary }}
             >
-              Question {QNo}
+              Question {questionTitle}
             </Typography>
             <Typography
               fontSize={14}
               sx={{ color: (theme) => theme.palette.text.secondary }}
             >
-              Qid = {id}
+              Qid = {questionID}
             </Typography>
           </Box>
           <Box sx={{ paddingTop: "10px" }}>
             <Typography sx={{ marginBottom: "5px" }} fontSize={18}>
-              {question}
+              {questionDetail}
             </Typography>
             {submit === false ? (
               <Image
                 alt="quiz-image"
                 lazyLoadProps={{ height: 240 }}
-                src={image}
+                src={questionMedia}
                 lazyLoad={true}
                 style={{ maxWidth: "100%", marginTop: "30px" }}
               />
             ) : (
               <></>
-              // <Typography
-              //   sx={{ marginBottom: "30px", color: "#225A41" }}
-              //   fontSize={18}
-              // >
-              //   Your answer is correct!
-              // </Typography>
             )}
           </Box>
           <Box sx={{ marginTop: "30px" }}>
