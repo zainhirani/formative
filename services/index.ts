@@ -1,3 +1,4 @@
+import { signOut } from "next-auth/react";
 import omit from "lodash/omit";
 import qs from "query-string";
 import { PUBLIC_API_URL, TOKEN } from "configs";
@@ -89,6 +90,10 @@ async function service(args: IAPArgs): Promise<any> {
   if (data.status >= 400) {
     const error = await data.json();
     throw error;
+  }
+
+  if (data?.status === 401) {
+    signOut({ callbackUrl: "/login" });
   }
   // logSuccess(API_URL, JSON.stringify(data));
   return parseJSON ? await data.json() : data;
