@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState } from "react";
 import SideDrawer from "components/Drawer";
 import { useAppState } from "contexts/AppStateContext";
