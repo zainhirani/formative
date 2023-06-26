@@ -12,6 +12,8 @@ import CircleUnchecked from "@material-ui/icons/RadioButtonUnchecked";
 import Image from "next/image";
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
 import CustomSelectTestYourSelf from "components/CustomSelectTestYourSelf/CustomSelectTestYourSelf";
+import { useCategoryListing } from "providers/Students/TestQuestions/Categories";
+import { useQuestionListing } from "providers/Students/QuestionByCategory";
 
 const PageLayout = dynamic(() => import("components/PageLayout"), {
   ssr: false,
@@ -57,7 +59,19 @@ const dataTestYourself = [
 ];
 
 const TestYourself = () => {
-  const timer = 300;
+  const categoryList = useCategoryListing();
+  const optionsCourse = categoryList?.data?.data?.map((item) => ({
+    value: item.id,
+    label: item.name,
+  }));
+  const [category, setCategory] = useState(optionsCourse);
+  const handleCategoryChange = (e: any) => {
+    setCategory(e.target?.value);
+  };
+  console.log(optionsCourse, "selected course");
+
+  const questionList = useQuestionListing({ id: 1 });
+  const timer = 120;
   const [remainingTime, setRemainingTime] = useState(timer);
 
   const [checkedStateAns, setCheckedStateAns] = useState(
@@ -165,32 +179,16 @@ const TestYourself = () => {
     },
   ];
 
-  const optionsCourse = [
-    {
-      value: "Biochem - Enzymes As Catalysts",
-      label: "Biochem - Enzymes As Catalysts",
-    },
-    {
-      value: "Biochem - Enzymes As Catalysts1",
-      label: "Biochem - Enzymes As Catalysts",
-    },
-    {
-      value: "Biochem - Enzymes As Catalysts2",
-      label: "Biochem - Enzymes As Catalysts",
-    },
-  ];
-
-  // console.log(checkedState, "checkedState");
-
   return (
     // <PageLayout title="Test Yourself" icon={<HelpRoundedIcon />}>
     <Box sx={{ display: "flex" }}>
       <BoxWrapper>
         <SelectBoxWrapper>
           <CustomSelectTestYourSelf
-            placeholder="Biochem - Enzymes As Catalysts"
+            value={category}
             dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
             options={optionsCourse}
+            onChange={handleCategoryChange}
           />
         </SelectBoxWrapper>
         <DataTable data={dataTestYourself} config={configTestYourself} />
