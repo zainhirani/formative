@@ -60,6 +60,16 @@ export const Showed = styled(MuiBox)<BoxProps>(
 ) as (props: BoxProps) => JSX.Element;
 
 
+export const QuizGroupButtonBox = styled(MuiBox)<BoxProps>(
+  ({ theme }) =>
+    ({
+      ".btn":{
+        padding:"0px 15px",
+        fontSize: "14px"
+      },
+    } as any),
+) as (props: BoxProps) => JSX.Element;
+
 export const TableBox = styled(MuiBox)<BoxProps>(
   ({ theme }) =>
     ({
@@ -118,8 +128,8 @@ export const BoxScoringWrapper = styled(MuiBox)<BoxProps>(
       width: "100%",
       padding: "0px 20px",
       "& .customBorder":{
-        borderBottom:"1px solid",
-        borderColor: theme?.additionalColors?.primaryBorderGrey,
+        // borderBottom:"1px solid",
+        // borderColor: theme?.additionalColors?.primaryBorderGrey,
       }
     } as any),
 ) as (props: BoxProps) => JSX.Element;
@@ -132,7 +142,7 @@ export const BoxMatrixWrapper = styled(MuiBox)<BoxProps>(
       alignItems: 'center',
       padding: "20px 0px",
       "& .boxMatrix-b":{
-        borderColor: theme?.additionalColors?.primaryBorderGrey,
+        // borderColor: theme?.additionalColors?.primaryBorderGrey,
         "&:last-child":{
           borderRight: "none",
         }
@@ -171,7 +181,8 @@ export const BoxButtonWrapper = styled(MuiBox)<BoxProps>(
   ({ theme }) =>
     ({
       display: 'flex',
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
+      gap:'20px'
     } as any),
 ) as (props: BoxProps) => JSX.Element;
 

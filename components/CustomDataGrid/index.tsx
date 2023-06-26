@@ -20,9 +20,12 @@ interface CustomDataGridProps {
   columnVisibilityModel?: any;
   loading?: boolean;
   getSelectedId?: (e?: any) => void;
-  page?:number,
-  handlePageChange?:( event: React.ChangeEvent<unknown>, value: number) => void,
-  totalRows?:number,
+  onRowSelectionModelChange?: any;
+  selectionModel?: any;
+  onSelectionModelChange?: any;
+  page?: number;
+  handlePageChange?: (event: React.ChangeEvent<unknown>, value: number) => void;
+  totalRows?: number;
 }
 
 const CustomDataGrid: React.FC<CustomDataGridProps> = ({
@@ -69,6 +72,7 @@ const CustomDataGrid: React.FC<CustomDataGridProps> = ({
           pageSizeData={pageSizeData}
           buttonArray={buttonArray}
           checkboxSelection={isCheckbox}
+          loading={loading}
         />
       ) : type == "3" ? (
         <TypeThree
@@ -85,6 +89,9 @@ const CustomDataGrid: React.FC<CustomDataGridProps> = ({
           pageSizeData={pageSizeData}
           buttonArray={buttonArray}
           checkboxSelection={isCheckbox}
+          onRowClick={onRowClick}
+          loading={loading}
+          {...props}
         />
       ) : (
         ""

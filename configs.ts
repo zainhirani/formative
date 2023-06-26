@@ -11,7 +11,8 @@ export const NEXT_PUBLIC_FIREBASE_APP_ID =
   process.env.NEXT_PUBLIC_FIREBASE_APP_ID;
 export const NEXT_PUBLIC_MODE_ENV =
   process.env.NEXT_PUBLIC_MODE_ENV === "development";
-
+  
+export const LIMIT = 10;
 export const AUTH_LOGIN_URL = process.env.NEXT_PUBLIC_AUTH_LOGIN_URL || '/login';
 export const AUTH_SIGNUP_URL = process.env.NEXT_PUBLIC_AUTH_SIGNUP_URL || '/register';
 

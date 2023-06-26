@@ -26,6 +26,7 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import { useRouter } from "next/router";
 import CustomSelect from "components/CustomSelect/CustomSelect";
+import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { year_of_graduation } from "mock-data/Profile";
 import { isEqual } from "lodash";
@@ -131,7 +132,8 @@ export const GeneralInfo = () => {
       email: registerDetail.data?.email || "",
       rfuID: registerDetail.data?.rfu_id || "",
       program: registerDetail.data?.program || "",
-      graduation: registerDetail.data?.year_of_graduation || 0,
+      // graduation: registerDetail.data?.year_of_graduation || 0,
+      graduation: "2022",
       birthPlace: registerDetail.data?.birth_place || "",
       userName: registerDetail.data?.username || "",
       password: "",

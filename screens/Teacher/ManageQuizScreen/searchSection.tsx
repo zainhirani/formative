@@ -1,4 +1,5 @@
-import React from "react";
+//@ts-nocheck
+import React, { useMemo } from "react";
 import { Box, IconButton, InputAdornment } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import {
@@ -12,25 +13,60 @@ import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCi
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import messages from "./messages";
 import CustomSelect from "components/CustomSelect/CustomSelect";
+import { useCourseListing } from "providers/Courses";
+import { useFoldersListing } from "providers/Teacher/TeacherQuiz";
+import { useRouter } from "next/router";
+import APP_ROUTES from "constants/RouteConstants";
+import optionsStatus from "constants/Teacher/QuizConstant";
+import { debounce } from "lodash";
 
-const SearchSection = () => {
+const SearchSection = (props: any) => {
+  const { setSearchChange, setSelectCourse, setSelectFolder, setSelectStatus } =
+    props;
+  const coursesList = useCourseListing();
+  const foldersList = useFoldersListing();
   const searchQuiz = useFormattedMessage(messages.searchQuiz);
+  const router = useRouter();
 
-  const optionsCourse = [
-    { value: "Cannabis 2023", label: "Cannabis 2023" },
-    { value: "Cannabis 2024", label: "Cannabis 2024" },
-    { value: "Cannabis 2025", label: "Cannabis 2025" },
-  ];
-  const optionsFolder = [
-    { value: "1/ Daily", label: "/ Daily" },
-    { value: "2/ Daily", label: "/ Daily" },
-    { value: "3/ Daily", label: "/ Daily" },
-  ];
-  const optionsStatus = [
-    { value: "Completed", label: "Completed" },
-    { value: "Draft", label: "Draft" },
-  ];
-  const onChange = () => {};
+  const folderData = useMemo(() => {
+    return foldersList?.data?.data?.map((item) => ({
+      value: item.id,
+      label: item.name,
+    }));
+  }, [foldersList?.data?.data]);
+
+  const courseData = useMemo(() => {
+    return coursesList?.data?.data?.map((item) => ({
+      value: item.id,
+      label: item.course_name,
+    }));
+  }, [coursesList?.data?.data]);
+
+  const createNewHandler = () => {
+    router.push(APP_ROUTES.ADD_QUIZ);
+  };
+
+  const handleSearchChange = (search: any) => {
+    setSearchChange(search.target.value);
+  };
+  const debouncedSearch = debounce((criteria) => {
+    setSearchChange(criteria);
+  }, 400);
+
+  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    debouncedSearch(e.target.value);
+  };
+
+  const handleCourse = (course: any) => {
+    setSelectCourse(course?.value);
+  };
+  const handleFolder = (folder: any) => {
+    setSelectFolder(folder?.value);
+  };
+
+  const handleStatus = (status: any) => {
+    setSelectStatus(status?.value);
+  };
 
   return (
     <BoxWrapper display="grid" gridTemplateColumns="repeat(12, 1fr)">
@@ -38,6 +74,7 @@ const SearchSection = () => {
         <TextFieldStyled
           placeholder={searchQuiz}
           variant="outlined"
+          onChange={onInputChange}
           InputProps={{
             style: { border: "none", outline: "0px" },
             endAdornment: (
@@ -52,29 +89,36 @@ const SearchSection = () => {
       </Box>
       <SelectBoxWrapper gridColumn="span 2">
         <CustomSelect
+          isClearable={true}
           placeholder="Select Course"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-          options={optionsCourse}
+          options={courseData || []}
+          onChange={handleCourse}
         />
       </SelectBoxWrapper>
       <SelectBoxWrapper gridColumn="span 2">
         <CustomSelect
+          isClearable={true}
           placeholder="Select Folder"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-          options={optionsFolder}
+          options={folderData || []}
+          onChange={handleFolder}
         />
       </SelectBoxWrapper>
       <SelectBoxWrapper gridColumn="span 2">
         <CustomSelect
+          isClearable={true}
           placeholder="Select Status"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-          options={optionsStatus}
+          options={optionsStatus || []}
+          onChange={handleStatus}
         />
       </SelectBoxWrapper>
       <Box gridColumn="span 3">
         <ButtonWrapper
           startIcon={<AddCircleOutlineRoundedIcon />}
           variant="contained"
+          onClick={createNewHandler}
         >
           <FormattedMessage {...messages.createNew} />
         </ButtonWrapper>

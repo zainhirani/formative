@@ -1,6 +1,8 @@
+import { signOut } from "next-auth/react";
 import omit from "lodash/omit";
 import qs from "query-string";
 import { PUBLIC_API_URL, TOKEN } from "configs";
+
 
 // import { logSuccess } from 'utils/logger';
 
@@ -42,6 +44,8 @@ interface IAPArgs {
 }
 
 async function service(args: IAPArgs): Promise<any> {
+
+
   const {
     url,
     method = "GET",
@@ -71,6 +75,7 @@ async function service(args: IAPArgs): Promise<any> {
 
   if (extraProps.noAuth) {
     delete props.headers.Authorization;
+
   }
   if (formData) {
     props.headers = omit(props.headers, ["Content-Type"]);
@@ -89,6 +94,10 @@ async function service(args: IAPArgs): Promise<any> {
   if (data.status >= 400) {
     const error = await data.json();
     throw error;
+  }
+
+  if (data?.status === 401) {
+    signOut({ callbackUrl: "/login" });
   }
   // logSuccess(API_URL, JSON.stringify(data));
   return parseJSON ? await data.json() : data;

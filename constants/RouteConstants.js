@@ -2,14 +2,16 @@ const APP_ROUTES = {
   // ===========TEACHER PORTAL ===========
 
   // Quiz Section
-  ADD_QUIZ: "/add-quiz",
-  DRAFT_QUIZ: "teacher/quiz/draft",
+  ADD_QUIZ: "/teacher/quiz/add",
+  EDIT_QUIZ: "/teacher/quiz/edit/[id]",
   MANAGE_QUIZ: "/teacher/quiz",
   QUIZ_RESULTS: "/teacher/quiz/quiz-results",
   // - Question Section
   QUESTIONS_CREATE_NEW: "/teacher/questions/add",
   QUESTIONS_UPLOAD_QUESTIONS: "/teacher/questions/upload",
   QUESTIONS_MANAGE_QUESTIONS: "/teacher/questions/manage",
+  QUESTIONS_EDIT_QUESTIONS: "/teacher/questions/edit/",
+
   // - Students Section
   STUDENTS: "/teacher/students",
   // - Courses Section
