@@ -27,7 +27,8 @@ type QuizQuestionFormatProps = {
   title?: string;
   questionContext?: string;
   actualQuestion?: string;
-  quizOptions?: {id:number,optionText:string}[];
+  quizOptions?: object[];
+  // quizOptions?: {id:number,optionText:string}[];
   timeSpent?: string | number;
   score?: string | number;
   isHeader?: boolean;
@@ -44,6 +45,8 @@ type QuizQuestionFormatProps = {
   disable?: boolean;
   isChecked?: boolean | number;
   media?: string;
+  timeUnit?: string;
+  quizAnswers: unknown;
 };
 
 const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
@@ -56,12 +59,14 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
     { id: 3, optionText: "Option 3" },
     { id: 4, optionText: "Option 4" },
   ],
+  quizAnswers = [],
   timeSpent = "21 Seconds",
   score = "12 Points",
   isHeader = true,
   questionIdNum = "1",
   avgAttemps = "4",
-  avgTime = "18 Sec",
+  avgTime = "18",
+  timeUnit = " Sec",
   difficulty = "Hard",
   isShowScoreBar = true,
   answerStats,
@@ -173,6 +178,7 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
                         sx={{ marginLeft: "0.5rem" }}
                       >
                         {avgTime}
+                        {timeUnit}
                       </Typography>
                     </Box>
                   </Box>
@@ -265,7 +271,7 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
               />
             ) : null}
             {quizOptions.map((value, index) => {
-             
+              // @ts-ignore
               const labelId = `checkbox-list-label-${value.id}`;
 
               return (
@@ -289,7 +295,8 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
                           disabled={disable}
                           edge="start"
                           // checked={checked.indexOf(index) !== -1}
-                          checked={isChecked === index}
+                          // @ts-ignore
+                          checked={quizAnswers.includes(value.value)}
                           tabIndex={-1}
                           disableRipple
                           inputProps={{ "aria-labelledby": labelId }}
@@ -303,8 +310,8 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
                       </ListItemIcon>
                       <ListItemText
                         id={labelId}
-                        
-                        primary={`${value?.optionText}`}
+                        // @ts-ignore
+                        primary={`${value.optionText}`}
                         sx={{ color: textColors[index] }}
                       />
                     </ListItemButton>

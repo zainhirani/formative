@@ -12,7 +12,7 @@ import { QueryCache, QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { Hydrate } from "react-query/hydration";
 
-import PageLayout from "components/PageLayout/";
+import PageLayout from "components/PageLayout";
 import { AppStateProvider } from "contexts/AppStateContext";
 import { AuthContextProvider } from "contexts/AuthContext";
 import ThemeContextProvider from "contexts/ThemeContext";

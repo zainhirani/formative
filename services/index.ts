@@ -3,6 +3,7 @@ import omit from "lodash/omit";
 import qs from "query-string";
 import { PUBLIC_API_URL, TOKEN } from "configs";
 
+
 // import { logSuccess } from 'utils/logger';
 
 const API_URL = PUBLIC_API_URL;
@@ -43,6 +44,8 @@ interface IAPArgs {
 }
 
 async function service(args: IAPArgs): Promise<any> {
+
+
   const {
     url,
     method = "GET",
@@ -72,6 +75,7 @@ async function service(args: IAPArgs): Promise<any> {
 
   if (extraProps.noAuth) {
     delete props.headers.Authorization;
+
   }
   if (formData) {
     props.headers = omit(props.headers, ["Content-Type"]);
