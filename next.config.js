@@ -2,6 +2,6 @@
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ["http://182.188.40.167"],
+    domains: [new URL(process.env.NEXT_PUBLIC_API_URL).hostname],
   },
 };

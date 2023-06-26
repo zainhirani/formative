@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React from "react";
 import { Grid, Pagination } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { BoxPaginate, ButtonWrapper, ShowingBox } from "./Styled";
@@ -20,7 +20,7 @@ interface TypeOneProps {
   getSelectedId?: (e?: any) => void;
   page?: number;
   handlePageChange: (event: React.ChangeEvent<unknown>, value: number) => void;
-  totalRows?: number;
+  totalRows?: number | undefined;
 
   // isChecked?:
 }
@@ -44,7 +44,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
 }) => {
   const totalPages = Math.ceil(totalRows / pageSizeData);
 
-  const handleCheck = useCallback((e: any, details: any) => {
+  const handleCheck = React.useCallback((e: any, details: any) => {
     onRowSelect && onRowSelect(e, details);
     if (e.length) {
       setChecked(true);
@@ -98,7 +98,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
           <DataGrid
             onRowClick={onRowClick}
             pagination
-            rows={rows || []} 
+            rows={rows || []}
             columns={columns}
             getRowHeight={getRowHeight}
             disableColumnMenu

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BoxWrapper } from "./Styled";
 import { GridColDef } from "@mui/x-data-grid";
 import CustomDataGrid from "components/CustomDataGrid";
-import { useStudentListing } from "providers/teacher/student";
+import { useStudentListing } from "providers/Teacher/student";
 import { BoxItemWrapper } from "../ManageQuizScreen/DraftQuizScreen/DrawerSections/Styled";
 
 export const columnsManageStudent: GridColDef[] = [

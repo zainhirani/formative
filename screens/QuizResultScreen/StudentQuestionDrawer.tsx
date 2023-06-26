@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState, useMemo } from "react";
 
 import QuizQuestionFormat from "components/QuizQuestionFormat";
@@ -61,7 +62,6 @@ const StudentQuestionDrawer = ({
         timeSpent={paginatedRows?.[0]?.submission_duration}
         loading={studentQuestion?.isFetching}
         media={paginatedRows?.[0]?.question?.media}
-
         disable={true}
         isShowScoreBar
         isChecked={filterOptions?.findIndex(

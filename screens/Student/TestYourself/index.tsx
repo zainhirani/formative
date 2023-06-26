@@ -88,7 +88,7 @@ const TestYourself = () => {
         attempted: boolean;
         correct: boolean;
       }) => {
-        console.log(item, "item item");
+        // console.log(item, "item item");
 
         return (
           <>
@@ -136,7 +136,7 @@ const TestYourself = () => {
                 },
               }}
               onClick={(e) => {
-                console.log(e, "event");
+                // console.log(e, "event");
                 return setRemainingTime(timer);
               }}
             />
@@ -144,7 +144,7 @@ const TestYourself = () => {
         );
       },
       handleClick: (item: any) => {
-        console.log(item?.id, "item");
+        // console.log(item?.id, "item");
       },
     },
     {
@@ -154,7 +154,7 @@ const TestYourself = () => {
         return <>{item.name}</>;
       },
       handleClick: (item: any) => {
-        console.log(item?.id, "item");
+        // console.log(item?.id, "item");
       },
     },
     {
@@ -180,7 +180,7 @@ const TestYourself = () => {
     },
   ];
 
-  console.log(checkedState, "checkedState");
+  // console.log(checkedState, "checkedState");
 
   return (
     // <PageLayout title="Test Yourself" icon={<HelpRoundedIcon />}>

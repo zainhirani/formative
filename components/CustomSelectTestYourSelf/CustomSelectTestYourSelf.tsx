@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { FC, ReactNode } from "react";
 import { Tooltip } from "@mui/material";
 import { components } from "react-select";

@@ -39,7 +39,7 @@ export default defineMessages({
   },
   questTypeValue: {
     id: `${scope}.questTypeValue`,
-    defaultMessage: "MCR",
+    defaultMessage: "Select type",
   },
   public: {
     id: `${scope}.public`,
@@ -59,7 +59,7 @@ export default defineMessages({
   },
   folderValue: {
     id: `${scope}.folderValue`,
-    defaultMessage: "/MedChem",
+    defaultMessage: "Select folder",
   },
   category: {
     id: `${scope}.category`,
@@ -67,7 +67,7 @@ export default defineMessages({
   },
   categoryValue: {
     id: `${scope}.categoryValue`,
-    defaultMessage: "MC05 - Diuretics",
+    defaultMessage: "Select category",
   },
   categoriesForFaculty: {
     id: `${scope}.categoriesForFaculty`,
@@ -75,7 +75,7 @@ export default defineMessages({
   },
   categoriesForFacultyValue: {
     id: `${scope}.limitValue`,
-    defaultMessage: "Select Multiple",
+    defaultMessage: "Select multiple",
   },
   text1: {
     id: `${scope}.text1`,

@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import PageLayout from "components/PageLayout";
 import TableSection from "./tableSection";
 import SearchSection from "./searchSection";
-import { useStudentListing } from "providers/teacher/student";
+import { useStudentListing } from "providers/Teacher/student";
 
 const LIMIT = 10;
 const ManageStudents = () => {
@@ -28,12 +28,10 @@ const ManageStudents = () => {
         ),
       )
       .map((item: any) => item.id);
-      //@ts-ignore
+    //@ts-ignore
   }, [studentListing.data?.data, selectNewCourse?.label]);
-//@ts-ignore
+  //@ts-ignore
   const [checkedIds, setCheckedIds] = useState<number[]>(filteredData);
-  console.log(checkedIds, "checked");
-
   useEffect(() => {
     //@ts-ignore
     setCheckedIds(filteredData);
@@ -70,7 +68,9 @@ const ManageStudents = () => {
         loading={studentListing.isFetching}
         handleSelection={handleSelection}
         page={page}
-        handlePageChange={(_: any, v: React.SetStateAction<number>) => setPage(v)}
+        handlePageChange={(_: any, v: React.SetStateAction<number>) =>
+          setPage(v)
+        }
         totalCount={studentListing?.data?.count}
         checkedId={checkedIds}
       />

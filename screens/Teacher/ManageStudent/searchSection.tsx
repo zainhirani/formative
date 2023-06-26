@@ -8,7 +8,7 @@ import { useSnackbar } from "notistack";
 import CustomSelect from "components/CustomSelect/CustomSelect";
 import { GridCloseIcon } from "@mui/x-data-grid";
 import { useCourseListing, useCreateCourse } from "providers/Courses";
-import { useStudentEnroll } from "providers/teacher/student";
+import { useStudentEnroll } from "providers/Teacher/student";
 import { year_of_graduation, programs } from "constants/index";
 import CloseIcon from "@mui/icons-material/Close";
 // import { debounce } from "lodash";
@@ -87,7 +87,6 @@ const SearchSection = (props: any) => {
       queryClient.invalidateQueries("Courses");
     }
   }, [enrollStudent?.isSuccess]);
-  console.log(enrollStudent?.isSuccess, "isSuccess");
 
   useEffect(() => {
     if (enrollStudent?.isError) {
@@ -118,7 +117,7 @@ const SearchSection = (props: any) => {
         <TextFieldStyled
           placeholder={searchCourse}
           variant="outlined"
-          value={selectedCourse?.label || null}
+          value={selected != null ? selectedCourse?.label : ""}
           onChange={onInputChange}
           //@ts-ignore
           disabled={selected?.value != 1001101}

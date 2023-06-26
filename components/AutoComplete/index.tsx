@@ -18,6 +18,7 @@ interface AutoCompleteProps<OptionType = any> extends SelectProps<OptionType> {
   isDisabled?: boolean;
   closeMenuOnSelect?: boolean;
   customComponents?: CustomComponents;
+  isMulti: boolean;
   value: any;
 }
 
