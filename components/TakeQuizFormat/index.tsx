@@ -32,7 +32,7 @@ type ITakeQuizProps = {
   questionTitle?: string;
   questionID?: number;
   questionDetail?: string;
-  questionMedia?: File;
+  questionMedia?: string;
   questionOption?: string;
   timelimit?: number;
 };
