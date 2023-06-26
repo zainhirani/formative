@@ -10,7 +10,7 @@ import { Form, Formik, useFormik } from "formik";
 import { useRouter } from "next/router";
 import { enqueueSnackbar } from "notistack";
 import { TextField } from "@mui/material";
-import { useQuizById } from "providers/teacher/TeacherQuiz";
+import { useQuizById } from "providers/Teacher/TeacherQuiz";
 import { isStringNotURL, removeHTMLTags } from "utils";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
