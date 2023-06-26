@@ -27,7 +27,7 @@ import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCi
 import { yearsSelectOptions } from "utils";
 import FormattedDate from "theme/FormattedDate";
 import { useStudentListing } from "providers/teacher/student";
-import { useQuizDistribute } from "providers/Teacher/TeacherQuiz";
+import { useQuizDistribute } from "providers/teacher/TeacherQuiz";
 import { enqueueSnackbar } from "notistack";
 import { GridCloseIcon } from "@mui/x-data-grid";
 // import { columnsManageStudent } from "screens/Teacher/ManageStudent/tableSection";

@@ -28,7 +28,7 @@ import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOu
 import { useRouter } from "next/router";
 import { enqueueSnackbar } from "notistack";
 import dayjs from "dayjs";
-import { useQuizSave, useQuizSaveEdit } from "providers/Teacher/TeacherQuiz";
+import { useQuizSave, useQuizSaveEdit } from "providers/teacher/TeacherQuiz";
 import APP_ROUTES from "constants/RouteConstants";
 
 const TableSection = (props: any) => {

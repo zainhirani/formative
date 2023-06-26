@@ -27,7 +27,7 @@ import Paper from "@mui/material/Paper";
 import {
   useScoringByID,
   useScoringListing,
-} from "providers/Teacher/TeacherQuiz";
+} from "providers/teacher/TeacherQuiz";
 import { useRouter } from "next/router";
 import { useQueryClient } from "react-query";
 

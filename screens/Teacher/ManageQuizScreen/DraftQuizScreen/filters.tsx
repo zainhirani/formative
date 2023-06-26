@@ -15,9 +15,9 @@ import {
   useFoldersListing,
   useQuizNo,
   useScoringListing,
-} from "providers/Teacher/TeacherQuiz";
+} from "providers/teacher/TeacherQuiz";
 import optionsStatus from "constants/Teacher/QuizConstant";
-// import { allTeacherQuizNo } from "providers/Teacher/TeacherQuiz/api";
+// import { allTeacherQuizNo } from "providers/teacher/TeacherQuiz/api";
 
 const FiltersSection = (props: any) => {
   const { setFieldValue, values, handleChange, quizDataById, mValuesForName } =
