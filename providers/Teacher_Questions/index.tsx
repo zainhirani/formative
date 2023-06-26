@@ -10,7 +10,7 @@ import { useSnackbar } from "notistack";
 import { useRouter } from "next/router";
 import APP_ROUTES from "constants/RouteConstants";
 
-const KEY = "Questions";
+const KEY = "Teacher__Questions";
 
 export function getKeyFromProps(
   props: any,
@@ -33,16 +33,6 @@ export const useQuestionsListing = (props: any) => {
   );
 };
 
-// export const useQuestionDetailsAttempt = (props: any) => {
-//   return useQuery(
-//     "DETAIL_ATTEMPT",
-//     () => getQuestionByIdAtempt(props.questionId),
-//     {
-//       enabled: !!props.questionId,
-//     },
-//   );
-// };
-
 export const useQuestionDetails = (props: any) => {
   return useQuery(
     getKeyFromProps(props, "DETAIL"),
@@ -57,7 +47,9 @@ export const useDeleteQuestion = (questionId: any) => {
   return useMutation((questionId) => deleteQuestion(questionId), {
     mutationKey: getKeyFromProps(questionId, "DELETE_QUESTION"),
     onSuccess: () => {
-      client.invalidateQueries(["TEACHER_QUESTIONS_LISTINGS"]);
+      client.invalidateQueries({
+        queryKey: [KEY],
+      });
     },
     retry: 1,
   });
@@ -70,7 +62,9 @@ export const useAddQuestion = (payload: any) => {
 
   return useMutation((payload) => addQuestion(payload), {
     onSuccess: () => {
-      client.invalidateQueries(["TEACHER_QUESTIONS_LISTINGS"]);
+      client.invalidateQueries({
+        queryKey: [KEY],
+      });
       enqueueSnackbar("Question has been created successfully !", {
         autoHideDuration: 1500,
         variant: "success",
@@ -94,20 +88,15 @@ export const useDuplicateQuestion = (questionId: any) => {
   const client = useQueryClient();
   const { enqueueSnackbar } = useSnackbar();
 
-  // let obj = {
-  //   facultyId: "",
-  //   folderId: "",
-  //   type: "",
-  //   categories: "",
-  //   Limit: 10,
-  //   Page: 1,
-  // };
-
   return useMutation((questionId) => duplicateQuestion(questionId), {
     onSuccess: () => {
       enqueueSnackbar("Question has been duplicated !", {
         autoHideDuration: 1000,
         variant: "success",
+      });
+
+      client.invalidateQueries({
+        queryKey: [KEY],
       });
     },
     onError: () => {
