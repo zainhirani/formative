@@ -34,7 +34,9 @@ const DraftQuizScreen: NextPage = () => {
   const editPage = quizEditId == undefined ? false : true;
 
   useEffect(() => {
-    refetch();
+    if (editPage) {
+      refetch();
+    }
   }, []);
 
   useEffect(() => {
@@ -74,8 +76,8 @@ const DraftQuizScreen: NextPage = () => {
     setFieldValue,
   } = useFormik({
     initialValues: {
-      name: quizEditId ? quizByIdData?.name : null,
-      reviewable: quizEditId ? quizByIdData?.reviewable : null,
+      name: quizEditId ? quizByIdData?.name : "",
+      reviewable: quizEditId ? quizByIdData?.reviewable : false,
       courseId: {
         value: quizEditId ? quizByIdData?.courses?.id : null,
         label: quizEditId ? quizByIdData?.courses?.course_name : null,
@@ -84,7 +86,7 @@ const DraftQuizScreen: NextPage = () => {
         value: quizEditId ? quizByIdData?.folders?.id : null,
         label: quizEditId ? quizByIdData?.folders?.name : null,
       },
-      timeLimitPerSec: quizEditId ? quizByIdData?.timeLimitPerSec : null,
+      timeLimitPerSec: quizEditId ? quizByIdData?.timeLimitPerSec : 0,
       status: {
         value: quizEditId ? quizByIdData?.status : null,
         label: quizEditId ? quizByIdData?.status : null,
@@ -96,13 +98,10 @@ const DraftQuizScreen: NextPage = () => {
       start_time: quizEditId ? quizByIdData?.start_time : null,
       end_time: quizEditId ? quizByIdData?.end_time : null,
       questionsId: quizEditId ? quizByIdData?.questions : null,
-      // firstName: registerDetail.data?.first_name || null,
     },
-    // validationSchema,
     enableReinitialize: true,
     onSubmit,
   });
-  // console.log(quizEditId ? quizByIdData?.start_time : null, "quizByIdData");
 
   function removeQuestionById(idToRemove: any) {
     setSelectedQuestions((prevQuestions: any) =>
@@ -130,7 +129,7 @@ const DraftQuizScreen: NextPage = () => {
       flex: 1,
     },
     {
-      field: "diff",
+      field: "difficulty",
       headerName: "Difficulty",
       minWidth: 150,
       flex: 1,
@@ -138,7 +137,7 @@ const DraftQuizScreen: NextPage = () => {
     {
       field: "detail",
       headerName: "Details",
-      minWidth: 200,
+      minWidth: 180,
       flex: 1,
       renderCell: (data: any) => removeHTMLTags(data.row.detail),
     },
@@ -178,9 +177,8 @@ const DraftQuizScreen: NextPage = () => {
       },
     },
   ];
-  // console.log(selectedQuestions, "selectedQuestions");
   return (
-    <Box>
+    <Box id="printable-content">
       <form onSubmit={handleSubmit}>
         <FiltersSection
           setFieldValue={setFieldValue}

@@ -59,7 +59,6 @@ const CustomSelect: FC<CustomSelectProps> = ({
   name,
   isClearable,
   isDisabled,
-
   ...rest
 }) => {
   const style = {

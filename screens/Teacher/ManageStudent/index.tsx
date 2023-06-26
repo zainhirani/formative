@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import PageLayout from "components/PageLayout";
 import TableSection from "./tableSection";
 import SearchSection from "./searchSection";
-import { useStudentListing } from "providers/teacher/student";
+import { useStudentListing } from "providers/Teacher/student";
 
 const LIMIT = 10;
 const ManageStudents = () => {

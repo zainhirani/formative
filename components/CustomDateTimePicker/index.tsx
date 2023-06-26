@@ -13,6 +13,7 @@ type ICustomeDateTimePicker = {
   // value?: null | Date;
   value?: any;
   defaultValue?: any;
+  currentDate?: any;
   onChange?: (e?: any) => void;
 };
 
@@ -21,6 +22,7 @@ const CustomeDateTimePicker: FC<ICustomeDateTimePicker> = ({
   value,
   onChange,
   defaultValue,
+  currentDate,
   ...rest
 }) => {
   return (
@@ -32,6 +34,7 @@ const CustomeDateTimePicker: FC<ICustomeDateTimePicker> = ({
           value={value}
           onChange={onChange}
           defaultValue={defaultValue}
+          minDateTime={currentDate}
           {...rest}
         />
       </LocalizationProvider>

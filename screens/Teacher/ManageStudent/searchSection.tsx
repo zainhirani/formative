@@ -8,7 +8,7 @@ import { useSnackbar } from "notistack";
 import CustomSelect from "components/CustomSelect/CustomSelect";
 import { GridCloseIcon } from "@mui/x-data-grid";
 import { useCourseListing, useCreateCourse } from "providers/Courses";
-import { useStudentEnroll } from "providers/teacher/student";
+import { useStudentEnroll } from "providers/Teacher/student";
 import { year_of_graduation, programs } from "constants/index";
 import CloseIcon from "@mui/icons-material/Close";
 // import { debounce } from "lodash";
