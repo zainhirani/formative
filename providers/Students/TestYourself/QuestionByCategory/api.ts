@@ -9,6 +9,16 @@ export async function listing(
   return service({
     method: "GET",
     url: `/questions/category/${props.id}`,
-    queryParams: props,
+    ...props,
+  });
+}
+
+//Detail
+export async function detail(
+  props: Question.DetailAPIPayload,
+): Promise<Question.DetailResponse> {
+  return service({
+    method: "GET",
+    url: `/questions/${props.id}`,
   });
 }

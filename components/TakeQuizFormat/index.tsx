@@ -113,6 +113,7 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
           sx={{
             background: (theme) => theme.palette.grey[300],
             width: "100%",
+            minHeight: "400px",
             height: "100%",
             display: "flex",
             justifyContent: "center",

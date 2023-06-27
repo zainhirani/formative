@@ -12,8 +12,11 @@ import CircleUnchecked from "@material-ui/icons/RadioButtonUnchecked";
 import Image from "next/image";
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
 import CustomSelectTestYourSelf from "components/CustomSelectTestYourSelf/CustomSelectTestYourSelf";
-import { useCategoryListing } from "providers/Students/TestQuestions/Categories";
-import { useQuestionListing } from "providers/Students/QuestionByCategory";
+import { useCategoryListing } from "providers/Students/TestYourself/TestQuestions/Categories";
+import {
+  useQuestionDetail,
+  useQuestionListing,
+} from "providers/Students/TestYourself/QuestionByCategory";
 
 const PageLayout = dynamic(() => import("components/PageLayout"), {
   ssr: false,
@@ -64,13 +67,26 @@ const TestYourself = () => {
     value: item.id,
     label: item.name,
   }));
-  const [category, setCategory] = useState(optionsCourse);
-  const handleCategoryChange = (e: any) => {
-    setCategory(e.target?.value);
-  };
-  console.log(optionsCourse, "selected course");
+  const defaultOption =
+    optionsCourse && optionsCourse.length > 0
+      ? {
+          value: optionsCourse[0]?.value,
+          label: optionsCourse[0]?.label,
+        }
+      : { value: 0, label: "" };
 
-  const questionList = useQuestionListing({ id: 1 });
+  console.log(defaultOption, "default");
+
+  const [category, setCategory] = useState({
+    value: defaultOption.value,
+    label: defaultOption.label,
+  });
+  const handleCategoryChange = (e: any) => {
+    setCategory({ value: e?.value, label: e?.label });
+  };
+  console.log(category, "selected course");
+
+  const questionList = useQuestionListing({ id: category?.value });
   const timer = 120;
   const [remainingTime, setRemainingTime] = useState(timer);
 
@@ -97,12 +113,14 @@ const TestYourself = () => {
       columnName: "",
       maxWidth: "20px",
       render: (item: {
-        name: any;
+        title: any;
         id: number;
+        type: string;
         attempted: boolean;
         correct: boolean;
       }) => {
         // console.log(item, "item item");
+        // const questionDetail = useQuestionDetail({ id: item?.id });
 
         return (
           <>
@@ -158,14 +176,14 @@ const TestYourself = () => {
         );
       },
       handleClick: (item: any) => {
-        // console.log(item?.id, "item");
+        // useQuestionDetail({ id: item?.id });
       },
     },
     {
       columnName: "Name",
       maxWidth: "20px",
-      render: (item: { name: any; id: number }) => {
-        return <>{item.name}</>;
+      render: (item: { title: any; id: number }) => {
+        return <>{item.title}</>;
       },
       handleClick: (item: any) => {
         // console.log(item?.id, "item");
@@ -178,7 +196,6 @@ const TestYourself = () => {
       },
     },
   ];
-
   return (
     // <PageLayout title="Test Yourself" icon={<HelpRoundedIcon />}>
     <Box sx={{ display: "flex" }}>
@@ -191,7 +208,7 @@ const TestYourself = () => {
             onChange={handleCategoryChange}
           />
         </SelectBoxWrapper>
-        <DataTable data={dataTestYourself} config={configTestYourself} />
+        <DataTable data={questionList?.data} config={configTestYourself} />
       </BoxWrapper>
       <BoxWrapper sx={{ width: "60%", marginLeft: "15px" }}>
         <TakeQuizFormat

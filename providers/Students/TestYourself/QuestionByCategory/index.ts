@@ -25,3 +25,10 @@ export function useQuestionListing(
 ): UseQueryResult<Question.ListingResponse> {
   return useQuery(getKeyFromProps(props, "LISTING"), () => api.listing(props));
 }
+
+//Detail
+export function useQuestionDetail(
+  props: Question.DetailProps,
+): UseQueryResult<Question.DetailResponse> {
+  return useQuery(getKeyFromProps(props, "DETAIL"), () => api.detail(props));
+}
