@@ -17,7 +17,8 @@ interface SideDrawerProps extends DrawerProps {
   children?: ReactNode;
   title?: string;
   isHelp?: boolean;
-  loading?:boolean
+  loading?:boolean;
+  sx?:any;
 }
 
 const SideDrawer: React.FC<SideDrawerProps> = ({
@@ -27,6 +28,7 @@ const SideDrawer: React.FC<SideDrawerProps> = ({
   title,
   isHelp,
   loading,
+  sx,
   ...rest
 }) => {
   const theme = useTheme();
@@ -38,6 +40,7 @@ const SideDrawer: React.FC<SideDrawerProps> = ({
       anchor="right"
       open={open}
       // isMobile={isMobile}
+      sx={sx}
       {...rest}
     >
       <HeaderWrapper>
