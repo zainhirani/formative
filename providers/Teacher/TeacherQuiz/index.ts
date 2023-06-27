@@ -1,4 +1,5 @@
 //Quiz API Integration
+// @ts-nocheck
 import React,{useMemo} from 'react'
 import {
   UseMutationResult,

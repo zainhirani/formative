@@ -2,6 +2,7 @@
 
 export namespace Register {
   export type Fields = {
+    type?: string;
     email: string;
     password: string;
     username: string;

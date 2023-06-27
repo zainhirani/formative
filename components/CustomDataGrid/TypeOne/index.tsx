@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState, useEffect } from "react";
+import React from "react";
 import { Grid, Pagination } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { BoxPaginate, ButtonWrapper, ShowingBox } from "./Styled";
@@ -44,7 +44,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
 }) => {
   const totalPages = Math.ceil(totalRows / pageSizeData);
 
-  const handleCheck = useCallback((e: any, details: any) => {
+  const handleCheck = React.useCallback((e: any, details: any) => {
     onRowSelect && onRowSelect(e, details);
     if (e.length) {
       setChecked(true);

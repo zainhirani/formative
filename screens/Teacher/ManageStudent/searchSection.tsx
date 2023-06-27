@@ -87,7 +87,6 @@ const SearchSection = (props: any) => {
       queryClient.invalidateQueries("Courses");
     }
   }, [enrollStudent?.isSuccess]);
-  console.log(enrollStudent?.isSuccess, "isSuccess");
 
   useEffect(() => {
     if (enrollStudent?.isError) {
@@ -118,7 +117,7 @@ const SearchSection = (props: any) => {
         <TextFieldStyled
           placeholder={searchCourse}
           variant="outlined"
-          value={selectedCourse?.label || null}
+          value={selected != null ? selectedCourse?.label : ""}
           onChange={onInputChange}
           //@ts-ignore
           disabled={selected?.value != 1001101}

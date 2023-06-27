@@ -1,5 +1,5 @@
 import React from "react";
-import { styled, Modal, IconButton, Box } from "@mui/material";
+import { Box, IconButton, Modal, styled } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import Image from "next/image";
 import dummyImage from "/public/LoginBG.png";

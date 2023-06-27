@@ -39,10 +39,7 @@ import { useSnackbar } from "notistack";
 import { TOKEN } from "configs";
 import CustomSelect from "components/CustomSelect/CustomSelect";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-<<<<<<< HEAD
-=======
 import { year_of_graduation } from "mock-data/Profile";
->>>>>>> 9690b9695da3110a76ce6ac78a9f5ba1618742f0
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required().label("FirstName"),

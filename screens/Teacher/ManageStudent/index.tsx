@@ -32,8 +32,6 @@ const ManageStudents = () => {
   }, [studentListing.data?.data, selectNewCourse?.label]);
   //@ts-ignore
   const [checkedIds, setCheckedIds] = useState<number[]>(filteredData);
-  console.log(checkedIds, "checked");
-
   useEffect(() => {
     //@ts-ignore
     setCheckedIds(filteredData);
