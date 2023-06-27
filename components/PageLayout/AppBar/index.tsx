@@ -45,11 +45,12 @@ const AppBarComponent: React.FC<BarComponentProps> = ({
               onClick={clickHandler}
               edge="start"
               sx={{
-                marginRight: 5,
+                marginRight: 4,
+                marginLeft: "-16px",
                 "&::before": {
                   content: '""',
                   background: (theme) => theme.palette.primary.main,
-                  width: 60,
+                  width: 54,
                   height: 66,
                   position: "absolute",
                   left: -8,
@@ -57,7 +58,6 @@ const AppBarComponent: React.FC<BarComponentProps> = ({
                   zIndex: -1,
                 },
                 ...(open && { display: "none" }),
-                ...(open && {}),
               }}
             >
               <MenuIcon
@@ -65,57 +65,6 @@ const AppBarComponent: React.FC<BarComponentProps> = ({
               />
             </IconButton>
             <Breadcrumb />
-            {iconAngle ? (
-              <>
-                <Typography
-                  gutterBottom
-                  variant="h4"
-                  m={0}
-                  sx={{
-                    fontSize: "18px",
-                    display: "flex",
-                    alignItems: "center",
-                    lineHeight: "21px",
-                    fontWeight: "400",
-                    color: (theme) => theme.palette.text.secondary,
-                  }}
-                >
-                  {title}
-                  <IconButton sx={{ p: 0 }}>
-                    <ChevronRightIcon fontSize="large" />
-                  </IconButton>
-                  <Typography
-                    sx={{ color: (theme) => theme.palette.primary.dark }}
-                  >
-                    {subText}
-                  </Typography>
-                  <IconButton
-                    sx={{ color: (theme) => theme.palette.primary.main }}
-                  >
-                    {icon}
-                  </IconButton>
-                </Typography>
-              </>
-            ) : (
-              <Typography
-                gutterBottom
-                variant="h4"
-                m={0}
-                sx={{
-                  fontSize: "18px",
-                  lineHeight: "21px",
-                  fontWeight: "400",
-                }}
-              >
-                {title}
-                <IconButton
-                  onClick={onIconClick}
-                  sx={{ color: (theme) => theme.palette.primary.main }}
-                >
-                  {icon}
-                </IconButton>
-              </Typography>
-            )}
           </BoxWrapper>
           <BoxWrapper>
             <RightMenu />
