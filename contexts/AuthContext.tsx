@@ -27,7 +27,7 @@ interface AuthContextProps {
 
 const AuthContext = createContext({} as AuthContextType);
 
-const AUTHENTICATION_PATH = [AUTH_LOGIN_URL,AUTH_SIGNUP_URL];
+const AUTHENTICATION_PATH = [AUTH_LOGIN_URL, AUTH_SIGNUP_URL];
 
 const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
   const { data: session, status } = useSession();
@@ -57,27 +57,24 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
   //@ts-ignore
   const currToken: any = session?.accessToken;
 
-
-
-
   if (currToken && prevToken !== `Bearer ${currToken}`) {
     setAuthenticationHeader(currToken);
   }
 
-  // async function getTokenFunction() {
-  //   if (typeof window !== "undefined") {
-  //     const getToken = localStorage.getItem(TOKEN);
-  //     setAuthenticationHeader(getToken);
-  //   }
-  // }
-  // if (router.pathname.includes("register")) {
-  //   setInterval(() => {
-  //     getTokenFunction();
-  //   }, 3000);
-  // }
-  // getTokenFunction();
-
-
+  async function getTokenFunction() {
+    if (typeof window !== "undefined") {
+      if (router.pathname.includes("register")) {
+        const getToken = localStorage.getItem(TOKEN);
+        setAuthenticationHeader(getToken);
+      }
+    }
+  }
+  if (router.pathname.includes("register")) {
+    setInterval(() => {
+      getTokenFunction();
+    }, 3000);
+  }
+  getTokenFunction();
 
   if (loading) {
     return (
@@ -112,9 +109,7 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
     !loading
   ) {
     const params: { pathname: string; query?: { redirectTo: string } } = {
-      pathname:
-        // @ts-ignore
-        "/dashboard",
+      pathname: "/dashboard",
     };
     router.replace(params);
     return null;
@@ -125,8 +120,7 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
       value={{
         signIn,
         signOut,
-        currentUser:session?.user
-    
+        currentUser: session?.user,
       }}
     >
       {children}

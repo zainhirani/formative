@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { FC, ReactNode } from "react";
 import { Tooltip } from "@mui/material";
 import { components } from "react-select";
@@ -5,12 +6,13 @@ import AutoComplete from "components/AutoComplete";
 import { BoxWrapper, SelectBoxWrapper } from "./Styled";
 
 interface CustomSelectTestYourSelfProps {
-  options: Array<{}>;
+  options?: Array<{}>;
   placeholder: string;
   config?: string;
   controlText?: string;
   dropdownIcon?: ReactNode;
   onChange?: any;
+  value?: any;
 }
 
 const CustomDropdownIndicator = (props: any) => {
@@ -40,6 +42,7 @@ const CustomSelectTestYourSelf: FC<CustomSelectTestYourSelfProps> = ({
   options,
   placeholder,
   onChange,
+  value,
 }) => {
   const style = {
     control: (provided: any, state: any) => ({
@@ -104,6 +107,7 @@ const CustomSelectTestYourSelf: FC<CustomSelectTestYourSelfProps> = ({
         }}
         customStyles={style}
         className="custom-select"
+        value={value}
       />
     </BoxWrapper>
   );

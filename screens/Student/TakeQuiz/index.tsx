@@ -34,7 +34,7 @@ const TakeQuizScreen = () => {
   const handleSelection = React.useCallback((ids: number[]) => {
     setOpen(true);
     setLastSelected(ids[ids.length - 1]);
-    setChecked(ids);
+    setChecked([ids[ids?.length - 1]]);
   }, []);
 
   const onDrowerClose = () => {

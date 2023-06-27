@@ -16,7 +16,7 @@ export const funColumnsManageQuizDraft = (data: any) => {
       minWidth: 120,
       flex: 1,
       renderCell: (params: any) => {
-        const num = params.formattedValue;
+        const num = params?.formattedValue;
         return (
           <Grid container spacing={3} alignItems="center">
             <Grid item xs>
@@ -85,7 +85,7 @@ export const columnsManageQuizDraft: GridColDef[] = [
     minWidth: 120,
     flex: 1,
     renderCell: (params) => {
-      const num = params.formattedValue;
+      const num = params?.row?.id;
       return (
         <Grid container spacing={3} alignItems="center">
           <Grid item xs>
@@ -100,40 +100,63 @@ export const columnsManageQuizDraft: GridColDef[] = [
     headerName: "Question",
     minWidth: 180,
     flex: 1,
+    renderCell: (params) => {
+      const num = params?.row?.title;
+      return (
+        <Grid container spacing={3} alignItems="center">
+          <Grid item xs>
+            {num}
+          </Grid>
+        </Grid>
+      );
+    },
   },
   {
-    field: "id",
+    field: "revision",
     headerName: "ID/REV",
-    minWidth: 180,
+    minWidth: 110,
     flex: 1,
   },
   {
     field: "type",
     headerName: "Type",
-    minWidth: 180,
+    minWidth: 100,
     flex: 1,
   },
   {
     field: "difficulty",
     headerName: "Difficulty",
-    minWidth: 180,
+    minWidth: 140,
     flex: 1,
   },
   {
     field: "categories",
     headerName: "Categories",
-    minWidth: 300,
+    minWidth: 150,
     flex: 1,
+    renderCell: (params) => {
+      const num = params?.row?.categories?.name;
+      return (
+        <Grid container spacing={3} alignItems="center">
+          <Grid item xs>
+            {num}
+          </Grid>
+        </Grid>
+      );
+    },
   },
   {
     field: "quick_actions",
     headerName: "Quick Actions",
     width: 150,
     renderCell: (params) => {
-      const { state, setState } = useAppState();
+      const { setState, setQuizQuesIdState } = useAppState();
+
       const handleClick = () => {
+        setQuizQuesIdState(params?.row?.id);
         setState(true);
       };
+
       return (
         <Grid container spacing={3}>
           <Grid item xs>

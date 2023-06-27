@@ -11,6 +11,7 @@ export namespace Profile {
     study_prefer: string;
     taken_biochemistry: boolean;
     volunteer: boolean;
+    password?: string;
   };
 
   // Create
@@ -31,6 +32,7 @@ export namespace Profile {
     study_prefer: string;
     taken_biochemistry: boolean;
     volunteer: boolean;
+    password?: string;
   };
   export interface CreateAPIPayload extends CreateProps {
     data: CreateMutationPayload;
@@ -43,20 +45,20 @@ export namespace Profile {
 
   //Get User
 
-  export type Userprops ={}
+  export type Userprops = {};
   export type UserResponse = {
-    id:number,
-    email:string,
-    name:string,
-    username:string,
-    phone:number | string | null,
-    type:'ADMIN' | 'STUDENT',
-    status:string,
-    profilePictureId: string | null,
-    first_name:string,
-    last_name:string,
-    program:string
-  }
+    id: number;
+    email: string;
+    name: string;
+    username: string;
+    phone: number | string | null;
+    type: "ADMIN" | "STUDENT";
+    status: string;
+    profilePictureId: string | null;
+    first_name: string;
+    last_name: string;
+    program: string;
+  };
 
   export interface UserAPIPayload extends Userprops {}
 }

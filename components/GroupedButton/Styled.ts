@@ -17,7 +17,7 @@ export const ButtonWrapper = styled(Button)<ButtonProps>(
       width: "max-content",
       borderColor: theme.palette.primary.light,
       borderRight: "0px !important",
-      "&:first-of-type": {
+      "& .cusFirstChild": {
         background: theme.palette.secondary.main,
       },
       "&:hover": {

@@ -1,4 +1,4 @@
-import { type } from "os";
+
 
 export namespace Course {
   export type Item = {
@@ -9,12 +9,20 @@ export namespace Course {
     createdAt: string | Date;
     updatedAt: string | Date;
     deletedAt?: string | Date | null;
-    course?: string | null;
+    courseTarget?: {
+      courseId: number | null;
+      programs: string | null;
+      clas: string | undefined;
+    };
   };
 
   //Listing
-  export type ListingProps = {};
-  export type ListingResponse = [Item]
+  export type ListingProps = {
+    SearchBy?: string | null;
+    Limit?: number | null;
+    Page?: number;
+  };
+  export type ListingResponse = { data: Item[]; count: number };
   export interface ListingAPIPayload extends ListingProps {}
 
   //Create
@@ -27,18 +35,18 @@ export namespace Course {
     createdAt: string | Date;
     updatedAt: string | Date;
     deletedAt?: string | Date | null;
-  }
+  };
   export type CreateMutationPayload = {
-    course_name:string
-  }
+    course_name: string;
+  };
   export interface CreateAPIPayload extends CreateProps {
-    data: CreateMutationPayload
+    data: CreateMutationPayload;
   }
 
   // Detail
   export type DetailProps = {
-    id:number
-  }
+    id: number;
+  };
   export type DetailResponse = {
     id: number;
     course_name: string;
@@ -47,34 +55,46 @@ export namespace Course {
     createdAt: string | Date;
     updatedAt: string | Date;
     deletedAt?: string | Date | null;
-    course?: string | null;
-  }
+    course?: {
+      courseId: number | null;
+      programs: string | null;
+      clas: string | undefined;
+    };
+  };
   export interface DetailAPIPayload extends DetailProps {}
-
 
   //Update
   export type UpdateProps = {
-    id:number,
-  }
+    id: number;
+  };
   export type UpdateResponse = {
-    data:boolean
-  }
+    data: boolean;
+  };
   export type UpdateMutationPayload = {
-    course_name:string
-  }
+    course_name: string;
+  };
   export interface UpdateAPIPayload extends UpdateProps {
-    data:UpdateMutationPayload
+    data: UpdateMutationPayload;
   }
 
   //Remove
 
-  export type RemoveProps = {}
+  export type RemoveProps = {};
   export type RemoveResponse = {
-    data:boolean
-  }
+    data: boolean;
+  };
   export type RemoveMutationPayload = {
-    id:number
-  }
-  export interface RemoveAPIPayload extends RemoveMutationPayload{}
+    id: number;
+  };
+  export interface RemoveAPIPayload extends RemoveMutationPayload {}
 
+  //Duplicate
+  export type DuplicateProps = {};
+  export type DuplicateResponse = {
+    data: boolean;
+  };
+  export type DuplicateMutationPayload = {
+    id: number;
+  };
+  export interface DuplicateAPIPayload extends DuplicateMutationPayload {}
 }

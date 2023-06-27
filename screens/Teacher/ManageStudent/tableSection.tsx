@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { BoxWrapper } from "./Styled";
-import { pageSizeManageQuiz } from "mock-data/Teacher/ManageStudent";
 import { GridColDef } from "@mui/x-data-grid";
-
 import CustomDataGrid from "components/CustomDataGrid";
-import { useStudentListing } from "providers/teacher/student";
+import { useStudentListing } from "providers/Teacher/student";
+import { BoxItemWrapper } from "../ManageQuizScreen/DraftQuizScreen/DrawerSections/Styled";
 
 export const columnsManageStudent: GridColDef[] = [
   {
@@ -46,27 +45,43 @@ export const columnsManageStudent: GridColDef[] = [
   },
 ];
 
-
+const LIMIT = 10;
 
 const TableSection = (props: any) => {
-  const { setChecked,program,yearOfGraduation, isCheckbox,setUserId,searchBy,selectNewCourse} = props;
-
-  console.log(selectNewCourse,'selectNewCourse')
-
-  const studentListing = useStudentListing({yop:yearOfGraduation,program:program,SearchBy:searchBy});
- 
-
+  const {
+    setChecked,
+    program,
+    yearOfGraduation,
+    setUserId,
+    isCheckbox,
+    checkedId,
+    handleSelection,
+    studentData,
+    loading,
+    totalCount,
+    page,
+    handlePageChange,
+    getRowId,
+  } = props;
   return (
     <BoxWrapper>
       <CustomDataGrid
-        rows={studentListing.data  || []}
+        rows={studentData}
+        //@ts-ignore
+        getRowId={getRowId}
         columns={columnsManageStudent}
-        pageSizeData={pageSizeManageQuiz}
+        pageSizeData={10}
         type={"1"}
         isCheckbox={isCheckbox}
         setChecked={setChecked}
-        loading={studentListing.isFetching}
+        // loading={studentListing.isFetching}
+        loading={loading}
         getSelectedId={(e) => setUserId(e?.[0])}
+        page={page}
+        selectedIds={checkedId}
+        onRowSelect={handleSelection}
+        handlePageChange={handlePageChange}
+        totalRows={totalCount}
       />
     </BoxWrapper>
   );

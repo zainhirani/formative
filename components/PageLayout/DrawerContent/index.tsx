@@ -28,8 +28,10 @@ interface BarComponentProps {
 
 const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
   const router = useRouter();
-  const {signOut} = useAuthContext();
-  let MENU_ITEMS = 2 === 2 ? TEACHER_MENU : STUDENT_MENU;
+  const { signOut, currentUser } = useAuthContext();
+  console.log(currentUser?.name, "current");
+
+  let MENU_ITEMS = currentUser?.type === "ADMIN" ? TEACHER_MENU : STUDENT_MENU;
   let COMMON_MENU_ITEMS = [COMMON_MENU.profile, COMMON_MENU.settings];
 
   const isActiveRoute = (route: string) => {
@@ -168,29 +170,29 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
       <List>
         <ListItem disablePadding>
           {/* <Link href="#" passHref={true}> */}
-            <ListItemButton onClick={() => signOut()}>
-              <ListItemIcon
-                sx={{
-                  color: (theme) => theme.palette.primary.light,
-                  minWidth: "40px",
-                  "& .lazyload-wrapper": {
-                    display: "flex",
-                  },
-                }}
-              >
-                <PowerSettingsNewOutlinedIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary="Logout"
-                sx={{
-                  color: (theme) => theme.palette.primary.light,
+          <ListItemButton onClick={() => signOut()}>
+            <ListItemIcon
+              sx={{
+                color: (theme) => theme.palette.primary.light,
+                minWidth: "40px",
+                "& .lazyload-wrapper": {
+                  display: "flex",
+                },
+              }}
+            >
+              <PowerSettingsNewOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary="Logout"
+              sx={{
+                color: (theme) => theme.palette.primary.light,
+                display: !open ? "none": "block",
+                fontSize: "14px",
+                "& span": {
                   fontSize: "14px",
-                  display: !open ? "none": "block",
-                  "& span": {
-                    fontSize: "14px",
-                  },
-                }}
-              />
+                },
+              }}
+            />
             </ListItemButton>
           {/* </Link> */}
         </ListItem>

@@ -1,144 +1,146 @@
-import React,{useMemo,useEffect, useState} from "react";
+import React, { useMemo, useEffect, useState } from "react";
 
-import {
-  Box,
-  IconButton,
-  InputAdornment,
-} from "@mui/material";
-import { Search } from "@mui/icons-material";
+import { Box, IconButton } from "@mui/material";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
-// import AutoComplete from "components/AutoComplete";
 import { useSnackbar } from "notistack";
 import CustomSelect from "components/CustomSelect/CustomSelect";
 import { GridCloseIcon } from "@mui/x-data-grid";
-import { useCourseListing } from "providers/Courses";
-import { useStudentEnroll } from "providers/teacher/student";
-import { year_of_graduation ,programs} from "constants/index";
+import { useCourseListing, useCreateCourse } from "providers/Courses";
+import { useStudentEnroll } from "providers/Teacher/student";
+import { year_of_graduation, programs } from "constants/index";
+import CloseIcon from "@mui/icons-material/Close";
+// import { debounce } from "lodash";
+import { useQueryClient } from "react-query";
 
 import messages from "./messages";
-import {
-  BoxWrapper,
-  ButtonWrapper,
-  TextFieldStyled,
-} from "./Styled";
+import { BoxWrapper, ButtonWrapper, TextFieldStyled } from "./Styled";
 
 const SearchSection = (props: any) => {
-  
+  const queryClient = useQueryClient();
+  const [selected, setSelected] = useState("");
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const { checked,setProgram,setYearOfGraduation, setCourse,userIds,selectedCourse,setSearchChange } = props;
-  console.log(selectedCourse,"selectedCourse")
+  const {
+    checked,
+    setProgram,
+    setYearOfGraduation,
+    setCourse,
+    userIds,
+    selectedCourse,
+    setAddCourse,
+    addCourse,
+  } = props;
+
   const searchCourse = useFormattedMessage(messages.searchCourse);
 
+  //Course data
+  const courseListing = useCourseListing({});
+  const enrollStudent = useStudentEnroll({});
 
-//Course data 
-const courseListing = useCourseListing({});
-const enrollStudent = useStudentEnroll({})
-
-
-const cousrseData = useMemo(() => {
- return courseListing?.data?.map((item) => (
-    {
-    
-      value:item.id,
-      label:item.course_name
+  const defaultCourse = {
+    value: 1001101,
+    label: "New Course",
+  };
+  const cousrseData = useMemo(() => {
+    const courses = courseListing?.data?.data.map((item) => ({
+      value: item.id,
+      label: item.course_name,
+    }));
+    if (courses) {
+      return [defaultCourse, ...courses];
     }
-    ))
-},[courseListing?.data])
+    return [defaultCourse];
+  }, [courseListing?.data]);
 
-//Select  Program Value
-const handleProgram = (programValue :any) =>{
-  setProgram(programValue?.value)
-}
-//Select Year Of Graduation Value
-const handleYearOfGraduation = (yearValue :any) =>{
-  setYearOfGraduation(yearValue?.value)
-  console.log(yearValue)
-}
+  //Select  Program Value
+  const handleProgram = (programValue: any) => {
+    setProgram(programValue?.value);
+  };
+  //Select Year Of Graduation Value
+  const handleYearOfGraduation = (yearValue: any) => {
+    setYearOfGraduation(yearValue?.value);
+  };
 
-const handleCourse = (courseValue :any) =>{
-  setCourse(courseValue?.value)
- 
+  const handleCourse = (courseValue: any) => {
+    setSelected(courseValue);
+    setCourse(courseValue);
+  };
 
-}
+  useEffect(() => {
+    if (enrollStudent?.isSuccess) {
+      enqueueSnackbar(
+        //@ts-ignore
+        `Checked students are now enrolled in ${selected?.label}`,
+        {
+          variant: "success",
+          autoHideDuration: 3000,
+          action: (key) => (
+            <IconButton onClick={() => closeSnackbar(key)}>
+              <GridCloseIcon
+                sx={{ color: (theme) => theme.palette.primary.light }}
+              />
+            </IconButton>
+          ),
+        },
+      );
+      queryClient.invalidateQueries("Courses");
+    }
+  }, [enrollStudent?.isSuccess]);
 
-useEffect(() => {
-  if(enrollStudent?.isSuccess){
-    enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
-      variant: "success",
-      autoHideDuration: 3000,
-      action: (key) => (
-        <IconButton onClick={() => closeSnackbar(key)}>
-            <GridCloseIcon sx={{color:(theme) => theme.palette.primary.light}}/>
+  useEffect(() => {
+    if (enrollStudent?.isError) {
+      enqueueSnackbar(<FormattedMessage {...messages.errorMessage} />, {
+        variant: "error",
+        autoHideDuration: 3000,
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)}>
+            <GridCloseIcon
+              sx={{ color: (theme) => theme.palette.primary.light }}
+            />
           </IconButton>
         ),
       });
     }
-},[enrollStudent?.isSuccess])
+  }, [enrollStudent?.isError]);
 
-useEffect(() => {
-  if(enrollStudent?.isError){
-    enqueueSnackbar(<FormattedMessage {...messages.errorMessage} />, {
-      variant: "error",
-      autoHideDuration: 3000,
-      action: (key) => (
-        <IconButton onClick={() => closeSnackbar(key)}>
-            <GridCloseIcon sx={{color:(theme) => theme.palette.primary.light}}/>
-          </IconButton>
-        ),
-      });
-    }
-},[enrollStudent?.isError])
-
-const handleSearchChange = (search: any) => {
-  setSearchChange(search.target.value);
-  console.log(search.target.value)
-};
-
+  const onInputChange = (e?: any) => {
+    setCourse(e.target.value);
+  };
 
   return (
-    <BoxWrapper display="grid" gridTemplateColumns="repeat(12, 1fr)">
+    <BoxWrapper
+      sx={{ display: { md: "grid", xs: "block" }, p: { md: 0, xs: "20px" } }}
+      gridTemplateColumns="repeat(12, 1fr)"
+    >
       <Box gridColumn="span 3">
         <TextFieldStyled
           placeholder={searchCourse}
           variant="outlined"
-          onChange={handleSearchChange}
-          InputProps={{
-            style: { border: "none", outline: "0px" },
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton aria-label="visibility" edge="end">
-                  <Search />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-      </Box>
-      <Box  gridColumn="span 2">
-        <CustomSelect
-          placeholder="Select Course"
-          controlText="New Course:"
-          dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-          options={cousrseData || [] }
-          onChange={handleCourse}
-          
+          value={selected != null ? selectedCourse?.label : ""}
+          onChange={onInputChange}
+          //@ts-ignore
+          disabled={selected?.value != 1001101}
         />
       </Box>
       <Box gridColumn="span 2">
         <CustomSelect
-          placeholder="2004"
+          controlText="New Course:"
+          dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
+          options={cousrseData || []}
+          onChange={handleCourse}
+        />
+      </Box>
+      <Box gridColumn="span 2">
+        <CustomSelect
           controlText="Year of Graduation:"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={year_of_graduation}
           onChange={handleYearOfGraduation}
-          
         />
       </Box>
       <Box gridColumn="span 2">
         <CustomSelect
-          placeholder="COP"
           controlText="School/Program:"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
           options={programs}
@@ -151,7 +153,14 @@ const handleSearchChange = (search: any) => {
           startIcon={<AddCircleOutlineRoundedIcon />}
           variant="contained"
           disabled={checked ? false : true}
-          onClick={() => enrollStudent.mutate({courseId:selectedCourse,userIds})}
+          onClick={() => {
+            enrollStudent.mutate({
+              courseName: selectedCourse.label
+                ? selectedCourse.label
+                : selectedCourse,
+              userIds,
+            });
+          }}
         >
           <FormattedMessage {...messages.enrollStudent} />
         </ButtonWrapper>
