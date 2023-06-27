@@ -54,17 +54,17 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
             lazyLoad={true}
           />
         </Box>
-        
-        {/* <IconButton onClick={clickHandler}>
+        {/* sx={{display: { md: "none", xs: "block" },}} */}
+        <IconButton onClick={clickHandler} > 
           <MenuIcon sx={{ color: (theme) => theme.palette.primary.light }} />
-        </IconButton>  */}
+        </IconButton> 
        
       </DrawerHeader>
 
       <List sx={{ height: "100%" }}>
         {MENU_ITEMS.map((item: any, index) =>
           item?.subitems?.length ? (
-            <SidebarMultiMenuItem item={item} key={index} />
+            <SidebarMultiMenuItem item={item} key={index} hamOpen={open} />
           ) : (
             <ListItem
               key={item.title}
@@ -99,6 +99,7 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
                     sx={{
                       color: (theme) => theme.palette.primary.light,
                       fontSize: "14px",
+                      display: !open ? "none": "block",
                       "& span": {
                         fontSize: "14px",
                       },
@@ -151,6 +152,7 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
                   primary={item.title}
                   sx={{
                     color: (theme) => theme.palette.primary.light,
+                    display: !open ? "none": "block",
                     fontSize: "14px",
                     "& span": {
                       fontSize: "14px",
@@ -183,6 +185,7 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
                 sx={{
                   color: (theme) => theme.palette.primary.light,
                   fontSize: "14px",
+                  display: !open ? "none": "block",
                   "& span": {
                     fontSize: "14px",
                   },

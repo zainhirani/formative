@@ -3,7 +3,7 @@ import Drawer, { DrawerProps } from "@mui/material/Drawer";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
 
-const drawerWidth = 490;
+const drawerWidth = 800;
 
 export const DrawerWrapper = styled(Drawer)<DrawerProps>(
   ({ theme }) =>

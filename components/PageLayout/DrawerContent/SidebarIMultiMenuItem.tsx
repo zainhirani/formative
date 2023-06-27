@@ -18,15 +18,22 @@ interface SubmenuItem {
 }
 
 interface MenuItem {
-  id: number;
-  title: string;
-  link: string;
-  icon: React.ReactNode;
-  subitems?: SubmenuItem[];
+  item:{
+    id?: number;
+    title?: string;
+    link: string;
+    icon?: React.ReactNode;
+    subitems?: SubmenuItem[];
+    hamburgerOpen?: boolean;
+  },
+  hamOpen: any; 
 }
 
-const SidebarMultiMenuItem: React.FC<{ item: MenuItem }> = ({ item }) => {
+const SidebarMultiMenuItem: React.FC<MenuItem> = ({item, hamOpen}) => {
+  // const  {item, hamOpen} = props;
   const [open, setOpen] = useState(false);
+  const [openhamburger, setOpenhamburger] = useState(true);
+
   const router = useRouter();
 
   const handleClick = () => {
@@ -45,11 +52,11 @@ const SidebarMultiMenuItem: React.FC<{ item: MenuItem }> = ({ item }) => {
       disablePadding
       sx={{
         background: isActiveRoute(item.link) ? "#68151E" : "",
+        flexWrap: "wrap",
         "&:hover": {
           background: "#68151E",
         },
         "&.has-submenu": {
-          flexWrap: "wrap",
           background: "#68151E"
         },
       }}
@@ -58,7 +65,6 @@ const SidebarMultiMenuItem: React.FC<{ item: MenuItem }> = ({ item }) => {
       <ListItemButton
         onClick={handleClick}
         sx={{
-          flexWrap: "wrap",
           backgroundColor: isActiveRoute(item.link) ? "#68151E" : "initial",
         }}
       >
@@ -77,6 +83,7 @@ const SidebarMultiMenuItem: React.FC<{ item: MenuItem }> = ({ item }) => {
           primary={item.title}
           sx={{
             color: (theme) => theme.palette.primary.light,
+            display: hamOpen ? "block" : "none",
             fontSize: "14px",
             "& span": {
               fontSize: "14px",
@@ -85,9 +92,9 @@ const SidebarMultiMenuItem: React.FC<{ item: MenuItem }> = ({ item }) => {
         />
         {hasSubmenu && ( // Render the expand/collapse icons only if there's a submenu
           open ? (
-            <ExpandLess sx={{ color: "#fff" }} />
+            <ExpandLess sx={{ color: "#fff", display: hamOpen ? "block" : "none", }} />
           ) : (
-            <ExpandMore sx={{ color: "#fff" }} />
+            <ExpandMore sx={{ color: "#fff", display: hamOpen ? "block" : "none", }} />
           )
         )}
       </ListItemButton>
