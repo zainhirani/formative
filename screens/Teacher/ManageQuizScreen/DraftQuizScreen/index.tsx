@@ -47,6 +47,8 @@ const DraftQuizScreen: NextPage = () => {
           setSelectedQuestions(quizByIdData?.questions);
         }
       }
+    } else {
+      setSelectedQuestions([]);
     }
   }, [editPage, isSuccess]);
 
@@ -131,24 +133,28 @@ const DraftQuizScreen: NextPage = () => {
     {
       field: "difficulty",
       headerName: "Difficulty",
-      minWidth: 150,
+      minWidth: 130,
       flex: 1,
     },
     {
       field: "detail",
       headerName: "Details",
-      minWidth: 180,
+      minWidth: 170,
       flex: 1,
       renderCell: (data: any) => removeHTMLTags(data.row.detail),
     },
     {
       field: "add",
       headerName: "",
-      minWidth: 50,
+      minWidth: 60,
       flex: 1,
+      headerClass: "addQuesWrap",
       renderCell: (data: any) => {
         const selectedRow = data?.row || [];
         const selectedRowId = data?.row?.id;
+        // console.log(selectedRowId, "selectedRowId");
+        // console.log(selectedQuestions, "selectedQuestions");
+
         return (
           <>
             {!selectedQuestions.includes(selectedRow) ? (
@@ -158,7 +164,12 @@ const DraftQuizScreen: NextPage = () => {
                 }}
               >
                 <AddCircleOutlineOutlinedIcon
-                  sx={{ fontSize: "20px", color: "#8C2531", cursor: "pointer" }}
+                  sx={{
+                    fontSize: "20px",
+                    color: "#8C2531",
+                    cursor: "pointer",
+                    marginRight: "10px",
+                  }}
                 />
               </IconButton>
             ) : (
@@ -168,7 +179,12 @@ const DraftQuizScreen: NextPage = () => {
                 }}
               >
                 <RemoveCircleOutlineOutlinedIcon
-                  sx={{ fontSize: "20px", color: "#8C2531", cursor: "pointer" }}
+                  sx={{
+                    fontSize: "20px",
+                    color: "#8C2531",
+                    cursor: "pointer",
+                    marginRight: "10px",
+                  }}
                 />
               </IconButton>
             )}
