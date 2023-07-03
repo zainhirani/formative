@@ -110,7 +110,7 @@ const SidebarMultiMenuItem: React.FC<MenuItem> = ({item, hamOpen}) => {
         }}
       >
         {item.subitems && (
-          <List disablePadding sx={{ paddingTop: "20px" }}>
+          <List disablePadding sx={{ paddingTop: "20px", display: hamOpen ? "block" : "none", }}>
             {item.subitems.map((sitem: SubmenuItem) => (
               <ListItem
                 button
