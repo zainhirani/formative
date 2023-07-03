@@ -21,6 +21,7 @@ const PageLayout = (props: Props) => {
   const [open, setOpen] = React.useState(true);
   const {currentUser} = useAuthContext()
   const router = useRouter()
+console.log(open,"open");
 
 
   const handleDrawerOpen = () => {
@@ -39,16 +40,16 @@ const PageLayout = (props: Props) => {
       <>
       <Box
         sx={{
-          width: open ? primaryDrawerWidth : 60,
+          width: open ? primaryDrawerWidth : 50,
         }}
         component="nav"
         >
         <Drawer
           open={open}
-          width={open ? primaryDrawerWidth : 60}
+          width={open ? primaryDrawerWidth : 50}
           onClose={handleDrawerClose}
           >
-          <DrawerContent clickHandler={handleDrawerClose} />
+          <DrawerContent open={open} clickHandler={handleDrawerClose} />
         </Drawer>
       </Box>
       {/* Header with breadcrumb */}
