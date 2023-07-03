@@ -63,7 +63,7 @@ const STATUS = {
 };
 
 interface QuestionProps {
-  qId?: string | number;
+  qId?: any;
 }
 
 const AddQuestion = ({ qId }: QuestionProps) => {
