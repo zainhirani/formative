@@ -110,6 +110,15 @@ const DraftQuizScreen: NextPage = () => {
       prevQuestions.filter((question: any) => question.id !== idToRemove),
     );
   }
+  function extractIds(arr: any) {
+    var ids = [];
+    for (var i = 0; i < arr.length; i++) {
+      ids.push(arr[i].id);
+    }
+    return ids;
+  }
+
+  const questionIds = extractIds(selectedQuestions);
 
   let COLUMNS_CONFIG = [
     {
@@ -152,12 +161,11 @@ const DraftQuizScreen: NextPage = () => {
       renderCell: (data: any) => {
         const selectedRow = data?.row || [];
         const selectedRowId = data?.row?.id;
-        // console.log(selectedRowId, "selectedRowId");
-        // console.log(selectedQuestions, "selectedQuestions");
 
         return (
           <>
-            {!selectedQuestions.includes(selectedRow) ? (
+            {!selectedQuestions.includes(selectedRow) &&
+            !questionIds.includes(selectedRowId) ? (
               <IconButton
                 onClick={() => {
                   setSelectedQuestions([...selectedQuestions, selectedRow]);

@@ -243,7 +243,10 @@ const DrawerStudentsSection = (props: any) => {
         return <Box>Distribute</Box>;
       },
       onClick: () => {
-        quizDistribute.mutate({ id: 3, studentsId: selectedRows });
+        quizDistribute.mutate({
+          id: quizByIdData?.id,
+          studentsId: selectedRows,
+        });
         // selectedRows
         // console.log("Click Distribute");
       },
