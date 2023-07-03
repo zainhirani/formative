@@ -47,6 +47,8 @@ const DraftQuizScreen: NextPage = () => {
           setSelectedQuestions(quizByIdData?.questions);
         }
       }
+    } else {
+      setSelectedQuestions([]);
     }
   }, [editPage, isSuccess]);
 
@@ -108,6 +110,15 @@ const DraftQuizScreen: NextPage = () => {
       prevQuestions.filter((question: any) => question.id !== idToRemove),
     );
   }
+  function extractIds(arr: any) {
+    var ids = [];
+    for (var i = 0; i < arr.length; i++) {
+      ids.push(arr[i].id);
+    }
+    return ids;
+  }
+
+  const questionIds = extractIds(selectedQuestions);
 
   let COLUMNS_CONFIG = [
     {
@@ -131,34 +142,42 @@ const DraftQuizScreen: NextPage = () => {
     {
       field: "difficulty",
       headerName: "Difficulty",
-      minWidth: 150,
+      minWidth: 130,
       flex: 1,
     },
     {
       field: "detail",
       headerName: "Details",
-      minWidth: 180,
+      minWidth: 170,
       flex: 1,
       renderCell: (data: any) => removeHTMLTags(data.row.detail),
     },
     {
       field: "add",
       headerName: "",
-      minWidth: 50,
+      minWidth: 60,
       flex: 1,
+      headerClass: "addQuesWrap",
       renderCell: (data: any) => {
         const selectedRow = data?.row || [];
         const selectedRowId = data?.row?.id;
+
         return (
           <>
-            {!selectedQuestions.includes(selectedRow) ? (
+            {!selectedQuestions.includes(selectedRow) &&
+            !questionIds.includes(selectedRowId) ? (
               <IconButton
                 onClick={() => {
                   setSelectedQuestions([...selectedQuestions, selectedRow]);
                 }}
               >
                 <AddCircleOutlineOutlinedIcon
-                  sx={{ fontSize: "20px", color: "#8C2531", cursor: "pointer" }}
+                  sx={{
+                    fontSize: "20px",
+                    color: "#8C2531",
+                    cursor: "pointer",
+                    marginRight: "10px",
+                  }}
                 />
               </IconButton>
             ) : (
@@ -168,7 +187,12 @@ const DraftQuizScreen: NextPage = () => {
                 }}
               >
                 <RemoveCircleOutlineOutlinedIcon
-                  sx={{ fontSize: "20px", color: "#8C2531", cursor: "pointer" }}
+                  sx={{
+                    fontSize: "20px",
+                    color: "#8C2531",
+                    cursor: "pointer",
+                    marginRight: "10px",
+                  }}
                 />
               </IconButton>
             )}

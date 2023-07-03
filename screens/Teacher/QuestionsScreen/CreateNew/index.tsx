@@ -13,9 +13,6 @@ import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOu
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
-import { useSession } from "next-auth/react";
-import { useMutation, useQuery } from "react-query";
-
 import ImagePreview from "./ImagePreview";
 import AnswerOptions from "./Answers";
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
@@ -30,30 +27,24 @@ import { ButtonConfig } from "components/GroupedButton/types";
 import GroupedButton from "components/GroupedButton";
 import TinyMCEEditor from "./Editor";
 import CustomSelect from "components/CustomSelect/CustomSelect";
-
-import {
-  addQuestion,
-  editQuestion,
-  getCategories,
-  getFolders,
-  getQuestionCountId,
-} from "providers/Teacher_Questions/api";
-import { setAuthenticationHeader } from "services";
-import { useRegisterDetail } from "providers/Auth";
 import {
   formatArrayOfObjectsForFormData,
   formatOptions,
   isStringNotURL,
 } from "utils";
-import { useAuthContext } from "contexts/AuthContext";
 import {
   useAddQuestion,
   useDeleteQuestion,
   useDuplicateQuestion,
+  useGetCategories,
+  useGetFolders,
+  useGetQuestionCountId,
   useQuestionDetails,
+  useUpdateQuestion,
 } from "providers/Teacher_Questions";
 import { useSnackbar } from "notistack";
 import OverlayLoader from "components/OverlayLoader";
+import { useAuthContext } from "contexts/AuthContext";
 
 const TYPE_OPTIONS = [
   { value: "SA", label: "SA" },
@@ -72,24 +63,26 @@ const STATUS = {
 };
 
 interface QuestionProps {
-  qId?: unknown;
+  qId?: any;
 }
 
 const AddQuestion = ({ qId }: QuestionProps) => {
   let { enqueueSnackbar } = useSnackbar();
-  let deleteMutation = useDeleteQuestion();
+  const { currentUser } = useAuthContext();
+
+  // Queries
+  const deleteQuestion = useDeleteQuestion();
   const duplicateQuestion = useDuplicateQuestion();
+  const foldersData = useGetFolders();
+  const categoriesData = useGetCategories();
+  const questionCountData = useGetQuestionCountId();
+  const updateQuestion = useUpdateQuestion();
+  const addQuestion = useAddQuestion();
   const questionDetails = useQuestionDetails({
     questionId: qId,
   });
-  let { data: currentUser } = useSession();
-  setAuthenticationHeader(currentUser?.accessToken);
-  let userDetails = useRegisterDetail(currentUser?.accessToken);
 
-  const foldersData = useQuery(["FOLDERS"], getFolders);
-  const categoriesData = useQuery(["CATEGORIES"], getCategories);
-  const questionCountData = useQuery(["QUESTION_ID"], getQuestionCountId);
-
+  // States
   const [questionId, setQuestionId] = useState("121/1");
   const [title, setTitle] = useState("");
   const [authorName, setAuthorName] = useState("");
@@ -100,25 +93,12 @@ const AddQuestion = ({ qId }: QuestionProps) => {
   const [media, setMedia] = useState(null);
   const [enumType, setEnumType] = useState(null);
   const [status, setStatus] = useState(STATUS.DRAFT);
+  const [selectedCategory, setSelectedCategory] = useState([]);
+  const [timelimit, setTimelimit] = useState(0);
+  const authorNamePlaceholder = useFormattedMessage(messages.authorName);
   const [selectedfacultyCategoryIds, setSelectedFacultyCategoryIds] = useState(
     [],
   );
-  const [selectedCategory, setSelectedCategory] = useState([]);
-  const [timelimit, setTimelimit] = useState(0);
-  const [tries, setTries] = useState(0);
-  const authorNamePlaceholder = useFormattedMessage(messages.authorName);
-
-  const updateQuestionMutation = useMutation({
-    mutationFn: (payload) => {
-      return editQuestion(payload);
-    },
-    onError: () => {},
-    onSuccess: () => {
-      client.invalidateQueries(["TEACHER_QUESTIONS_LISTINGS"]);
-    },
-  });
-
-  let addQuestionMutation = useAddQuestion();
 
   const handleRemoveSelectedFacultyCategory = (value: any) => {
     setSelectedFacultyCategoryIds(
@@ -139,7 +119,7 @@ const AddQuestion = ({ qId }: QuestionProps) => {
     messages.categoriesForFacultyValue,
   );
 
-  const config: ButtonConfig[] = [
+  const BUTTONS_CONFIG: ButtonConfig[] = [
     {
       key: "submit",
       startIcon: <ArrowCircleRightOutlinedIcon />,
@@ -167,7 +147,7 @@ const AddQuestion = ({ qId }: QuestionProps) => {
         return <Box>Delete</Box>;
       },
       onClick: () => {
-        deleteMutation.mutate(qId);
+        deleteQuestion.mutate(qId);
       },
     },
   ];
@@ -222,18 +202,16 @@ const AddQuestion = ({ qId }: QuestionProps) => {
     }
 
     if (qId) {
-      updateQuestionMutation.mutate({ formdata, qId });
+      updateQuestion.mutate({ formdata, qId });
     } else {
-      addQuestionMutation.mutate(formdata);
+      addQuestion.mutate(formdata);
     }
   };
 
   useEffect(() => {
-    setAuthorName(
-      `${userDetails.data?.first_name} ${userDetails.data?.last_name}`,
-    );
+    setAuthorName(`${currentUser?.first_name} ${currentUser?.last_name}`);
     setQuestionId(questionCountData.data?.count + 1);
-  }, [userDetails, questionCountData]);
+  }, [currentUser, questionCountData]);
 
   useEffect(() => {
     if (qId && questionDetails.data) {
@@ -665,12 +643,10 @@ const AddQuestion = ({ qId }: QuestionProps) => {
         </Box>
       </Box>
       <Box sx={{ p: "40px 20px", float: "right" }}>
-        <GroupedButton config={config} />
+        <GroupedButton config={BUTTONS_CONFIG} />
       </Box>
       <OverlayLoader
-        isShow={
-          addQuestionMutation.isLoading || updateQuestionMutation.isLoading
-        }
+        isShow={addQuestion.isLoading || updateQuestion.isLoading}
       />
     </>
   );
