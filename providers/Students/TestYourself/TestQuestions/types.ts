@@ -14,6 +14,7 @@ export namespace TestQuestion {
     questionId: number;
     start_time: number;
     end_time: number;
+    data?: boolean;
   };
   export type TestMutationPayload = {
     option_selected: string | null;

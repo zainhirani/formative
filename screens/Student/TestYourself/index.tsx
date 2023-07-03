@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { Box, IconButton } from "@mui/material";
 import { Checkbox } from "@mui/material";
@@ -17,6 +17,7 @@ import {
   useQuestionDetail,
   useQuestionListing,
 } from "providers/Students/TestYourself/QuestionByCategory";
+import { useTestQuestion } from "providers/Students/TestYourself/TestQuestions";
 
 const PageLayout = dynamic(() => import("components/PageLayout"), {
   ssr: false,
@@ -60,9 +61,18 @@ const dataTestYourself = [
     correct: false,
   },
 ];
+type Item = {
+  id: number;
+  title: string;
+  type: string;
+  attempted: boolean;
+  correct: boolean;
+};
 
 const TestYourself = () => {
+  const [questionId, setQuestionId] = useState(0);
   const categoryList = useCategoryListing();
+  const questionDetail = useQuestionDetail({ id: questionId });
   const optionsCourse = categoryList?.data?.data?.map((item) => ({
     value: item.id,
     label: item.name,
@@ -75,8 +85,6 @@ const TestYourself = () => {
         }
       : { value: 0, label: "" };
 
-  console.log(defaultOption, "default");
-
   const [category, setCategory] = useState({
     value: defaultOption.value,
     label: defaultOption.label,
@@ -84,29 +92,63 @@ const TestYourself = () => {
   const handleCategoryChange = (e: any) => {
     setCategory({ value: e?.value, label: e?.label });
   };
-  console.log(category, "selected course");
 
   const questionList = useQuestionListing({ id: category?.value });
-  const timer = 120;
+  const submitQuestion = useTestQuestion();
+
+  const [questionListing, setQuestionListing] = useState<Item[]>([]);
+  const [checkedState, setCheckedState] = useState<boolean[]>([]);
+  const questionOption = eval(questionDetail?.data?.option || "");
+
+  console.log(questionOption, "aaaaaaaaaa");
+  console.log(questionDetail?.data?.option, "option");
+
+  useEffect(() => {
+    setQuestionListing(questionList?.data || []);
+    setCheckedState(
+      new Array<boolean>(questionList?.data?.length || 0).fill(false),
+    );
+  }, [questionListing]);
+
+  const timer = questionDetail?.data?.timelimit;
   const [remainingTime, setRemainingTime] = useState(timer);
 
   const [checkedStateAns, setCheckedStateAns] = useState(
     new Array(questionData?.options?.length).fill(false),
   );
-  const [checkedState, setCheckedState] = useState(
-    new Array(dataTestYourself.length).fill(false),
-  );
+  // const [checkedState, setCheckedState] = useState(
+  //   new Array(questionList?.data?.length).fill(false),
+  // );
+
+  // const [checkedState, setCheckedState] = useState(
+  //   new Array(questionList?.data?.length).fill(false),
+  // );
+  console.log(checkedState, "checkeddddddddd");
+
   const [submit, setSubmit] = useState(false);
 
   const handleOnChange = (position: any, e: any) => {
     if (checkedState.filter((i) => i).length >= 1 && e.target.checked) return;
     const updatedCheckedState = checkedState.map((item, index) =>
-      index === position ? !item : item,
+      questionId === position ? e.target.checked : item,
     );
     setCheckedState(updatedCheckedState);
     setSubmit(false);
     setCheckedStateAns(new Array(questionData?.options?.length).fill(false));
+    setQuestionId(position);
   };
+
+  const handleQuestionSubmit = () => {
+    setSubmit(true);
+    submitQuestion.mutate({
+      questionId: questionId,
+      start_time: 1,
+      end_time: remainingTime || 0,
+      option_selected: "A",
+    });
+  };
+  const isAnswerCorrect = submitQuestion?.data?.data;
+  console.log(submitQuestion?.data?.data, "submitQuestion");
 
   let configTestYourself = [
     {
@@ -119,9 +161,6 @@ const TestYourself = () => {
         attempted: boolean;
         correct: boolean;
       }) => {
-        // console.log(item, "item item");
-        // const questionDetail = useQuestionDetail({ id: item?.id });
-
         return (
           <>
             <Checkbox
@@ -131,7 +170,7 @@ const TestYourself = () => {
                     <CircleUnchecked sx={{ fontSize: "20px" }} />
                   ) : (
                     <IconButton sx={{ width: "20px", padding: "0px" }}>
-                      {item?.correct == true ? (
+                      {submitQuestion?.data?.data == true ? (
                         <Image
                           src="/correct.svg"
                           width={20}
@@ -168,16 +207,13 @@ const TestYourself = () => {
                 },
               }}
               onClick={(e) => {
-                // console.log(e, "event");
                 return setRemainingTime(timer);
               }}
             />
           </>
         );
       },
-      handleClick: (item: any) => {
-        // useQuestionDetail({ id: item?.id });
-      },
+      handleClick: (item: any) => {},
     },
     {
       columnName: "Name",
@@ -185,9 +221,7 @@ const TestYourself = () => {
       render: (item: { title: any; id: number }) => {
         return <>{item.title}</>;
       },
-      handleClick: (item: any) => {
-        // console.log(item?.id, "item");
-      },
+      handleClick: (item: any) => {},
     },
     {
       columnName: "Type",
@@ -196,6 +230,7 @@ const TestYourself = () => {
       },
     },
   ];
+
   return (
     // <PageLayout title="Test Yourself" icon={<HelpRoundedIcon />}>
     <Box sx={{ display: "flex" }}>
@@ -208,15 +243,21 @@ const TestYourself = () => {
             onChange={handleCategoryChange}
           />
         </SelectBoxWrapper>
-        <DataTable data={questionList?.data} config={configTestYourself} />
+        <DataTable
+          data={questionList?.data || []}
+          config={configTestYourself}
+        />
       </BoxWrapper>
       <BoxWrapper sx={{ width: "60%", marginLeft: "15px" }}>
         <TakeQuizFormat
-          id={questionData?.id}
+          questionID={questionDetail?.data?.id}
+          questionTitle={questionDetail?.data?.title}
+          questionDetail={questionDetail?.data?.detail}
+          questionMedia={questionDetail?.data?.media}
           QNo={questionData?.QNo}
           question={questionData?.question}
           image={questionData?.image}
-          options={questionData?.options}
+          options={questionOption}
           time={questionData?.time}
           questionSelected={checkedState.indexOf(true) > -1}
           questionData={questionData}
@@ -227,6 +268,8 @@ const TestYourself = () => {
           setRemainingTime={setRemainingTime}
           remainingTime={remainingTime}
           timer={timer}
+          handleSubmit={handleQuestionSubmit}
+          answer={isAnswerCorrect}
         />
       </BoxWrapper>
     </Box>

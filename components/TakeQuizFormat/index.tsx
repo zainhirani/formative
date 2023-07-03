@@ -7,14 +7,16 @@ import FormattedMessage from "theme/FormattedMessage";
 import Image from "theme/Image";
 import messages from "./messages";
 import { BoxWrapper, ButtonWrapper } from "./Styled";
+import { PUBLIC_IMAGE_URL } from "configs";
 
 interface IOptionProps {
   name: string;
   valid: string;
+  value: string;
 }
 
 type ITakeQuizProps = {
-  id?: string;
+  id?: number;
   QNo?: string;
   question?: string;
   image?: string;
@@ -35,6 +37,8 @@ type ITakeQuizProps = {
   questionMedia?: string;
   questionOption?: string;
   timelimit?: number;
+  answer?: boolean;
+  handleSubmit?: () => void;
 };
 
 const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
@@ -59,6 +63,8 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
   questionMedia,
   questionOption,
   timelimit,
+  answer,
+  handleSubmit,
 }): JSX.Element => {
   const [ansCorrect, setAnsCorrect] = React.useState(false);
 
@@ -150,7 +156,7 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
               fontSize={14}
               sx={{ color: (theme) => theme.palette.text.secondary }}
             >
-              Question {questionTitle}
+              Question: {questionTitle}
             </Typography>
             <Typography
               fontSize={14}
@@ -167,7 +173,7 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
               <Image
                 alt="quiz-image"
                 lazyLoadProps={{ height: 240 }}
-                src={questionMedia}
+                src={`${PUBLIC_IMAGE_URL}/${questionMedia}`}
                 lazyLoad={true}
                 style={{ maxWidth: "100%", marginTop: "30px" }}
               />
@@ -209,10 +215,10 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
                         disabled={submit ? true : false}
                       />
                     }
-                    label={el.name}
+                    label={el.value}
                   />
                   {submit && checkedStateAns[index] ? (
-                    valNew === "true" ? (
+                    answer ? (
                       <Box sx={{ color: "#225A41", marginRight: "20px" }}>
                         Correct Answer!
                       </Box>
@@ -290,7 +296,7 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
                 </Typography>
               </BoxWrapper>
               <ButtonWrapper
-                onClick={() => setSubmit(true)}
+                onClick={handleSubmit}
                 disabled={!(checkedStateAns.indexOf(true) > -1)}
                 loadingPosition="start"
                 startIcon={<ArrowCircleRightOutlinedIcon />}
