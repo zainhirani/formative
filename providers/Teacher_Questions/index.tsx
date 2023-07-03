@@ -3,7 +3,11 @@ import {
   addQuestion,
   deleteQuestion,
   duplicateQuestion,
+  editQuestion,
+  getCategories,
+  getFolders,
   getQuestionById,
+  getQuestionCountId,
   getQuestions,
 } from "./api";
 import { useSnackbar } from "notistack";
@@ -20,12 +24,38 @@ export function getKeyFromProps(
     | "DUPLICATE_QUESTION"
     | "TEACHER_QUESTIONS_LISTINGS"
     | "DELETE_QUESTION"
-    | "ADD_QUESTION",
+    | "ADD_QUESTION"
+    | "GET_FOLDERS"
+    | "GET_CATEGORIES"
+    | "GET_QUESTION_COUNT_ID",
 ): string[] {
   const key = [KEY, type];
-  key.push(props);
+  if (props) {
+    key.push(props);
+  }
   return key;
 }
+
+export const useGetFolders = () => {
+  return useQuery({
+    queryFn: getFolders,
+    queryKey: getKeyFromProps(null, "GET_FOLDERS"),
+  });
+};
+
+export const useGetCategories = () => {
+  return useQuery({
+    queryFn: getCategories,
+    queryKey: getKeyFromProps(null, "GET_CATEGORIES"),
+  });
+};
+
+export const useGetQuestionCountId = () => {
+  return useQuery({
+    queryFn: getQuestionCountId,
+    queryKey: getKeyFromProps(null, "GET_QUESTION_COUNT_ID"),
+  });
+};
 
 export const useQuestionsListing = (props: any) => {
   return useQuery(getKeyFromProps(props, "TEACHER_QUESTIONS_LISTINGS"), () =>
@@ -73,6 +103,35 @@ export const useAddQuestion = (payload: any) => {
     },
     onError: () => {
       enqueueSnackbar("Can't add question !", {
+        autoHideDuration: 1500,
+        variant: "error",
+      });
+    },
+
+    mutationKey: getKeyFromProps(payload, "ADD_QUESTION"),
+
+    retry: 1,
+  });
+};
+
+export const useUpdateQuestion = (payload: any) => {
+  const client = useQueryClient();
+  const { enqueueSnackbar } = useSnackbar();
+  const router = useRouter();
+
+  return useMutation((payload) => editQuestion(payload), {
+    onSuccess: () => {
+      client.invalidateQueries({
+        queryKey: [KEY],
+      });
+      enqueueSnackbar("Question has been updated successfully !", {
+        autoHideDuration: 1500,
+        variant: "success",
+      });
+      router.push(APP_ROUTES.QUESTIONS_MANAGE_QUESTIONS);
+    },
+    onError: () => {
+      enqueueSnackbar("Can't update question !", {
         autoHideDuration: 1500,
         variant: "error",
       });
