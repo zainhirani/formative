@@ -13,6 +13,8 @@ import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOu
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
+
+import { useSnackbar } from "notistack";
 import ImagePreview from "./ImagePreview";
 import AnswerOptions from "./Answers";
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
@@ -42,7 +44,6 @@ import {
   useQuestionDetails,
   useUpdateQuestion,
 } from "providers/Teacher_Questions";
-import { useSnackbar } from "notistack";
 import OverlayLoader from "components/OverlayLoader";
 import { useAuthContext } from "contexts/AuthContext";
 
@@ -118,6 +119,46 @@ const AddQuestion = ({ qId }: QuestionProps) => {
   const facultyPlaceholder = useFormattedMessage(
     messages.categoriesForFacultyValue,
   );
+
+  useEffect(() => {
+    setAuthorName(`${currentUser?.first_name} ${currentUser?.last_name}`);
+    setQuestionId(questionCountData.data?.count + 1);
+  }, [currentUser, questionCountData]);
+
+  useEffect(() => {
+    if (qId && questionDetails.data) {
+      const details = questionDetails.data;
+
+      if (details.media) {
+        let url = "";
+        if (!isStringNotURL(details.media)) {
+          return;
+        }
+        url = `${process.env.NEXT_PUBLIC_IMAGE_URL}${details.media}`;
+        setMedia(url);
+      }
+
+      setStatus(details?.status);
+      setTitle(details?.title);
+      setQuestionId(details?.id);
+      setEnumType({ label: details?.type, value: details?.type });
+      setIsPublic(details.isPublic);
+      setTimelimit(details.timelimit);
+      setSelectedFolder({
+        label: details?.folders.name,
+        value: details?.folders.id,
+      });
+      setSelectedCategory({
+        label: details?.categories.name,
+        value: details?.categories.id,
+      });
+      setSelectedFacultyCategoryIds([
+        { label: details?.categories.name, value: details?.categories.id },
+      ]);
+      setDetail(details.detail);
+      setAnswerOptions(formatOptions(details?.option, details?.answer));
+    }
+  }, [questionDetails.data, qId]);
 
   const BUTTONS_CONFIG: ButtonConfig[] = [
     {
@@ -207,46 +248,6 @@ const AddQuestion = ({ qId }: QuestionProps) => {
       addQuestion.mutate(formdata);
     }
   };
-
-  useEffect(() => {
-    setAuthorName(`${currentUser?.first_name} ${currentUser?.last_name}`);
-    setQuestionId(questionCountData.data?.count + 1);
-  }, [currentUser, questionCountData]);
-
-  useEffect(() => {
-    if (qId && questionDetails.data) {
-      const details = questionDetails.data;
-
-      if (details.media) {
-        let url = "";
-        if (!isStringNotURL(details.media)) {
-          return;
-        }
-        url = `${process.env.NEXT_PUBLIC_IMAGE_URL}${details.media}`;
-        setMedia(url);
-      }
-
-      setStatus(details?.status);
-      setTitle(details?.title);
-      setQuestionId(details?.id);
-      setEnumType({ label: details?.type, value: details?.type });
-      setIsPublic(details.isPublic);
-      setTimelimit(details.timelimit);
-      setSelectedFolder({
-        label: details?.folders.name,
-        value: details?.folders.id,
-      });
-      setSelectedCategory({
-        label: details?.categories.name,
-        value: details?.categories.id,
-      });
-      setSelectedFacultyCategoryIds([
-        { label: details?.categories.name, value: details?.categories.id },
-      ]);
-      setDetail(details.detail);
-      setAnswerOptions(formatOptions(details?.option, details?.answer));
-    }
-  }, [questionDetails.data, qId]);
 
   return (
     <>
