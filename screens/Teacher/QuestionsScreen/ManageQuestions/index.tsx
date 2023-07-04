@@ -10,18 +10,7 @@ const ManageQuestions = () => {
   const [enumType, setEnumType] = useState("");
   const [category, setCategory] = useState("");
 
-  useEffect(() => {
-    console.log("facultyCategory", facultyCategory);
-  }, [facultyCategory]);
-
   return (
-    // <PageLayout
-    //   title="Questions"
-    //   iconAngle={true}
-    //   subText="Manage Questions"
-    //   icon={<HelpRoundedIcon />}
-    // >
-
     <Box>
       <Filters
         onFolderChange={setFolder}
@@ -36,7 +25,6 @@ const ManageQuestions = () => {
         category={category}
       />
     </Box>
-    // </PageLayout>
   );
 };
 

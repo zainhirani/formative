@@ -61,6 +61,19 @@ const Filters: React.FC<FilterProps> = ({
     onFacultyCategoryChange([...arr2]);
   };
 
+  useEffect(() => {
+    console.log("selectedFolder", selectedFolder);
+  }, [selectedFolder]);
+  useEffect(() => {
+    console.log("enumType", enumType);
+  }, [enumType]);
+  useEffect(() => {
+    console.log("selectedCategory", selectedCategory);
+  }, [selectedCategory]);
+  useEffect(() => {
+    console.log("selectedfacultyCategoryIds", selectedfacultyCategoryIds);
+  }, [selectedfacultyCategoryIds]);
+
   return (
     <BoxWrapper>
       <Box
@@ -73,6 +86,7 @@ const Filters: React.FC<FilterProps> = ({
         <SelectBoxWrapper>
           {/* :TODO: Faculty */}
           <CustomSelect
+            isClearable
             placeholder={categoryPlaceholder}
             controlText={category}
             dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
@@ -91,6 +105,7 @@ const Filters: React.FC<FilterProps> = ({
         <SelectBoxWrapper>
           {/* Folder */}
           <CustomSelect
+            isClearable
             placeholder={folderPlaceholder}
             controlText={folder}
             dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
@@ -109,6 +124,7 @@ const Filters: React.FC<FilterProps> = ({
         {/* Type */}
         <SelectBoxWrapper>
           <CustomSelect
+            isClearable
             value={enumType}
             placeholder={typePlaceholder}
             controlText={type}
@@ -132,8 +148,6 @@ const Filters: React.FC<FilterProps> = ({
               value: category.id,
             }))}
             onChange={(val) => {
-              console.log("🚀 ~ file: Filters.tsx:178 ~ val:", val);
-
               setSelectedFacultyCategoryIds(val);
               let arr = val.map((item) => item.value);
               onFacultyCategoryChange([...arr]);
