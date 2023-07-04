@@ -133,7 +133,7 @@ export const GeneralInfo = () => {
       rfuID: registerDetail.data?.rfu_id || "",
       program: registerDetail.data?.program || "",
       // graduation: registerDetail.data?.year_of_graduation || 0,
-      graduation: "2022",
+      graduation: registerDetail.data?.year_of_graduation || "2022",
       birthPlace: registerDetail.data?.birth_place || "",
       userName: registerDetail.data?.username || "",
       password: "",
@@ -282,6 +282,7 @@ export const GeneralInfo = () => {
                 name="rfuID"
                 placeholder={rfuIDPlaceholder}
                 fullWidth
+                inputProps={{ min: 0 }}
                 type="number"
                 value={values.rfuID}
                 onBlur={handleBlur}

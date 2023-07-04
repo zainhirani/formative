@@ -112,7 +112,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
   };
 
   return (
-    <BoxWrapper sx={{ zIndex: 99999, width: "100%" }}>
+    <BoxWrapper sx={{ zIndex: 1, width: "100%" }}>
       <AutoComplete
         isMulti={isMulti}
         onBlur={onBlur}

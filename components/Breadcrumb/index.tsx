@@ -69,9 +69,9 @@ const Breadcrumb = () => {
         aria-label="breadcrumb"
         separator={<ChevronRightIcon fontSize="medium" />}
       >
-        <Link href="/" sx={{ color: "#7F7F7F", textDecoration: "none" }}>
+        {/* <Link href="/" sx={{ color: "#7F7F7F", textDecoration: "none" }}>
           Dashboard
-        </Link>
+        </Link> */}
         {pathnames.map((pathname, index) => {
           const routeTo = `/${pathnames.slice(0, index + 1).join("/")}`;
           const isLast = index === pathnames.length - 1;
