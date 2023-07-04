@@ -98,39 +98,55 @@ const TestYourself = () => {
 
   const [questionListing, setQuestionListing] = useState<Item[]>([]);
   const [checkedState, setCheckedState] = useState<boolean[]>([]);
+  const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
   const questionOption = eval(questionDetail?.data?.option || "");
-
-  console.log(questionOption, "aaaaaaaaaa");
-  console.log(questionDetail?.data?.option, "option");
 
   useEffect(() => {
     setQuestionListing(questionList?.data || []);
     setCheckedState(
       new Array<boolean>(questionList?.data?.length || 0).fill(false),
     );
-  }, [questionListing]);
+  }, [questionList?.data]);
 
   const timer = questionDetail?.data?.timelimit;
   const [remainingTime, setRemainingTime] = useState(timer);
 
   const [checkedStateAns, setCheckedStateAns] = useState(
-    new Array(questionData?.options?.length).fill(false),
+    new Array(questionOption?.length).fill(false),
   );
-  // const [checkedState, setCheckedState] = useState(
-  //   new Array(questionList?.data?.length).fill(false),
-  // );
 
-  // const [checkedState, setCheckedState] = useState(
-  //   new Array(questionList?.data?.length).fill(false),
-  // );
-  console.log(checkedState, "checkeddddddddd");
+  const handleOptionChange = (index: number) => {
+    const updatedCheckedState = checkedStateAns.map((checked, i) =>
+      i === index ? !checked : checked,
+    );
+    setCheckedStateAns(updatedCheckedState);
+  };
+  const selectedOptionKeys = checkedStateAns
+    .reduce((acc, option, index) => {
+      if (option) {
+        const optionKey = questionOption[index].key;
+        acc.push(optionKey);
+      }
+      return acc;
+    }, [])
+    .join(",");
 
   const [submit, setSubmit] = useState(false);
 
+  // const handleOnChange = (position: any, e: any) => {
+  //   if (checkedState.filter((i) => i).length >= 1 && e.target.checked) return;
+  //   const updatedCheckedState = checkedState.map((item, index) =>
+  //     questionId === position ? e.target.checked : item,
+  //   );
+  //   setCheckedState(updatedCheckedState);
+  //   setSubmit(false);
+  //   setCheckedStateAns(new Array(questionData?.options?.length).fill(false));
+  //   setQuestionId(position);
+  // };
+
   const handleOnChange = (position: any, e: any) => {
-    if (checkedState.filter((i) => i).length >= 1 && e.target.checked) return;
     const updatedCheckedState = checkedState.map((item, index) =>
-      questionId === position ? e.target.checked : item,
+      questionId === position ? e.target.checked : false,
     );
     setCheckedState(updatedCheckedState);
     setSubmit(false);
@@ -138,17 +154,18 @@ const TestYourself = () => {
     setQuestionId(position);
   };
 
+  const timeSpent =
+    (questionDetail?.data?.timelimit || 0) - (remainingTime || 0);
   const handleQuestionSubmit = () => {
     setSubmit(true);
     submitQuestion.mutate({
       questionId: questionId,
       start_time: 1,
-      end_time: remainingTime || 0,
-      option_selected: "A",
+      end_time: timeSpent || 0,
+      option_selected: selectedOptionKeys,
     });
   };
   const isAnswerCorrect = submitQuestion?.data?.data;
-  console.log(submitQuestion?.data?.data, "submitQuestion");
 
   let configTestYourself = [
     {
@@ -170,22 +187,20 @@ const TestYourself = () => {
                     <CircleUnchecked sx={{ fontSize: "20px" }} />
                   ) : (
                     <IconButton sx={{ width: "20px", padding: "0px" }}>
-                      {submitQuestion?.data?.data == true ? (
+                      {item?.correct ? (
                         <Image
                           src="/correct.svg"
                           width={20}
                           height={20}
                           alt="tick"
                         />
-                      ) : item?.attempted == true ? (
+                      ) : (
                         <Image
                           src="/wrong.svg"
                           width={20}
                           height={20}
                           alt="tick"
                         />
-                      ) : (
-                        ""
                       )}
                     </IconButton>
                   )}
@@ -196,9 +211,19 @@ const TestYourself = () => {
                   <Image src="/tick.svg" width={20} height={20} alt="tick" />
                 </>
               }
-              checked={checkedState[item.id]}
+              // checked={checkedState[item.id]}
+              checked={selectedItemId === item.id}
               id={`custom-checkbox-${item.id}`}
-              onChange={(e) => handleOnChange(item?.id, e)}
+              onChange={(e) => {
+                if (selectedItemId === item.id) {
+                  // If the same item is clicked, uncheck it
+                  setSelectedItemId(null);
+                } else {
+                  // Otherwise, set the newly clicked item as the selected one
+                  setSelectedItemId(item.id);
+                }
+                handleOnChange(item?.id, e);
+              }}
               size="small"
               sx={{
                 borderRadius: "50%",
@@ -233,8 +258,13 @@ const TestYourself = () => {
 
   return (
     // <PageLayout title="Test Yourself" icon={<HelpRoundedIcon />}>
-    <Box sx={{ display: "flex" }}>
-      <BoxWrapper>
+    <Box
+      sx={{
+        display: { md: "flex", xs: "block" },
+        padding: { md: "0", xs: "0 30px" },
+      }}
+    >
+      <BoxWrapper sx={{ width: { md: "35%", xs: "100%" } }}>
         <SelectBoxWrapper>
           <CustomSelectTestYourSelf
             value={category}
@@ -248,7 +278,13 @@ const TestYourself = () => {
           config={configTestYourself}
         />
       </BoxWrapper>
-      <BoxWrapper sx={{ width: "60%", marginLeft: "15px" }}>
+      <BoxWrapper
+        sx={{
+          width: { md: "60%", xs: "100%" },
+          ml: { md: "15px" },
+          mt: { xs: "20px", md: "0" },
+        }}
+      >
         <TakeQuizFormat
           questionID={questionDetail?.data?.id}
           questionTitle={questionDetail?.data?.title}
@@ -270,6 +306,7 @@ const TestYourself = () => {
           timer={timer}
           handleSubmit={handleQuestionSubmit}
           answer={isAnswerCorrect}
+          handleOptionChange={handleOptionChange}
         />
       </BoxWrapper>
     </Box>

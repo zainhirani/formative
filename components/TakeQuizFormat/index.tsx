@@ -13,6 +13,7 @@ interface IOptionProps {
   name: string;
   valid: string;
   value: string;
+  key?: string;
 }
 
 type ITakeQuizProps = {
@@ -38,6 +39,7 @@ type ITakeQuizProps = {
   questionOption?: string;
   timelimit?: number;
   answer?: boolean;
+  handleOptionChange?: (index: number) => void;
   handleSubmit?: () => void;
 };
 
@@ -64,6 +66,7 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
   questionOption,
   timelimit,
   answer,
+  handleOptionChange,
   handleSubmit,
 }): JSX.Element => {
   const [ansCorrect, setAnsCorrect] = React.useState(false);
@@ -89,13 +92,15 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
     setRemainingTime(timer);
   }, [ansCorrect]);
 
-  const handleOnChange = (position: any, e: any) => {
-    if (checkedStateAns.filter((i: any) => i).length >= 1 && e.target.checked)
-      return;
-    const updatedCheckedStateAns = checkedStateAns.map(
-      (item: any, index: number) => (index === position ? !item : item),
-    );
+  const handleOnChange = (key: any, position: any, e: any) => {
+    const updatedCheckedStateAns = [...checkedStateAns];
+    updatedCheckedStateAns[position] = e.target.checked;
     setCheckedStateAns(updatedCheckedStateAns);
+    if (e.target.checked) {
+      console.log("Selected option key:", key);
+      // You can perform further actions with the selected option key
+    }
+    // console.log(e.target.checked, "aaaaaa");
   };
 
   const getTimeColor = () => {
@@ -123,12 +128,15 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
             height: "100%",
             display: "flex",
             justifyContent: "center",
-            paddingTop: "50px",
+            // paddingTop: "50px",
             borderRadius: "6px",
+            padding: { xs: "20px", md: "50px 0 0" },
+            flexDirection: { xs: "column", md: "row" },
+            alignItems: { xs: "center", md: "start" },
           }}
         >
           <ErrorOutlineIcon sx={{ fontSize: "64px", marginRight: "10px" }} />
-          <Box>
+          <Box sx={{ textAlign: { xs: "center", md: "left" } }}>
             <Typography
               fontWeight={400}
               fontSize={14}
@@ -208,8 +216,14 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
                   <FormControlLabel
                     control={
                       <Checkbox
-                        onChange={(e) => handleOnChange(index, e)}
-                        checked={checkedStateAns[index]}
+                        onChange={() =>
+                          handleOptionChange && handleOptionChange(index)
+                        }
+                        // onChange={(e) => handleOnChange(el.key, index, e)}
+                        // checked={checkedStateAns[index]?.checked}
+                        checked={
+                          checkedStateAns && checkedStateAns[index]?.checked
+                        }
                         id={`custom-checkbox-${index}`}
                         color="default"
                         disabled={submit ? true : false}
@@ -260,13 +274,17 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
               </Box>
             </Box>
           ) : (
-            <Box sx={{ display: "flex", marginTop: "30px" }}>
-              <BoxWrapper>
+            <Box
+              sx={{ display: { sm: "flex", xs: "block" }, marginTop: "30px" }}
+            >
+              <BoxWrapper sx={{ width: { sm: "90%", xs: "100%" } }}>
                 <Typography
                   fontSize={14}
                   sx={{ color: (theme) => theme.palette.text.secondary }}
                 >
-                  <Box sx={{ display: "flex", gap: "5px" }}>
+                  <Box
+                    sx={{ display: { sm: "flex", xs: "block" }, gap: "5px" }}
+                  >
                     {remainingTime ? (
                       <>
                         <FormattedMessage
@@ -304,7 +322,7 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
                   borderTopRightRadius: (theme) => theme.borderRadius.radius1,
                   borderBottomRightRadius: (theme) =>
                     theme.borderRadius.radius1,
-                  width: "30%",
+                  width: { sm: "30%", xs: "100%" },
                 }}
                 variant="contained"
               >
