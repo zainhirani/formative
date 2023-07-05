@@ -178,13 +178,15 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
               {questionDetail}
             </Typography>
             {submit === false ? (
-              <Image
-                alt="quiz-image"
-                lazyLoadProps={{ height: 240 }}
-                src={`${PUBLIC_IMAGE_URL}/${questionMedia}`}
-                lazyLoad={true}
-                style={{ maxWidth: "100%", marginTop: "30px" }}
-              />
+              questionMedia && (
+                <Image
+                  alt="quiz-image"
+                  lazyLoadProps={{ height: 240 }}
+                  src={`${PUBLIC_IMAGE_URL}/${questionMedia}`}
+                  lazyLoad={true}
+                  style={{ maxWidth: "100%", marginTop: "30px" }}
+                />
+              )
             ) : (
               <></>
             )}
@@ -221,9 +223,7 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
                         }
                         // onChange={(e) => handleOnChange(el.key, index, e)}
                         // checked={checkedStateAns[index]?.checked}
-                        checked={
-                          checkedStateAns && checkedStateAns[index]?.checked
-                        }
+                        checked={checkedStateAns && checkedStateAns[index]}
                         id={`custom-checkbox-${index}`}
                         color="default"
                         disabled={submit ? true : false}

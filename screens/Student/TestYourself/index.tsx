@@ -18,49 +18,8 @@ import {
   useQuestionListing,
 } from "providers/Students/TestYourself/QuestionByCategory";
 import { useTestQuestion } from "providers/Students/TestYourself/TestQuestions";
+import { useQueryClient } from "react-query";
 
-const PageLayout = dynamic(() => import("components/PageLayout"), {
-  ssr: false,
-  loading: () => <Loader />,
-});
-
-const dataTestYourself = [
-  {
-    id: 0,
-    name: "Q195",
-    type: "MC",
-    attempted: false,
-    correct: false,
-  },
-  {
-    id: 1,
-    name: "Q196",
-    type: "MC",
-    attempted: true,
-    correct: false,
-  },
-  {
-    id: 2,
-    name: "Q197",
-    type: "MC",
-    attempted: false,
-    correct: false,
-  },
-  {
-    id: 3,
-    name: "Q198",
-    type: "MC",
-    attempted: false,
-    correct: true,
-  },
-  {
-    id: 4,
-    name: "Q199",
-    type: "MC",
-    attempted: false,
-    correct: false,
-  },
-];
 type Item = {
   id: number;
   title: string;
@@ -89,9 +48,6 @@ const TestYourself = () => {
     value: defaultOption.value,
     label: defaultOption.label,
   });
-  const handleCategoryChange = (e: any) => {
-    setCategory({ value: e?.value, label: e?.label });
-  };
 
   const questionList = useQuestionListing({ id: category?.value });
   const submitQuestion = useTestQuestion();
@@ -99,7 +55,16 @@ const TestYourself = () => {
   const [questionListing, setQuestionListing] = useState<Item[]>([]);
   const [checkedState, setCheckedState] = useState<boolean[]>([]);
   const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
-  const questionOption = eval(questionDetail?.data?.option || "");
+
+  const questionOptions = eval(questionDetail?.data?.option || "");
+  const [questionOption, setQuestionOption] = useState([]);
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (!questionOption?.length) {
+      setQuestionOption(questionOptions);
+    }
+  }, [questionOption, questionOptions]);
 
   useEffect(() => {
     setQuestionListing(questionList?.data || []);
@@ -114,39 +79,35 @@ const TestYourself = () => {
   const [checkedStateAns, setCheckedStateAns] = useState(
     new Array(questionOption?.length).fill(false),
   );
+  const [selectedOptionKey, setSelectedOptionKey] = useState("");
+
+  const handleCategoryChange = (e: any) => {
+    setCategory({ value: e?.value, label: e?.label });
+    setSelectedItemId(0);
+    setCheckedState(
+      new Array<boolean>(questionList?.data?.length || 0).fill(false),
+    );
+  };
 
   const handleOptionChange = (index: number) => {
-    const updatedCheckedState = checkedStateAns.map((checked, i) =>
-      i === index ? !checked : checked,
+    const updatedCheckedState = checkedStateAns.map(
+      (_, i) => i === index && !checkedStateAns[index],
     );
     setCheckedStateAns(updatedCheckedState);
+
+    if (updatedCheckedState[index]) {
+      const selectedOptionKey = questionOption[index]?.key || "";
+      setSelectedOptionKey(selectedOptionKey);
+    } else {
+      setSelectedOptionKey("");
+    }
   };
-  const selectedOptionKeys = checkedStateAns
-    .reduce((acc, option, index) => {
-      if (option) {
-        const optionKey = questionOption[index].key;
-        acc.push(optionKey);
-      }
-      return acc;
-    }, [])
-    .join(",");
 
   const [submit, setSubmit] = useState(false);
 
-  // const handleOnChange = (position: any, e: any) => {
-  //   if (checkedState.filter((i) => i).length >= 1 && e.target.checked) return;
-  //   const updatedCheckedState = checkedState.map((item, index) =>
-  //     questionId === position ? e.target.checked : item,
-  //   );
-  //   setCheckedState(updatedCheckedState);
-  //   setSubmit(false);
-  //   setCheckedStateAns(new Array(questionData?.options?.length).fill(false));
-  //   setQuestionId(position);
-  // };
-
   const handleOnChange = (position: any, e: any) => {
-    const updatedCheckedState = checkedState.map((item, index) =>
-      questionId === position ? e.target.checked : false,
+    const updatedCheckedState = checkedState.map(
+      (item, index) => e.target.checked,
     );
     setCheckedState(updatedCheckedState);
     setSubmit(false);
@@ -156,15 +117,26 @@ const TestYourself = () => {
 
   const timeSpent =
     (questionDetail?.data?.timelimit || 0) - (remainingTime || 0);
+
   const handleQuestionSubmit = () => {
     setSubmit(true);
     submitQuestion.mutate({
       questionId: questionId,
       start_time: 1,
       end_time: timeSpent || 0,
-      option_selected: selectedOptionKeys,
+      option_selected: selectedOptionKey,
     });
   };
+
+  useEffect(() => {
+    if (submitQuestion.isSuccess) {
+      queryClient.invalidateQueries("Questions");
+    }
+    setSelectedItemId(0);
+    setCheckedState(
+      new Array<boolean>(questionList?.data?.length || 0).fill(true),
+    );
+  }, [submitQuestion.isSuccess]);
   const isAnswerCorrect = submitQuestion?.data?.data;
 
   let configTestYourself = [
@@ -211,15 +183,12 @@ const TestYourself = () => {
                   <Image src="/tick.svg" width={20} height={20} alt="tick" />
                 </>
               }
-              // checked={checkedState[item.id]}
               checked={selectedItemId === item.id}
               id={`custom-checkbox-${item.id}`}
               onChange={(e) => {
                 if (selectedItemId === item.id) {
-                  // If the same item is clicked, uncheck it
                   setSelectedItemId(null);
                 } else {
-                  // Otherwise, set the newly clicked item as the selected one
                   setSelectedItemId(item.id);
                 }
                 handleOnChange(item?.id, e);
@@ -232,7 +201,7 @@ const TestYourself = () => {
                 },
               }}
               onClick={(e) => {
-                return setRemainingTime(timer);
+                return setQuestionOption([]), setRemainingTime(timer);
               }}
             />
           </>
@@ -290,13 +259,8 @@ const TestYourself = () => {
           questionTitle={questionDetail?.data?.title}
           questionDetail={questionDetail?.data?.detail}
           questionMedia={questionDetail?.data?.media}
-          QNo={questionData?.QNo}
-          question={questionData?.question}
-          image={questionData?.image}
           options={questionOption}
-          time={questionData?.time}
           questionSelected={checkedState.indexOf(true) > -1}
-          questionData={questionData}
           setSubmit={setSubmit}
           submit={submit}
           setCheckedStateAns={setCheckedStateAns}
