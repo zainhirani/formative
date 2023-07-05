@@ -22,7 +22,6 @@ import ImagePreviewModal from "components/ImagePreviewModal";
 import ViewQuestion from "./ViewQuestion";
 import { useRouter } from "next/router";
 import APP_ROUTES from "constants/RouteConstants";
-import { useQueryClient } from "react-query";
 import { LIMIT } from "configs";
 
 interface ListingProp {
@@ -39,7 +38,6 @@ const Listing: React.FC = ({
   folder,
 }: ListingProp) => {
   const [page, setPage] = useState(1);
-  const client = useQueryClient();
   let router = useRouter();
   let questions = useQuestionsListing({
     ...(facultyCategory?.length > 0 && { facultyId: facultyCategory }),

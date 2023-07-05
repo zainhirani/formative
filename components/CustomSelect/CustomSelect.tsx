@@ -20,6 +20,7 @@ interface CustomSelectProps {
   isFetching?: boolean;
   isMulti?: boolean;
   defaultValue?: any;
+  onMenuClose?: () => void;
 }
 
 const CustomDropdownIndicator = (props: any) => {
@@ -59,6 +60,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
   name,
   isClearable,
   isDisabled,
+  onMenuClose,
   ...rest
 }) => {
   const style = {
@@ -114,6 +116,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
   return (
     <BoxWrapper sx={{ zIndex: 99999, width: "100%" }}>
       <AutoComplete
+        onMenuClose={onMenuClose}
         isMulti={isMulti}
         onBlur={onBlur}
         name={name}

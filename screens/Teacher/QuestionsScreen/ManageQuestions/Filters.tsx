@@ -10,21 +10,19 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import { useQuery } from "react-query";
 import { getCategories, getFolders } from "providers/Teacher_Questions/api";
 
-const TYPE_OPTIONS = [
-  { value: "SA", label: "SA" },
-  { value: "MCN", label: "MCN" },
-  { value: "MCR", label: "MCR" },
-  { value: "MSN", label: "MSN" },
-  { value: "MSR", label: "MSR" },
-  { value: "MA", label: "MA" },
-  { value: "F", label: "F" },
-];
-
 interface FilterProps {
   onFolderChange: () => void;
   onCategoryChange: () => void;
   onTypeChange: () => void;
   onFacultyCategoryChange: () => void;
+  folderOptionData?: any;
+  categoryOptionData?: any;
+  facultyCategoryOptionData?: any;
+  typeOptionData?: any;
+  selectedFolder?: any;
+  selectedCategory?: any;
+  selectedFacultyCategory?: any;
+  selectedType?: any;
 }
 
 const Filters: React.FC<FilterProps> = ({
@@ -32,15 +30,20 @@ const Filters: React.FC<FilterProps> = ({
   onFacultyCategoryChange,
   onFolderChange,
   onTypeChange,
+  categoryOptionData,
+  facultyCategoryOptionData,
+  folderOptionData,
+  typeOptionData,
+  selectedCategory,
+  selectedFacultyCategory,
+  selectedFolder,
+  selectedType,
 }) => {
-  const foldersData = useQuery(["FOLDERS"], getFolders);
-  const categoriesData = useQuery(["CATEGORIES"], getCategories);
-
-  const [selectedFolder, setSelectedFolder] = useState(null);
-  const [enumType, setEnumType] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedfacultyCategoryIds, setSelectedFacultyCategoryIds] =
-    useState(null);
+  // const [selectedFolder, setSelectedFolder] = useState(null);
+  // const [enumType, setEnumType] = useState(null);
+  // const [selectedCategory, setSelectedCategory] = useState(null);
+  // const [selectedfacultyCategoryIds, setSelectedFacultyCategoryIds] =
+  //   useState(null);
 
   const faculty = useFormattedMessage(messages.faculty);
   const facultyPlaceholder = useFormattedMessage(messages.facultyPlaceholder);
@@ -52,27 +55,15 @@ const Filters: React.FC<FilterProps> = ({
   const categoryPlaceholder = useFormattedMessage(messages.categoryPlaceholder);
 
   const handleRemoveSelectedFacultyCategory = (value: any) => {
-    let arr = [];
-    (arr = selectedfacultyCategoryIds.filter(
+    let arr,
+      arr2 = [];
+    (arr = selectedFacultyCategory.filter(
       (obj: any) => obj?.value !== value.value,
     )),
-      setSelectedFacultyCategoryIds([...arr]);
-    let arr2 = arr.map((item) => item.value);
+      // setSelectedFacultyCategoryIds([...arr]);
+      (arr2 = arr.map((item) => item.value));
     onFacultyCategoryChange([...arr2]);
   };
-
-  useEffect(() => {
-    console.log("selectedFolder", selectedFolder);
-  }, [selectedFolder]);
-  useEffect(() => {
-    console.log("enumType", enumType);
-  }, [enumType]);
-  useEffect(() => {
-    console.log("selectedCategory", selectedCategory);
-  }, [selectedCategory]);
-  useEffect(() => {
-    console.log("selectedfacultyCategoryIds", selectedfacultyCategoryIds);
-  }, [selectedfacultyCategoryIds]);
 
   return (
     <BoxWrapper>
@@ -91,14 +82,14 @@ const Filters: React.FC<FilterProps> = ({
             controlText={category}
             dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
             value={selectedCategory}
-            options={categoriesData?.data?.data?.map((category: any) => ({
+            options={categoryOptionData?.data?.data?.map((category: any) => ({
               label: category.name,
               value: category.id,
             }))}
-            isFetching={categoriesData?.isFetching}
+            isFetching={categoryOptionData?.isFetching}
             onChange={(val: any) => {
-              onCategoryChange(val?.value);
-              setSelectedCategory(val);
+              onCategoryChange(val);
+              // setSelectedCategory(val);
             }}
           />
         </SelectBoxWrapper>
@@ -109,30 +100,30 @@ const Filters: React.FC<FilterProps> = ({
             placeholder={folderPlaceholder}
             controlText={folder}
             dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-            options={foldersData?.data?.data?.map((folder: any) => ({
+            options={folderOptionData?.data?.data?.map((folder: any) => ({
               label: folder.name,
               value: folder.id,
             }))}
             value={selectedFolder}
             onChange={(val: any) => {
-              onFolderChange(val?.value);
-              setSelectedFolder(val);
+              onFolderChange(val);
+              // setSelectedFolder(val);
             }}
-            isFetching={foldersData?.isFetching}
+            isFetching={folderOptionData?.isFetching}
           />
         </SelectBoxWrapper>
         {/* Type */}
         <SelectBoxWrapper>
           <CustomSelect
             isClearable
-            value={enumType}
+            value={selectedType}
             placeholder={typePlaceholder}
             controlText={type}
             dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-            options={TYPE_OPTIONS}
+            options={typeOptionData}
             onChange={(val: any) => {
-              setEnumType(val);
-              onTypeChange(val?.value);
+              // setEnumType(val);
+              onTypeChange(val);
             }}
           />
         </SelectBoxWrapper>
@@ -143,16 +134,17 @@ const Filters: React.FC<FilterProps> = ({
             placeholder={facultyPlaceholder}
             controlText={faculty}
             dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-            options={categoriesData?.data?.data?.map((category) => ({
+            options={facultyCategoryOptionData?.data?.data?.map((category) => ({
               label: category.name,
               value: category.id,
             }))}
             onChange={(val) => {
-              setSelectedFacultyCategoryIds(val);
-              let arr = val.map((item) => item.value);
-              onFacultyCategoryChange([...arr]);
+              // setSelectedFacultyCategoryIds(val);
+              // let arr = val.map((item) => item.value);
+              onFacultyCategoryChange(val);
             }}
-            value={selectedfacultyCategoryIds}
+            value={selectedFacultyCategory}
+            isFetching={facultyCategoryOptionData?.isFetching}
           />
         </SelectBoxWrapper>
       </Box>
@@ -165,8 +157,8 @@ const Filters: React.FC<FilterProps> = ({
         </SelectBoxWrapper>
         <SelectBoxWrapper>
           <Box sx={{ display: "flex" }}>
-            {selectedfacultyCategoryIds?.length ? (
-              selectedfacultyCategoryIds.map((item, index) => (
+            {selectedFacultyCategory?.length ? (
+              selectedFacultyCategory.map((item, index) => (
                 <Box sx={{ display: "flex", alignItems: "center" }} key={index}>
                   <Typography variant="body1">{item?.label}</Typography>
                   <IconButton

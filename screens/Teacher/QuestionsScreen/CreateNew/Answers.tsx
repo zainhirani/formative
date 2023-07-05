@@ -66,6 +66,8 @@ const AnswerOptions = (props: AnswerOptionsProps) => {
         } else if (option === "lock") {
           return { ...item, locked: !item.locked };
         }
+      } else {
+        return { ...item, correct: false };
       }
       return item;
     });
@@ -82,6 +84,7 @@ const AnswerOptions = (props: AnswerOptionsProps) => {
     setItems(updatedItems);
   };
   const handleAddItem = () => {
+    if (items.length == 4) return;
     const newItem: ListItemData = {
       id: counter.toString(),
       text: getNextOptionText(),
@@ -94,6 +97,7 @@ const AnswerOptions = (props: AnswerOptionsProps) => {
   };
 
   const handleRemoveItem = (id: string) => {
+    if (items.length == 1) return;
     const updatedItems = items.filter((item) => item.id !== id);
     const reassignIds = updatedItems.map((item, index) => ({
       ...item,
@@ -161,6 +165,7 @@ const AnswerOptions = (props: AnswerOptionsProps) => {
               />
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <Button
+                  disabled={items.length == 1}
                   sx={{ textTransform: "capitalize", fontWeight: 500 }}
                   startIcon={<Delete />}
                   onClick={() => handleRemoveItem(item.id)}
@@ -179,6 +184,7 @@ const AnswerOptions = (props: AnswerOptionsProps) => {
         ))}
       </List>
       <Button
+        disabled={items.length == 4}
         sx={{ textTransform: "capitalize" }}
         startIcon={<AddCircleOutlineRoundedIcon />}
         onClick={handleAddItem}

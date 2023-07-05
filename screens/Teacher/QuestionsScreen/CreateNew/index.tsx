@@ -95,12 +95,11 @@ const AddQuestion = ({ qId }: QuestionProps) => {
   const [enumType, setEnumType] = useState(null);
   const [status, setStatus] = useState(STATUS.DRAFT);
   const [selectedCategory, setSelectedCategory] = useState([]);
-  const [timelimit, setTimelimit] = useState(0);
+  const [timelimit, setTimelimit] = useState();
   const authorNamePlaceholder = useFormattedMessage(messages.authorName);
   const [selectedfacultyCategoryIds, setSelectedFacultyCategoryIds] = useState(
     [],
   );
-  const [requiredErrText, setRequiredErrText] = useState("");
 
   const handleRemoveSelectedFacultyCategory = (value: any) => {
     setSelectedFacultyCategoryIds(
@@ -268,6 +267,14 @@ const AddQuestion = ({ qId }: QuestionProps) => {
         value: answerOptions.length && answerOptions.length >= 2,
         errorMsg: "Add atleast 2 options for answer",
       },
+      {
+        value: answerOptions.find((item) => Boolean(item.correct)),
+        errorMsg: "Select a correct answer",
+      },
+      {
+        value: !Boolean(answerOptions.find((item) => !Boolean(item.inputText))),
+        errorMsg: "Answer text is missing",
+      },
     ];
 
     let notFilled = formArr.find((item) => !item.value);
@@ -400,7 +407,10 @@ const AddQuestion = ({ qId }: QuestionProps) => {
                     justifyContent: "space-between",
                   }}
                 >
-                  <InputLabelWrapper htmlFor="authorName">
+                  <InputLabelWrapper
+                    htmlFor="authorName"
+                    sx={{ whiteSpace: "normal", width: "100%" }}
+                  >
                     <FormattedMessage {...messages.questNo} />
                   </InputLabelWrapper>
 
@@ -501,10 +511,26 @@ const AddQuestion = ({ qId }: QuestionProps) => {
                     type="number"
                     value={timelimit}
                     placeholder={"0"}
-                    onChange={(e) => setTimelimit(e.target.value)}
+                    onChange={(e) => {
+                      const inputValue = Math.max(
+                        0,
+                        parseInt(e.target.value, 10),
+                      );
+                      setTimelimit(inputValue);
+                    }}
                     autoComplete="off"
                     variant="standard"
                     fullWidth
+                    onKeyDown={(e) => {
+                      if (
+                        e.key === "-" ||
+                        e.key === "e" ||
+                        e.key === "+" ||
+                        e.key === "."
+                      ) {
+                        e.preventDefault();
+                      }
+                    }}
                   />
                 </FieldBoxWrapper>
               </Box>

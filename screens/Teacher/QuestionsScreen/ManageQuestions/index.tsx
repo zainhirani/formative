@@ -3,12 +3,34 @@ import React, { useState, useEffect } from "react";
 import { Box } from "@material-ui/core";
 import Listing from "./Listing";
 import Filters from "./Filters";
+import { useGetCategories, useGetFolders } from "providers/Teacher_Questions";
+
+const TYPE_OPTIONS = [
+  { value: "SA", label: "SA" },
+  { value: "MCN", label: "MCN" },
+  { value: "MCR", label: "MCR" },
+  { value: "MSN", label: "MSN" },
+  { value: "MSR", label: "MSR" },
+  { value: "MA", label: "MA" },
+  { value: "F", label: "F" },
+];
 
 const ManageQuestions = () => {
-  const [folder, setFolder] = useState("");
-  const [facultyCategory, setFacultyCategory] = useState("");
-  const [enumType, setEnumType] = useState("");
-  const [category, setCategory] = useState("");
+  // Queries
+  const foldersData = useGetFolders();
+  const categoriesData = useGetCategories();
+
+  const [folder, setFolder] = useState(null);
+  const [facultyCategory, setFacultyCategory] = useState(null);
+  const [enumType, setEnumType] = useState(null);
+  const [category, setCategory] = useState(null);
+
+  useEffect(() => {
+    console.log(folder, "folder");
+    console.log(facultyCategory, "facultyCategory");
+    console.log(enumType, "enumType");
+    console.log(category, "category");
+  }, [folder, facultyCategory, enumType, category]);
 
   return (
     <Box>
@@ -17,12 +39,20 @@ const ManageQuestions = () => {
         onCategoryChange={setCategory}
         onTypeChange={setEnumType}
         onFacultyCategoryChange={setFacultyCategory}
+        categoryOptionData={categoriesData}
+        facultyCategoryOptionData={categoriesData}
+        folderOptionData={foldersData}
+        typeOptionData={TYPE_OPTIONS}
+        selectedCategory={category}
+        selectedFacultyCategory={facultyCategory}
+        selectedFolder={folder}
+        selectedType={enumType}
       />
       <Listing
-        folder={folder}
-        facultyCategory={facultyCategory}
-        enumType={enumType}
-        category={category}
+        folder={folder?.value}
+        facultyCategory={facultyCategory?.map((item) => item.value) || []}
+        enumType={enumType?.value}
+        category={category?.value}
       />
     </Box>
   );
