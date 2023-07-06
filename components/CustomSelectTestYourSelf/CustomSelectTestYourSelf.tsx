@@ -7,7 +7,7 @@ import { BoxWrapper, SelectBoxWrapper } from "./Styled";
 
 interface CustomSelectTestYourSelfProps {
   options?: Array<{}>;
-  placeholder: string;
+  placeholder?: string;
   config?: string;
   controlText?: string;
   dropdownIcon?: ReactNode;
