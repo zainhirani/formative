@@ -20,11 +20,13 @@ interface AutoCompleteProps<OptionType = any> extends SelectProps<OptionType> {
   customComponents?: CustomComponents;
   isMulti: boolean;
   value: any;
+  onMenuClose: () => void;
 }
 
 const AutoComplete = <OptionType extends any = any>({
   className = "",
   options,
+  onMenuClose = () => {},
   onInputChange = () => {},
   onChange,
   handleBlur = () => {},
@@ -53,6 +55,7 @@ const AutoComplete = <OptionType extends any = any>({
 
   return (
     <Select
+      onMenuClose={onMenuClose}
       isDisabled={isDisabled}
       onFocus={handleOnFocus}
       onBlur={handleBlur}

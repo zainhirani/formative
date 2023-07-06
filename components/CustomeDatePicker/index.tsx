@@ -12,13 +12,16 @@ type ICustomeDatePicker = {
   value?: null | Date | string;
   onChange?: (e?: any) => void;
   sx?: any;
- 
+  components?: any;
+  disableFuture?: boolean;
 };
 
 const CustomeDatePicker: FC<ICustomeDatePicker> = ({
   label,
   value,
   onChange,
+  components,
+  disableFuture,
   sx,
 }) => {
   return (
@@ -32,6 +35,8 @@ const CustomeDatePicker: FC<ICustomeDatePicker> = ({
           sx={sx}
           //@ts-ignore
           renderInput={(props:any)=><TextField {...props}/>}
+          components={components}
+          disableFuture={disableFuture}
         />
       </LocalizationProvider>
     </SelectBoxWrapper>

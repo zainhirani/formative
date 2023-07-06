@@ -98,8 +98,8 @@ export const ProfileTab = ({}) => {
   if (athleteSeperatedArray) {
     athleteArray.push(...athleteSeperatedArray);
   }
-  const [checkedValues, setCheckedValues] = useState(athleteArray);
-  const [experience, setExperience] = useState(profileDetail.data?.experience);
+  const [checkedValues, setCheckedValues] = useState<string[]>([]);
+  const [experience, setExperience] = useState<string | undefined>(undefined);
   const profile = useProfile();
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
@@ -115,12 +115,36 @@ export const ProfileTab = ({}) => {
       .padStart(2, "0")}`;
   }
 
+  useEffect(() => {
+    if (profileDetail.data?.experience) {
+      setExperience(profileDetail.data.experience);
+    }
+  }, [profileDetail.data?.experience]);
+
+  useEffect(() => {
+    if (athleteArray.length > 0 && checkedValues.length === 0) {
+      setCheckedValues(athleteArray);
+    }
+  }, [athleteArray, checkedValues]);
+  
   const handleExperienceChange = (event) => {
-    const newValue = parseInt(event.target.value);
-    if (!isNaN(newValue)) {
-      setExperience(newValue);
+    const newValue = event.target.value;
+    if (newValue === "" || newValue === null) {
+      setExperience("");
+    } else {
+      const parsedValue = parseInt(newValue);
+      if (!isNaN(parsedValue)) {
+        if (parsedValue < 0) {
+          setExperience(0);
+        } else if (parsedValue > 50) {
+          setExperience(50);
+        } else {
+          setExperience(parsedValue);
+        }
+      }
     }
   };
+
   const handleCheckboxChange = (value) => {
     if (checkedValues.includes(value)) {
       setCheckedValues(checkedValues.filter((item) => item !== value));
@@ -232,6 +256,7 @@ export const ProfileTab = ({}) => {
                 <FormattedMessage {...messages.dobLabel} />
               </InputLabelWrapper>
               <CustomeDatePicker
+                disableFuture={true}
                 value={dayjs(`${profileDetail.data?.date_of_birth}`)}
                 onChange={(e: any) => {
                   handleDateChange(e);

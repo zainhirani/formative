@@ -14,6 +14,7 @@ type HelpModalProps = {
   heading?: string | React.ReactElement;
   description?: string | React.ReactElement;
   content?: ModalContent[];
+  sx?:any;
 };
 
 const HelpModal: FC<HelpModalProps> = ({
@@ -23,9 +24,10 @@ const HelpModal: FC<HelpModalProps> = ({
   heading,
   description,
   content,
+  sx
 }): JSX.Element => {
   return (
-    <SideDrawer open={isOpen} onClose={onClose} title={title}>
+    <SideDrawer sx={sx} open={isOpen} onClose={onClose} title={title}>
       <Box sx={{ px: 4, pt: 5 }}>
         <Typography sx={{ fontSize: "18px", fontWeight: "400", pb: "10px" }}>
           {heading}

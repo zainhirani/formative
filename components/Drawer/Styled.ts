@@ -10,14 +10,14 @@ export const DrawerWrapper = styled(Drawer)<DrawerProps>(
   ({ theme }) =>
     ({
       // width: isMobile ? "100%" : drawerWidth,
-      maxWidth: drawerWidth,
+      width: drawerWidth,
       flexShrink: 0,
       border: "0px",
       "& .MuiDrawer-paper": {
         maxWidth: drawerWidth,
-        width:"100%",
+        width: drawerWidth,
         marginTop: "0px",
-        zIndex: "9999999",
+        zIndex: "99999999999999",
         background: theme.palette.primary.light,
         border: "1px solid",
         borderColor: theme.additionalColors?.primaryBorderGrey,

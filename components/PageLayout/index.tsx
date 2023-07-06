@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, {useEffect} from "react";
 import { Box, Container } from "@mui/material";
 import AppBarComponent from "./AppBar";
 import Drawer from "./Drawer";
@@ -21,6 +21,7 @@ const PageLayout = (props: Props) => {
   const [open, setOpen] = React.useState(true);
   const {currentUser} = useAuthContext()
   const router = useRouter()
+console.log(open,"open");
 
 
   const handleDrawerOpen = () => {
@@ -29,6 +30,21 @@ const PageLayout = (props: Props) => {
   const handleDrawerClose = () => {
     setOpen(!open);
   };
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth > 900) {
+        setOpen(true);
+      } else {
+        setOpen(false);
+      }
+    }
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   return (
     
     
@@ -39,16 +55,16 @@ const PageLayout = (props: Props) => {
       <>
       <Box
         sx={{
-          width: open ? primaryDrawerWidth : 60,
+          width: open ? primaryDrawerWidth : 50,
         }}
         component="nav"
         >
         <Drawer
           open={open}
-          width={open ? primaryDrawerWidth : 60}
+          width={open ? primaryDrawerWidth : 50}
           onClose={handleDrawerClose}
           >
-          <DrawerContent clickHandler={handleDrawerClose} />
+          <DrawerContent open={open} clickHandler={handleDrawerClose} />
         </Drawer>
       </Box>
       {/* Header with breadcrumb */}
@@ -69,7 +85,8 @@ const PageLayout = (props: Props) => {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
+          paddingLeft: { md: "24px", xs: "60px" },
+          paddingRight: { md: "24px", xs: "24px" },
           paddingTop:currentUser ?  '100px' : '0px',
           width: { sm: `calc(100% - ${primaryDrawerWidth}px )` },
           marginBottom: "0",

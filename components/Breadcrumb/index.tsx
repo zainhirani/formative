@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useState } from "react";
 import {
   Breadcrumbs,
@@ -30,17 +29,14 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
 const Breadcrumb = () => {
   const router = useRouter();
   const pathnames = router.asPath.split("/").filter((x) => x);
-  // console.log(router);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [drawerOpenTooltip, setDrawerOpenTooltip] = useState(false);
 
   const handleDrawerTooltipClick = () => {
-    console.log("open click tooltip");
     setDrawerOpenTooltip(true);
   };
 
   const handleDrawerTooltipClickClose = () => {
-    console.log("close click tooltip");
     setDrawerOpenTooltip(false);
   };
 
@@ -73,13 +69,12 @@ const Breadcrumb = () => {
         aria-label="breadcrumb"
         separator={<ChevronRightIcon fontSize="medium" />}
       >
-        <Link href="/" sx={{ color: "#7F7F7F", textDecoration: "none" }}>
+        {/* <Link href="/" sx={{ color: "#7F7F7F", textDecoration: "none" }}>
           Dashboard
-        </Link>
+        </Link> */}
         {pathnames.map((pathname, index) => {
           const routeTo = `/${pathnames.slice(0, index + 1).join("/")}`;
           const isLast = index === pathnames.length - 1;
-          // console.log(isLast);
           return isLast ? (
             <Typography sx={{ color: "#404040" }} key={pathname}>
               {capitalizeFirstLetter(pathname)}
@@ -116,9 +111,9 @@ const Breadcrumb = () => {
         />
       </HtmlTooltip>
       {/* <SideDrawer  open={drawerOpenTooltip}
-        onClose={handleDrawerTooltipClickClose} title="Tooltip">
-          <Typography>savita bhabi</Typography>
-    </SideDrawer> */}
+          onClose={handleDrawerTooltipClickClose} title="Tooltip">
+            <Typography>savita bhabi</Typography>
+      </SideDrawer> */}
       <HelpModal
         title="How this page works?"
         isOpen={drawerOpenTooltip}
@@ -126,12 +121,13 @@ const Breadcrumb = () => {
         heading="This article helps you to understand and how to perform different operations on this page."
         description="If you still need help then please send us an email to get email support. Thanks!"
         content={modelData}
+        sx={{ width: drawerOpenTooltip ? "initial" : "0px" }}
       />
     </>
   );
 };
 
-const capitalizeFirstLetter = (string) => {
+const capitalizeFirstLetter = (string: string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 

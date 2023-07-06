@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
 import {
   Box,
+  CircularProgress,
   Divider,
   FormHelperText,
   Grid,
@@ -30,7 +31,7 @@ import { TOKEN } from "configs";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
-  password: Yup.string().required().min(6).label("Password"),
+  password: Yup.string().required().label("Password"),
 });
 
 const LoginForm = () => {
@@ -41,6 +42,9 @@ const LoginForm = () => {
   const [loading, setLoading] = useState(false);
 
   const onSubmit = useCallback(async (data: any) => {
+    if (!loading) {
+      setLoading(true);
+    }
     const resp: any = await signIn("credentials", {
       ...data,
       redirect: false,
@@ -52,6 +56,7 @@ const LoginForm = () => {
         throw new Error("Request failed");
       }
       if (!resp.error) {
+        setLoading(true);
         router.push("/dashboard");
         enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
           variant: "success",
@@ -62,7 +67,7 @@ const LoginForm = () => {
       if (resp.error) {
         const errorCode = error.code;
         const errorMessage = error.message;
-        enqueueSnackbar("Something went wrong", {
+        enqueueSnackbar("Invalid Email or Password", {
           variant: "error",
         });
       }
@@ -175,7 +180,7 @@ const LoginForm = () => {
           disabled={(values.email && values.password) === ""}
           type="submit"
           variant="contained"
-          loading={loading}
+          // loading={loading}
           loadingPosition="start"
           sx={{
             ".MuiLoadingButton-loadingIndicator": {
@@ -185,6 +190,20 @@ const LoginForm = () => {
           }}
         >
           <FormattedMessage {...messages.logIn} />
+          {loading && (
+            <CircularProgress
+              size={20}
+              sx={{
+                color: theme => theme.palette.primary.light,
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                marginTop: '-10px',
+                marginLeft: '30px',
+              }}
+            />
+          )} 
+          
         </LoadingButtonWrapper>
         <Divider
           sx={{
