@@ -12,6 +12,7 @@ type ICustomeDatePicker = {
   onChange?: (e?: any) => void;
   sx?: any;
   components?: any;
+  disableFuture?: boolean;
 };
 
 const CustomeDatePicker: FC<ICustomeDatePicker> = ({
@@ -19,6 +20,7 @@ const CustomeDatePicker: FC<ICustomeDatePicker> = ({
   value,
   onChange,
   components,
+  disableFuture,
   sx,
 }) => {
   return (
@@ -31,6 +33,7 @@ const CustomeDatePicker: FC<ICustomeDatePicker> = ({
           onChange={onChange}
           sx={sx}
           components={components}
+          disableFuture={disableFuture}
         />
       </LocalizationProvider>
     </SelectBoxWrapper>

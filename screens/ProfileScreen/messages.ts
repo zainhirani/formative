@@ -52,7 +52,7 @@ export default defineMessages({
   },
   birthLabel: {
     id: `${scope}.birthLabel`,
-    defaultMessage: "Birth Place",
+    defaultMessage: "Birthplace",
   },
   userLabel: {
     id: `${scope}.userLabel`,

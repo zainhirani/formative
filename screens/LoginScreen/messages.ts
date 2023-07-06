@@ -32,7 +32,7 @@ export default defineMessages({
   },
   userPlaceholder: {
     id: `${scope}.userPlaceholder`,
-    defaultMessage: "Enter your user name",
+    defaultMessage: "Enter your email address",
   },
   passwordPlaceholder: {
     id: `${scope}.passwordPlaceholder`,
@@ -45,7 +45,7 @@ export default defineMessages({
 
   forgot: {
     id: `${scope}.forgot`,
-    defaultMessage: "Forgot password?",
+    defaultMessage: "Forgot Password?",
   },
 
   logIn: {
