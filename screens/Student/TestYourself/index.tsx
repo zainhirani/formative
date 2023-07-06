@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { Box, IconButton } from "@mui/material";
@@ -53,7 +55,6 @@ const TestYourself = () => {
   const submitQuestion = useTestQuestion();
 
   const [questionListing, setQuestionListing] = useState<Item[]>([]);
-  const [checkedState, setCheckedState] = useState<boolean[]>([]);
   const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
 
   const questionOptions = eval(questionDetail?.data?.option || "");
@@ -68,9 +69,6 @@ const TestYourself = () => {
 
   useEffect(() => {
     setQuestionListing(questionList?.data || []);
-    setCheckedState(
-      new Array<boolean>(questionList?.data?.length || 0).fill(false),
-    );
   }, [questionList?.data]);
 
   const timer = questionDetail?.data?.timelimit;
@@ -80,14 +78,24 @@ const TestYourself = () => {
     new Array(questionOption?.length).fill(false),
   );
   const [selectedOptionKey, setSelectedOptionKey] = useState("");
+  const [show, setShow] = useState(false);
 
   const handleCategoryChange = (e: any) => {
     setCategory({ value: e?.value, label: e?.label });
     setSelectedItemId(0);
-    setCheckedState(
-      new Array<boolean>(questionList?.data?.length || 0).fill(false),
-    );
+    setShow(false);
   };
+  useEffect(() => {
+    if (!selectedItemId) {
+      setShow(false);
+    }
+  }, [selectedItemId]);
+
+  useEffect(() => {
+    if (questionDetail?.data) {
+      setRemainingTime(timer);
+    }
+  }, [questionDetail?.data]);
 
   const handleOptionChange = (index: number) => {
     const updatedCheckedState = checkedStateAns.map(
@@ -106,13 +114,11 @@ const TestYourself = () => {
   const [submit, setSubmit] = useState(false);
 
   const handleOnChange = (position: any, e: any) => {
-    const updatedCheckedState = checkedState.map(
-      (item, index) => e.target.checked,
-    );
-    setCheckedState(updatedCheckedState);
     setSubmit(false);
     setCheckedStateAns(new Array(questionData?.options?.length).fill(false));
     setQuestionId(position);
+    setRemainingTime(timer);
+    setShow(true);
   };
 
   const timeSpent =
@@ -131,12 +137,10 @@ const TestYourself = () => {
   useEffect(() => {
     if (submitQuestion.isSuccess) {
       queryClient.invalidateQueries("Questions");
+      setShow(true);
     }
-    setSelectedItemId(0);
-    setCheckedState(
-      new Array<boolean>(questionList?.data?.length || 0).fill(true),
-    );
   }, [submitQuestion.isSuccess]);
+
   const isAnswerCorrect = submitQuestion?.data?.data;
 
   let configTestYourself = [
@@ -260,7 +264,8 @@ const TestYourself = () => {
           questionDetail={questionDetail?.data?.detail}
           questionMedia={questionDetail?.data?.media}
           options={questionOption}
-          questionSelected={checkedState.indexOf(true) > -1}
+          // questionSelected={checkedState.indexOf(true) > -1}
+          questionSelected={show}
           setSubmit={setSubmit}
           submit={submit}
           setCheckedStateAns={setCheckedStateAns}
