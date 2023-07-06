@@ -38,29 +38,29 @@ export const duplicateQuestion = (id: any) => {
   });
 };
 
-export const getCategories = async () => {
-  return await service({
+export const getCategories = () => {
+  return service({
     url: TEACHER__GET_CATEGORIES,
     method: "GET",
   });
 };
 
-export const getCategoriesFaculties = async () => {
-  return await service({
+export const getCategoriesFaculties = () => {
+  return service({
     url: TEACHER__GET_FACULTIES_CATEGORIES,
     method: "GET",
   });
 };
 
-export const getFaculties = async () => {
-  return await service({
+export const getFaculties = () => {
+  return service({
     url: TEACHER__GET_FACULTIES,
     method: "GET",
   });
 };
 
-export const addQuestion = async (payload: any) => {
-  return await service({
+export const addQuestion = (payload: any) => {
+  return service({
     method: "POST",
     url: TEACHER__ADD_QUESTION,
     body: payload,
@@ -68,8 +68,8 @@ export const addQuestion = async (payload: any) => {
   });
 };
 
-export const getFolders = async () => {
-  return await service({
+export const getFolders = () => {
+  return service({
     url: TEACHER__GET_FOLDERS,
     method: "GET",
   });
@@ -91,8 +91,8 @@ export const deleteQuestion = (id: any) => {
   });
 };
 
-export const getQuestionCountId = async () => {
-  return await service({
+export const getQuestionCountId = () => {
+  return service({
     url: TEACHER__GET_QUESTION_COUNT_ID,
     method: "GET",
   });

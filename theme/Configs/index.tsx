@@ -74,6 +74,9 @@ export let getDesignTokens = (mode: PaletteMode) => {
             primaryYellow: "#D88A00",
             primaryBorderGrey: "#EAEAEA",
             primary999999: "#999999",
+            activeStatusColor: "#225A41",
+            inActiveStatusColor: "#E21717",
+            draftStatusColor: "#D88A00",
           }
         : {
             lightGrey: "#9EC6D8",
@@ -84,6 +87,9 @@ export let getDesignTokens = (mode: PaletteMode) => {
             primaryYellow: "#D88A00",
             primaryBorderGrey: "#EAEAEA",
             primary999999: "#999999",
+            activeStatusColor: "#225A41",
+            inActiveStatusColor: "#E21717",
+            draftStatusColor: "#D88A00",
           }),
     },
     borderRadius: {
