@@ -16,13 +16,6 @@ const ManageQuestions = () => {
   const [enumType, setEnumType] = useState(null);
   const [category, setCategory] = useState(null);
 
-  useEffect(() => {
-    console.log(folder, "folder");
-    console.log(facultyCategory, "facultyCategory");
-    console.log(enumType, "enumType");
-    console.log(category, "category");
-  }, [folder, facultyCategory, enumType, category]);
-
   return (
     <Box>
       <Filters
