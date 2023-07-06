@@ -27,6 +27,7 @@ import { ButtonWrapper, LoadingButtonWrapper } from "./Styled";
 import { useAuthContext } from "contexts/AuthContext";
 import { useRouter } from "next/router";
 import { TOKEN } from "configs";
+import CloseIcon from "@mui/icons-material/Close";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
@@ -35,7 +36,7 @@ const validationSchema = Yup.object().shape({
 
 const LoginForm = () => {
   const router = useRouter();
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { signIn } = useAuthContext();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -55,6 +56,11 @@ const LoginForm = () => {
         router.push("/dashboard");
         enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
           variant: "success",
+          action: (key) => (
+            <IconButton onClick={() => closeSnackbar(key)} size="small">
+              <CloseIcon sx={{ color: "#fff" }} />
+            </IconButton>
+          ),
         });
         // localStorage.setItem(TOKEN, resp?.data.token);
       }
@@ -64,6 +70,11 @@ const LoginForm = () => {
         const errorMessage = error.message;
         enqueueSnackbar("Something went wrong", {
           variant: "error",
+          action: (key) => (
+            <IconButton onClick={() => closeSnackbar(key)} size="small">
+              <CloseIcon sx={{ color: "#fff" }} />
+            </IconButton>
+          ),
         });
       }
     }

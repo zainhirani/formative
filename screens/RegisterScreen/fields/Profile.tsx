@@ -16,6 +16,7 @@ import {
   TextField,
   styled,
   useRadioGroup,
+  IconButton,
 } from "@mui/material";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import ArrowDropUpOutlinedIcon from "@mui/icons-material/ArrowDropUpOutlined";
@@ -93,7 +94,7 @@ export const StepTwo = ({}) => {
   const [checkedValues, setCheckedValues] = useState([]);
   const profile = useProfile();
   const router = useRouter();
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const handleCheckboxChange = (value) => {
     if (checkedValues.includes(value)) {
@@ -134,6 +135,11 @@ export const StepTwo = ({}) => {
         <FormattedMessage {...messages.profileSuccessMessage} />,
         {
           variant: "success",
+          action: (key) => (
+            <IconButton onClick={() => closeSnackbar(key)} size="small">
+              <CloseIcon sx={{ color: "#fff" }} />
+            </IconButton>
+          ),
         },
       );
       router.replace("/");
@@ -145,6 +151,11 @@ export const StepTwo = ({}) => {
       const errorMessage = profile.error.message;
       enqueueSnackbar(errorMessage, {
         variant: "error",
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)} size="small">
+            <CloseIcon sx={{ color: "#fff" }} />
+          </IconButton>
+        ),
       });
     }
   }, [profile.isError]);
