@@ -98,8 +98,8 @@ export const ProfileTab = ({}) => {
   if (athleteSeperatedArray) {
     athleteArray.push(...athleteSeperatedArray);
   }
-  const [checkedValues, setCheckedValues] = useState(athleteArray);
-  const [experience, setExperience] = useState(profileDetail.data?.experience);
+  const [checkedValues, setCheckedValues] = useState<string[]>([]);
+  const [experience, setExperience] = useState<string | undefined>(undefined);
   const profile = useProfile();
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
@@ -115,6 +115,18 @@ export const ProfileTab = ({}) => {
       .padStart(2, "0")}`;
   }
 
+  useEffect(() => {
+    if (profileDetail.data?.experience) {
+      setExperience(profileDetail.data.experience);
+    }
+  }, [profileDetail.data?.experience]);
+
+  useEffect(() => {
+    if (athleteArray.length > 0 && checkedValues.length === 0) {
+      setCheckedValues(athleteArray);
+    }
+  }, [athleteArray, checkedValues]);
+  
   const handleExperienceChange = (event) => {
     const newValue = parseInt(event.target.value);
     if (!isNaN(newValue)) {

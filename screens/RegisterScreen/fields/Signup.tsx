@@ -290,6 +290,7 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
                 name="rfuID"
                 placeholder={rfuIDPlaceholder}
                 fullWidth
+                inputProps={{ min: 0 }}
                 type="number"
                 value={values.rfuID}
                 onBlur={handleBlur}

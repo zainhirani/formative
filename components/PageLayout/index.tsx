@@ -85,7 +85,8 @@ console.log(open,"open");
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
+          paddingLeft: { md: "24px", xs: "60px" },
+          paddingRight: { md: "24px", xs: "24px" },
           paddingTop:currentUser ?  '100px' : '0px',
           width: { sm: `calc(100% - ${primaryDrawerWidth}px )` },
           marginBottom: "0",

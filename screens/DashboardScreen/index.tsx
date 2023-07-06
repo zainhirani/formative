@@ -113,7 +113,7 @@ const DashboardScreen = () => {
                       padding: 0,
                       borderRadius: "none",
                       boxShadow: "none",
-                      width: "48%",
+                      width: { md: "48%", xs: "100%" },
                     }}
                   >
                     <Iconbox
@@ -133,7 +133,7 @@ const DashboardScreen = () => {
                       padding: 0,
                       borderRadius: "none",
                       boxShadow: "none",
-                      width: "48%",
+                      width: { md: "48%", xs: "100%" },
                     }}
                   >
                     <Iconbox
