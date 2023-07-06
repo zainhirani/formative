@@ -23,6 +23,7 @@ import ViewQuestion from "./ViewQuestion";
 import { useRouter } from "next/router";
 import APP_ROUTES from "constants/RouteConstants";
 import { LIMIT } from "configs";
+import OverlayLoader from "components/OverlayLoader";
 
 interface ListingProp {
   folder: any;
@@ -47,13 +48,12 @@ const Listing: React.FC = ({
     Limit: LIMIT,
     Page: page,
   });
-  let deleteMutation = useDeleteQuestion();
+  let deleteQuestion = useDeleteQuestion();
+  const duplicateQuestion = useDuplicateQuestion();
 
   let [image, setImage] = useState<string>("");
   const [questionId, setQuestionId] = useState<string | undefined>(undefined);
   const [questiondrawer, setQuestionDrawer] = useState(false);
-
-  const duplicateQuestionMutation = useDuplicateQuestion();
 
   const handleSetImage = (imageName: string) => {
     let url = "";
@@ -153,9 +153,7 @@ const Listing: React.FC = ({
                   }
                 />
               </IconButton>
-              <IconButton
-                onClick={() => duplicateQuestionMutation.mutate(data.row.id)}
-              >
+              <IconButton onClick={() => duplicateQuestion.mutate(data.row.id)}>
                 <Image alt="copy" src={copySvg} width={15} height={15} />
               </IconButton>
               <IconButton>
@@ -164,7 +162,7 @@ const Listing: React.FC = ({
                   src={trashSvg}
                   width={15}
                   height={15}
-                  onClick={() => deleteMutation.mutate(data.row.id)}
+                  onClick={() => deleteQuestion.mutate(data.row.id)}
                 />
               </IconButton>
             </Grid>
@@ -201,9 +199,9 @@ const Listing: React.FC = ({
         type={"1"}
         buttonArray={FOOTER_CONFIG}
         loading={
-          questions?.isFetching ||
-          duplicateQuestionMutation.isLoading ||
-          deleteMutation.isLoading
+          questions?.isFetching
+          // duplicateQuestion.isLoading ||
+          // deleteQuestion.isLoading
         }
       />
       <ImagePreviewModal
@@ -215,6 +213,9 @@ const Listing: React.FC = ({
         isOpen={questiondrawer}
         onClose={() => setQuestionDrawer(false)}
         questionId={questionId?.toString() || ""}
+      />
+      <OverlayLoader
+        isShow={duplicateQuestion.isLoading || deleteQuestion.isLoading}
       />
     </BoxWrapper>
   );

@@ -4,16 +4,7 @@ import { Box } from "@material-ui/core";
 import Listing from "./Listing";
 import Filters from "./Filters";
 import { useGetCategories, useGetFolders } from "providers/Teacher_Questions";
-
-const TYPE_OPTIONS = [
-  { value: "SA", label: "SA" },
-  { value: "MCN", label: "MCN" },
-  { value: "MCR", label: "MCR" },
-  { value: "MSN", label: "MSN" },
-  { value: "MSR", label: "MSR" },
-  { value: "MA", label: "MA" },
-  { value: "F", label: "F" },
-];
+import { TYPE_OPTIONS } from "constants/Types";
 
 const ManageQuestions = () => {
   // Queries

@@ -12,6 +12,8 @@ import { Delete } from "@material-ui/icons";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
+import DoNotDisturbOnIcon from "@mui/icons-material/DoNotDisturbOn";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
 
 import { useSnackbar } from "notistack";
@@ -46,28 +48,16 @@ import {
 } from "providers/Teacher_Questions";
 import OverlayLoader from "components/OverlayLoader";
 import { useAuthContext } from "contexts/AuthContext";
-
-const TYPE_OPTIONS = [
-  { value: "SA", label: "SA" },
-  { value: "MCN", label: "MCN" },
-  { value: "MCR", label: "MCR" },
-  { value: "MSN", label: "MSN" },
-  { value: "MSR", label: "MSR" },
-  { value: "MA", label: "MA" },
-  { value: "F", label: "F" },
-];
-
-const STATUS = {
-  ACTIVE: "ACTIVE",
-  INACTIVE: "INACTIVE",
-  DRAFT: "DRAFT",
-};
+import { TYPE_OPTIONS } from "constants/Types";
+import { STATUS } from "constants/Status";
+import { useTheme } from "@mui/material/styles";
 
 interface QuestionProps {
   qId?: any;
 }
 
 const AddQuestion = ({ qId }: QuestionProps) => {
+  const theme = useTheme();
   let { enqueueSnackbar } = useSnackbar();
   const { currentUser } = useAuthContext();
 
@@ -233,7 +223,7 @@ const AddQuestion = ({ qId }: QuestionProps) => {
     }
   };
 
-  function validateForm() {
+  const validateForm = () => {
     let formArr = [
       {
         value: title,
@@ -287,7 +277,21 @@ const AddQuestion = ({ qId }: QuestionProps) => {
     } else {
       return true;
     }
-  }
+  };
+  const STATUS_CLASSES = {
+    [STATUS.ACTIVE]: {
+      color: theme.additionalColors.activeStatusColor,
+      icon: <CheckCircleIcon fontSize="small" />,
+    },
+    [STATUS.DRAFT]: {
+      color: theme.additionalColors.draftStatusColor,
+      icon: <SaveAsIcon fontSize="small" />,
+    },
+    [STATUS.INACTIVE]: {
+      color: theme.additionalColors.inActiveStatusColor,
+      icon: <DoNotDisturbOnIcon fontSize="small" />,
+    },
+  };
 
   return (
     <>
@@ -346,10 +350,10 @@ const AddQuestion = ({ qId }: QuestionProps) => {
                       display: "flex",
                       alignItems: "center",
                       gap: "2px",
-                      color: (theme) => theme.additionalColors?.primaryYellow,
+                      color: [STATUS_CLASSES[status].color],
                     }}
                   >
-                    <SaveAsIcon style={{ fontSize: "20px" }} />
+                    {[STATUS_CLASSES[status].icon]}
                     <div>{status}</div>
                   </Box>
                 </Box>

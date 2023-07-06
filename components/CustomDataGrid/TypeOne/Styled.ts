@@ -87,6 +87,7 @@ export const SelectStyled = styled(Select)<SelectProps>(
 export const ButtonWrapper = styled(Button)<ButtonProps>(
   ({ theme }) =>
     ({
+  
       display: "flex",
       alignItems: "center",
       fontSize: "16px",
