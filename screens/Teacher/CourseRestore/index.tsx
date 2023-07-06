@@ -25,6 +25,7 @@ import {
 import Image from "next/image";
 import courseRestoreSvg from "public/CourseType.svg";
 import { useQueryClient } from "react-query";
+import Head from "next/head";
 
 const CourseRestore = () => {
   const router = useRouter();
@@ -164,12 +165,16 @@ const CourseRestore = () => {
 
   return (
     // <PageLayout title="Courses"  icon={<HelpRoundedIcon />}>
+    <>
+      <Head>
+        <title>Course Restore</title>
+      </Head>
     <Box>
       <SearchBar
         setSelectedClass={setSelectedClass}
         setSelectedAudience={setSelectedAudience}
         setSearchChange={setSearchChange}
-      />
+        />
       <TableWrapper>
         <CustomDataGrid
           rows={getRestoreCourseListing?.data?.data || []}
@@ -189,7 +194,7 @@ const CourseRestore = () => {
           handlePageChange={(_, v) => setPage(v)}
           /* @ts-ignore */
           totalRows={getRestoreCourseListing?.data?.count}
-        />
+          />
       </TableWrapper>
       <Box
         sx={{
@@ -198,7 +203,7 @@ const CourseRestore = () => {
           justifyContent: "space-between",
           flexDirection: { md: "row", xs: "column" },
         }}
-      >
+        >
         <BoxWrapper display="grid" gridTemplateColumns="repeat(5, 1fr)">
           <Box gridColumn="span 3">
             <TextFieldStyled
@@ -208,7 +213,7 @@ const CourseRestore = () => {
                 style: { border: "none", outline: "0px" },
               }}
               autoComplete="off"
-            />
+              />
           </Box>
           <Box gridColumn="span 2">
             <ButtonWrapper
@@ -221,7 +226,7 @@ const CourseRestore = () => {
                   color: (theme) => theme.palette.primary.light,
                 },
               }}
-            >
+              >
               Create Course
             </ButtonWrapper>
           </Box>
@@ -231,6 +236,7 @@ const CourseRestore = () => {
         </Box>
       </Box>
     </Box>
+    </>
     // </PageLayout>
   );
 };

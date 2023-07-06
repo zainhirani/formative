@@ -1,8 +1,9 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { Grid, Pagination } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { BoxPaginate, ButtonWrapper, ShowingBox } from "./Styled";
 import { ButtonConfig, TableColumn, TableRow } from "../type";
+import { Stack } from "@material-ui/core";
 
 interface TypeOneProps {
   pageSizeData: number;
@@ -112,9 +113,24 @@ const TypeOne: React.FC<TypeOneProps> = ({
             }}
             columnVisibilityModel={columnVisibilityModel}
             {...props}
-            sx={{ minHeight: "400px" }}
+            sx={{ 
+              minHeight: "400px", 
+              '.MuiDataGrid-iconButtonContainer': {
+                visibility: 'visible',
+              },
+              '.MuiDataGrid-sortIcon': {
+                opacity: 'inherit !important',
+                color: theme => theme.palette.primary.main
+              },
+              '.MuiDataGrid-columnSeparator': {
+                visibility: 'inherit !important',
+              },   
+            }}
             loading={loading}
             slots={{ pagination: customPagination }}
+            localeText={{
+              noRowsLabel: "No data found"
+            }}
           />
         </Grid>
       </Grid>
