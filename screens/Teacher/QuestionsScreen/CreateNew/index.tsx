@@ -45,6 +45,7 @@ import {
 import { useSnackbar } from "notistack";
 import OverlayLoader from "components/OverlayLoader";
 import { useAuthContext } from "contexts/AuthContext";
+import Head from "next/head";
 
 const TYPE_OPTIONS = [
   { value: "SA", label: "SA" },
@@ -250,6 +251,9 @@ const AddQuestion = ({ qId }: QuestionProps) => {
 
   return (
     <>
+    <Head>
+        <title>Add Question</title>
+      </Head>
       <Box
         sx={{
           display: "flex",

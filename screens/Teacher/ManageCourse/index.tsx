@@ -26,6 +26,7 @@ import { useFormik } from "formik";
 import { useTargetCourse } from "providers/Courses/TargetCourse";
 import FooterButton from "./FooterButton";
 import FooterForm from "./FooterForm";
+import Head from "next/head";
 
 const ManageCourseScreen = () => {
   const [selectedAudience, setSelectedAudience] = React.useState("");
@@ -178,6 +179,10 @@ const ManageCourseScreen = () => {
 
   return (
     // <PageLayout title="Courses"  icon={<HelpRoundedIcon />}>
+    <>
+      <Head>
+        <title>Courses</title>
+      </Head>
     <Box>
       <SearchBar
         checked={checked}
@@ -219,13 +224,13 @@ const ManageCourseScreen = () => {
         <BoxWrapper
           sx={{ display: { md: "grid", xs: "flex" }, alignItems: "center" }}
           gridTemplateColumns="repeat(5, 1fr)"
-        >
+          >
           <FooterForm
             handleAddCourse={handleAddCourse}
             setAddCourse={setAddCourse}
             isDisabled={addCourse === "" ? true : false}
             isLoading={createCourse.isLoading}
-          />
+            />
         </BoxWrapper>
         <Box>
           <FooterButton
@@ -234,10 +239,11 @@ const ManageCourseScreen = () => {
             checked={checked}
             deleteCourse={handleDeleteCourse}
             duplicateCourse={handleDuplicateCourse}
-          />
+            />
         </Box>
       </Box>
     </Box>
+    </>
     // </PageLayout>
   );
 };

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Box } from "@material-ui/core";
 import Listing from "./Listing";
 import Filters from "./Filters";
+import Head from "next/head";
 
 const ManageQuestions = () => {
   const [folder, setFolder] = useState("");
@@ -21,7 +22,10 @@ const ManageQuestions = () => {
     //   subText="Manage Questions"
     //   icon={<HelpRoundedIcon />}
     // >
-
+    <>
+      <Head>
+        <title>Manage Questions</title>
+      </Head>
     <Box>
       <Filters
         onFolderChange={setFolder}
@@ -36,6 +40,7 @@ const ManageQuestions = () => {
         category={category}
       />
     </Box>
+    </>
     // </PageLayout>
   );
 };
