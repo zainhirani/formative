@@ -31,7 +31,7 @@ import { TOKEN } from "configs";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
-  password: Yup.string().required().min(6).label("Password"),
+  password: Yup.string().required().label("Password"),
 });
 
 const LoginForm = () => {
@@ -67,7 +67,7 @@ const LoginForm = () => {
       if (resp.error) {
         const errorCode = error.code;
         const errorMessage = error.message;
-        enqueueSnackbar("Something went wrong", {
+        enqueueSnackbar("Invalid Email or Password", {
           variant: "error",
         });
       }

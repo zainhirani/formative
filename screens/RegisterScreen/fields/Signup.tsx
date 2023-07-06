@@ -42,15 +42,15 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { year_of_graduation } from "mock-data/Profile";
 
 const validationSchema = Yup.object().shape({
-  firstName: Yup.string().required().label("FirstName"),
-  lastName: Yup.string().required().label("LastName"),
-  nickName: Yup.string().required().label("NickName"),
+  firstName: Yup.string().required().label("First name"),
+  lastName: Yup.string().required().label("Last name"),
+  nickName: Yup.string().required().label("Nick name"),
   gender: Yup.string().required().label("Gender"),
   email: Yup.string().required().email().label("Email"),
   rfuID: Yup.string().required().label("RFU ID"),
   program: Yup.string().required().label("Program"),
   graduation: Yup.string().required().label("Graduation Year"),
-  birthPlace: Yup.string().required().label("Birth Place"),
+  birthPlace: Yup.string().required().label("Birthplace"),
   userName: Yup.string().required().label("User Name"),
   password: Yup.string().required().min(6).label("Password"),
   confirmPassword: Yup.string()
@@ -120,7 +120,6 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
       program: data.program,
       birth_place: data.birthPlace,
     });
-    console.log(data);
   }, []);
 
   const handleSetYear = (e: Object) => {
@@ -142,7 +141,7 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
       nickName: "",
       gender: "",
       email: "",
-      rfuID: 0,
+      rfuID: 1,
       program: "",
       graduation: 2022,
       birthPlace: "",
@@ -292,7 +291,14 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
                 fullWidth
                 inputProps={{ min: 0 }}
                 type="number"
-                value={values.rfuID}
+                value={
+                  values.rfuID !== ""
+                    ? values.rfuID < 1
+                      ? 1
+                      : parseInt(values.rfuID)
+                    : ""
+                }
+                inputProps={{ min: 1 }}
                 onBlur={handleBlur}
                 onChange={handleChange}
                 error={Boolean(touched.rfuID && errors.rfuID)}

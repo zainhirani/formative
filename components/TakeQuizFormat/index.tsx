@@ -7,28 +7,40 @@ import FormattedMessage from "theme/FormattedMessage";
 import Image from "theme/Image";
 import messages from "./messages";
 import { BoxWrapper, ButtonWrapper } from "./Styled";
+import { PUBLIC_IMAGE_URL } from "configs";
 
 interface IOptionProps {
   name: string;
   valid: string;
+  value: string;
+  key?: string;
 }
 
 type ITakeQuizProps = {
-  id: string;
-  QNo: string;
-  question: string;
+  id?: number;
+  QNo?: string;
+  question?: string;
   image?: string;
-  options: IOptionProps[];
+  options?: IOptionProps[];
   time?: number;
-  questionSelected: boolean;
-  setSubmit: any;
-  submit: boolean;
-  setCheckedStateAns: any;
-  checkedStateAns: any;
-  questionData: any;
-  setRemainingTime: any;
-  remainingTime: any;
-  timer: any;
+  questionSelected?: boolean;
+  setSubmit?: any;
+  submit?: boolean;
+  setCheckedStateAns?: any;
+  checkedStateAns?: any;
+  questionData?: any;
+  setRemainingTime?: any;
+  remainingTime?: any;
+  timer?: any;
+  questionTitle?: string;
+  questionID?: number;
+  questionDetail?: string;
+  questionMedia?: string;
+  questionOption?: string;
+  timelimit?: number;
+  answer?: boolean;
+  handleOptionChange?: (index: number) => void;
+  handleSubmit?: () => void;
 };
 
 const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
@@ -47,6 +59,15 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
   setRemainingTime,
   remainingTime,
   timer,
+  questionTitle,
+  questionID,
+  questionDetail,
+  questionMedia,
+  questionOption,
+  timelimit,
+  answer,
+  handleOptionChange,
+  handleSubmit,
 }): JSX.Element => {
   const [ansCorrect, setAnsCorrect] = React.useState(false);
 
@@ -71,13 +92,15 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
     setRemainingTime(timer);
   }, [ansCorrect]);
 
-  const handleOnChange = (position: any, e: any) => {
-    if (checkedStateAns.filter((i: any) => i).length >= 1 && e.target.checked)
-      return;
-    const updatedCheckedStateAns = checkedStateAns.map(
-      (item: any, index: number) => (index === position ? !item : item),
-    );
+  const handleOnChange = (key: any, position: any, e: any) => {
+    const updatedCheckedStateAns = [...checkedStateAns];
+    updatedCheckedStateAns[position] = e.target.checked;
     setCheckedStateAns(updatedCheckedStateAns);
+    if (e.target.checked) {
+      console.log("Selected option key:", key);
+      // You can perform further actions with the selected option key
+    }
+    // console.log(e.target.checked, "aaaaaa");
   };
 
   const getTimeColor = () => {
@@ -101,15 +124,19 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
           sx={{
             background: (theme) => theme.palette.grey[300],
             width: "100%",
+            minHeight: "400px",
             height: "100%",
             display: "flex",
             justifyContent: "center",
-            paddingTop: "50px",
+            // paddingTop: "50px",
             borderRadius: "6px",
+            padding: { xs: "20px", md: "50px 0 0" },
+            flexDirection: { xs: "column", md: "row" },
+            alignItems: { xs: "center", md: "start" },
           }}
         >
           <ErrorOutlineIcon sx={{ fontSize: "64px", marginRight: "10px" }} />
-          <Box>
+          <Box sx={{ textAlign: { xs: "center", md: "left" } }}>
             <Typography
               fontWeight={400}
               fontSize={14}
@@ -137,35 +164,31 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
               fontSize={14}
               sx={{ color: (theme) => theme.palette.text.secondary }}
             >
-              Question {QNo}
+              Question: {questionTitle}
             </Typography>
             <Typography
               fontSize={14}
               sx={{ color: (theme) => theme.palette.text.secondary }}
             >
-              Qid = {id}
+              Qid = {questionID}
             </Typography>
           </Box>
           <Box sx={{ paddingTop: "10px" }}>
             <Typography sx={{ marginBottom: "5px" }} fontSize={18}>
-              {question}
+              {questionDetail}
             </Typography>
             {submit === false ? (
-              <Image
-                alt="quiz-image"
-                lazyLoadProps={{ height: 240 }}
-                src={image}
-                lazyLoad={true}
-                style={{ maxWidth: "100%", marginTop: "30px" }}
-              />
+              questionMedia && (
+                <Image
+                  alt="quiz-image"
+                  lazyLoadProps={{ height: 240 }}
+                  src={`${PUBLIC_IMAGE_URL}/${questionMedia}`}
+                  lazyLoad={true}
+                  style={{ maxWidth: "100%", marginTop: "30px" }}
+                />
+              )
             ) : (
               <></>
-              // <Typography
-              //   sx={{ marginBottom: "30px", color: "#225A41" }}
-              //   fontSize={18}
-              // >
-              //   Your answer is correct!
-              // </Typography>
             )}
           </Box>
           <Box sx={{ marginTop: "30px" }}>
@@ -195,17 +218,21 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
                   <FormControlLabel
                     control={
                       <Checkbox
-                        onChange={(e) => handleOnChange(index, e)}
-                        checked={checkedStateAns[index]}
+                        onChange={() =>
+                          handleOptionChange && handleOptionChange(index)
+                        }
+                        // onChange={(e) => handleOnChange(el.key, index, e)}
+                        // checked={checkedStateAns[index]?.checked}
+                        checked={checkedStateAns && checkedStateAns[index]}
                         id={`custom-checkbox-${index}`}
                         color="default"
                         disabled={submit ? true : false}
                       />
                     }
-                    label={el.name}
+                    label={el.value}
                   />
                   {submit && checkedStateAns[index] ? (
-                    valNew === "true" ? (
+                    answer ? (
                       <Box sx={{ color: "#225A41", marginRight: "20px" }}>
                         Correct Answer!
                       </Box>
@@ -247,13 +274,17 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
               </Box>
             </Box>
           ) : (
-            <Box sx={{ display: "flex", marginTop: "30px" }}>
-              <BoxWrapper>
+            <Box
+              sx={{ display: { sm: "flex", xs: "block" }, marginTop: "30px" }}
+            >
+              <BoxWrapper sx={{ width: { sm: "90%", xs: "100%" } }}>
                 <Typography
                   fontSize={14}
                   sx={{ color: (theme) => theme.palette.text.secondary }}
                 >
-                  <Box sx={{ display: "flex", gap: "5px" }}>
+                  <Box
+                    sx={{ display: { sm: "flex", xs: "block" }, gap: "5px" }}
+                  >
                     {remainingTime ? (
                       <>
                         <FormattedMessage
@@ -283,7 +314,7 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
                 </Typography>
               </BoxWrapper>
               <ButtonWrapper
-                onClick={() => setSubmit(true)}
+                onClick={handleSubmit}
                 disabled={!(checkedStateAns.indexOf(true) > -1)}
                 loadingPosition="start"
                 startIcon={<ArrowCircleRightOutlinedIcon />}
@@ -291,7 +322,7 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
                   borderTopRightRadius: (theme) => theme.borderRadius.radius1,
                   borderBottomRightRadius: (theme) =>
                     theme.borderRadius.radius1,
-                  width: "30%",
+                  width: { sm: "30%", xs: "100%" },
                 }}
                 variant="contained"
               >
