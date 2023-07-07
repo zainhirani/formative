@@ -1,5 +1,5 @@
+import React, { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
-import React, { useState, useEffect } from "react";
 
 function RemainingTimer({ seconds, onEnd, remainingTimer }: any) {
   const [remainingSeconds, setRemainingSeconds] = useState(seconds);
