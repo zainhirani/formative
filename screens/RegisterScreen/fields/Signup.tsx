@@ -40,6 +40,7 @@ import { TOKEN } from "configs";
 import CustomSelect from "components/CustomSelect/CustomSelect";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { year_of_graduation } from "mock-data/Profile";
+import CloseIcon from "@mui/icons-material/Close";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required().label("First name"),

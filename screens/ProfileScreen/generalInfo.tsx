@@ -30,6 +30,7 @@ import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCi
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { year_of_graduation } from "mock-data/Profile";
 import { isEqual } from "lodash";
+import CloseIcon from "@mui/icons-material/Close";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().label("First name"),

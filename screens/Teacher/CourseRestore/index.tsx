@@ -169,73 +169,80 @@ const CourseRestore = () => {
       <Head>
         <title>Course Restore</title>
       </Head>
-    <Box>
-      <SearchBar
-        setSelectedClass={setSelectedClass}
-        setSelectedAudience={setSelectedAudience}
-        setSearchChange={setSearchChange}
-        />
-      <TableWrapper>
-        <CustomDataGrid
-          rows={getRestoreCourseListing?.data?.data || []}
-          /* @ts-ignore */
-          getRowId={(row: any) => row.id}
-          columns={columnsManageCourse}
-          pageSizeData={pageSizeManageCourse}
-          columnVisibilityModel={showColumns}
-          type={"1"}
-          isCheckbox={true}
-          setChecked={setChecked}
-          loading={getRestoreCourseListing.isFetching}
-          selectedIds={checkedId}
-          onRowSelect={handleSelection}
-          getSelectedId={(e) => setSelectedRowId(e?.[0]?.[e.length - 1])}
-          page={page}
-          handlePageChange={(_, v) => setPage(v)}
-          /* @ts-ignore */
-          totalRows={getRestoreCourseListing?.data?.count}
-          />
-      </TableWrapper>
       <Box
         sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          flexDirection: { md: "row", xs: "column" },
+          ".MuiDataGrid-selectedRowCount": {
+            width: { md: "14%", sm: "25%", xs: "30%" },
+          },
         }}
+      >
+        <SearchBar
+          setSelectedClass={setSelectedClass}
+          setSelectedAudience={setSelectedAudience}
+          setSearchChange={setSearchChange}
+        />
+        <TableWrapper>
+          <CustomDataGrid
+            rows={getRestoreCourseListing?.data?.data || []}
+            /* @ts-ignore */
+            getRowId={(row: any) => row.id}
+            columns={columnsManageCourse}
+            pageSizeData={pageSizeManageCourse}
+            columnVisibilityModel={showColumns}
+            type={"1"}
+            isCheckbox={true}
+            setChecked={setChecked}
+            loading={getRestoreCourseListing.isFetching}
+            selectedIds={checkedId}
+            onRowSelect={handleSelection}
+            getSelectedId={(e) => setSelectedRowId(e?.[0]?.[e.length - 1])}
+            page={page}
+            handlePageChange={(_, v) => setPage(v)}
+            /* @ts-ignore */
+            courseText={true}
+            totalRows={getRestoreCourseListing?.data?.count}
+          />
+        </TableWrapper>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexDirection: { md: "row", xs: "column" },
+          }}
         >
-        <BoxWrapper display="grid" gridTemplateColumns="repeat(5, 1fr)">
-          <Box gridColumn="span 3">
-            <TextFieldStyled
-              placeholder="Enter Course Name here"
-              variant="outlined"
-              InputProps={{
-                style: { border: "none", outline: "0px" },
-              }}
-              autoComplete="off"
+          <BoxWrapper display="grid" gridTemplateColumns="repeat(5, 1fr)">
+            <Box gridColumn="span 3">
+              <TextFieldStyled
+                placeholder="Enter Course Name here"
+                variant="outlined"
+                InputProps={{
+                  style: { border: "none", outline: "0px" },
+                }}
+                autoComplete="off"
               />
-          </Box>
-          <Box gridColumn="span 2">
-            <ButtonWrapper
-              startIcon={<AddCircleOutlineRoundedIcon />}
-              variant="contained"
-              disabled={true}
-              sx={{
-                ":disabled": {
-                  background: (theme) => theme.palette.text.secondary,
-                  color: (theme) => theme.palette.primary.light,
-                },
-              }}
+            </Box>
+            <Box gridColumn="span 2">
+              <ButtonWrapper
+                startIcon={<AddCircleOutlineRoundedIcon />}
+                variant="contained"
+                disabled={true}
+                sx={{
+                  ":disabled": {
+                    background: (theme) => theme.palette.text.secondary,
+                    color: (theme) => theme.palette.primary.light,
+                  },
+                }}
               >
-              Create Course
-            </ButtonWrapper>
+                Create Course
+              </ButtonWrapper>
+            </Box>
+          </BoxWrapper>
+          <Box>
+            <GroupedButton config={config} />
           </Box>
-        </BoxWrapper>
-        <Box>
-          <GroupedButton config={config} />
         </Box>
       </Box>
-    </Box>
     </>
     // </PageLayout>
   );
