@@ -5,17 +5,19 @@ import { styled } from "@mui/material/styles";
 
 const drawerWidth = 800;
 
+
 export const DrawerWrapper = styled(Drawer)<DrawerProps>(
   ({ theme }) =>
     ({
       // width: isMobile ? "100%" : drawerWidth,
-      maxWidth: drawerWidth,
+      width: drawerWidth,
       flexShrink: 0,
       border: "0px",
       "& .MuiDrawer-paper": {
         maxWidth: drawerWidth,
         minWidth:"600px",
         marginTop: "0px",
+        width: drawerWidth,
         zIndex: "1300",
         background: theme.palette.primary.light,
         border: "1px solid",

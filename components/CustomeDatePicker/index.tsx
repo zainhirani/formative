@@ -6,12 +6,14 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { SelectBoxWrapper } from "./Styled";
 
+
 type ICustomeDatePicker = {
   label?: string | React.ReactElement;
   value?: null | Date | string;
   onChange?: (e?: any) => void;
   sx?: any;
   components?: any;
+  disableFuture?: boolean;
 };
 
 const CustomeDatePicker: FC<ICustomeDatePicker> = ({
@@ -19,6 +21,7 @@ const CustomeDatePicker: FC<ICustomeDatePicker> = ({
   value,
   onChange,
   components,
+  disableFuture,
   sx,
 }) => {
   return (
@@ -30,7 +33,10 @@ const CustomeDatePicker: FC<ICustomeDatePicker> = ({
           value={value}
           onChange={onChange}
           sx={sx}
+          //@ts-ignore
+          renderInput={(props:any)=><TextField {...props}/>}
           components={components}
+          disableFuture={disableFuture}
         />
       </LocalizationProvider>
     </SelectBoxWrapper>

@@ -45,6 +45,21 @@ const TypeTwo: React.FC<TypeTwoProps> = ({
                   disableRowSelectionOnClick
                   loading={loading}
                   {...props}
+                  sx={{
+                    '.MuiDataGrid-iconButtonContainer': {
+                      visibility: 'visible',
+                    },
+                    '.MuiDataGrid-sortIcon': {
+                      opacity: 'inherit !important',
+                      color: theme => theme.palette.primary.main
+                    },
+                    '.MuiDataGrid-columnSeparator': {
+                      visibility: 'inherit !important',
+                    },   
+                  }}
+                  localeText={{
+                    noRowsLabel: "No data found"
+                  }}
                 />
               </Box>
             </Grid>

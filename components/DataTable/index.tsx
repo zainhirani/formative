@@ -6,6 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { BoxWrapper } from "./Styled";
+import { Box, Typography } from "@mui/material";
 
 interface ConfigItem {
   columnName: string;
@@ -25,7 +26,19 @@ interface DataTableProps {
 const DataTable: React.FC<DataTableProps> = ({ config = [], data = [] }) => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
 
-  if (!config.length || !data.length) return null;
+  if (!config.length || !data.length)
+    return (
+      <Box
+        sx={{
+          height: "320px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Typography sx={{ textAlign: "center" }}>Nothing to show</Typography>
+      </Box>
+    );
 
   const handleRowClick = (index: number) => {
     if (selectedRows?.includes(index)) {

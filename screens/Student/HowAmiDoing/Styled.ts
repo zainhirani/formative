@@ -41,6 +41,7 @@ export const BoxPaginate = styled(MuiBox)<BoxProps>(
       marginTop: "30px",
       marginBottom: "20px",
       width: "100%",
+      justifyContent:'space-between',
       background: 'linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 45%, rgba(255,255,255,0) 100%)',
       '.customPagination':{
         "button": {
@@ -62,7 +63,6 @@ export const BoxPaginate = styled(MuiBox)<BoxProps>(
       }
     } as any),
 ) as (props: BoxProps) => JSX.Element;
-
 export const TextFieldStyled = styled(TextField)<TextFieldProps>(
   ({ theme }) =>
     ({
@@ -121,3 +121,10 @@ export const ButtonWrapper = styled(Button)<ButtonProps>(
       width: "100%",
     } as any),
 ) as (props: ButtonProps) => JSX.Element;
+
+export const ShowingBox = styled(MuiBox)<BoxProps>(
+  ({ theme }) =>
+    ({
+      marginRight: "20px",
+    } as any),
+) as (props: BoxProps) => JSX.Element;

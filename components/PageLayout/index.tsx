@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, {useEffect} from "react";
 import { Box, Container } from "@mui/material";
 import AppBarComponent from "./AppBar";
 import Drawer from "./Drawer";
@@ -30,6 +30,21 @@ console.log(open,"open");
   const handleDrawerClose = () => {
     setOpen(!open);
   };
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth > 900) {
+        setOpen(true);
+      } else {
+        setOpen(false);
+      }
+    }
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   return (
     
     
@@ -70,7 +85,8 @@ console.log(open,"open");
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
+          paddingLeft: { md: "24px", xs: "60px" },
+          paddingRight: { md: "24px", xs: "24px" },
           paddingTop:currentUser ?  '100px' : '0px',
           width: { sm: `calc(100% - ${primaryDrawerWidth}px )` },
           marginBottom: "0",

@@ -1,8 +1,9 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { Grid, Pagination } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { BoxPaginate, ButtonWrapper, ShowingBox } from "./Styled";
 import { ButtonConfig, TableColumn, TableRow } from "../type";
+import { Stack } from "@material-ui/core";
 
 interface TypeOneProps {
   pageSizeData: number;
@@ -21,7 +22,7 @@ interface TypeOneProps {
   page?: number;
   handlePageChange: (event: React.ChangeEvent<unknown>, value: number) => void;
   totalRows?: number | undefined;
-
+  courseText?: boolean;
   // isChecked?:
 }
 
@@ -40,6 +41,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
   page = 1,
   handlePageChange,
   totalRows = rows?.length,
+  courseText,
   ...props
 }) => {
   const totalPages = Math.ceil(totalRows / pageSizeData);
@@ -55,6 +57,18 @@ const TypeOne: React.FC<TypeOneProps> = ({
 
   const getRowHeight = () => {
     return 50;
+  };
+
+  const customLocaleText = {
+    noRowsLabel: "No data found",
+    footerRowSelected: (count: number) =>
+      courseText
+        ? count !== 1
+          ? `${count.toLocaleString()} Courses Selected`
+          : `${count.toLocaleString()} Course Selected`
+        : count !== 1
+        ? `${count.toLocaleString()} Rows Selected`
+        : `${count.toLocaleString()} Row Selected`,
   };
 
   function customPagination() {
@@ -112,9 +126,22 @@ const TypeOne: React.FC<TypeOneProps> = ({
             }}
             columnVisibilityModel={columnVisibilityModel}
             {...props}
-            sx={{ minHeight: "400px" }}
+            sx={{
+              minHeight: "400px",
+              ".MuiDataGrid-iconButtonContainer": {
+                visibility: "visible",
+              },
+              ".MuiDataGrid-sortIcon": {
+                opacity: "inherit !important",
+                color: (theme) => theme.palette.primary.main,
+              },
+              ".MuiDataGrid-columnSeparator": {
+                visibility: "inherit !important",
+              },
+            }}
             loading={loading}
             slots={{ pagination: customPagination }}
+            localeText={customLocaleText}
           />
         </Grid>
       </Grid>

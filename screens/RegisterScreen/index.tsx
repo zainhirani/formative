@@ -28,6 +28,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useAuthContext } from "contexts/AuthContext";
 import { StepTwo } from "./fields/Profile";
 import { useProfile } from "providers/Users";
+import Head from "next/head";
 // import { register } from "services/auth";
 
 const validationSchema = Yup.object().shape({
@@ -168,129 +169,41 @@ const RegisterScreen: React.FC = () => {
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
-      {/* <form onSubmit={handleSubmit}> */}
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
-          padding: { md: "80px 0", xs: "40px 0", lg: "45px" },
-        }}
-      >
-        <Card
+    <>
+      <Head>
+        <title>Register</title>
+      </Head>
+      <Box sx={{ width: "100%" }}>
+        {/* <form onSubmit={handleSubmit}> */}
+        <Box
           sx={{
-            marginBottom: (theme) => theme.spacing(3),
-            padding: "20px 30px",
-            boxShadow: (theme) => theme.shadow.boxShadow,
-            borderRadius: 0,
-            width:
-              activeStep === steps.length - 1 ? "80%" : { md: 650, xs: "80%" },
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+            padding: { md: "80px 0", xs: "40px 0", lg: "45px" },
           }}
         >
-          {activeStep === steps.length - 1 ? (
-            <React.Fragment>
-              <CardHeaderWrapper
-                title={<FormattedMessage {...messages.stepTwoTitle} />}
-              />
-              <Typography sx={{ marginLeft: "15px" }}>
-                <FormattedMessage {...messages.description} />
-              </Typography>
-              {/* <form onSubmit={handleSubmit}> */}
-              <StepTwo
-              // handleChange={handleChange}
-              // handleBlur={handleBlur}
-              // errors={errors}
-              // values={values}
-              // touched={touched}
-              // setFieldValue={setFieldValue}
-              // disable={false}
-              />
-              {/* <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: { md: "row", xs: "column" },
-                  }}
-                >
-                  <Box
-                    sx={{
-                      width: { md: "75%", xs: "100%", xl: "65%" },
-                      display: "flex",
-                      mt: "10px",
-                      justifyContent: { xs: "center", md: "end" },
-                    }}
-                  >
-                    <LoadingButtonWrapper
-                      variant="contained"
-                      type="submit"
-                      disabled={
-                        (values.dob &&
-                          values.pharmacy &&
-                          values.partTime &&
-                          values.bioChemistry &&
-                          values.maths &&
-                          values.learn &&
-                          values.sequence &&
-                          values.study &&
-                          values.played &&
-                          values.volunteer &&
-                          values.hobbies) === ""
-                      }
-                      loading={profile.isLoading}
-                      loadingPosition="start"
-                      sx={{
-                        width: { xs: "100%", md: "500px" },
-                        ".MuiLoadingButton-loadingIndicator": {
-                          top: "35%",
-                          left: "35%",
-                        },
-                      }}
-                    >
-                      <FormattedMessage {...messages.profile} />
-                    </LoadingButtonWrapper>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: { md: "end", xs: "center" },
-                      width: { md: "25%", xs: "100%", xl: "35%" },
-                      mr: 1,
-                      mt: { xs: "10px", md: 0 },
-                    }}
-                  >
-                    <Button
-                      onClick={() => {
-                        router.push("/");
-                      }}
-                      sx={{
-                        textDecoration: "none",
-                        color: (theme) => theme.palette.primary.main,
-                        textTransform: "initial",
-                        fontWeight: "500",
-                      }}
-                    >
-                      <FormattedMessage {...messages.skip} />
-                      <IconButtonWrapper>
-                        <ArrowForwardIcon />
-                      </IconButtonWrapper>
-                    </Button>
-                  </Box>
-                </Box> */}
-              {/* </form> */}
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-              <CardHeaderWrapper
-                title={<FormattedMessage {...messages.stepOneTitle} />}
-              />
-              <Typography sx={{ marginLeft: "15px" }}>
-                <FormattedMessage {...messages.description} />
-              </Typography>
-              {/* <form onSubmit={() => handleSubmit}> */}
-              <StepOne
-                handleNext={handleNext}
+          <Card
+            sx={{
+              marginBottom: (theme) => theme.spacing(3),
+              padding: "20px 30px",
+              boxShadow: (theme) => theme.shadow.boxShadow,
+              borderRadius: 0,
+              width:
+                activeStep === steps.length - 1 ? "80%" : { md: 650, xs: "80%" },
+            }}
+          >
+            {activeStep === steps.length - 1 ? (
+              <React.Fragment>
+                <CardHeaderWrapper
+                  title={<FormattedMessage {...messages.stepTwoTitle} />}
+                />
+                <Typography sx={{ marginLeft: "15px" }}>
+                  <FormattedMessage {...messages.description} />
+                </Typography>
+                {/* <form onSubmit={handleSubmit}> */}
+                <StepTwo
                 // handleChange={handleChange}
                 // handleBlur={handleBlur}
                 // errors={errors}
@@ -298,70 +211,163 @@ const RegisterScreen: React.FC = () => {
                 // touched={touched}
                 // setFieldValue={setFieldValue}
                 // disable={false}
-              />
-              {/* <ButtonWrapper
-                  variant="contained"
-                  type="submit"
-                  sx={{ flex: "1 1 auto", marginTop: "30px" }}
-                  // onClick={handleNext}
-                  // onClick={handleSubmit}
-                  disabled={
-                    (values.firstName &&
-                      values.lastName &&
-                      values.nickName &&
-                      values.gender &&
-                      values.email &&
-                      values.rfuID &&
-                      values.program &&
-                      values.graduation &&
-                      values.birthPlace &&
-                      values.userName &&
-                      values.password &&
-                      values.confirmPassword) === ""
-                  }
-                >
-                  <FormattedMessage {...messages.signUp} />
-                </ButtonWrapper> */}
-              {/* </form> */}
-            </React.Fragment>
-          )}
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            <Typography
-              sx={{
-                flex: "1 1 auto",
-                textAlign: "center",
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              {activeStep === steps.length - 1 ? (
-                <FormattedMessage {...messages.finalStepText} />
-              ) : (
-                <>
-                  <FormattedMessage {...messages.nextStepText} />
-                  <Link sx={{ marginLeft: "5px", textDecoration: "none" }}>
-                    "<FormattedMessage {...messages.nextStep} />"
-                  </Link>
-                </>
-              )}
+                />
+                {/* <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: { md: "row", xs: "column" },
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        width: { md: "75%", xs: "100%", xl: "65%" },
+                        display: "flex",
+                        mt: "10px",
+                        justifyContent: { xs: "center", md: "end" },
+                      }}
+                    >
+                      <LoadingButtonWrapper
+                        variant="contained"
+                        type="submit"
+                        disabled={
+                          (values.dob &&
+                            values.pharmacy &&
+                            values.partTime &&
+                            values.bioChemistry &&
+                            values.maths &&
+                            values.learn &&
+                            values.sequence &&
+                            values.study &&
+                            values.played &&
+                            values.volunteer &&
+                            values.hobbies) === ""
+                        }
+                        loading={profile.isLoading}
+                        loadingPosition="start"
+                        sx={{
+                          width: { xs: "100%", md: "500px" },
+                          ".MuiLoadingButton-loadingIndicator": {
+                            top: "35%",
+                            left: "35%",
+                          },
+                        }}
+                      >
+                        <FormattedMessage {...messages.profile} />
+                      </LoadingButtonWrapper>
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: { md: "end", xs: "center" },
+                        width: { md: "25%", xs: "100%", xl: "35%" },
+                        mr: 1,
+                        mt: { xs: "10px", md: 0 },
+                      }}
+                    >
+                      <Button
+                        onClick={() => {
+                          router.push("/");
+                        }}
+                        sx={{
+                          textDecoration: "none",
+                          color: (theme) => theme.palette.primary.main,
+                          textTransform: "initial",
+                          fontWeight: "500",
+                        }}
+                      >
+                        <FormattedMessage {...messages.skip} />
+                        <IconButtonWrapper>
+                          <ArrowForwardIcon />
+                        </IconButtonWrapper>
+                      </Button>
+                    </Box>
+                  </Box> */}
+                {/* </form> */}
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <CardHeaderWrapper
+                  title={<FormattedMessage {...messages.stepOneTitle} />}
+                />
+                <Typography sx={{ marginLeft: "15px" }}>
+                  <FormattedMessage {...messages.description} />
+                </Typography>
+                {/* <form onSubmit={() => handleSubmit}> */}
+                <StepOne
+                  handleNext={handleNext}
+                  // handleChange={handleChange}
+                  // handleBlur={handleBlur}
+                  // errors={errors}
+                  // values={values}
+                  // touched={touched}
+                  // setFieldValue={setFieldValue}
+                  // disable={false}
+                />
+                {/* <ButtonWrapper
+                    variant="contained"
+                    type="submit"
+                    sx={{ flex: "1 1 auto", marginTop: "30px" }}
+                    // onClick={handleNext}
+                    // onClick={handleSubmit}
+                    disabled={
+                      (values.firstName &&
+                        values.lastName &&
+                        values.nickName &&
+                        values.gender &&
+                        values.email &&
+                        values.rfuID &&
+                        values.program &&
+                        values.graduation &&
+                        values.birthPlace &&
+                        values.userName &&
+                        values.password &&
+                        values.confirmPassword) === ""
+                    }
+                  >
+                    <FormattedMessage {...messages.signUp} />
+                  </ButtonWrapper> */}
+                {/* </form> */}
+              </React.Fragment>
+            )}
+            <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+              <Typography
+                sx={{
+                  flex: "1 1 auto",
+                  textAlign: "center",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                {activeStep === steps.length - 1 ? (
+                  <FormattedMessage {...messages.finalStepText} />
+                ) : (
+                  <>
+                    <FormattedMessage {...messages.nextStepText} />
+                    <Link sx={{ marginLeft: "5px", textDecoration: "none" }}>
+                      "<FormattedMessage {...messages.nextStep} />"
+                    </Link>
+                  </>
+                )}
+              </Typography>
+            </Box>
+          </Card>
+          {/* <Box sx={{ padding: "20px 0 40px" }}> */}
+          <Box>
+            <Typography>
+              <FormattedMessage {...messages.textSignIn} />
+              <Link
+                href="/login"
+                sx={{ marginLeft: "5px", textDecoration: "none" }}
+              >
+                <FormattedMessage {...messages.signIn} />
+              </Link>
             </Typography>
           </Box>
-        </Card>
-        {/* <Box sx={{ padding: "20px 0 40px" }}> */}
-        <Box>
-          <Typography>
-            <FormattedMessage {...messages.textSignIn} />
-            <Link
-              href="/login"
-              sx={{ marginLeft: "5px", textDecoration: "none" }}
-            >
-              <FormattedMessage {...messages.signIn} />
-            </Link>
-          </Typography>
         </Box>
+        {/* </form> */}
       </Box>
-      {/* </form> */}
-    </Box>
+    </>
   );
 };
 

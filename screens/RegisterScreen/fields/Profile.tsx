@@ -16,6 +16,7 @@ import {
   TextField,
   styled,
   useRadioGroup,
+  IconButton,
 } from "@mui/material";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import ArrowDropUpOutlinedIcon from "@mui/icons-material/ArrowDropUpOutlined";
@@ -93,7 +94,7 @@ export const StepTwo = ({}) => {
   const [checkedValues, setCheckedValues] = useState([]);
   const profile = useProfile();
   const router = useRouter();
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const handleCheckboxChange = (value) => {
     if (checkedValues.includes(value)) {
@@ -104,9 +105,20 @@ export const StepTwo = ({}) => {
   };
 
   const handleExperienceChange = (event) => {
-    const newValue = parseInt(event.target.value);
-    if (!isNaN(newValue)) {
-      setExperience(newValue);
+    const newValue = event.target.value;
+    if (newValue === "" || newValue === null) {
+      setExperience("");
+    } else {
+      const parsedValue = parseInt(newValue);
+      if (!isNaN(parsedValue)) {
+        if (parsedValue < 1) {
+          setExperience(1);
+        } else if (parsedValue > 50) {
+          setExperience(50);
+        } else {
+          setExperience(parsedValue);
+        }
+      }
     }
   };
 
@@ -134,6 +146,11 @@ export const StepTwo = ({}) => {
         <FormattedMessage {...messages.profileSuccessMessage} />,
         {
           variant: "success",
+          action: (key) => (
+            <IconButton onClick={() => closeSnackbar(key)} size="small">
+              <CloseIcon sx={{ color: "#fff" }} />
+            </IconButton>
+          ),
         },
       );
       router.replace("/");
@@ -145,6 +162,11 @@ export const StepTwo = ({}) => {
       const errorMessage = profile.error.message;
       enqueueSnackbar(errorMessage, {
         variant: "error",
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)} size="small">
+            <CloseIcon sx={{ color: "#fff" }} />
+          </IconButton>
+        ),
       });
     }
   }, [profile.isError]);
@@ -201,6 +223,7 @@ export const StepTwo = ({}) => {
                 <FormattedMessage {...messages.dobLabel} />
               </InputLabelWrapper>
               <CustomeDatePicker
+                disableFuture={true}
                 value={dobValue}
                 onChange={(e: any) => {
                   setDobValue(e);

@@ -8,9 +8,13 @@ import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import { BoxWrapper } from "./Styled";
 import { UploadQuestions } from "components/UploadQuestions";
+import Head from "next/head";
 const UploadQuestionScreen = () => {
   return (
     <>
+      <Head>
+        <title>Upload Question</title>
+      </Head>
       {/* <PageLayout
         iconAngle={true}
         subText="Upload Questions"
