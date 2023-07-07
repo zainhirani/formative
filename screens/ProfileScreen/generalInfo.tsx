@@ -70,7 +70,7 @@ export const GeneralInfo = () => {
   const registerDetail = useRegisterDetail();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [year, setYear] = useState(null);
 
   const router = useRouter();
@@ -79,6 +79,11 @@ export const GeneralInfo = () => {
     if (registerUpdate.isSuccess) {
       enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
         variant: "success",
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)} size="small">
+            <CloseIcon sx={{ color: "#fff" }} />
+          </IconButton>
+        ),
       });
     }
   }, [registerUpdate.isSuccess]);
@@ -88,6 +93,11 @@ export const GeneralInfo = () => {
       const errorMessage = registerUpdate.error.message;
       enqueueSnackbar(errorMessage, {
         variant: "error",
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)} size="small">
+            <CloseIcon sx={{ color: "#fff" }} />
+          </IconButton>
+        ),
       });
     }
   }, [registerUpdate.isError]);

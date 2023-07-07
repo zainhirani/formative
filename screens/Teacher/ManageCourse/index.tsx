@@ -122,7 +122,7 @@ const ManageCourseScreen = () => {
   useEffect(() => {
     if (deleteCourse.isSuccess) {
       enqueueSnackbar("Selected course has been successfully deleted.", {
-        variant: "error",
+        variant: "success",
         action: (key) => (
           <IconButton onClick={() => closeSnackbar(key)} size="small">
             <CloseIcon sx={{ color: "#fff" }} />

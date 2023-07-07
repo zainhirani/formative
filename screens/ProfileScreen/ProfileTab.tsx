@@ -14,6 +14,7 @@ import {
   TextField,
   styled,
   useRadioGroup,
+  IconButton,
 } from "@mui/material";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import ArrowDropUpOutlinedIcon from "@mui/icons-material/ArrowDropUpOutlined";
@@ -102,7 +103,7 @@ export const ProfileTab = ({}) => {
   const [experience, setExperience] = useState<string | undefined>(undefined);
   const profile = useProfile();
   const router = useRouter();
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   function formatDate(dateString: string): string {
     const date = new Date(dateString);
@@ -177,6 +178,11 @@ export const ProfileTab = ({}) => {
         <FormattedMessage {...messages.profileSuccessMessage} />,
         {
           variant: "success",
+          action: (key) => (
+            <IconButton onClick={() => closeSnackbar(key)} size="small">
+              <CloseIcon sx={{ color: "#fff" }} />
+            </IconButton>
+          ),
         },
       );
     }
@@ -187,6 +193,11 @@ export const ProfileTab = ({}) => {
       const errorMessage = profile.error.message;
       enqueueSnackbar(errorMessage, {
         variant: "error",
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)} size="small">
+            <CloseIcon sx={{ color: "#fff" }} />
+          </IconButton>
+        ),
       });
     }
   }, [profile.isError]);
