@@ -32,7 +32,7 @@ const AutoComplete = <OptionType extends any = any>({
   handleBlur = () => {},
   customStyles = undefined,
   maxMenuHeight,
-  isClearable = false,
+  isClearable = true,
   placeholder = "",
   isLoading = false,
   value,

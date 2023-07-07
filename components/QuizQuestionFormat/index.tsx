@@ -349,7 +349,7 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
                     component="span"
                     sx={{ marginLeft: "0.5rem", color: "blue" }}
                   >
-                    {timeSpent}
+                    {`${timeSpent} Seconds`}
                   </Typography>
                 </Box>
               </Box>

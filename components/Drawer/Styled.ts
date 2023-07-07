@@ -5,6 +5,7 @@ import { styled } from "@mui/material/styles";
 
 const drawerWidth = 800;
 
+
 export const DrawerWrapper = styled(Drawer)<DrawerProps>(
   ({ theme }) =>
     ({
@@ -13,6 +14,7 @@ export const DrawerWrapper = styled(Drawer)<DrawerProps>(
       flexShrink: 0,
       border: "0px",
       "& .MuiDrawer-paper": {
+        maxWidth: drawerWidth,
         width: drawerWidth,
         marginTop: "0px",
         zIndex: "99999999999999",
