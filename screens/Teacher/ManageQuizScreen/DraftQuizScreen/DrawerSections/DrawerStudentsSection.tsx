@@ -35,7 +35,7 @@ import { GridCloseIcon } from "@mui/x-data-grid";
 const DrawerStudentsSection = (props: any) => {
   const { quizByIdData } = props;
   const [yogCheck, setYogCheck] = useState(true);
-  const [yogDefault, setYoGYoGDefault] = useState({});
+  const [yogDefault, setYoGYoGDefault] = useState(null);
   const [selectedYoG, setSelectedYoG] = useState(new Date().getFullYear());
   const [selectedProgram, setSelectedProgram] = useState("COP");
   const [selectedSearchBy, setSelectedSearchBy] = useState("");
@@ -102,7 +102,7 @@ const DrawerStudentsSection = (props: any) => {
   }, [yogCheck]);
 
   const handleCheckedYog = (e: any) => {
-    if (e.target.checked == true) {
+    if (e?.target?.checked == true) {
       setYogCheck(false);
     } else {
       setYogCheck(true);
@@ -110,13 +110,13 @@ const DrawerStudentsSection = (props: any) => {
   };
   const handleYoG = (e: any) => {
     setYoGYoGDefault({
-      value: e.value,
-      label: e.value,
+      value: e?.value,
+      label: e?.value,
     });
-    setSelectedYoG(e.value);
+    setSelectedYoG(e?.value);
   };
   const handleProgram = (e: any) => {
-    setSelectedProgram(e.value);
+    setSelectedProgram(e?.value);
   };
 
   const handleSelectionChange = (selection: any) => {
@@ -127,7 +127,7 @@ const DrawerStudentsSection = (props: any) => {
     event: React.ChangeEvent<HTMLInputElement>,
     row: any,
   ) => {
-    const isChecked = event.target.checked;
+    const isChecked = event?.target?.checked;
     if (isChecked) {
       setSelectedRows([...selectedRows, row?.id]);
     } else {
@@ -139,7 +139,7 @@ const DrawerStudentsSection = (props: any) => {
     event: React.ChangeEvent<HTMLInputElement>,
     rows: any[],
   ) => {
-    const isChecked = event.target.checked;
+    const isChecked = event?.target?.checked;
     if (isChecked) {
       const allRowIds = rows?.map((row) => row?.id);
       setSelectedRows(allRowIds);
@@ -304,10 +304,10 @@ const DrawerStudentsSection = (props: any) => {
                   dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
                   options={yearsSelectOptions()}
                   onChange={handleYoG}
-                  value={yogDefault}
+                  // value={yogDefault}
                   sx={{ width: "100%" }}
                   isDisabled={yogCheck}
-                  isClearable={false}
+                  isClearable={true}
                 />
               </YearCheckBoxWrapper>
             </Box>
@@ -315,13 +315,13 @@ const DrawerStudentsSection = (props: any) => {
           <Grid item xs={12} sm={6} md={6} lg={6}>
             <ProgramCheckBoxWrapper className="item2">
               <CustomSelect
-                placeholder="COP"
+                placeholder=""
                 controlText="School/Program:"
                 dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
                 options={optionSchool}
                 onChange={handleProgram}
                 isDisabled={yogCheck}
-                isClearable={false}
+                isClearable={true}
               />
             </ProgramCheckBoxWrapper>
           </Grid>

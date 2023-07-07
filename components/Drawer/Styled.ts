@@ -15,9 +15,10 @@ export const DrawerWrapper = styled(Drawer)<DrawerProps>(
       border: "0px",
       "& .MuiDrawer-paper": {
         maxWidth: drawerWidth,
-        width: drawerWidth,
+        minWidth:"600px",
         marginTop: "0px",
-        zIndex: "99999999999999",
+        width: drawerWidth,
+        zIndex: "1300",
         background: theme.palette.primary.light,
         border: "1px solid",
         borderColor: theme.additionalColors?.primaryBorderGrey,

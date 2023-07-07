@@ -150,20 +150,31 @@ export const columnsManageQuizDraft: GridColDef[] = [
     headerName: "Quick Actions",
     width: 150,
     renderCell: (params) => {
-      const { setState, setQuizQuesIdState } = useAppState();
+      const { setState, setQuizQuesIdState, setSelectedQuestions } =
+        useAppState();
 
+      function removeQuestionById(idToRemove: any) {
+        setSelectedQuestions((prevQuestions: any) =>
+          prevQuestions.filter((question: any) => question.id !== idToRemove),
+        );
+      }
       const handleClick = () => {
         setQuizQuesIdState(params?.row?.id);
         setState(true);
       };
 
+      const selectedRowId = params?.row?.id;
       return (
         <Grid container spacing={3}>
           <Grid item xs>
             <IconButton onClick={handleClick}>
               <Image alt="quiz-logo" src={eyeSvg} />
             </IconButton>
-            <IconButton>
+            <IconButton
+              onClick={() => {
+                removeQuestionById(selectedRowId);
+              }}
+            >
               <Image alt="quiz-logo" src={trashSvg} />
             </IconButton>
           </Grid>

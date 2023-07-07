@@ -35,6 +35,7 @@ import {
   useQuizSaveEdit,
 } from "providers/Teacher/TeacherQuiz";
 import APP_ROUTES from "constants/RouteConstants";
+import { useAppState } from "contexts/AppStateContext";
 
 const TableSection = (props: any) => {
   const {
@@ -42,10 +43,12 @@ const TableSection = (props: any) => {
     setFieldValue,
     values,
     quizByIdData,
-    selectedQuestions,
-    setSelectedQuestions,
+    // selectedQuestions,
+    // setSelectedQuestions,
     COLUMNS_CONFIG,
   } = props;
+
+  const { selectedQuestions, setSelectedQuestions } = useAppState();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [drawerOpenStudents, setDrawerOpenStudents] = useState(false);
   const [afterDatevalue, setAfterDatevalue] = useState(null);
@@ -184,11 +187,13 @@ const TableSection = (props: any) => {
     setFieldValue("start_time", formattedDate);
     setBeforeDatevalue(formattedDate);
   };
+
   const endDateHandler = (date: any) => {
     const formattedDate = date.toISOString();
     setFieldValue("end_time", formattedDate);
     setAfterDatevalue(formattedDate);
   };
+
   const handleDeleteQuiz = async () => {
     const result: any = await deleteQuiz.mutateAsync({ id: editId });
     if (result?.data) {
@@ -199,6 +204,7 @@ const TableSection = (props: any) => {
       autoHideDuration: 3000,
     });
   };
+
   const handleDuplicateQuiz = async () => {
     const result: any = await duplicateQuiz.mutateAsync({ id: editId });
     if (result?.id) {
@@ -209,13 +215,28 @@ const TableSection = (props: any) => {
       autoHideDuration: 3000,
     });
   };
+
   const currentDate = editPage ? dayjs(`${quizByIdData?.start_time}`) : dayjs();
+
+  const deleteCondition =
+    quizByIdData?.status == "COMPLETED" ||
+    quizByIdData?.status == "DISTRIBUTED" ||
+    quizByIdData?.status == "ONGOING"
+      ? false
+      : true;
+  const withdrawCondition =
+    quizByIdData?.status == "DISTRIBUTED" ? false : true;
+  const studentCondition = quizByIdData?.status == "COMPLETED" ? false : true;
+
+  useEffect(() => {
+    console.log(selectedQuestions, "selectedQuestions tablesection");
+  }, [selectedQuestions]);
 
   return (
     <>
       <BoxWrapper>
         <CustomDataGrid
-          rows={selectedQuestions}
+          rows={[...selectedQuestions]}
           columns={columnsManageQuizDraft}
           pageSizeData={pageSizeManageQuizDraft}
           type={"2"}
@@ -228,7 +249,7 @@ const TableSection = (props: any) => {
       <BoxButtonWrapper>
         <Box sx={{ display: "flex" }}>
           <CustomeDateTimePicker
-            label="Start Time"
+            label="Start Time:"
             value={editId ? dayjs(`${quizByIdData?.start_time}`) : null}
             onChange={startDateHandler}
             currentDate={currentDate}
@@ -237,18 +258,16 @@ const TableSection = (props: any) => {
             label="Stop Time:"
             value={editId ? dayjs(`${quizByIdData?.end_time}`) : null}
             onChange={endDateHandler}
+            currentDate={currentDate}
           />
         </Box>
         <QuizGroupButtonBox>
-          <ButtonGroup
-            className="quizButtonGroup"
-            variant="contained"
-            // aria-label="Grouped button"
-          >
+          <ButtonGroup className="quizButtonGroup" variant="contained">
             <ButtonWrapper
               startIcon={<AddCircleOutlineOutlinedIcon />}
               className="btn cusFirstChild"
-              onClick={handleOpenDrawerStudent}
+              onClick={!studentCondition ? handleOpenDrawerStudent : () => {}}
+              disabled={studentCondition}
             >
               Add Students
             </ButtonWrapper>
@@ -260,34 +279,29 @@ const TableSection = (props: any) => {
             >
               Save
             </ButtonWrapper>
-            {editId ? (
-              <ButtonWrapper
-                startIcon={<DifferenceOutlinedIcon />}
-                className="btn"
-                onClick={handleDuplicateQuiz}
-              >
-                Duplicate
-              </ButtonWrapper>
-            ) : (
-              ""
-            )}
+            <ButtonWrapper
+              startIcon={<DifferenceOutlinedIcon />}
+              className="btn"
+              onClick={!deleteCondition ? handleDuplicateQuiz : () => {}}
+              disabled={deleteCondition}
+            >
+              Duplicate
+            </ButtonWrapper>
             <ButtonWrapper
               startIcon={<ArrowCircleLeftOutlinedIcon />}
               className="btn"
+              disabled={withdrawCondition}
             >
               Withdraw
             </ButtonWrapper>
-            {editId ? (
-              <ButtonWrapper
-                startIcon={<DeleteOutlineOutlinedIcon />}
-                className="btn"
-                onClick={handleDeleteQuiz}
-              >
-                Delete
-              </ButtonWrapper>
-            ) : (
-              ""
-            )}
+            <ButtonWrapper
+              startIcon={<DeleteOutlineOutlinedIcon />}
+              className="btn"
+              onClick={!deleteCondition ? handleDeleteQuiz : () => {}}
+              disabled={deleteCondition}
+            >
+              Delete
+            </ButtonWrapper>
           </ButtonGroup>
         </QuizGroupButtonBox>
       </BoxButtonWrapper>

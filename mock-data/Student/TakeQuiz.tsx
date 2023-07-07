@@ -2,6 +2,8 @@ import React from "react";
 import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 
 import { QUIZ1 } from "configs";
+import dayjs from "dayjs";
+import { timeFormatter } from "utils";
 
 export const questionData = [
   {
@@ -189,7 +191,7 @@ export const columnsTakeQuiz: GridColDef[] = [
     minWidth: 60,
   },
   {
-    field: "quiz",
+    field: "name",
     headerName: "Quiz",
     minWidth: 150,
     flex: 1,
@@ -199,12 +201,18 @@ export const columnsTakeQuiz: GridColDef[] = [
     headerName: "Course",
     minWidth: 100,
     flex: 1,
+    renderCell: (params: any) => {
+      return params?.row?.courses?.course_name;
+    },
   },
   {
-    field: "due_date",
+    field: "end_time",
     headerName: "Due Date",
     minWidth: 150,
     flex: 1,
+    renderCell: (params: any) => {
+      return dayjs(params?.row?.end_time).format("YYYY-MM-DD");
+    },
   },
 ];
 
