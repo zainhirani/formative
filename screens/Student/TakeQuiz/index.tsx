@@ -76,6 +76,13 @@ const TakeQuizScreen = () => {
   }, [checked]);
 
   useEffect(() => {
+    if (!open) {
+      setSelectedOptions([]);
+      setAnwserCorrect(true);
+    }
+  }, [open]);
+
+  useEffect(() => {
     quizListRef({
       Limit: pageSizeTakeQuiz,
       Page: page,
@@ -90,7 +97,11 @@ const TakeQuizScreen = () => {
       id: firstFirstObject,
     });
     setSelectedOptions([]);
-    setAnwserCorrect(false);
+    setAnwserCorrect(true);
+    // console.log(quesQuizByIdData?.timelimit, "quesQuizByIdData?.timelimit");
+    // console.log(remainingTime, "remainingTime");
+    setRemainingTime(quesQuizByIdData?.timelimit);
+    // console.log(remainingTime, "set remainingTime");
   };
 
   const courseData = useMemo(() => {
