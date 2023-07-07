@@ -31,7 +31,6 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { year_of_graduation } from "mock-data/Profile";
 import CloseIcon from "@mui/icons-material/Close";
 import { isEqual } from "lodash";
-import CloseIcon from "@mui/icons-material/Close";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().label("First name"),
