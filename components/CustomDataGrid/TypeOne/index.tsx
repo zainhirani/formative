@@ -22,7 +22,7 @@ interface TypeOneProps {
   page?: number;
   handlePageChange: (event: React.ChangeEvent<unknown>, value: number) => void;
   totalRows?: number | undefined;
-
+  courseText?: boolean;
   // isChecked?:
 }
 
@@ -41,6 +41,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
   page = 1,
   handlePageChange,
   totalRows = rows?.length,
+  courseText,
   ...props
 }) => {
   const totalPages = Math.ceil(totalRows / pageSizeData);
@@ -56,6 +57,18 @@ const TypeOne: React.FC<TypeOneProps> = ({
 
   const getRowHeight = () => {
     return 50;
+  };
+
+  const customLocaleText = {
+    noRowsLabel: "No data found",
+    footerRowSelected: (count: number) =>
+      courseText
+        ? count !== 1
+          ? `${count.toLocaleString()} Courses Selected`
+          : `${count.toLocaleString()} Course Selected`
+        : count !== 1
+        ? `${count.toLocaleString()} Rows Selected`
+        : `${count.toLocaleString()} Row Selected`,
   };
 
   function customPagination() {
@@ -113,24 +126,22 @@ const TypeOne: React.FC<TypeOneProps> = ({
             }}
             columnVisibilityModel={columnVisibilityModel}
             {...props}
-            sx={{ 
-              minHeight: "400px", 
-              '.MuiDataGrid-iconButtonContainer': {
-                visibility: 'visible',
+            sx={{
+              minHeight: "400px",
+              ".MuiDataGrid-iconButtonContainer": {
+                visibility: "visible",
               },
-              '.MuiDataGrid-sortIcon': {
-                opacity: 'inherit !important',
-                color: theme => theme.palette.primary.main
+              ".MuiDataGrid-sortIcon": {
+                opacity: "inherit !important",
+                color: (theme) => theme.palette.primary.main,
               },
-              '.MuiDataGrid-columnSeparator': {
-                visibility: 'inherit !important',
-              },   
+              ".MuiDataGrid-columnSeparator": {
+                visibility: "inherit !important",
+              },
             }}
             loading={loading}
             slots={{ pagination: customPagination }}
-            localeText={{
-              noRowsLabel: "No data found"
-            }}
+            localeText={customLocaleText}
           />
         </Grid>
       </Grid>
