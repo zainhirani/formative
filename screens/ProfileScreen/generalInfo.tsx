@@ -29,6 +29,7 @@ import CustomSelect from "components/CustomSelect/CustomSelect";
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { year_of_graduation } from "mock-data/Profile";
+import CloseIcon from "@mui/icons-material/Close";
 import { isEqual } from "lodash";
 
 const validationSchema = Yup.object().shape({

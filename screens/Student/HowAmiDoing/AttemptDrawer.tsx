@@ -16,7 +16,7 @@ interface QuizAttemptDrawerProps {
 const AttemptDrawer = ({
   isOpen,
   onClose,
-  quizId,
+  quizId,  
 }: QuizAttemptDrawerProps) => {
   const [page, setPage] = useState(1);
   const attemptQuizList = useAttemptQuiz({quizId:quizId })
@@ -25,6 +25,8 @@ const AttemptDrawer = ({
   const totalPages = Math.ceil(totalRows ? totalRows / 1 : 1);
   const paginatedRows = attemptQuizList?.data?.questions?.slice((page - 1) * 1, page * 1);
   
+
+
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
     value: number,
@@ -40,6 +42,15 @@ const AttemptDrawer = ({
       }));
     }
   }, [paginatedRows]);
+  console.log(filterOptions?.findIndex(
+    (item: { value: string }) =>
+      item.value ===
+      JSON.parse(
+        paginatedRows?.[0]?.answer
+          ? paginatedRows?.[0]?.answer
+          : "",
+      ),
+  ),"filterOptions")
 
   return (
     <>
@@ -58,15 +69,8 @@ const AttemptDrawer = ({
         media={paginatedRows?.[0]?.media}
         disable={true}
         isShowScoreBar
-        isChecked={filterOptions?.findIndex(
-          (item: { value: string }) =>
-            item.value ===
-            JSON.parse(
-              paginatedRows?.[0]?.answer
-                ? paginatedRows?.[0]?.answer
-                : "",
-            ),
-        )}
+        quizAnswers={paginatedRows?.[0]?.answer}
+       
       >
         <BoxPaginate>
           <Pagination

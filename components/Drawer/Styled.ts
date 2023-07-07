@@ -4,18 +4,19 @@ import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
 
 const drawerWidth = 800;
+const mobileDrawerWidth=350;
 
 
 export const DrawerWrapper = styled(Drawer)<DrawerProps>(
   ({ theme }) =>
     ({
       // width: isMobile ? "100%" : drawerWidth,
-      width: drawerWidth,
+      width: {md:drawerWidth,xs:mobileDrawerWidth},
       flexShrink: 0,
       border: "0px",
       "& .MuiDrawer-paper": {
-        maxWidth: drawerWidth,
-        width: drawerWidth,
+        maxWidth: {md:drawerWidth,xs:mobileDrawerWidth},
+        width: {md:drawerWidth,xs:mobileDrawerWidth},
         marginTop: "0px",
         zIndex: "99999999999999",
         background: theme.palette.primary.light,
