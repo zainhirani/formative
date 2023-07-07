@@ -15,14 +15,15 @@ import { isStringNotURL, removeHTMLTags } from "utils";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
 import { useQueryClient } from "react-query";
+import { useAppState } from "contexts/AppStateContext";
 
 const DraftQuizScreen: NextPage = () => {
-  const [selectedQuestions, setSelectedQuestions] = useState<any>([]);
+  // const [selectedQuestions, setSelectedQuestions] = useState<any>([]);
+  const { selectedQuestions, setSelectedQuestions } = useAppState();
   const [nameInput, setNameInput] = useState("");
   const router = useRouter();
   const { id: quizEditId } = router.query;
   const queryClient = useQueryClient();
-
   const {
     data: quizByIdData,
     isFetching: quizByIdIsFetching,
@@ -32,24 +33,56 @@ const DraftQuizScreen: NextPage = () => {
     id: quizEditId,
   });
   const editPage = quizEditId == undefined ? false : true;
+  function extractIds(arr: any) {
+    var ids = [];
+    for (var i = 0; i < arr.length; i++) {
+      ids.push(arr[i].id);
+    }
+    return ids;
+  }
 
   useEffect(() => {
     if (editPage) {
+      // setSelectedQuestions([]);
       refetch();
     }
   }, []);
 
+  // console.log(selectedQuestions, "selectedQuestions");
   useEffect(() => {
     if (editPage) {
-      if (selectedQuestions?.length == 0) {
-        // console.log(isSuccess, "isSuccess");
-        if (isSuccess) {
-          setSelectedQuestions(quizByIdData?.questions);
-        }
+      // if (selectedQuestions?.length == 0) {
+      if (isSuccess) {
+        // const questionIds2 = extractIds(selectedQuestions);
+        // console.log(questionIds2, "questionIds2");
+        // console.log(selectedQuestions, "selectedQuestions");
+        // quizByIdData?.questions?.map((item: any) => {
+        //   console.log(item?.id, "item?.id");
+        //   console.log(
+        //     !questionIds2.includes(item?.id),
+        //     "!questionIds2.includes(item?.id)",
+        //   );
+        //   if (!questionIds2.includes(item?.id)) {
+        //     setSelectedQuestions([...selectedQuestions, item]);
+        //   }
+        // });
+        // console.log(isSuccess, "start isSuccess");
+        setSelectedQuestions(quizByIdData?.questions);
+
+        console.log(quizByIdData?.questions, "quizByIdData?.questions");
+        // console.log(isSuccess, "end isSuccess");
+
+        // quizByIdData?.questions?.map((item: any) => {
+        // if (!questionIds2.includes(item?.id)) {
+        // setSelectedQuestions([...selectedQuestions, item]);
+        // }
+        // });
       }
+      // }
     } else {
       setSelectedQuestions([]);
     }
+    // console.log(selectedQuestions, "selectedQuestions");
   }, [editPage, isSuccess]);
 
   const onSubmit = useCallback((data: any) => {
@@ -110,16 +143,7 @@ const DraftQuizScreen: NextPage = () => {
       prevQuestions.filter((question: any) => question.id !== idToRemove),
     );
   }
-  function extractIds(arr: any) {
-    var ids = [];
-    for (var i = 0; i < arr.length; i++) {
-      ids.push(arr[i].id);
-    }
-    return ids;
-  }
-
   const questionIds = extractIds(selectedQuestions);
-
   let COLUMNS_CONFIG = [
     {
       field: "title",
@@ -155,7 +179,7 @@ const DraftQuizScreen: NextPage = () => {
     {
       field: "add",
       headerName: "",
-      minWidth: 60,
+      minWidth: 80,
       flex: 1,
       headerClass: "addQuesWrap",
       renderCell: (data: any) => {
@@ -170,13 +194,15 @@ const DraftQuizScreen: NextPage = () => {
                 onClick={() => {
                   setSelectedQuestions([...selectedQuestions, selectedRow]);
                 }}
+                sx={{ width: "30px" }}
               >
                 <AddCircleOutlineOutlinedIcon
                   sx={{
                     fontSize: "20px",
                     color: "#8C2531",
                     cursor: "pointer",
-                    marginRight: "10px",
+                    marginRight: "5px",
+                    marginLeft: "5px",
                   }}
                 />
               </IconButton>
@@ -185,13 +211,15 @@ const DraftQuizScreen: NextPage = () => {
                 onClick={() => {
                   removeQuestionById(selectedRowId);
                 }}
+                sx={{ width: "30px" }}
               >
                 <RemoveCircleOutlineOutlinedIcon
                   sx={{
                     fontSize: "20px",
                     color: "#8C2531",
                     cursor: "pointer",
-                    marginRight: "10px",
+                    marginRight: "5px",
+                    marginLeft: "5px",
                   }}
                 />
               </IconButton>
@@ -225,8 +253,8 @@ const DraftQuizScreen: NextPage = () => {
           setFieldValue={setFieldValue}
           values={values}
           quizByIdData={quizByIdData}
-          selectedQuestions={selectedQuestions}
-          setSelectedQuestions={setSelectedQuestions}
+          // selectedQuestions={selectedQuestions}
+          // setSelectedQuestions={setSelectedQuestions}
           COLUMNS_CONFIG={COLUMNS_CONFIG}
         />
       </form>

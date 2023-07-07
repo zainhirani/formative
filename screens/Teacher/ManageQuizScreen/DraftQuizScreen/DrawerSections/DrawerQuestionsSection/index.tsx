@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SideDrawer from "components/Drawer";
 import { Box, IconButton, InputAdornment, Typography } from "@mui/material";
 import { BoxWrapper, SelectBoxWrapper } from "./Styled";
@@ -28,7 +28,7 @@ const TYPE_OPTIONS = [
   { value: "MA", label: "MA" },
   { value: "F", label: "F" },
 ];
-
+const pageSizeQues: any = 8;
 const DrawerQuestionsSection = (props: any) => {
   const {
     drawerOpen,
@@ -48,17 +48,29 @@ const DrawerQuestionsSection = (props: any) => {
   const [selectedfacultyCategoryIds, setSelectedFacultyCategoryIds] = useState<
     any[] | undefined | null
   >(null);
-
+  const [page, setPage] = useState(1);
   const router = useRouter();
 
-  let questions = useQuestionsListing({
+  const { data: questions, refetch: refQuestions } = useQuestionsListing({
+    Limit: pageSizeQues,
+    Page: page,
     ...(facultyCategory?.length > 0 && { facultyId: facultyCategory }),
     ...(folder && { folderId: folder }),
     ...(enumType && { type: enumType }),
     ...(category && { categories: category }),
     ...(searchChange && { SearchBy: searchChange }),
   });
-
+  useEffect(() => {
+    refQuestions({
+      Limit: pageSizeQues,
+      Page: page,
+      ...(facultyCategory?.length > 0 && { facultyId: facultyCategory }),
+      ...(folder && { folderId: folder }),
+      ...(enumType && { type: enumType }),
+      ...(category && { categories: category }),
+      ...(searchChange && { SearchBy: searchChange }),
+    });
+  }, [searchChange, category, enumType, folder, facultyCategory, page]);
   const foldersData = useQuery(["FOLDERS"], getFolders);
   const categoriesData = useQuery(["CATEGORIES"], getCategories);
 
@@ -76,7 +88,7 @@ const DrawerQuestionsSection = (props: any) => {
   };
   const handleRemoveSelectedFacultyCategory = (value: any) => {
     let arr = [];
-    (arr = selectedfacultyCategoryIds.filter(
+    (arr = selectedfacultyCategoryIds?.filter(
       (obj: any) => obj?.value !== value.value,
     )),
       setSelectedFacultyCategoryIds([...arr]);
@@ -145,6 +157,7 @@ const DrawerQuestionsSection = (props: any) => {
                     value: category.id,
                   }))}
                   isFetching={categoriesData?.isFetching}
+                  isClearable={true}
                   onChange={(val: any) => {
                     setCategory(val?.value);
                     setSelectedCategory(val);
@@ -233,13 +246,14 @@ const DrawerQuestionsSection = (props: any) => {
           </BoxWrapper>
           <BoxWrapper sx={{ m: "20px", width: "inherit" }}>
             <CustomDataGrid
-              rows={questions?.data?.data}
+              rows={questions?.data || []}
               columns={COLUMNS_CONFIG}
-              totalRows={questions?.data?.data?.length || 0}
-              pageSizeData={10}
+              totalRows={questions?.count}
+              pageSizeData={pageSizeQues}
               type={"1"}
               buttonArray={config}
-              loading={questions?.isFetching}
+              page={page}
+              handlePageChange={(_, v) => setPage(v)}
               sx={{ minHeight: "400px" }}
             />
           </BoxWrapper>

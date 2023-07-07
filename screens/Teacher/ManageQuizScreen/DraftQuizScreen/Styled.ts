@@ -67,6 +67,9 @@ export const QuizGroupButtonBox = styled(MuiBox)<BoxProps>(
         padding:"0px 15px",
         fontSize: "14px"
       },
+      ".quizButtonGroup":{
+        boxShadow:' none'
+      },
     } as any),
 ) as (props: BoxProps) => JSX.Element;
 

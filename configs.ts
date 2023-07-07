@@ -15,7 +15,8 @@ export const NEXT_PUBLIC_MODE_ENV =
 export const LIMIT = 10;
 export const AUTH_LOGIN_URL = process.env.NEXT_PUBLIC_AUTH_LOGIN_URL || '/login';
 export const AUTH_SIGNUP_URL = process.env.NEXT_PUBLIC_AUTH_SIGNUP_URL || '/register';
-
+export const PUBLIC_IMAGE_URL =
+  process.env.NEXT_PUBLIC_IMAGE_URL || "https://api-formative.appnofy.com";
 export const PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api-formative.appnofy.com/v1';
 export const LOGINBG = "/LoginBackGround.png";
 export const SITELOGO = "/websiteLogo.png";
