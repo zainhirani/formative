@@ -183,66 +183,73 @@ const ManageCourseScreen = () => {
       <Head>
         <title>Courses</title>
       </Head>
-    <Box>
-      <SearchBar
-        checked={checked}
-        setSelectedClass={setSelectedClass}
-        setSelectedAudience={setSelectedAudience}
-        handleSubmitCourse={handleSubmitCourse}
-        setSearchChange={setSearchChange}
-        isLoading={targetCourse.isLoading}
-      />
-      <TableWrapper>
-        <CustomDataGrid
-          rows={getCourseListing?.data?.data || []}
-          // @ts-ignore
-          getRowId={(row: any) => row.id}
-          columns={columnsManageCourse}
-          pageSizeData={pageSizeManageCourse}
-          type={"1"}
-          isCheckbox={true}
-          setChecked={setChecked}
-          columnVisibilityModel={showColumns}
-          loading={getCourseListing.isFetching}
-          selectedIds={checkedId}
-          onRowSelect={handleSelection}
-          getSelectedId={(e) => setSelectedRowId(e?.[0]?.[e.length - 1])}
-          page={page}
-          handlePageChange={(_, v) => setPage(v)}
-          // @ts-ignore
-          totalRows={getCourseListing?.data?.count}
-        />
-      </TableWrapper>
       <Box
         sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          flexDirection: { md: "row", xs: "column" },
+          ".MuiDataGrid-selectedRowCount": {
+            width: { md: "14%", sm: "25%", xs: "30%" },
+          },
         }}
       >
-        <BoxWrapper
-          sx={{ display: { md: "grid", xs: "flex" }, alignItems: "center" }}
-          gridTemplateColumns="repeat(5, 1fr)"
+        <SearchBar
+          checked={checked}
+          setSelectedClass={setSelectedClass}
+          setSelectedAudience={setSelectedAudience}
+          handleSubmitCourse={handleSubmitCourse}
+          setSearchChange={setSearchChange}
+          isLoading={targetCourse.isLoading}
+        />
+        <TableWrapper>
+          <CustomDataGrid
+            rows={getCourseListing?.data?.data || []}
+            // @ts-ignore
+            getRowId={(row: any) => row.id}
+            columns={columnsManageCourse}
+            pageSizeData={pageSizeManageCourse}
+            type={"1"}
+            isCheckbox={true}
+            setChecked={setChecked}
+            columnVisibilityModel={showColumns}
+            loading={getCourseListing.isFetching}
+            selectedIds={checkedId}
+            onRowSelect={handleSelection}
+            getSelectedId={(e) => setSelectedRowId(e?.[0]?.[e.length - 1])}
+            page={page}
+            handlePageChange={(_, v) => setPage(v)}
+            // @ts-ignore
+            totalRows={getCourseListing?.data?.count}
+            courseText={true}
+          />
+        </TableWrapper>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexDirection: { md: "row", xs: "column" },
+          }}
+        >
+          <BoxWrapper
+            sx={{ display: { md: "grid", xs: "flex" }, alignItems: "center" }}
+            gridTemplateColumns="repeat(5, 1fr)"
           >
-          <FooterForm
-            handleAddCourse={handleAddCourse}
-            setAddCourse={setAddCourse}
-            isDisabled={addCourse === "" ? true : false}
-            isLoading={createCourse.isLoading}
+            <FooterForm
+              handleAddCourse={handleAddCourse}
+              setAddCourse={setAddCourse}
+              isDisabled={addCourse === "" ? true : false}
+              isLoading={createCourse.isLoading}
             />
-        </BoxWrapper>
-        <Box>
-          <FooterButton
-            deleteLoading={deleteCourse.isLoading}
-            duplicateLoading={duplicateCourse.isLoading}
-            checked={checked}
-            deleteCourse={handleDeleteCourse}
-            duplicateCourse={handleDuplicateCourse}
+          </BoxWrapper>
+          <Box>
+            <FooterButton
+              deleteLoading={deleteCourse.isLoading}
+              duplicateLoading={duplicateCourse.isLoading}
+              checked={checked}
+              deleteCourse={handleDeleteCourse}
+              duplicateCourse={handleDuplicateCourse}
             />
+          </Box>
         </Box>
       </Box>
-    </Box>
     </>
     // </PageLayout>
   );
