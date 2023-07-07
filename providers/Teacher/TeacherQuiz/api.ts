@@ -111,7 +111,7 @@ export async function quizDistribute(
   // props: Quiz.QuizDistributeAPIPayload,
 ): Promise<Quiz.QuizDistributeResponse> {
   
-  // console.log(props,'props hook');
+  console.log(props,'props hook');
   const dataStd =  {
     studentsId: props?.data?.studentsId
   }

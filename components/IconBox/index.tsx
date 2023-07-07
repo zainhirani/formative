@@ -8,12 +8,17 @@ import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import { QUIZ } from "configs";
 import Image from "theme/Image";
+import { Box } from "@mui/material";
+import styled from "@emotion/styled";
 interface IconBoxProps {
   title: string;
   description: string;
   image: string;
   url?: string;
 }
+const Img = styled("img")({
+  display: "none",
+})
 
 const Iconbox = ({ title, description, image, url }: IconBoxProps) => {
   return (
@@ -29,6 +34,9 @@ const Iconbox = ({ title, description, image, url }: IconBoxProps) => {
         border: 1,
         borderColor: "transparent",
         cursor: "pointer",
+        " img": {
+          filter: "grayscale(1) brightness(3)",
+        },
         "&:hover": {
           boxShadow: "0 0 40px rgb(0 0 0 / 10%)",
           borderColor: "#EAEAEA",
@@ -36,14 +44,18 @@ const Iconbox = ({ title, description, image, url }: IconBoxProps) => {
             background: (theme) => theme.palette.primary.main,
             color: (theme) => theme.palette.primary.light,
           },
+          "&:hover img": {
+            filter: "grayscale(0) brightness(1)",
+          },
         },
+
       }}
     >
       <Image
         alt="quiz-logo"
         lazyLoadProps={{ height: 50 }}
         src={image}
-        lazyLoad={true}
+        lazyLoad={true} 
       />
       <CardContent sx={{ boxShadow: "none", width: 1, padding: "0 0 0 20px" }}>
         <Typography gutterBottom variant="h5">
@@ -52,16 +64,16 @@ const Iconbox = ({ title, description, image, url }: IconBoxProps) => {
         <Typography
           variant="body2"
           sx={{
-            maxWidth: "270px",
+            maxWidth: "250px",
           }}
         >
-          Create new quiz or make an edit to an existing quiz.
+          {description}
         </Typography>
       </CardContent>
       <CardActions>
         <Link
           className="iconColorChange"
-          href="#"
+          href={url}
           underline="none"
           sx={{
             display: "flex",

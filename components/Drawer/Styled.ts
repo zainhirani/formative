@@ -18,7 +18,7 @@ export const DrawerWrapper = styled(Drawer)<DrawerProps>(
         maxWidth: {md:drawerWidth,xs:mobileDrawerWidth},
         width: {md:drawerWidth,xs:mobileDrawerWidth},
         marginTop: "0px",
-        zIndex: "99999999999999",
+        zIndex: "1300",
         background: theme.palette.primary.light,
         border: "1px solid",
         borderColor: theme.additionalColors?.primaryBorderGrey,

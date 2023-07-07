@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Box } from "@material-ui/core";
 import Listing from "./Listing";
 import Filters from "./Filters";
+import Head from "next/head";
 import { useGetCategories, useGetFolders } from "providers/Teacher_Questions";
 import { TYPE_OPTIONS } from "constants/Types";
 
@@ -17,6 +18,11 @@ const ManageQuestions = () => {
   const [category, setCategory] = useState(null);
 
   return (
+    
+    <>
+      <Head>
+        <title>Manage Questions</title>
+      </Head>
     <Box>
       <Filters
         onFolderChange={setFolder}
@@ -39,6 +45,8 @@ const ManageQuestions = () => {
         category={category?.value}
       />
     </Box>
+    </>
+    
   );
 };
 

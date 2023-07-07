@@ -3,6 +3,7 @@ import PageLayout from "components/PageLayout";
 import TableSection from "./tableSection";
 import SearchSection from "./searchSection";
 import { useStudentListing } from "providers/Teacher/student";
+import Head from "next/head";
 
 const LIMIT = 10;
 const ManageStudents = () => {
@@ -43,6 +44,9 @@ const ManageStudents = () => {
 
   return (
     <>
+      <Head>
+        <title>Students</title>
+      </Head>
       {/* <PageLayout> */}
       <SearchSection
         selectedCourse={selectNewCourse}

@@ -65,7 +65,7 @@ interface IStepOneProps {
 
 const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
   const register = useRegister();
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const firstNamePlaceholder = useFormattedMessage(
     messages.firstNamePlaceholder,
   );
@@ -92,6 +92,11 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
     if (register.isSuccess) {
       enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
         variant: "success",
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)} size="small">
+            <CloseIcon sx={{ color: "#fff" }} />
+          </IconButton>
+        ),
       });
       localStorage.setItem(TOKEN, register?.data.token);
       handleNext();
@@ -103,6 +108,11 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
       const errorMessage = register.error.message;
       enqueueSnackbar(errorMessage, {
         variant: "error",
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)} size="small">
+            <CloseIcon sx={{ color: "#fff" }} />
+          </IconButton>
+        ),
       });
     }
   }, [register.isError]);

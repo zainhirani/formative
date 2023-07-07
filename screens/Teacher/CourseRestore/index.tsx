@@ -25,6 +25,7 @@ import {
 import Image from "next/image";
 import courseRestoreSvg from "public/CourseType.svg";
 import { useQueryClient } from "react-query";
+import Head from "next/head";
 
 const CourseRestore = () => {
   const router = useRouter();
@@ -164,73 +165,85 @@ const CourseRestore = () => {
 
   return (
     // <PageLayout title="Courses"  icon={<HelpRoundedIcon />}>
-    <Box>
-      <SearchBar
-        setSelectedClass={setSelectedClass}
-        setSelectedAudience={setSelectedAudience}
-        setSearchChange={setSearchChange}
-      />
-      <TableWrapper>
-        <CustomDataGrid
-          rows={getRestoreCourseListing?.data?.data || []}
-          /* @ts-ignore */
-          getRowId={(row: any) => row.id}
-          columns={columnsManageCourse}
-          pageSizeData={pageSizeManageCourse}
-          columnVisibilityModel={showColumns}
-          type={"1"}
-          isCheckbox={true}
-          setChecked={setChecked}
-          loading={getRestoreCourseListing.isFetching}
-          selectedIds={checkedId}
-          onRowSelect={handleSelection}
-          getSelectedId={(e) => setSelectedRowId(e?.[0]?.[e.length - 1])}
-          page={page}
-          handlePageChange={(_, v) => setPage(v)}
-          /* @ts-ignore */
-          totalRows={getRestoreCourseListing?.data?.count}
-        />
-      </TableWrapper>
+    <>
+      <Head>
+        <title>Course Restore</title>
+      </Head>
       <Box
         sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          flexDirection: { md: "row", xs: "column" },
+          ".MuiDataGrid-selectedRowCount": {
+            width: { md: "14%", sm: "25%", xs: "30%" },
+          },
         }}
       >
-        <BoxWrapper display="grid" gridTemplateColumns="repeat(5, 1fr)">
-          <Box gridColumn="span 3">
-            <TextFieldStyled
-              placeholder="Enter Course Name here"
-              variant="outlined"
-              InputProps={{
-                style: { border: "none", outline: "0px" },
-              }}
-              autoComplete="off"
-            />
+        <SearchBar
+          setSelectedClass={setSelectedClass}
+          setSelectedAudience={setSelectedAudience}
+          setSearchChange={setSearchChange}
+        />
+        <TableWrapper>
+          <CustomDataGrid
+            rows={getRestoreCourseListing?.data?.data || []}
+            /* @ts-ignore */
+            getRowId={(row: any) => row.id}
+            columns={columnsManageCourse}
+            pageSizeData={pageSizeManageCourse}
+            columnVisibilityModel={showColumns}
+            type={"1"}
+            isCheckbox={true}
+            setChecked={setChecked}
+            loading={getRestoreCourseListing.isFetching}
+            selectedIds={checkedId}
+            onRowSelect={handleSelection}
+            getSelectedId={(e) => setSelectedRowId(e?.[0]?.[e.length - 1])}
+            page={page}
+            handlePageChange={(_, v) => setPage(v)}
+            /* @ts-ignore */
+            courseText={true}
+            totalRows={getRestoreCourseListing?.data?.count}
+          />
+        </TableWrapper>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexDirection: { md: "row", xs: "column" },
+          }}
+        >
+          <BoxWrapper display="grid" gridTemplateColumns="repeat(5, 1fr)">
+            <Box gridColumn="span 3">
+              <TextFieldStyled
+                placeholder="Enter Course Name here"
+                variant="outlined"
+                InputProps={{
+                  style: { border: "none", outline: "0px" },
+                }}
+                autoComplete="off"
+              />
+            </Box>
+            <Box gridColumn="span 2">
+              <ButtonWrapper
+                startIcon={<AddCircleOutlineRoundedIcon />}
+                variant="contained"
+                disabled={true}
+                sx={{
+                  ":disabled": {
+                    background: (theme) => theme.palette.text.secondary,
+                    color: (theme) => theme.palette.primary.light,
+                  },
+                }}
+              >
+                Create Course
+              </ButtonWrapper>
+            </Box>
+          </BoxWrapper>
+          <Box>
+            <GroupedButton config={config} />
           </Box>
-          <Box gridColumn="span 2">
-            <ButtonWrapper
-              startIcon={<AddCircleOutlineRoundedIcon />}
-              variant="contained"
-              disabled={true}
-              sx={{
-                ":disabled": {
-                  background: (theme) => theme.palette.text.secondary,
-                  color: (theme) => theme.palette.primary.light,
-                },
-              }}
-            >
-              Create Course
-            </ButtonWrapper>
-          </Box>
-        </BoxWrapper>
-        <Box>
-          <GroupedButton config={config} />
         </Box>
       </Box>
-    </Box>
+    </>
     // </PageLayout>
   );
 };

@@ -48,6 +48,7 @@ import {
 } from "providers/Teacher_Questions";
 import OverlayLoader from "components/OverlayLoader";
 import { useAuthContext } from "contexts/AuthContext";
+import Head from "next/head";
 import { TYPE_OPTIONS } from "constants/Types";
 import { STATUS } from "constants/Status";
 import { useTheme } from "@mui/material/styles";
@@ -295,6 +296,9 @@ const AddQuestion = ({ qId }: QuestionProps) => {
 
   return (
     <>
+    <Head>
+        <title>Add Question</title>
+    </Head>
       <form onSubmit={handleSubmit}>
         <Box
           sx={{
