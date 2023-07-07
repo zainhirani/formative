@@ -45,7 +45,13 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   return (
     <Paper
       elevation={3}
-      sx={{ p: 2, borderRadius: "8px", minHeight: "100px", maxHeight: "300px" }}
+      sx={{
+        p: 2,
+        borderRadius: "8px",
+        minHeight: "100px",
+        maxHeight: "300px",
+        overflow: "auto",
+      }}
     >
       <Grid
         container
@@ -58,14 +64,16 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         </Grid>
         <Grid item>
           <label htmlFor="image-upload">
-            <Button
-              component="span"
-              color="primary"
-              variant="outlined"
-              sx={{ border: "none" }}
-            >
-              <AddCircleOutlineRoundedIcon /> Add
-            </Button>
+            {!previewImage && (
+              <Button
+                component="span"
+                color="primary"
+                variant="outlined"
+                sx={{ border: "none" }}
+              >
+                <AddCircleOutlineRoundedIcon /> Add
+              </Button>
+            )}
           </label>
           <input
             accept="image/*"
@@ -75,7 +83,8 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
             onChange={handleImageUpload}
           />
           {previewImage && (
-            <Grid item>
+            // @ts-ignore
+            <Grid item align="right">
               <IconButton color="primary" onClick={handleRemoveImage}>
                 <ClearRoundedIcon />
               </IconButton>
@@ -90,7 +99,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         <img
           src={previewImage}
           alt="Preview"
-          style={{ objectFit: "cover", width: "100%", height: "100%" }}
+          style={{ objectFit: "contain", width: "100%", height: "100%" }}
         />
       )}
     </Paper>

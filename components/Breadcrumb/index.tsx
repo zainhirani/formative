@@ -69,12 +69,25 @@ const Breadcrumb = () => {
         aria-label="breadcrumb"
         separator={<ChevronRightIcon fontSize="medium" />}
       >
-        <Link href="/" sx={{ color: "#7F7F7F", textDecoration: "none" }}>
+        {/* <Link href="/" sx={{ color: "#7F7F7F", textDecoration: "none" }}>
           Dashboard
-        </Link>
+        </Link> */}
         {pathnames.map((pathname, index) => {
           const routeTo = `/${pathnames.slice(0, index + 1).join("/")}`;
           const isLast = index === pathnames.length - 1;
+          
+          if(pathname == 'questions' || pathname == 'quiz'){
+            return (
+              <Typography
+                key={pathname}
+                sx={{ color: "#7F7F7F" }}
+                component="span"
+              >
+                {capitalizeFirstLetter(pathname)}
+              </Typography>
+            );
+          }
+          
           return isLast ? (
             <Typography sx={{ color: "#404040" }} key={pathname}>
               {capitalizeFirstLetter(pathname)}

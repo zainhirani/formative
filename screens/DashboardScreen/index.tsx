@@ -18,6 +18,7 @@ import APP_ROUTES from "constants/RouteConstants";
 import { useAuthContext } from "contexts/AuthContext";
 import { generateGreetings } from "utils";
 import Link from "next/link";
+import Head from "next/head";
 
 // Teacher's Dashboard Content
 const teachersDashboardContent = [
@@ -81,16 +82,19 @@ const DashboardScreen = () => {
 
   return (
     <>
+      <Head>
+        <title>Dashboard</title>
+      </Head>
       <Box sx={{ flexGrow: 1 }}>
         <Box>
           <Typography
             gutterBottom
             variant="h5"
             sx={{
-              fontSize: "48px",
-              lineHeight: "56px",
+              fontSize: { md: "48px", xs: "35px" },
+              lineHeight: { md: "56px", xs: "45px" },
               fontWeight: "300",
-              maxWidth: "380px",
+              maxWidth: "650px",
             }}
           >
             <div>
@@ -113,14 +117,14 @@ const DashboardScreen = () => {
                       padding: 0,
                       borderRadius: "none",
                       boxShadow: "none",
-                      width: "48%",
+                      width: { md: "48%", xs: "100%" },
                     }}
                   >
                     <Iconbox
                       title={item.title}
                       description={item.description}
                       image={item.image}
-                      // url={item.link}
+                      url={item.link}
                     ></Iconbox>
                   </Paper>
                 </Link>
@@ -133,7 +137,7 @@ const DashboardScreen = () => {
                       padding: 0,
                       borderRadius: "none",
                       boxShadow: "none",
-                      width: "48%",
+                      width: { md: "48%", xs: "100%" },
                     }}
                   >
                     <Iconbox

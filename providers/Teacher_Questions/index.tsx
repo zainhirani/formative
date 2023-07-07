@@ -73,12 +73,19 @@ export const useQuestionDetails = (props: any) => {
 
 export const useDeleteQuestion = (questionId: any) => {
   const client = useQueryClient();
+  const { enqueueSnackbar } = useSnackbar();
 
   return useMutation((questionId) => deleteQuestion(questionId), {
     mutationKey: getKeyFromProps(questionId, "DELETE_QUESTION"),
     onSuccess: () => {
       client.invalidateQueries({
         queryKey: [KEY],
+      });
+    },
+    onError: (err: any) => {
+      enqueueSnackbar(err.message, {
+        autoHideDuration: 1500,
+        variant: "error",
       });
     },
     retry: 1,
@@ -101,8 +108,8 @@ export const useAddQuestion = (payload: any) => {
       });
       router.push(APP_ROUTES.QUESTIONS_MANAGE_QUESTIONS);
     },
-    onError: () => {
-      enqueueSnackbar("Can't add question !", {
+    onError: (err: any) => {
+      enqueueSnackbar(err.message, {
         autoHideDuration: 1500,
         variant: "error",
       });
@@ -130,8 +137,8 @@ export const useUpdateQuestion = (payload: any) => {
       });
       router.push(APP_ROUTES.QUESTIONS_MANAGE_QUESTIONS);
     },
-    onError: () => {
-      enqueueSnackbar("Can't update question !", {
+    onError: (err: any) => {
+      enqueueSnackbar(err.message, {
         autoHideDuration: 1500,
         variant: "error",
       });
@@ -150,7 +157,7 @@ export const useDuplicateQuestion = (questionId: any) => {
   return useMutation((questionId) => duplicateQuestion(questionId), {
     onSuccess: () => {
       enqueueSnackbar("Question has been duplicated !", {
-        autoHideDuration: 1000,
+        autoHideDuration: 1500,
         variant: "success",
       });
 
@@ -158,9 +165,9 @@ export const useDuplicateQuestion = (questionId: any) => {
         queryKey: [KEY],
       });
     },
-    onError: () => {
-      enqueueSnackbar("Can't duplicate question !", {
-        autoHideDuration: 1000,
+    onError: (err: any) => {
+      enqueueSnackbar(err.message, {
+        autoHideDuration: 1500,
         variant: "error",
       });
     },

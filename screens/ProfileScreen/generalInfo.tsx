@@ -32,15 +32,15 @@ import { year_of_graduation } from "mock-data/Profile";
 import { isEqual } from "lodash";
 
 const validationSchema = Yup.object().shape({
-  firstName: Yup.string().label("FirstName"),
-  lastName: Yup.string().label("LastName"),
-  nickName: Yup.string().label("NickName"),
+  firstName: Yup.string().label("First name"),
+  lastName: Yup.string().label("Last name"),
+  nickName: Yup.string().label("Nick name"),
   gender: Yup.string().label("Gender"),
   email: Yup.string().email().label("Email"),
   rfuID: Yup.string().label("RFU ID"),
   program: Yup.string().label("Program"),
   graduation: Yup.string().label("Graduation Year"),
-  birthPlace: Yup.string().label("Birth Place"),
+  birthPlace: Yup.string().label("Birthplace"),
   userName: Yup.string().label("User Name"),
   password: Yup.string().min(6).label("Password"),
   confirmPassword: Yup.string()
@@ -111,7 +111,7 @@ export const GeneralInfo = () => {
       last_name: data.lastName,
       nick_name: data.nickName,
       gender: data.gender,
-      rfu_id: data.rfuID,
+      rfu_id: Number(data.rfuID),
       year_of_graduation: Number(data.graduation),
       program: data.program,
       birth_place: data.birthPlace,
@@ -143,7 +143,7 @@ export const GeneralInfo = () => {
       rfuID: registerDetail.data?.rfu_id || "",
       program: registerDetail.data?.program || "",
       // graduation: registerDetail.data?.year_of_graduation || 0,
-      graduation: "2022",
+      graduation: registerDetail.data?.year_of_graduation || "2022",
       birthPlace: registerDetail.data?.birth_place || "",
       userName: registerDetail.data?.username || "",
       password: "",
@@ -292,8 +292,15 @@ export const GeneralInfo = () => {
                 name="rfuID"
                 placeholder={rfuIDPlaceholder}
                 fullWidth
+                inputProps={{ min: 0 }}
                 type="number"
-                value={values.rfuID}
+                value={
+                  values.rfuID !== ""
+                    ? values.rfuID < 1
+                      ? 1
+                      : parseInt(values.rfuID)
+                    : ""
+                }
                 onBlur={handleBlur}
                 onChange={handleChange}
                 error={Boolean(touched.rfuID && errors.rfuID)}

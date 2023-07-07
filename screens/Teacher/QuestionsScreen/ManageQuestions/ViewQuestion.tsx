@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from "react";
+import React, { useMemo } from "react";
 import QuizQuestionFormat from "components/QuizQuestionFormat";
 import { useAuthContext } from "contexts/AuthContext";
 import { useQuestionDetails } from "providers/Teacher_Questions";
@@ -53,7 +53,11 @@ const ViewQuestion = ({
         questionIdNum={questionDetails?.data?.id}
         loading={questionDetails?.isFetching}
         answerStats={answerStats}
-        media={questionDetails?.data?.media}
+        media={
+          questionDetails?.data?.media
+            ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${questionDetails?.data?.media}`
+            : ""
+        }
         quizAnswers={questionDetails?.data?.answer}
       />
     </>

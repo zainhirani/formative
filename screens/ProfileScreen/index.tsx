@@ -23,6 +23,7 @@ import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOu
 import { BoxWrapper, ButtonWrapper } from "./Styled";
 import { GeneralInfo } from "./generalInfo";
 import { ProfileTab } from "./ProfileTab";
+import Head from "next/head";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required().label("FirstName"),
@@ -102,6 +103,9 @@ const ProfileScreen = () => {
   );
   return (
     <>
+      <Head>
+        <title>Profile</title>
+      </Head>
       {/* <PageLayout title="Profile" icon={<HelpRoundedIcon />}> */}
       <Box>
         <TabContext value={value}>

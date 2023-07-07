@@ -105,9 +105,20 @@ export const StepTwo = ({}) => {
   };
 
   const handleExperienceChange = (event) => {
-    const newValue = parseInt(event.target.value);
-    if (!isNaN(newValue)) {
-      setExperience(newValue);
+    const newValue = event.target.value;
+    if (newValue === "" || newValue === null) {
+      setExperience("");
+    } else {
+      const parsedValue = parseInt(newValue);
+      if (!isNaN(parsedValue)) {
+        if (parsedValue < 1) {
+          setExperience(1);
+        } else if (parsedValue > 50) {
+          setExperience(50);
+        } else {
+          setExperience(parsedValue);
+        }
+      }
     }
   };
 
@@ -212,6 +223,7 @@ export const StepTwo = ({}) => {
                 <FormattedMessage {...messages.dobLabel} />
               </InputLabelWrapper>
               <CustomeDatePicker
+                disableFuture={true}
                 value={dobValue}
                 onChange={(e: any) => {
                   setDobValue(e);
