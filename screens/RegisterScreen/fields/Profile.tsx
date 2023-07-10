@@ -711,13 +711,14 @@ export const StepTwo = ({}) => {
                   values.volunteer &&
                   values.hobbies) === ""
               }
-              loading={profile.isLoading}
-              loadingPosition="start"
+              // loading={profile.isLoading}
+              loading={true}
+              loadingPosition="end"
               sx={{
                 width: { xs: "100%", md: "500px" },
                 ".MuiLoadingButton-loadingIndicator": {
                   top: "35%",
-                  left: "35%",
+                  right: "32%",
                 },
               }}
             >

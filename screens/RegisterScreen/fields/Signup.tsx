@@ -509,13 +509,13 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
           variant="contained"
           type="submit"
           loading={register.isLoading}
-          loadingPosition="start"
+          loadingPosition="end"
           sx={{
             flex: "1 1 auto",
             marginTop: "30px",
             ".MuiLoadingButton-loadingIndicator": {
               top: "35%",
-              left: "35%",
+              right: "32%",
             },
           }}
           disabled={

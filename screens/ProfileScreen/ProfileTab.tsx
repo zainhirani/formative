@@ -85,13 +85,15 @@ const validationSchema = Yup.object().shape({
   played: Yup.string().label("Played"),
   volunteer: Yup.string().label("Volunteer"),
   hobbies: Yup.string().label("Hobbies"),
-  currentPassword: Yup.string().required().min(6).label("Password"),
+  currentPassword: Yup.string().required().min(6).label("Current Password"),
 });
 
 export const ProfileTab = ({}) => {
   const profileDetail = useProfileDetail();
   const pharmacyPlaceholder = useFormattedMessage(messages.pharmacyPlaceholder);
-  const passwordPlaceholder = useFormattedMessage(messages.passwordPlaceholder);
+  const currentPasswordPlaceholder = useFormattedMessage(
+    messages.currentPasswordPlaceholder,
+  );
   const hobbiesPlaceholder = useFormattedMessage(messages.hobbiesPlaceholder);
   const [math, setMath] = useState("Select an option for the list");
   const [dobValue, setDobValue] = useState(null);
@@ -735,7 +737,7 @@ export const ProfileTab = ({}) => {
           <TextField
             id="currentPassword"
             name="currentPassword"
-            placeholder={passwordPlaceholder}
+            placeholder={currentPasswordPlaceholder}
             fullWidth
             type="password"
             value={values.currentPassword}
