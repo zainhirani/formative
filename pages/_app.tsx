@@ -18,6 +18,7 @@ import { AuthContextProvider } from "contexts/AuthContext";
 import ThemeContextProvider from "contexts/ThemeContext";
 import { getLocale, getMessages } from "i18n";
 import ThemeProvider from "theme/Provider";
+import "../styles/global.css";
 
 const queryCache = new QueryCache();
 
