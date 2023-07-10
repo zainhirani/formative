@@ -711,8 +711,7 @@ export const StepTwo = ({}) => {
                   values.volunteer &&
                   values.hobbies) === ""
               }
-              // loading={profile.isLoading}
-              loading={true}
+              loading={profile.isLoading}
               loadingPosition="end"
               sx={{
                 width: { xs: "100%", md: "500px" },
