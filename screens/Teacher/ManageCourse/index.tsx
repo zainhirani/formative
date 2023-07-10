@@ -27,8 +27,10 @@ import { useTargetCourse } from "providers/Courses/TargetCourse";
 import FooterButton from "./FooterButton";
 import FooterForm from "./FooterForm";
 import Head from "next/head";
+import { useQueryClient } from "react-query";
 
 const ManageCourseScreen = () => {
+  const queryClient = useQueryClient();
   const [selectedAudience, setSelectedAudience] = React.useState("");
   const [selectedClass, setSelectedClass] = React.useState("");
   const [searchChange, setSearchChange] = React.useState<any>(null);
@@ -246,6 +248,7 @@ const ManageCourseScreen = () => {
               checked={checked}
               deleteCourse={handleDeleteCourse}
               duplicateCourse={handleDuplicateCourse}
+              restoreCourse={queryClient.invalidateQueries("Restore")}
             />
           </Box>
         </Box>
