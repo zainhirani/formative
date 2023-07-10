@@ -1,10 +1,16 @@
 import { FC } from "react";
 import { Box, Typography } from "@mui/material";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import CircleIcon from "@mui/icons-material/Circle";
 import SideDrawer from "components/Drawer";
 
 type ModalContent = {
   title?: string | React.ReactElement;
   description?: string | React.ReactElement;
+  listItem?: object[];
 };
 
 type HelpModalProps = {
@@ -51,6 +57,18 @@ const HelpModal: FC<HelpModalProps> = ({
                 {el.title}
               </Typography>
               <Typography>{el.description}</Typography>
+              {el?.listItem && (
+                <List>
+                  {el.listItem.map((item: any, index: any) => (
+                    <ListItem key={index} disablePadding alignItems="flex-start">
+                      <ListItemIcon sx={{ minWidth: "20px", marginTop: "11px" }}>
+                        <CircleIcon fontSize="small" sx={{ fontSize: "8px" }} />
+                      </ListItemIcon>
+                      <ListItemText primary={item?.content} />
+                    </ListItem>
+                  ))}
+                </List>
+              )}
             </Box>
           ))}
         </Box>

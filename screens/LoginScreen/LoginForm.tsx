@@ -188,7 +188,7 @@ const LoginForm = () => {
       <Box sx={{ mb: 3 }}></Box>
       <Box>
         <LoadingButtonWrapper
-          disabled={(values.email && values.password) === ""}
+          disabled={(values.email && values.password) === "" || loading}
           type="submit"
           variant="contained"
           // loading={loading}

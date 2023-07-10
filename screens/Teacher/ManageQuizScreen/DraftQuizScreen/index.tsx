@@ -15,6 +15,7 @@ import { isStringNotURL, removeHTMLTags } from "utils";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
 import { useQueryClient } from "react-query";
+import Head from "next/head";
 
 const DraftQuizScreen: NextPage = () => {
   const [selectedQuestions, setSelectedQuestions] = useState<any>([]);
@@ -164,6 +165,9 @@ const DraftQuizScreen: NextPage = () => {
 
         return (
           <>
+          <Head>
+            <title>Add Quiz</title>
+          </Head>
             {!selectedQuestions.includes(selectedRow) &&
             !questionIds.includes(selectedRowId) ? (
               <IconButton
