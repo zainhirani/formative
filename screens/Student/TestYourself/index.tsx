@@ -8,7 +8,7 @@ import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
 import Loader from "components/Loader";
 import DataTable from "components/DataTable";
 import TakeQuizFormat from "components/TakeQuizFormat";
-import { BoxWrapper, SelectBoxWrapper } from "./Styled";
+import { BoxWrapper, ImageWrapper, SelectBoxWrapper } from "./Styled";
 import { questionData } from "mock-data/Student/Test-Yourself";
 import CircleUnchecked from "@material-ui/icons/RadioButtonUnchecked";
 import Image from "next/image";
@@ -184,7 +184,12 @@ const TestYourself = () => {
               }
               checkedIcon={
                 <>
-                  <Image src="/tick.svg" width={20} height={20} alt="tick" />
+                  <ImageWrapper
+                    src="/tick.svg"
+                    width={20}
+                    height={20}
+                    alt="tick"
+                  />
                 </>
               }
               checked={selectedItemId === item.id}
@@ -202,6 +207,7 @@ const TestYourself = () => {
                 borderRadius: "50%",
                 "&.Mui-checked": {
                   borderRadius: "50%",
+                  mb: "-6px",
                 },
               }}
               onClick={(e) => {
