@@ -29,7 +29,7 @@ type QuizQuestionFormatProps = {
   actualQuestion?: string;
   quizOptions?: object[];
   // quizOptions?: {id:number,optionText:string}[];
-  timeSpent?: string | number;
+  timeSpent: number;
   score?: string | number;
   isHeader?: boolean;
   questionIdNum?: string | number;
@@ -60,7 +60,7 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
     { id: 4, optionText: "Option 4" },
   ],
   quizAnswers = [],
-  timeSpent = "21 Seconds",
+  timeSpent = 21,
   score = "12 Points",
   isHeader = true,
   questionIdNum = "1",
@@ -103,6 +103,20 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
   // const handleToggle = (value: number) => () => {
   //   setChecked(value);
   // };
+
+const getTimeColor = () => {
+    if (timeSpent <= 10) {
+      return "#ff0000";
+    } else if (timeSpent <= 30) {
+      return "orange";
+    } else if (timeSpent <= 60) {
+      return "#005E84";
+    } else {
+      return "#225A41";
+    }
+  };
+
+
 
   return (
     <SideDrawer open={isOpen} onClose={onClose} title={title} loading={loading}>
@@ -294,9 +308,10 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
                         <Checkbox
                           disabled={disable}
                           edge="start"
-                          // checked={checked.indexOf(index) !== -1}
+                          //  checked={checked.indexOf(index) !== -1}
                           // @ts-ignore
-                          checked={quizAnswers.includes(value.value)}
+                           checked={quizAnswers.includes(value.value)}
+                          // checked={isChecked}
                           tabIndex={-1}
                           disableRipple
                           inputProps={{ "aria-labelledby": labelId }}
@@ -328,11 +343,12 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
               display="flex"
               alignItems="center"
               component={Paper}
-              elevation={6}
+              // elevation={3}
               sx={{
                 borderRadius: "5px",
                 height: "50px",
                 margin: "0px 10px 0px 10px",
+                boxShadow: "0px 0px 40px rgba(0, 0, 0, 0.1)",
               }}
             >
               <Box flex="1" borderRight="1px solid lightgrey" pr={2}>
@@ -347,7 +363,7 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
                   <Typography
                     variant="body2"
                     component="span"
-                    sx={{ marginLeft: "0.5rem", color: "blue" }}
+                    sx={{ marginLeft: "0.5rem", color: getTimeColor() }}
                   >
                     {`${timeSpent} Seconds`}
                   </Typography>

@@ -296,9 +296,9 @@ const AddQuestion = ({ qId }: QuestionProps) => {
 
   return (
     <>
-    <Head>
+      <Head>
         <title>Add Question</title>
-    </Head>
+      </Head>
       <form onSubmit={handleSubmit}>
         <Box
           sx={{

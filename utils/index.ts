@@ -40,14 +40,14 @@ export const removeHTMLTags = (html: string): any => {
   if (!html) return;
   // Regex pattern to match HTML tags
   const regex = /<[^>]+>/g;
-  return html.replace(regex, "");
+  return html?.replace(regex, "");
 };
 
 export const isStringNotURL = (str: string): any => {
   if (!str) return;
   const isNotURL: RegExp = /^(?!(?:https?:\/\/|www\.)[^\s.]+\.[^\s]{2,})/;
 
-  return isNotURL.test(str);
+  return isNotURL?.test(str);
 };
 
 export const formatOptions = (options, answer) => {

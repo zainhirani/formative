@@ -1,125 +1,71 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Typography, Box } from "@mui/material";
-import  { useFormattedMessage } from "theme/FormattedMessage";
+import { useFormattedMessage } from "theme/FormattedMessage";
 import messages from "../messages";
 import { BoxWrapper, ButtonWrapper, TypographyStyled } from "../Styled";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
-import { questionData } from "mock-data/Student/TakeQuiz";
 import Question from "components/QuizMultiQuestionsFormat";
+import RemainingTimer from "components/RemainingTimer/RemainingTimer";
 
 const QuestionsStepper = (props: any) => {
+  const {
+    handleChangeState,
+    setModalTitle,
+    quesQuizByIdData,
+    selectedQuizId,
+    questionOptionNew,
+    setQuestionOptionNew,
+    handleNext,
+    handleTimerEnd,
+    handleRemainingTimer,
+    remainingTime,
+  } = props;
   const [selectedOption, setSelectedOption] = useState<string>("");
-  const { handleChangeState, setModalTitle } = props;
-  const timer = 120;
-  const steps = questionData;
-  const [activeStep, setActiveStep] = useState(0);
-  const [completed, setCompleted] = useState(false);
-  const [remainingTime, setRemainingTime] = useState(timer);
-  const questionNo = useFormattedMessage(messages.questionNo);
-  const remainingTimeText = useFormattedMessage(messages.remainingTime);
+  const quizKeyExistOutof = quesQuizByIdData?.outof;
+  const quizKeyExistScore = quesQuizByIdData?.score;
+  const timerLimit = quesQuizByIdData?.timelimit;
+  const questionCurrentNo = quesQuizByIdData?.current;
+  const questionTotalNo = quesQuizByIdData?.total;
   const quizScore = useFormattedMessage(messages.quizScore);
   const quizScoreText = useFormattedMessage(messages.quizScoreText);
   const quizScorePoints = useFormattedMessage(messages.quizScorePoints);
   const percentage = useFormattedMessage(messages.percentage);
   const close = useFormattedMessage(messages.close);
-  const quizScoreTitle = useFormattedMessage(messages.quizScoreTitle);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setRemainingTime((prevTime) => {
-        if (prevTime > 0) {
-          return prevTime - 1;
-        }
-        return prevTime;
-      });
-    }, 1000);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, [activeStep]);
-
-  useEffect(() => {
-    setRemainingTime(timer);
-  }, [activeStep]);
-
-  const handleNext = () => {
-    if (activeStep === steps.length - 1) {
-      setModalTitle(quizScoreTitle);
-    }
-    if (activeStep === steps.length) {
-      setCompleted(true);
-      setSelectedOption("");
-    } else {
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      setSelectedOption("");
-    }
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
-    setCompleted(false);
-    setRemainingTime(timer);
-  };
-
-  const getTimeColor = () => {
-    if (remainingTime <= 10) {
-      return "#ff0000";
-    } else if (remainingTime <= 30) {
-      return "orange";
-    } else if (remainingTime <= 60) {
-      return "#005E84";
-    } else {
-      return "#225A41";
-    }
-  };
-
   const handleOptionChange = (optionId: string) => {
     setSelectedOption(optionId);
   };
-
   return (
     <>
-      {activeStep !== steps.length ? (
+      {quizKeyExistOutof == undefined && quizKeyExistScore == undefined ? (
         <>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <TypographyStyled>{`${questionNo} ${activeStep + 1} of ${
-              steps.length
-            }`}</TypographyStyled>
+            <TypographyStyled>
+              Question no. {questionCurrentNo} of {questionTotalNo}
+            </TypographyStyled>
             <Box sx={{ display: "flex" }}>
-              {remainingTime ? (
-                <>
-                  <TypographyStyled>{remainingTimeText}</TypographyStyled>
-                  <TypographyStyled style={{ color: getTimeColor() }}>
-                    {remainingTime} seconds
-                  </TypographyStyled>
-                </>
-              ) : (
-                <>
-                  <TypographyStyled>{remainingTimeText}</TypographyStyled>
-                  <TypographyStyled style={{ color: "#ff0000" }}>
-                    0 seconds
-                  </TypographyStyled>
-                </>
-              )}
+              <RemainingTimer
+                seconds={timerLimit}
+                onEnd={handleTimerEnd}
+                remainingTimer={handleRemainingTimer}
+              />
             </Box>
           </Box>
+
           <Question
-            id={steps[activeStep]?.id}
-            QNo={steps[activeStep]?.QNo}
-            question={steps[activeStep]?.question}
-            options={steps[activeStep]?.options}
-            questionSelected={false}
-            image={steps[activeStep]?.image}
+            quesQuizByIdData={quesQuizByIdData}
+            selectedQuizId={selectedQuizId}
             handleNext={handleNext}
             onOptionChange={handleOptionChange}
-            // handleLast={handleChangeTitle}
+            questionOptionNew={questionOptionNew}
+            setQuestionOptionNew={setQuestionOptionNew}
+            remainingTime={remainingTime}
           />
         </>
       ) : (
         <Box>
           <Typography>
-            {quizScore} 81 {quizScoreText} 170 {quizScorePoints}
+            {quizScore} {quizKeyExistScore} {quizScoreText} {quizKeyExistOutof}{" "}
+            {quizScorePoints}
           </Typography>
           <BoxWrapper
             sx={{
@@ -138,12 +84,13 @@ const QuestionsStepper = (props: any) => {
               <TypographyStyled
                 sx={{ width: "50%", border: "1px solid #EAEAEA", p: "15px" }}
               >
-                {percentage} {Math.round((81 / 170) * 100)}
+                {percentage}{" "}
+                {Math.round((quizKeyExistScore / quizKeyExistOutof) * 100)}%
               </TypographyStyled>
               <TypographyStyled
                 sx={{ width: "50%", border: "1px solid #EAEAEA", p: "15px" }}
               >
-                {quizScore} 81 {quizScorePoints}
+                {quizScore} {quizKeyExistScore} {quizScorePoints}
               </TypographyStyled>
             </Box>
             <ButtonWrapper

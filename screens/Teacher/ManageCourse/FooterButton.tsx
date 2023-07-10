@@ -14,6 +14,7 @@ const FooterButton = (props: any) => {
     duplicateCourse,
     duplicateLoading,
     deleteLoading,
+    restoreCourse,
   } = props;
   const router = useRouter();
   const config: LoadingButtonConfig[] = [
@@ -25,6 +26,7 @@ const FooterButton = (props: any) => {
       },
       onClick: () => {
         // console.log("Add Students");
+        restoreCourse;
         router.push("/teacher/courses/restore");
       },
     },

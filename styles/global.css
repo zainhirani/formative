@@ -1,0 +1,9 @@
+ /* Autocomplete CSS  */
+.multi-custom-select-responsive__value-container{
+  flex-wrap: nowrap !important;
+}
+
+
+.multi-custom-select-responsive__value-container div{
+    width: auto !important;
+  }

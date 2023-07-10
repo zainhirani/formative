@@ -52,7 +52,8 @@ export function useQuizById(
   props?: Quiz.QuizByIdProps,
 ): UseQueryResult<Quiz.QuizByIdResponse> {
   return useQuery(QUERY_KEYS.QUIZ_BY_ID, () => api.allTeacherQuizById(props), {
-    enabled:Boolean(props?.id)
+    enabled:Boolean(props?.id),
+    // cacheTime: 0,
   });
 }
 
@@ -129,26 +130,26 @@ export function useQuizSave(
   },
   Quiz.QuizSaveMutationPayload
 > {
+  const router = useRouter();
   const queryClient = useQueryClient();
-  
   return useMutation((payload) => api.quizSave({ ...props, data:payload }), {
     mutationKey: QUERY_KEYS.QUIZ_SAVE,
     onSuccess: (data) => {
-      // const router = useRouter();
-      enqueueSnackbar("Quiz Created Successfully", {
-        variant: "success",
-        autoHideDuration: 3000,
-      });
-      // router.push(APP_ROUTES.MANAGE_QUIZ)
-      console.log('Save success');
-      // queryClient.invalidateQueries(['Students']);
+      if(data){
+        enqueueSnackbar("Quiz Created Successfully", {
+          variant: "success",
+          autoHideDuration: 3000,
+        });
+        router.push(APP_ROUTES.MANAGE_QUIZ)
+        // queryClient.invalidateQueries(['Students']);
+      }
     },
     onError:(error) => {
-      enqueueSnackbar(error?.message, {
-        variant: "error",
-        autoHideDuration: 3000,
-      });
-      console.log(error?.message,'onError success');
+      // enqueueSnackbar(error?.message, {
+      //   variant: "error",
+      //   autoHideDuration: 3000,
+      // });
+      console.log(error?.message,);
       // queryClient.invalidateQueries(['Students']);
     },
     retry: 0,
@@ -165,19 +166,24 @@ export function useQuizSaveEdit(
   { message?: string; },
   Quiz.QuizSaveEditMutationPayload
 > {
+  const router = useRouter();
   return useMutation((payload) => api.quizSaveEdit({ ...props, data:payload }), {
     mutationKey: QUERY_KEYS.QUIZ_SAVE,
     onSuccess: (data) => {
-      enqueueSnackbar("Quiz Updated Successfully", {
-        variant: "success",
-        autoHideDuration: 3000,
-      });
+      if(data){
+        enqueueSnackbar("Quiz Updated Successfully", {
+          variant: "success",
+          autoHideDuration: 3000,
+        });
+        router.push(APP_ROUTES.MANAGE_QUIZ);
+      }
     },
     onError:(error) => {
-      enqueueSnackbar(error?.message, {
-        variant: "error",
-        autoHideDuration: 3000,
-      });
+      console.log(error?.message);
+      // enqueueSnackbar(error?.message, {
+      //   variant: "error",
+      //   autoHideDuration: 3000,
+      // });
     },
     retry: 0,
   });

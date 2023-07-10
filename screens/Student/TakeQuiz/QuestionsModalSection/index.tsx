@@ -1,34 +1,47 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import SideDrawer from "components/Drawer";
-import { Box, IconButton, MenuItem, Select, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import messages from "../messages";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
-import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import GroupedButton from "components/GroupedButton";
-import { BoxWrapper, ButtonWrapper, TypographyStyled } from "../Styled";
+import { TypographyStyled } from "../Styled";
 import QuestionsStepper from "./QuestionsStepper";
 
 const QuestionsModal = (props: any) => {
-  const { drawerOpen, setDrawerOpen } = props;
+  const {
+    drawerOpen,
+    setDrawerOpen,
+    selectedRowId,
+    quesQuizByIdData,
+    refQuesQuizById,
+    questionOptionNew,
+    setQuestionOptionNew,
+    handleNext,
+    handleTimerEnd,
+    handleRemainingTimer,
+    remainingTime,
+  } = props;
   const [showQuestionScreen, setShowQuestionScreen] = useState(false);
   const underTakingTitle = useFormattedMessage(messages.underTakingTitle);
   const modalTitleHead = useFormattedMessage(messages.modalTitle);
   const underTakingDesc = useFormattedMessage(messages.underTakingDesc);
   const underTakingLongDesc = useFormattedMessage(messages.underTakingLongDesc);
   const confirmUnderTaking = useFormattedMessage(messages.confirmUnderTaking);
-  const quizScoreTitle = useFormattedMessage(messages.quizScoreTitle);
-  const questionNo = useFormattedMessage(messages.questionNo);
-  const quizScore = useFormattedMessage(messages.quizScore);
-  const submit = useFormattedMessage(messages.submit);
   const [modalTitle, setModalTitle] = useState(underTakingTitle);
+  const questionTitle = quesQuizByIdData?.title;
+  const selectedQuizId = selectedRowId[0];
+  const quizKeyExistOutof = quesQuizByIdData?.outof;
+  const quizKeyExistScore = quesQuizByIdData?.score;
+
   const handleDrawerCloseQuestion = () => {
     setDrawerOpen(false);
     props?.onClose && props.onClose();
     setShowQuestionScreen(false);
     setModalTitle(underTakingTitle);
   };
+
   const config = [
     {
       key: "accept",
@@ -59,23 +72,14 @@ const QuestionsModal = (props: any) => {
     },
   ];
 
-  const handleStepperComplete = () => {
-    console.log("working");
-
-    setModalTitle(quizScoreTitle);
-    handleDrawerCloseQuestion;
-  };
-
-  const handleConsole = () => {
-    console.log("Submitted");
-    setModalTitle(quizScoreTitle);
-  };
-
   return (
     <>
       <SideDrawer
-        // title={showQuestionScreen ? modalTitle : underTakingTitle}
-        title={modalTitle}
+        title={
+          quizKeyExistOutof == undefined && quizKeyExistScore == undefined
+            ? questionTitle
+            : "Quiz Score"
+        }
         open={drawerOpen}
         onClose={handleDrawerCloseQuestion}
       >
@@ -85,8 +89,15 @@ const QuestionsModal = (props: any) => {
               <QuestionsStepper
                 handleChangeState={handleDrawerCloseQuestion}
                 setModalTitle={setModalTitle}
+                quesQuizByIdData={quesQuizByIdData}
+                selectedQuizId={selectedQuizId}
+                questionOptionNew={questionOptionNew}
+                setQuestionOptionNew={setQuestionOptionNew}
+                handleNext={handleNext}
+                remainingTime={remainingTime}
+                handleTimerEnd={handleTimerEnd}
+                handleRemainingTimer={handleRemainingTimer}
               />
-              {/* <QuestionsStepper handleChangeState={handleStepperComplete} /> */}
             </Box>
           ) : (
             <Box>

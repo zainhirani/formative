@@ -1,5 +1,6 @@
 import MuiBox, { BoxProps } from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
+import Image, { ImageProps } from "theme/Image";
 
 export const BoxWrapper = styled(MuiBox)<BoxProps>(
   ({ theme }) =>
@@ -11,7 +12,6 @@ export const BoxWrapper = styled(MuiBox)<BoxProps>(
     } as any),
 ) as (props: BoxProps) => JSX.Element;
 
-
 export const SelectBoxWrapper = styled(MuiBox)<BoxProps>(
   ({ theme }) =>
     ({
@@ -22,8 +22,15 @@ export const SelectBoxWrapper = styled(MuiBox)<BoxProps>(
       alignItems: "center",
       borderTopLeftRadius: "6px",
       borderTopRightRadius: "6px",
-      "& .custom-select":{
-        backgroundColor: 'transparent'
-      }
+      "& .custom-select": {
+        backgroundColor: "transparent",
+      },
     } as any),
 ) as (props: BoxProps) => JSX.Element;
+
+export const ImageWrapper = styled(Image)<ImageProps>(
+  ({ theme }) =>
+    ({
+      width: "20px",
+    } as any),
+) as (props: ImageProps) => JSX.Element;
