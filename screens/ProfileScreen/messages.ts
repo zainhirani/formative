@@ -157,7 +157,7 @@ export default defineMessages({
   },
   playLabel: {
     id: `${scope}.playLabel`,
-    defaultMessage: "In high school, I played",
+    defaultMessage: "In high school I played",
   },
   volunteerLabel: {
     id: `${scope}.volunteerLabel`,
