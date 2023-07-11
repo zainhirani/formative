@@ -27,15 +27,12 @@ const HowAmiDoingScreen = () => {
 console.log(formatDate(beforeDatevalue || ""),"formatDateformatDate")
 
   const quizResultListing = useQuizResultsListing({
-    // ...(course?.value&&{ courseId:course?.value}),
     ...(searchChange && { quizName: searchChange }),
     courseId:course?.value,
     Limit: LIMIT,
     Page: page,
     ...(afterDatevalue && { afterDate: formatDate(afterDatevalue || "") }),
-    // afterDate: afterDatevalue && formatDate(afterDatevalue || ""),
     ...(beforeDatevalue && { beforeDate: formatDate(beforeDatevalue || "") }),
-    // beforeDate: beforeDatevalue && formatDate(beforeDatevalue || ""),
 
   });
   return (
@@ -46,10 +43,8 @@ console.log(formatDate(beforeDatevalue || ""),"formatDateformatDate")
       </Head>
       <SearchSection
         beforeDatevalue={beforeDatevalue}
-        //@ts-ignore
         setBeforeDatevalue={setBeforeDatevalue}
         afterDatevalue={afterDatevalue}
-        //@ts-ignore
         setAfterDatevalue={setAfterDatevalue}
         course={course}
         setCourse={setCourse}

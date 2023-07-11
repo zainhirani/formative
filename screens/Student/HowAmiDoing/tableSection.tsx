@@ -50,18 +50,14 @@ export const columnsManageHowAmiDoing: GridColDef[] = [
     headerName: "Quiz Date",
     minWidth: 150,
     flex: 1,
-      renderCell: (params: any) => {
-        const initialdate = new Date(params.formattedValue);
-        const date = initialdate.toLocaleDateString("en-US", {
-          timeZone: "UTC",
-        });
+    renderCell: (params: any) => {
+      const initialdate = new Date(params.formattedValue);
+      const date = initialdate.toLocaleDateString("en-US", {
+        timeZone: "UTC",
+      });
 
-        return (
-          <Box>
-            {date}
-          </Box>
-        );
-      },
+      return <Box>{date}</Box>;
+    },
   },
   {
     field: "attempt_date",
@@ -125,7 +121,7 @@ const TableSection: React.FC<TableSectionProps> = (props) => {
           totalRows={totalCount}
         />
       </BoxWrapper>
-      <AttemptDrawer 
+      <AttemptDrawer
         isOpen={drawerOpen}
         onClose={() => setDrawerOpen(false)}
         //@ts-ignore

@@ -80,6 +80,8 @@ const studentsDashboardContent = [
 const DashboardScreen = () => {
   const { currentUser } = useAuthContext();
 
+  console.log(currentUser,"currentUser")
+
   return (
     <>
       <Head>
