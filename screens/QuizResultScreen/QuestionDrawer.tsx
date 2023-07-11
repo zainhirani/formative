@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import QuizQuestionFormat from "components/QuizQuestionFormat";
 import { useQuestionAttempQuestion } from "providers/QuestionAttempt";
 import { useAuthContext } from "contexts/AuthContext";
+import { useRegisterDetail } from "providers/Auth";
 
 interface IQuestionDrawerProps {
   isOpen: boolean;
@@ -15,7 +16,8 @@ const QuestionDrawer = ({
   onClose,
   questionId,
 }: IQuestionDrawerProps) => {
-  const { currentUser } = useAuthContext();
+  // const { currentUser } = useAuthContext();
+  const currentUser = useRegisterDetail()
   const attemptQuestionListing = useQuestionAttempQuestion({
     questionId: questionId,
   });
@@ -42,7 +44,7 @@ const QuestionDrawer = ({
   return (
     <>
       <QuizQuestionFormat
-        title={` ${currentUser.name} this is how Question ${attemptQuestionListing?.data?.question?.id} appears to student`}
+        title={` ${currentUser?.data?.name} this is how Question ${attemptQuestionListing?.data?.question?.id} appears to student`}
         isOpen={isOpen}
         onClose={onClose}
         isShowScoreBar={false}

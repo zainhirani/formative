@@ -5,10 +5,12 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { USERIMAGE } from "configs";
 import { useAuthContext } from "contexts/AuthContext";
+import { useRegisterDetail } from "providers/Auth";
 
 const RightMenu = () => {
-  const { currentUser } = useAuthContext();
-  const name = currentUser.first_name.concat(" ", currentUser.last_name);
+  // const { currentUser } = useAuthContext();
+  const currentUser = useRegisterDetail();
+  const name = currentUser?.data?.first_name.concat(" ", currentUser?.data?.last_name);
   const userImage = name
     ?.split(" ")
     .map((word) => word.charAt(0))
