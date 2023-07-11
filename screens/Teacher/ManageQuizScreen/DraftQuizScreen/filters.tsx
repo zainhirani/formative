@@ -17,18 +17,26 @@ import {
   useScoringListing,
 } from "providers/Teacher/TeacherQuiz";
 import optionsStatus from "constants/Teacher/QuizConstant";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import SaveAsIcon from "@mui/icons-material/SaveAs";
+import { Box } from "@mui/material";
+import { useRouter } from "next/router";
+import ShareIcon from "@material-ui/icons/Share";
 // import { allTeacherQuizNo } from "providers/Teacher/TeacherQuiz/api";
 
 const FiltersSection = (props: any) => {
-  const { setFieldValue, values, handleChange, quizDataById, mValuesForName } =
+  const { setFieldValue, values, handleChange, quizByIdData, mValuesForName } =
     props;
   const coursesList = useCourseListing();
   const foldersList = useFoldersListing();
   const { data: quizNo, refetch: quizNumRefetch } = useQuizNo();
-
+  const router = useRouter();
+  const { id: editId } = router.query;
+  const editPage = editId == undefined ? false : true;
   useEffect(() => {
     quizNumRefetch();
   }, []);
+
   const optionsFolder = useMemo(() => {
     return foldersList?.data?.data?.map((item: any) => ({
       value: item?.id,
@@ -42,7 +50,8 @@ const FiltersSection = (props: any) => {
       label: item?.course_name,
     }));
   }, [coursesList?.data?.data]);
-  // console.log(quizDataById, "quizDataById filter");
+
+  const status = quizByIdData?.status;
 
   return (
     <BoxWrapper display="grid" gridTemplateColumns="repeat(11, 1fr)">
@@ -94,21 +103,81 @@ const FiltersSection = (props: any) => {
         />
       </SelectBoxWrapper>
       <SelectBoxWrapper gridColumn="span 2">
-        <CustomSelect
-          placeholder="Draft"
-          controlText="Status"
-          dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-          options={optionsStatus}
-          value={values?.status}
-          isClearable={false}
-          onChange={(e: any) => {
-            const obj = {
-              value: e?.value,
-              label: e?.label,
-            };
-            setFieldValue("status", obj);
-          }}
-        />
+        {editPage ? (
+          status == "COMPLETED" ? (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: "2px",
+                color: (theme) => theme.additionalColors?.primaryGreen,
+                height: "100%",
+              }}
+            >
+              <CheckCircleIcon style={{ fontSize: "20px" }} /> Completed
+            </Box>
+          ) : status == "AVAILABLE" ? (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: "2px",
+                color: "#266d5e",
+                height: "100%",
+              }}
+            >
+              <CheckCircleIcon style={{ fontSize: "20px" }} /> Available
+            </Box>
+          ) : status == "DISTRIBUTED" ? (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: "2px",
+                color: "#d9690f",
+                height: "100%",
+              }}
+            >
+              <ShareIcon style={{ fontSize: "20px" }} /> Distributed
+            </Box>
+          ) : status == "ONGOING" ? (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: "2px",
+                color: "#8B6508",
+                height: "100%",
+              }}
+            >
+              <CheckCircleIcon style={{ fontSize: "20px" }} /> Ongoing
+            </Box>
+          ) : (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: "2px",
+                color: (theme) => theme.additionalColors?.primaryYellow,
+                height: "100%",
+              }}
+            >
+              <SaveAsIcon style={{ fontSize: "20px" }} /> Draft
+            </Box>
+          )
+        ) : (
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: "2px",
+              color: (theme) => theme.additionalColors?.primaryYellow,
+              height: "100%",
+            }}
+          >
+            <SaveAsIcon style={{ fontSize: "20px" }} /> Draft
+          </Box>
+        )}
       </SelectBoxWrapper>
       <SelectBoxWrapper gridColumn="span 2">
         <QuizNoBoxWrapper gridColumn="span 3">

@@ -19,6 +19,7 @@ import copySvg from "../../../public/quiz/copy.svg";
 import circleLeftSvg from "../../../public/quiz/circle-left.svg";
 import trashSvg from "../../../public/quiz/trash.svg";
 import { enqueueSnackbar } from "notistack";
+import ShareIcon from "@material-ui/icons/Share";
 
 const TableSection = (props: any) => {
   const { searchChange, selectCourse, selectFolder, selectStatus } = props;
@@ -123,11 +124,8 @@ const TableSection = (props: any) => {
         const status = params.formattedValue;
         return (
           <Grid container spacing={3} alignItems="center">
-            {status == "DRAFT" ||
-            status == "AVAILABLE" ||
-            status == "DISTRIBUTED" ||
-            status == "ONGOING" ? (
-              <Grid item xs>
+            <Grid item xs>
+              {status == "DRAFT" ? (
                 <Box
                   sx={{
                     display: "flex",
@@ -138,9 +136,40 @@ const TableSection = (props: any) => {
                 >
                   <SaveAsIcon style={{ fontSize: "20px" }} /> {status}
                 </Box>
-              </Grid>
-            ) : (
-              <Grid item xs>
+              ) : status == "AVAILABLE" ? (
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "2px",
+                    color: "#266d5e",
+                  }}
+                >
+                  <CheckCircleIcon style={{ fontSize: "20px" }} /> Available
+                </Box>
+              ) : status == "DISTRIBUTED" ? (
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "2px",
+                    color: "#d9690f",
+                  }}
+                >
+                  <ShareIcon style={{ fontSize: "20px" }} /> Distributed
+                </Box>
+              ) : status == "ONGOING" ? (
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "2px",
+                    color: "#8B6508",
+                  }}
+                >
+                  <CheckCircleIcon style={{ fontSize: "20px" }} /> Ongoing
+                </Box>
+              ) : (
                 <Box
                   sx={{
                     display: "flex",
@@ -151,8 +180,8 @@ const TableSection = (props: any) => {
                 >
                   <CheckCircleIcon style={{ fontSize: "20px" }} /> Completed
                 </Box>
-              </Grid>
-            )}
+              )}
+            </Grid>
           </Grid>
         );
       },

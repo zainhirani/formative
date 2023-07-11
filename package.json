@@ -53,6 +53,7 @@
     "react-lazyload": "^3.2.0",
     "react-query": "^3.34.2",
     "react-select": "^5.7.3",
+    "react-to-print": "^2.14.13",
     "react-window": "^1.8.6",
     "tinymce": "^6.4.2",
     "uuid": "^8.3.2",

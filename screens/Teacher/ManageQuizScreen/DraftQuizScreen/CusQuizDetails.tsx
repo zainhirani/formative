@@ -42,6 +42,12 @@ const Item = styled(Paper)(({ theme }) => ({
   margin: "0px 30px 0px 0px",
 }));
 
+const AddSpaceAndColon = ({ originalString }) => {
+  const modifiedString = originalString.replace(/:/g, ": ");
+
+  return <div>{modifiedString}</div>;
+};
+
 const CusQuizDetails = (props: any) => {
   const {
     handleChange,
@@ -111,6 +117,7 @@ const CusQuizDetails = (props: any) => {
 
   // console.log(values?.reviewable, "values?.reviewable");
 
+  // console.log("scoring");
   return (
     <BoxWrapper>
       <BoxMatrixDropDownWrapper>
@@ -228,7 +235,7 @@ const CusQuizDetails = (props: any) => {
                           : ""}
                       </Typography>
                       <Typography className="heading-p">
-                        {item?.value}
+                        <AddSpaceAndColon originalString={item?.value} />
                       </Typography>
                     </BoxMatrix>
                   </Item>
