@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import SearchSection from "./searchSection";
 import TableSection from "./tableSection";
 import { useQuizResultsListing } from "providers/Students/How_Am_I_Doing";
+import Head from "next/head";
 
 const LIMIT = 10;
 const HowAmiDoingScreen = () => {
@@ -40,6 +41,9 @@ console.log(formatDate(beforeDatevalue || ""),"formatDateformatDate")
   return (
     // <PageLayout>
     <>
+      <Head>
+        <title>How Am I doing</title>
+      </Head>
       <SearchSection
         beforeDatevalue={beforeDatevalue}
         //@ts-ignore

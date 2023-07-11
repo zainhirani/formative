@@ -125,7 +125,7 @@ const AddQuestion = ({ qId }: QuestionProps) => {
         if (!isStringNotURL(details.media)) {
           return;
         }
-        url = `${process.env.NEXT_PUBLIC_IMAGE_URL}${details.media}`;
+        url = `${process.env.NEXT_PUBLIC_IMAGE_URL}/${details.media}`;
         setMedia(url);
       }
 

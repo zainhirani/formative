@@ -22,6 +22,7 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import SideDrawer from "components/Drawer";
 import Image from "theme/Image";
+import { PUBLIC_IMAGE_URL } from "configs";
 
 type QuizQuestionFormatProps = {
   title?: string;
@@ -103,7 +104,7 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
   // const handleToggle = (value: number) => () => {
   //   setChecked(value);
   // };
-
+  const questionImage = `${PUBLIC_IMAGE_URL}/${media}`;
 const getTimeColor = () => {
     if (timeSpent <= 10) {
       return "#ff0000";
@@ -279,7 +280,7 @@ const getTimeColor = () => {
               <Image
                 alt="quiz-image"
                 lazyLoadProps={{ height: 240 }}
-                src={media}
+                src={questionImage}
                 lazyLoad={true}
                 style={{ maxWidth: "100%", maxHeight: "240px" }}
               />

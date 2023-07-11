@@ -40,9 +40,6 @@ const TypeThree: React.FC<TypeThreeProps> = ({
             disableRowSelectionOnClick
             {...props}
             sx={{ 
-              '.MuiDataGrid-iconButtonContainer': {
-                visibility: 'visible',
-              },
               '.MuiDataGrid-sortIcon': {
                 opacity: 'inherit !important',
                 color: theme => theme.palette.primary.main

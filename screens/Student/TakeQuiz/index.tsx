@@ -17,6 +17,7 @@ import {
 import { debounce } from "lodash";
 import { enqueueSnackbar } from "notistack";
 import { useAppState } from "contexts/AppStateContext";
+import Head from "next/head";
 
 const TakeQuizScreen = () => {
   const { setSelectedOptions, setAnwserCorrect } = useAppState();
@@ -157,86 +158,91 @@ const TakeQuizScreen = () => {
   };
 
   return (
-    <Box>
-      <BoxWrapper>
-        <QuestionsModal
-          drawerOpen={open}
-          setDrawerOpen={() => setOpen((prev) => !prev)}
-          onClose={onDrowerClose}
-          selectedRowId={checked}
-          quesQuizByIdData={quesQuizByIdData}
-          refQuesQuizById={refQuesQuizById}
-          questionOptionNew={questionOptionNew}
-          setQuestionOptionNew={setQuestionOptionNew}
-          handleNext={handleNext}
-          handleTimerEnd={handleTimerEnd}
-          handleRemainingTimer={handleRemainingTimer}
-          remainingTime={remainingTime}
-        />
-        <Box
+    <>
+      <Head>
+        <title>Take Quiz</title>
+      </Head>
+      <Box>
+        <BoxWrapper>
+          <QuestionsModal
+            drawerOpen={open}
+            setDrawerOpen={() => setOpen((prev) => !prev)}
+            onClose={onDrowerClose}
+            selectedRowId={checked}
+            quesQuizByIdData={quesQuizByIdData}
+            refQuesQuizById={refQuesQuizById}
+            questionOptionNew={questionOptionNew}
+            setQuestionOptionNew={setQuestionOptionNew}
+            handleNext={handleNext}
+            handleTimerEnd={handleTimerEnd}
+            handleRemainingTimer={handleRemainingTimer}
+            remainingTime={remainingTime}
+          />
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              height: "60px",
+            }}
+          >
+            <TextFieldStyled
+              placeholder={searchQuiz}
+              variant="outlined"
+              onChange={onInputChange}
+              InputProps={{
+                style: { border: "none", outline: "0px" },
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton aria-label="visibility" edge="end">
+                      <Search />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <SelectBoxWrapper>
+              <Box sx={{ width: "100%" }}>
+                <CustomSelect
+                  placeholder={selectCourseText}
+                  dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
+                  // options={courseSelect}
+                  options={courseData || []}
+                  onChange={handleCourse}
+                  isClearable={true}
+                />
+              </Box>
+            </SelectBoxWrapper>
+          </Box>
+        </BoxWrapper>
+        <BoxWrapper
           sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            height: "60px",
+            ".MuiDataGrid-columnHeaderDraggableContainer .MuiCheckbox-root": {
+              display: "none",
+            },
           }}
         >
-          <TextFieldStyled
-            placeholder={searchQuiz}
-            variant="outlined"
-            onChange={onInputChange}
-            InputProps={{
-              style: { border: "none", outline: "0px" },
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton aria-label="visibility" edge="end">
-                    <Search />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
+          <Backdrop
+            sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={open}
           />
-          <SelectBoxWrapper>
-            <Box sx={{ width: "100%" }}>
-              <CustomSelect
-                placeholder={selectCourseText}
-                dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-                // options={courseSelect}
-                options={courseData || []}
-                onChange={handleCourse}
-                isClearable={true}
-              />
-            </Box>
-          </SelectBoxWrapper>
-        </Box>
-      </BoxWrapper>
-      <BoxWrapper
-        sx={{
-          ".MuiDataGrid-columnHeaderDraggableContainer .MuiCheckbox-root": {
-            display: "none",
-          },
-        }}
-      >
-        <Backdrop
-          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={open}
-        />
-        {/* @ts-ignore */}
-        <CustomDataGrid
-          rows={quizList?.data || []}
-          columns={columnsTakeQuiz}
-          pageSizeData={pageSizeTakeQuiz}
-          type={"1"}
-          isCheckbox={true}
-          columnVisibilityModel={showColumns}
-          onRowSelect={handleSelection}
-          selectedIds={checked}
-          handlePageChange={(_, v) => setPage(v)}
-          page={page}
-          loading={isFetching}
-          totalRows={quizList?.count}
-        />
-      </BoxWrapper>
-    </Box>
+          {/* @ts-ignore */}
+          <CustomDataGrid
+            rows={quizList?.data || []}
+            columns={columnsTakeQuiz}
+            pageSizeData={pageSizeTakeQuiz}
+            type={"1"}
+            isCheckbox={true}
+            columnVisibilityModel={showColumns}
+            onRowSelect={handleSelection}
+            selectedIds={checked}
+            handlePageChange={(_, v) => setPage(v)}
+            page={page}
+            loading={isFetching}
+            totalRows={quizList?.count}
+          />
+        </BoxWrapper>
+      </Box>
+    </>
   );
 };
 

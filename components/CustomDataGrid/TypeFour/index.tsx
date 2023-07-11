@@ -50,9 +50,6 @@ const TypeFour: React.FC<TypeFourProps> = ({
                   loading={loading}
                   {...props}
                   sx={{
-                    '.MuiDataGrid-iconButtonContainer': {
-                      visibility: 'visible',
-                    },
                     '.MuiDataGrid-sortIcon': {
                       opacity: 'inherit !important',
                       color: theme => theme.palette.primary.main

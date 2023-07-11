@@ -56,7 +56,7 @@ const ViewQuestion = ({
         answerStats={answerStats}
         media={
           questionDetails?.data?.media
-            ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${questionDetails?.data?.media}`
+            ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${questionDetails?.data?.media}`
             : ""
         }
         quizAnswers={questionDetails?.data?.answer}

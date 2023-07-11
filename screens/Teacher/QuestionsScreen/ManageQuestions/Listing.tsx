@@ -58,7 +58,7 @@ const Listing: React.FC = ({
   const handleSetImage = (imageName: string) => {
     let url = "";
     if (isStringNotURL(imageName)) {
-      url = `${process.env.NEXT_PUBLIC_IMAGE_URL}${imageName}`;
+      url = `${process.env.NEXT_PUBLIC_IMAGE_URL}/${imageName}`;
     } else {
       url = imageName;
     }
