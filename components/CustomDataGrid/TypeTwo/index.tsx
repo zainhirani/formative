@@ -46,9 +46,6 @@ const TypeTwo: React.FC<TypeTwoProps> = ({
                   loading={loading}
                   {...props}
                   sx={{
-                    '.MuiDataGrid-iconButtonContainer': {
-                      visibility: 'visible',
-                    },
                     '.MuiDataGrid-sortIcon': {
                       opacity: 'inherit !important',
                       color: theme => theme.palette.primary.main

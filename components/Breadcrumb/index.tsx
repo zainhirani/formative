@@ -235,7 +235,7 @@ const Breadcrumb = () => {
           
           return isLast ? (
             <Typography sx={{ color: "#404040" }} key={pathname}>
-              {capitalizeFirstLetter(pathname)}
+              {capitalizeFirstLetter(pathname.replace(/-/g, " "))}
             </Typography>
           ) : (
             <Link
@@ -292,7 +292,8 @@ const Breadcrumb = () => {
 };
 
 const capitalizeFirstLetter = (string: string) => {
-  return string.charAt(0).toUpperCase() + string.slice(1);
+  // return string.charAt(0).toUpperCase() + string.slice(1);
+  return string.toLowerCase().split(' ').map(s => s.charAt(0).toUpperCase() + s.substring(1)).join(' ');
 };
 
 export default Breadcrumb;

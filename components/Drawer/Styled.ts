@@ -11,12 +11,14 @@ export const DrawerWrapper = styled(Drawer)<DrawerProps>(
   ({ theme }) =>
     ({
       // width: isMobile ? "100%" : drawerWidth,
-      width: {md:drawerWidth,xs:mobileDrawerWidth},
+      width: drawerWidth, //{lg:drawerWidth, md:drawerWidth,xs:mobileDrawerWidth},
       flexShrink: 0,
       border: "0px",
       "& .MuiDrawer-paper": {
-        maxWidth: {md:drawerWidth,xs:mobileDrawerWidth},
-        width: {md:drawerWidth,xs:mobileDrawerWidth},
+        //maxWidth: {md:drawerWidth,xs:mobileDrawerWidth},
+        maxWidth: drawerWidth,
+        //width: {lg: drawerWidth, md:drawerWidth,xs:mobileDrawerWidth},
+        width: drawerWidth,
         marginTop: "0px",
         zIndex: "1300",
         background: theme.palette.primary.light,
