@@ -28,6 +28,7 @@ import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOu
 import { useRouter } from "next/router";
 import { enqueueSnackbar } from "notistack";
 import dayjs from "dayjs";
+import ReactToPrint from "react-to-print";
 import {
   useQuizDuplicate,
   useQuizRemove,
@@ -43,9 +44,8 @@ const TableSection = (props: any) => {
     setFieldValue,
     values,
     quizByIdData,
-    // selectedQuestions,
-    // setSelectedQuestions,
     COLUMNS_CONFIG,
+    reactToPrintContent,
   } = props;
 
   const { selectedQuestions, setSelectedQuestions } = useAppState();
@@ -82,7 +82,7 @@ const TableSection = (props: any) => {
   const courseIdForm = values?.courseId?.value;
   const folderIdForm = values?.folderId?.value;
   const timeLimitPerSec = values?.timeLimitPerSec;
-  const statusForm = values?.status?.value;
+  // const statusForm = values?.status?.value;
   const scoringIdForm = values?.scoringId?.value;
   const start_time_save = values?.start_time;
   const end_time_save = values?.end_time;
@@ -94,7 +94,7 @@ const TableSection = (props: any) => {
     courseId: courseIdForm,
     folderId: folderIdForm,
     timeLimitPerSec: timeLimitPerSec,
-    status: statusForm,
+    // status: statusForm,
     scoringId: scoringIdForm,
     start_time: start_time_save,
     end_time: end_time_save,
@@ -110,7 +110,7 @@ const TableSection = (props: any) => {
       !saveObject?.folderId &&
       !saveObject?.timeLimitPerSec &&
       !saveObject?.scoringId &&
-      !saveObject?.status &&
+      // !saveObject?.status &&
       !saveObject?.start_time &&
       !saveObject?.end_time &&
       !saveObject?.questionsId
@@ -136,10 +136,15 @@ const TableSection = (props: any) => {
       key: "print",
       startIcon: <LocalPrintshopOutlinedIcon />,
       render: () => {
-        return <Box>Print</Box>;
+        return (
+          <ReactToPrint
+            trigger={() => <Box>Print</Box>}
+            content={reactToPrintContent}
+          />
+        );
       },
       onClick: () => {
-        window.print();
+        // window.print();
       },
     },
     {
@@ -218,20 +223,37 @@ const TableSection = (props: any) => {
 
   const currentDate = editPage ? dayjs(`${quizByIdData?.start_time}`) : dayjs();
 
-  const deleteCondition =
-    quizByIdData?.status == "COMPLETED" ||
-    quizByIdData?.status == "DISTRIBUTED" ||
-    quizByIdData?.status == "ONGOING"
-      ? false
-      : true;
-  const withdrawCondition =
-    quizByIdData?.status == "DISTRIBUTED" ? false : true;
-  const studentCondition = quizByIdData?.status == "COMPLETED" ? false : true;
+  const saveCondition = editPage
+    ? quizByIdData?.status == "COMPLETED" ||
+      quizByIdData?.status == "DISTRIBUTED" ||
+      quizByIdData?.status == "ONGOING"
+      ? true
+      : false
+    : false;
+  const deleteCondition = editPage
+    ? quizByIdData?.status == "COMPLETED" ||
+      quizByIdData?.status == "DISTRIBUTED" ||
+      quizByIdData?.status == "ONGOING"
+      ? true
+      : false
+    : true;
+  const withdrawCondition = editPage
+    ? quizByIdData?.status == "DISTRIBUTED"
+      ? true
+      : false
+    : true;
+  // const studentCondition = quizByIdData?.status == "COMPLETED" ? false : true;
+  const studentCondition = editPage
+    ? quizByIdData?.status == "COMPLETED"
+      ? true
+      : false
+    : true;
 
   useEffect(() => {
-    console.log(selectedQuestions, "selectedQuestions tablesection");
+    // console.log(selectedQuestions, "selectedQuestions tablesection");
   }, [selectedQuestions]);
 
+  // console.log(studentCondition, "studentCondition");
   return (
     <>
       <BoxWrapper>
@@ -276,9 +298,12 @@ const TableSection = (props: any) => {
               startIcon={<SaveOutlinedIcon />}
               className="btn"
               onClick={handelSaveQuiz}
+              disabled={saveCondition}
             >
               Save
             </ButtonWrapper>
+            {/* {editPage ? (
+              <> */}
             <ButtonWrapper
               startIcon={<DifferenceOutlinedIcon />}
               className="btn"
@@ -302,6 +327,10 @@ const TableSection = (props: any) => {
             >
               Delete
             </ButtonWrapper>
+            {/* </>
+            ) : (
+              ""
+            )} */}
           </ButtonGroup>
         </QuizGroupButtonBox>
       </BoxButtonWrapper>

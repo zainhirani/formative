@@ -46,19 +46,22 @@ const TypeTwo: React.FC<TypeTwoProps> = ({
                   loading={loading}
                   {...props}
                   sx={{
-                    '.MuiDataGrid-iconButtonContainer': {
-                      visibility: 'visible',
+                    ".MuiDataGrid-iconButtonContainer": {
+                      visibility: "visible",
                     },
-                    '.MuiDataGrid-sortIcon': {
-                      opacity: 'inherit !important',
-                      color: theme => theme.palette.primary.main
+                    ".MuiDataGrid-sortIcon": {
+                      opacity: "inherit !important",
+                      color: (theme) => theme.palette.primary.main,
                     },
-                    '.MuiDataGrid-columnSeparator': {
-                      visibility: 'inherit !important',
-                    },   
+                    ".MuiDataGrid-columnSeparator": {
+                      visibility: "inherit !important",
+                    },
+                    ".MuiDataGrid-columnHeaderTitleContainer": {
+                      gap: "5px",
+                    },
                   }}
                   localeText={{
-                    noRowsLabel: "No data found"
+                    noRowsLabel: "No data found",
                   }}
                 />
               </Box>

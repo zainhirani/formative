@@ -145,11 +145,11 @@ export function useQuizSave(
       }
     },
     onError:(error) => {
-      // enqueueSnackbar(error?.message, {
-      //   variant: "error",
-      //   autoHideDuration: 3000,
-      // });
-      console.log(error?.message,);
+      enqueueSnackbar(error?.message, {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
+      // console.log(error?.message,);
       // queryClient.invalidateQueries(['Students']);
     },
     retry: 0,
@@ -179,11 +179,11 @@ export function useQuizSaveEdit(
       }
     },
     onError:(error) => {
-      console.log(error?.message);
-      // enqueueSnackbar(error?.message, {
-      //   variant: "error",
-      //   autoHideDuration: 3000,
-      // });
+      // console.log(error?.message);
+      enqueueSnackbar(error?.message, {
+        variant: "error",
+        autoHideDuration: 3000,
+      });
     },
     retry: 0,
   });

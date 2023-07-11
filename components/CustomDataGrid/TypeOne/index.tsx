@@ -138,6 +138,9 @@ const TypeOne: React.FC<TypeOneProps> = ({
               ".MuiDataGrid-columnSeparator": {
                 visibility: "inherit !important",
               },
+              ".MuiDataGrid-columnHeaderTitleContainer": {
+                gap: "5px",
+              },
             }}
             loading={loading}
             slots={{ pagination: customPagination }}

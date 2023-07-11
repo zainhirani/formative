@@ -1,24 +1,20 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import type { NextPage } from "next";
-import PageLayout from "components/PageLayout";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import CusQuizDetails from "./CusQuizDetails";
 import TableSection from "./tableSection";
 import { Box, IconButton } from "@mui/material";
 import FiltersSection from "./filters";
 import { Form, Formik, useFormik } from "formik";
 import { useRouter } from "next/router";
-import { enqueueSnackbar } from "notistack";
-import { TextField } from "@mui/material";
 import { useQuizById } from "providers/Teacher/TeacherQuiz";
 import { isStringNotURL, removeHTMLTags } from "utils";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import RemoveCircleOutlineOutlinedIcon from "@mui/icons-material/RemoveCircleOutlineOutlined";
 import { useQueryClient } from "react-query";
 import { useAppState } from "contexts/AppStateContext";
+import OverlayLoader from "components/OverlayLoader";
 
 const DraftQuizScreen: NextPage = () => {
-  // const [selectedQuestions, setSelectedQuestions] = useState<any>([]);
   const { selectedQuestions, setSelectedQuestions } = useAppState();
   const [nameInput, setNameInput] = useState("");
   const router = useRouter();
@@ -26,7 +22,7 @@ const DraftQuizScreen: NextPage = () => {
   const queryClient = useQueryClient();
   const {
     data: quizByIdData,
-    isFetching: quizByIdIsFetching,
+    isFetching,
     isSuccess,
     refetch,
   } = useQuizById({
@@ -40,53 +36,23 @@ const DraftQuizScreen: NextPage = () => {
     }
     return ids;
   }
-
   useEffect(() => {
     if (editPage) {
-      // setSelectedQuestions([]);
       refetch();
     }
   }, []);
 
-  // console.log(selectedQuestions, "selectedQuestions");
   useEffect(() => {
     if (editPage) {
-      // if (selectedQuestions?.length == 0) {
       if (isSuccess) {
-        // const questionIds2 = extractIds(selectedQuestions);
-        // console.log(questionIds2, "questionIds2");
-        // console.log(selectedQuestions, "selectedQuestions");
-        // quizByIdData?.questions?.map((item: any) => {
-        //   console.log(item?.id, "item?.id");
-        //   console.log(
-        //     !questionIds2.includes(item?.id),
-        //     "!questionIds2.includes(item?.id)",
-        //   );
-        //   if (!questionIds2.includes(item?.id)) {
-        //     setSelectedQuestions([...selectedQuestions, item]);
-        //   }
-        // });
-        // console.log(isSuccess, "start isSuccess");
         setSelectedQuestions(quizByIdData?.questions);
-
-        console.log(quizByIdData?.questions, "quizByIdData?.questions");
-        // console.log(isSuccess, "end isSuccess");
-
-        // quizByIdData?.questions?.map((item: any) => {
-        // if (!questionIds2.includes(item?.id)) {
-        // setSelectedQuestions([...selectedQuestions, item]);
-        // }
-        // });
       }
-      // }
     } else {
       setSelectedQuestions([]);
     }
-    // console.log(selectedQuestions, "selectedQuestions");
   }, [editPage, isSuccess]);
 
   const onSubmit = useCallback((data: any) => {
-    // console.log(data, "data");
     // quizUpdate.mutate({
     //   email: data.email,
     //   password: data.password,
@@ -122,10 +88,10 @@ const DraftQuizScreen: NextPage = () => {
         label: quizEditId ? quizByIdData?.folders?.name : null,
       },
       timeLimitPerSec: quizEditId ? quizByIdData?.timeLimitPerSec : 0,
-      status: {
-        value: quizEditId ? quizByIdData?.status : null,
-        label: quizEditId ? quizByIdData?.status : null,
-      },
+      // status: {
+      //   value: quizEditId ? quizByIdData?.status : null,
+      //   label: quizEditId ? quizByIdData?.status : null,
+      // },
       scoringId: {
         value: quizEditId ? quizByIdData?.scoring?.id : null,
         label: quizEditId ? quizByIdData?.scoring?.scheme : null,
@@ -229,36 +195,48 @@ const DraftQuizScreen: NextPage = () => {
       },
     },
   ];
+  const componentRef = React.useRef(null);
+
+  const reactToPrintContent = React.useCallback(() => {
+    return componentRef.current;
+  }, [componentRef.current]);
+
   return (
-    <Box id="printable-content">
-      <form onSubmit={handleSubmit}>
-        <FiltersSection
-          setFieldValue={setFieldValue}
-          values={values}
-          setNameInput={setNameInput}
-          nameInput={nameInput}
-          handleBlur={handleBlur}
-          handleChange={handleChange}
-          quizByIdData={quizByIdData}
-        />
-        <CusQuizDetails
-          values={values}
-          handleChange={handleChange}
-          setFieldValue={setFieldValue}
-          quizByIdData={quizByIdData}
-          quizByIdIsFetching={quizByIdIsFetching}
-        />
-        <TableSection
-          handleChange={handleChange}
-          setFieldValue={setFieldValue}
-          values={values}
-          quizByIdData={quizByIdData}
-          // selectedQuestions={selectedQuestions}
-          // setSelectedQuestions={setSelectedQuestions}
-          COLUMNS_CONFIG={COLUMNS_CONFIG}
-        />
-      </form>
-    </Box>
+    <>
+      <Box
+        id="printable-content"
+        sx={{ marginBottom: "20px" }}
+        ref={componentRef}
+      >
+        <form onSubmit={handleSubmit}>
+          <FiltersSection
+            setFieldValue={setFieldValue}
+            values={values}
+            setNameInput={setNameInput}
+            nameInput={nameInput}
+            handleBlur={handleBlur}
+            handleChange={handleChange}
+            quizByIdData={quizByIdData}
+          />
+          <CusQuizDetails
+            values={values}
+            handleChange={handleChange}
+            setFieldValue={setFieldValue}
+            quizByIdData={quizByIdData}
+            quizByIdIsFetching={isFetching}
+          />
+          <TableSection
+            handleChange={handleChange}
+            setFieldValue={setFieldValue}
+            values={values}
+            quizByIdData={quizByIdData}
+            COLUMNS_CONFIG={COLUMNS_CONFIG}
+            reactToPrintContent={reactToPrintContent}
+          />
+        </form>
+        <OverlayLoader isShow={isFetching} />
+      </Box>
+    </>
   );
 };
 
