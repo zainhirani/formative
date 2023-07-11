@@ -8,7 +8,7 @@ const OverlayBackdrop = styled(Backdrop)(({ theme }: any) => ({
 }));
 
 interface LoaderProps {
-  isShow?: boolean;
+  isShow?: boolean | undefined;
 }
 
 const OverlayLoader: React.FC = ({ isShow = false }: LoaderProps) => {
