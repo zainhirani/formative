@@ -4,11 +4,13 @@ import { AuthContext } from "contexts/AuthContext";
 import FormattedMessage from "theme/FormattedMessage";
 import messages from "./messages";
 import { BoxWrapper } from "./Styled";
+import { useRegisterDetail } from "providers/Auth";
 
 const HomeScreen: React.FC = () => {
-  const { currentUser } = useContext(AuthContext);
+  // const { currentUser } = useContext(AuthContext);
+  const currentUser = useRegisterDetail();
   // @ts-ignore
-  if (currentUser !== "teacher") {
+  if (currentUser?.data !== "teacher") {
     <p>You are not authorized to access this page.</p>;
   }
   return (
