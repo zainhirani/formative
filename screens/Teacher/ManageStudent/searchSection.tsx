@@ -71,7 +71,7 @@ const SearchSection = (props: any) => {
     if (enrollStudent?.isSuccess) {
       enqueueSnackbar(
         //@ts-ignore
-        `Checked students are now enrolled in ${selected?.label}`,
+        `Selected students are now enrolled in ${selected?.label}`,
         {
           variant: "success",
           autoHideDuration: 3000,
