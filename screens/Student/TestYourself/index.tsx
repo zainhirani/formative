@@ -44,7 +44,7 @@ const TestYourself = () => {
           value: optionsCourse[0]?.value,
           label: optionsCourse[0]?.label,
         }
-      : { value: 0, label: "" };
+      : { value: 0, label: "Please select a category" };
 
   const [category, setCategory] = useState({
     value: defaultOption.value,
@@ -73,10 +73,10 @@ const TestYourself = () => {
 
   const timer = questionDetail?.data?.timelimit;
   const [remainingTime, setRemainingTime] = useState(timer);
-
-  const [checkedStateAns, setCheckedStateAns] = useState(
-    new Array(questionOption?.length).fill(false),
-  );
+  const [checkedStateAns, setCheckedStateAns] = useState([]);
+  useEffect(() => {
+    setCheckedStateAns(new Array(questionOption?.length).fill(false));
+  }, [questionOption]);
   const [selectedOptionKey, setSelectedOptionKey] = useState("");
   const [show, setShow] = useState(false);
 
@@ -246,6 +246,8 @@ const TestYourself = () => {
       <BoxWrapper sx={{ width: { md: "35%", xs: "100%" } }}>
         <SelectBoxWrapper>
           <CustomSelectTestYourSelf
+            placeholder="Please select a category"
+            controlText="Category:"
             value={category}
             dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
             options={optionsCourse}
