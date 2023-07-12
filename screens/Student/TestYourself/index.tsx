@@ -98,13 +98,17 @@ const TestYourself = () => {
   }, [questionDetail?.data]);
 
   const handleOptionChange = (index: number) => {
-    const updatedCheckedState = checkedStateAns.map((_, i) => i === index);
+    const updatedCheckedState = checkedStateAns.map(
+      (_, i) => i === index && !checkedStateAns[index],
+    );
     setCheckedStateAns(updatedCheckedState);
 
-    const selectedOptionKey = updatedCheckedState[index]
-      ? questionOption[index]?.key || ""
-      : "";
-    setSelectedOptionKey(selectedOptionKey);
+    if (updatedCheckedState[index]) {
+      const selectedOptionKey = questionOption[index]?.key || "";
+      setSelectedOptionKey(selectedOptionKey);
+    } else {
+      setSelectedOptionKey("");
+    }
   };
 
   const [submit, setSubmit] = useState(false);
