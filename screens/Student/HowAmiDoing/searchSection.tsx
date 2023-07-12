@@ -1,8 +1,7 @@
 import { Box, IconButton, InputAdornment, TextField } from "@mui/material";
-import { Clear, Search } from "@mui/icons-material";
+import { Search } from "@mui/icons-material";
 import {
   BoxWrapper,
-  ButtonWrapper,
   SelectBoxWrapper,
   TextFieldStyled,
 } from "./Styled";
@@ -11,11 +10,10 @@ import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import messages from "./messages";
 import CustomSelect from "components/CustomSelect/CustomSelect";
 import CustomeDatePicker from "components/CustomeDatePicker";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useQuizResultsCourseListing } from "providers/Students/How_Am_I_Doing";
 import { Grid } from "@material-ui/core";
 import { GridClearIcon } from "@mui/x-data-grid";
-import dayjs from "dayjs";
 import { debounce } from "lodash";
 
 interface SearchSectionProps {

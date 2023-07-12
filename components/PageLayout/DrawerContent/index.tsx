@@ -20,6 +20,7 @@ import SidebarMultiMenuItem from "./SidebarIMultiMenuItem";
 import { DrawerHeader } from "./Styled";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useAuthContext } from "contexts/AuthContext";
+import { useRegisterDetail } from "providers/Auth";
 
 interface BarComponentProps {
   open?: boolean;
@@ -28,9 +29,10 @@ interface BarComponentProps {
 
 const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
   const router = useRouter();
-  const { signOut, currentUser } = useAuthContext();
+  const { signOut } = useAuthContext();
+  const currentUser = useRegisterDetail();
 
-  let MENU_ITEMS = currentUser?.type === "ADMIN" ? TEACHER_MENU : STUDENT_MENU;
+  let MENU_ITEMS = currentUser?.data?.type === "ADMIN" ? TEACHER_MENU : STUDENT_MENU;
   let COMMON_MENU_ITEMS = [COMMON_MENU.profile, COMMON_MENU.settings];
 
   const isActiveRoute = (route: string) => {

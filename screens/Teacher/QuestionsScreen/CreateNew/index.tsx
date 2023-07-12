@@ -52,6 +52,7 @@ import Head from "next/head";
 import { TYPE_OPTIONS } from "constants/Types";
 import { STATUS } from "constants/Status";
 import { useTheme } from "@mui/material/styles";
+import { useRegisterDetail } from "providers/Auth";
 
 interface QuestionProps {
   qId?: any;
@@ -60,7 +61,8 @@ interface QuestionProps {
 const AddQuestion = ({ qId }: QuestionProps) => {
   const theme = useTheme();
   let { enqueueSnackbar } = useSnackbar();
-  const { currentUser } = useAuthContext();
+  // const { currentUser } = useAuthContext();
+  const currentUser = useRegisterDetail();
 
   // Queries
   const deleteQuestion = useDeleteQuestion();
@@ -112,7 +114,7 @@ const AddQuestion = ({ qId }: QuestionProps) => {
   );
 
   useEffect(() => {
-    setAuthorName(`${currentUser?.first_name} ${currentUser?.last_name}`);
+    setAuthorName(`${currentUser?.data?.first_name} ${currentUser?.data.last_name}`);
     setQuestionId(questionCountData.data?.count + 1);
   }, [currentUser, questionCountData]);
 
