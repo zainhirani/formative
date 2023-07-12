@@ -38,7 +38,7 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
   };
   return (
     <>
-      <DrawerHeader>
+      <DrawerHeader sx={{ paddingTop: "20px" }}>
         <Box
           sx={{
             height: 50,
@@ -61,7 +61,7 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
         </IconButton>
       </DrawerHeader>
 
-      <List sx={{ height: "100%" }}>
+      <List sx={{ height: "100%", paddingTop: "45px" }}>
         {MENU_ITEMS.map((item: any, index) =>
           item?.subitems?.length ? (
             <SidebarMultiMenuItem item={item} key={index} hamOpen={open} />
@@ -73,11 +73,15 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
                 backgroundColor: isActiveRoute(item.link)
                   ? "#68151E"
                   : "initial",
+                borderLeft: isActiveRoute(item.link)
+                ? "2px solid #fff"
+                : "2px solid transparent",
                 "&:nth-of-type(7)": {
                   marginBottom: "60px",
                 },
                 "&:hover": {
                   background: "#68151E",
+                  borderColor: "#fff",
                 },
               }}
             >
@@ -127,11 +131,15 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
             disablePadding
             sx={{
               backgroundColor: isActiveRoute(item.link) ? "#68151E" : "initial",
+              borderLeft: isActiveRoute(item.link)
+                ? "2px solid #fff"
+                : "2px solid transparent",
               "&:nth-of-type(7)": {
                 marginBottom: "60px",
               },
               "&:hover": {
                 background: "#68151E",
+                borderColor: "#fff",
               },
             }}
           >
@@ -166,7 +174,22 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
       </List>
       {/* Logout Button */}
       <List>
-        <ListItem disablePadding>
+        <ListItem disablePadding
+          sx={{
+            backgroundColor: isActiveRoute("logout") ? "#68151E" : "initial",
+            borderLeft: isActiveRoute("logout")
+              ? "2px solid #fff"
+              : "2px solid transparent",
+            "&:hover": {
+              background: "#68151E",
+              borderColor: "#fff",
+            },
+            "&:focus": {
+              background: "#68151E",
+              borderColor: "#fff",
+            },
+          }}
+        >
           {/* <Link href="#" passHref={true}> */}
           <ListItemButton onClick={() => signOut()}>
             <ListItemIcon
