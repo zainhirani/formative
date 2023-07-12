@@ -44,7 +44,7 @@ const TestYourself = () => {
           value: optionsCourse[0]?.value,
           label: optionsCourse[0]?.label,
         }
-      : { value: 0, label: "" };
+      : { value: 0, label: "Please select a category" };
 
   const [category, setCategory] = useState({
     value: defaultOption.value,
@@ -71,12 +71,20 @@ const TestYourself = () => {
     setQuestionListing(questionList?.data || []);
   }, [questionList?.data]);
 
+  console.log(questionOption, "questionOption");
+
   const timer = questionDetail?.data?.timelimit;
   const [remainingTime, setRemainingTime] = useState(timer);
 
-  const [checkedStateAns, setCheckedStateAns] = useState(
-    new Array(questionOption?.length).fill(false),
-  );
+  // const [checkedStateAns, setCheckedStateAns] = useState(
+  //   new Array(questionOption?.length).fill(false),
+  // );
+  const [checkedStateAns, setCheckedStateAns] = useState(() => {
+    const initialCheckedState = questionOption
+      ? new Array(questionOption.length).fill(false)
+      : [];
+    return initialCheckedState;
+  });
   const [selectedOptionKey, setSelectedOptionKey] = useState("");
   const [show, setShow] = useState(false);
 
@@ -97,18 +105,29 @@ const TestYourself = () => {
     }
   }, [questionDetail?.data]);
 
+  // const handleOptionChange = (index: number) => {
+  //   const updatedCheckedState = checkedStateAns.map(
+  //     (_, i) => i === index && !checkedStateAns[index],
+  //   );
+  //   setCheckedStateAns(updatedCheckedState);
+
+  //   if (updatedCheckedState[index]) {
+  //     const selectedOptionKey = questionOption[index]?.key || "";
+  //     setSelectedOptionKey(selectedOptionKey);
+  //   } else {
+  //     setSelectedOptionKey("");
+  //   }
+  // };
+  console.log(checkedStateAns, "checked");
+
   const handleOptionChange = (index: number) => {
-    const updatedCheckedState = checkedStateAns.map(
-      (_, i) => i === index && !checkedStateAns[index],
-    );
+    const updatedCheckedState = checkedStateAns.map((_, i) => i === index);
     setCheckedStateAns(updatedCheckedState);
 
-    if (updatedCheckedState[index]) {
-      const selectedOptionKey = questionOption[index]?.key || "";
-      setSelectedOptionKey(selectedOptionKey);
-    } else {
-      setSelectedOptionKey("");
-    }
+    const selectedOptionKey = updatedCheckedState[index]
+      ? questionOption[index]?.key || ""
+      : "";
+    setSelectedOptionKey(selectedOptionKey);
   };
 
   const [submit, setSubmit] = useState(false);
@@ -246,6 +265,8 @@ const TestYourself = () => {
       <BoxWrapper sx={{ width: { md: "35%", xs: "100%" } }}>
         <SelectBoxWrapper>
           <CustomSelectTestYourSelf
+            placeholder="Please select a category"
+            controlText="Category:"
             value={category}
             dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
             options={optionsCourse}
