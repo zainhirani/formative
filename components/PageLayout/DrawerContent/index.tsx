@@ -31,7 +31,7 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
   const { signOut, currentUser } = useAuthContext();
 
   let MENU_ITEMS = currentUser?.type === "ADMIN" ? TEACHER_MENU : STUDENT_MENU;
-  let COMMON_MENU_ITEMS = [COMMON_MENU.profile, COMMON_MENU.settings];
+  let COMMON_MENU_ITEMS = [COMMON_MENU.profile];
 
   const isActiveRoute = (route: string) => {
     return router.pathname === route;

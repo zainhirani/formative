@@ -33,6 +33,8 @@ const initialItems: ListItemData[] = [
   { id: "1", text: "Option A", correct: false, locked: false, inputText: "" },
 ];
 
+const MAX_ANSWER_OPTIONS = 8;
+
 const AnswerOptions = (props: AnswerOptionsProps) => {
   let { onChange = () => {}, options, isEdit } = props;
   const [items, setItems] = useState<ListItemData[]>(initialItems);
@@ -84,7 +86,7 @@ const AnswerOptions = (props: AnswerOptionsProps) => {
     setItems(updatedItems);
   };
   const handleAddItem = () => {
-    if (items.length == 4) return;
+    if (items.length == MAX_ANSWER_OPTIONS) return;
     const newItem: ListItemData = {
       id: counter.toString(),
       text: getNextOptionText(),
@@ -184,7 +186,7 @@ const AnswerOptions = (props: AnswerOptionsProps) => {
         ))}
       </List>
       <Button
-        disabled={items.length == 4}
+        disabled={items.length == MAX_ANSWER_OPTIONS}
         sx={{ textTransform: "capitalize" }}
         startIcon={<AddCircleOutlineRoundedIcon />}
         onClick={handleAddItem}
