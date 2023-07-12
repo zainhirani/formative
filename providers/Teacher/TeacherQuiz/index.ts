@@ -14,6 +14,7 @@ import QUERY_KEYS from 'queries/QueriesKeyConstant';
 import { enqueueSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
 import APP_ROUTES from 'constants/RouteConstants';
+import { useAppState } from 'contexts/AppStateContext';
 
 
 const KEY = "Quiz";
@@ -51,8 +52,12 @@ export function useTeacherQuizListing(
 export function useQuizById(
   props?: Quiz.QuizByIdProps,
 ): UseQueryResult<Quiz.QuizByIdResponse> {
+  const { setSelectedQuestions } = useAppState();
   return useQuery(QUERY_KEYS.QUIZ_BY_ID, () => api.allTeacherQuizById(props), {
     enabled:Boolean(props?.id),
+    onSuccess:(data)=>{
+      setSelectedQuestions(data?.questions);
+    }
     // cacheTime: 0,
   });
 }

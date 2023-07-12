@@ -181,7 +181,7 @@ const CusQuizDetails = (props: any) => {
           </Grid>
           <Grid item className="item" md={2}>
             <SchemeBoxWrapper gridColumn="span 2">
-              <FormControlLabel
+              {/* <FormControlLabel
                 value="Reviewable:"
                 control={
                   <Checkbox
@@ -194,7 +194,7 @@ const CusQuizDetails = (props: any) => {
                 label="Reviewable:"
                 labelPlacement="start"
                 style={{ padding: 0 }}
-              />
+              /> */}
             </SchemeBoxWrapper>
           </Grid>
         </Grid>

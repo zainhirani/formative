@@ -221,7 +221,7 @@ const TableSection = (props: any) => {
     });
   };
 
-  const currentDate = editPage ? dayjs(`${quizByIdData?.start_time}`) : dayjs();
+  const currentDate = dayjs();
 
   const saveCondition = editPage
     ? quizByIdData?.status == "COMPLETED" ||
@@ -249,11 +249,21 @@ const TableSection = (props: any) => {
       : false
     : true;
 
-  useEffect(() => {
-    // console.log(selectedQuestions, "selectedQuestions tablesection");
-  }, [selectedQuestions]);
+  // useEffect(() => {
+  //   console.log(selectedQuestions, "selectedQuestions tablesection");
+  // }, [selectedQuestions]);
+
+  // useEffect(() => {
+  //   if (editPage) {
+  //     setSelectedQuestions(quizByIdData?.questions);
+  //   } else {
+  //     setSelectedQuestions([]);
+  //   }
+  // }, [editPage]);
 
   // console.log(studentCondition, "studentCondition");
+
+  // console.log(selectedQuestions, "selectedQuestions table rerender");
   return (
     <>
       <BoxWrapper>
@@ -327,10 +337,6 @@ const TableSection = (props: any) => {
             >
               Delete
             </ButtonWrapper>
-            {/* </>
-            ) : (
-              ""
-            )} */}
           </ButtonGroup>
         </QuizGroupButtonBox>
       </BoxButtonWrapper>
