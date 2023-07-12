@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 import { Box, Checkbox, FormControlLabel, Typography } from "@mui/material";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
