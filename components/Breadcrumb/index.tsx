@@ -31,7 +31,8 @@ const Breadcrumb = () => {
   const pathnames = router.asPath.split("/").filter((x) => x);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [drawerOpenTooltip, setDrawerOpenTooltip] = useState(false);
-  
+  const [show, setShow] = useState(false);
+
   const handleDrawerTooltipClick = () => {
     setDrawerOpenTooltip(true);
   };
@@ -249,11 +250,13 @@ const Breadcrumb = () => {
         })}
       </Breadcrumbs>
       <HtmlTooltip
+        open={show}
+        onMouseEnter={() => setShow(true)}
         title={
           <React.Fragment>
             {"If you ever need help, this is where to go for support."}
             <br /> <br />
-            <Typography color="inherit">
+            <Typography color="inherit" sx={{cursor: "pointer"}} onClick={() => setShow(false)}>
               <b>Got it</b>
             </Typography>
           </React.Fragment>

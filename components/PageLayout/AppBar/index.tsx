@@ -33,6 +33,7 @@ const AppBarComponent: React.FC<BarComponentProps> = ({
         open={open}
         sx={{
           boxShadow: "none",
+          paddingTop: "10px", 
         }}
       >
         <Toolbar>

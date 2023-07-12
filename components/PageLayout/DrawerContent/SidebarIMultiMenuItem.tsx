@@ -53,11 +53,16 @@ const SidebarMultiMenuItem: React.FC<MenuItem> = ({item, hamOpen}) => {
       sx={{
         background: isActiveRoute(item.link) ? "#68151E" : "",
         flexWrap: "wrap",
+        borderLeft: isActiveRoute(item.link)
+          ? "2px solid #fff"
+          : "2px solid transparent",
         "&:hover": {
           background: "#68151E",
+          borderColor: "#fff",
         },
         "&.has-submenu": {
-          background: "#68151E"
+          background: "#68151E",
+          borderColor: "transparent",
         },
       }}
       className={hasSubmenu && open ? "has-submenu" : ""}
@@ -121,11 +126,12 @@ const SidebarMultiMenuItem: React.FC<MenuItem> = ({item, hamOpen}) => {
                     : "initial",
                   borderLeft: isActiveRoute(sitem.link)
                     ? "2px solid #fff"
-                    : "initial",
+                    : "2px solid transparent",
                   marginBottom: "10px",
                   paddingLeft: "38px",
                   "&:hover": {
                     backgroundColor: "#8C2531",
+                    borderColor: "#fff",
                   },
                 }}
               >
