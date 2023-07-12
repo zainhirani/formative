@@ -223,7 +223,9 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
                         }
                         // onChange={(e) => handleOnChange(el.key, index, e)}
                         // checked={checkedStateAns[index]?.checked}
-                        checked={checkedStateAns && checkedStateAns[index]}
+                        checked={
+                          checkedStateAns && checkedStateAns[index] == true
+                        }
                         id={`custom-checkbox-${index}`}
                         color="default"
                         disabled={submit ? true : false}

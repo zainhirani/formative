@@ -71,20 +71,12 @@ const TestYourself = () => {
     setQuestionListing(questionList?.data || []);
   }, [questionList?.data]);
 
-  console.log(questionOption, "questionOption");
-
   const timer = questionDetail?.data?.timelimit;
   const [remainingTime, setRemainingTime] = useState(timer);
-
-  // const [checkedStateAns, setCheckedStateAns] = useState(
-  //   new Array(questionOption?.length).fill(false),
-  // );
-  const [checkedStateAns, setCheckedStateAns] = useState(() => {
-    const initialCheckedState = questionOption
-      ? new Array(questionOption.length).fill(false)
-      : [];
-    return initialCheckedState;
-  });
+  const [checkedStateAns, setCheckedStateAns] = useState([]);
+  useEffect(() => {
+    setCheckedStateAns(new Array(questionOption?.length).fill(false));
+  }, [questionOption]);
   const [selectedOptionKey, setSelectedOptionKey] = useState("");
   const [show, setShow] = useState(false);
 
@@ -104,21 +96,6 @@ const TestYourself = () => {
       setRemainingTime(timer);
     }
   }, [questionDetail?.data]);
-
-  // const handleOptionChange = (index: number) => {
-  //   const updatedCheckedState = checkedStateAns.map(
-  //     (_, i) => i === index && !checkedStateAns[index],
-  //   );
-  //   setCheckedStateAns(updatedCheckedState);
-
-  //   if (updatedCheckedState[index]) {
-  //     const selectedOptionKey = questionOption[index]?.key || "";
-  //     setSelectedOptionKey(selectedOptionKey);
-  //   } else {
-  //     setSelectedOptionKey("");
-  //   }
-  // };
-  console.log(checkedStateAns, "checked");
 
   const handleOptionChange = (index: number) => {
     const updatedCheckedState = checkedStateAns.map((_, i) => i === index);
