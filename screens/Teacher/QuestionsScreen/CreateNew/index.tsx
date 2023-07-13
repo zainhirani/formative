@@ -49,7 +49,7 @@ import {
 import OverlayLoader from "components/OverlayLoader";
 import { useAuthContext } from "contexts/AuthContext";
 import Head from "next/head";
-import { TYPE_OPTIONS } from "constants/Types";
+import { TYPES, TYPE_OPTIONS } from "constants/Types";
 import { STATUS } from "constants/Status";
 import { useTheme } from "@mui/material/styles";
 import { PUBLIC_IMAGE_URL } from "configs";
@@ -94,12 +94,9 @@ const AddQuestion = ({ qId }: QuestionProps) => {
   const [selectedfacultyCategoryIds, setSelectedFacultyCategoryIds] = useState(
     [],
   );
-
-  const handleRemoveSelectedFacultyCategory = (value: any) => {
-    setSelectedFacultyCategoryIds(
-      selectedfacultyCategoryIds.filter((v) => v.value !== value.value),
-    );
-  };
+  const [answer, setAnswer] = useState("");
+  const [tolerence, setTolerence] = useState("");
+  const [attempts, setAttempts] = useState("");
 
   const question = useFormattedMessage(messages.questNo);
   const questionPlaceholder = useFormattedMessage(messages.questNoValue);
@@ -116,7 +113,7 @@ const AddQuestion = ({ qId }: QuestionProps) => {
 
   useEffect(() => {
     setAuthorName(
-      `${currentUser?.data?.first_name} ${currentUser?.data.last_name}`,
+      `${currentUser?.data?.first_name} ${currentUser?.data?.last_name}`,
     );
     setQuestionId(questionCountData.data?.count + 1);
   }, [currentUser, questionCountData]);
@@ -127,9 +124,6 @@ const AddQuestion = ({ qId }: QuestionProps) => {
 
       if (details.media) {
         let url = "";
-        // if (!isStringNotURL(details.media)) {
-        //   return;
-        // }
         url = `${PUBLIC_IMAGE_URL}/${details.media}`;
         setMedia(url);
       }
@@ -152,7 +146,16 @@ const AddQuestion = ({ qId }: QuestionProps) => {
         { label: details?.categories.name, value: details?.categories.id },
       ]);
       setDetail(details.detail);
-      setAnswerOptions(formatOptions(details?.option, details?.answer));
+
+      if ([TYPES.SA, TYPES.NUM].includes(details?.type)) {
+        setAnswer(details?.answer);
+        setAttempts(details?.attempts);
+        if (details.type == TYPES.NUM) {
+          setTolerence(details?.acceptable_ans);
+        }
+      } else {
+        setAnswerOptions(formatOptions(details?.option, details?.answer));
+      }
     }
   }, [questionDetails.data, qId]);
 
@@ -216,10 +219,28 @@ const AddQuestion = ({ qId }: QuestionProps) => {
     formdata.append("categoryId", selectedCategory.value);
     formdata.append("facultyId", formattedCategoryIds);
     formdata.append("type", enumType.value);
-    formdata.append("answer", `${correctAnswer.join(",")}`);
-    formatArrayOfObjectsForFormData("option", formatedOptions, formdata);
+    formdata.append(
+      "answer",
+      `${
+        [TYPES.SA, TYPES.NUM].includes(enumType.value)
+          ? answer
+          : correctAnswer.join(",")
+      }`,
+    );
+
+    if (![TYPES.SA, TYPES.NUM].includes(enumType.value)) {
+      formatArrayOfObjectsForFormData("option", formatedOptions, formdata);
+    }
+
+    if (enumType.value == TYPES.NUM) {
+      formdata.append("acceptable_ans", parseInt(tolerence));
+    }
+
+    if ([TYPES.SA, TYPES.NUM].includes(enumType.value)) {
+      formdata.append("attempt ", parseInt(attempts));
+    }
+
     if (!qId && media) {
-      console.log("🚀 ~ file: index.tsx:218 ~ handleSubmit ~ qId:", qId);
       formdata.append("img", media);
     }
 
@@ -264,18 +285,40 @@ const AddQuestion = ({ qId }: QuestionProps) => {
         value: detail,
         errorMsg: "Please enter question details",
       },
-      {
-        value: answerOptions.length && answerOptions.length >= 2,
-        errorMsg: "Add atleast 2 options for answer",
-      },
-      {
-        value: answerOptions.find((item) => Boolean(item.correct)),
-        errorMsg: "Select a correct answer",
-      },
-      {
-        value: !Boolean(answerOptions.find((item) => !Boolean(item.inputText))),
-        errorMsg: "Answer text is missing",
-      },
+      // ...(![TYPES.SA, TYPES.NUM].includes(enumType.value)
+      //   ? [
+      //       {
+      //         value: answerOptions.length && answerOptions.length >= 2,
+      //         errorMsg: "Add atleast 2 options for answer",
+      //       },
+      //       {
+      //         value: answerOptions.find((item) => Boolean(item.correct)),
+      //         errorMsg: "Select a correct answer",
+      //       },
+      //       {
+      //         value: !Boolean(
+      //           answerOptions.find((item) => !Boolean(item.inputText)),
+      //         ),
+      //         errorMsg: "Answer text is missing",
+      //       },
+      //     ]
+      //   : [
+      //       {
+      //         value: answer,
+      //         errorMsg: "Please enter the answer",
+      //       },
+      //       {
+      //         value: attempts,
+      //         errorMsg: "Please enter the attempts",
+      //       },
+
+      //       ...(enumType?.value == TYPES.NUM && [
+      //         {
+      //           value: tolerence,
+      //           errorMsg: "Please enter the tolerance",
+      //         },
+      //       ]),
+      //     ]),
     ];
 
     let notFilled = formArr.find((item) => !item.value);
@@ -289,6 +332,13 @@ const AddQuestion = ({ qId }: QuestionProps) => {
       return true;
     }
   };
+
+  const handleRemoveSelectedFacultyCategory = (value: any) => {
+    setSelectedFacultyCategoryIds(
+      selectedfacultyCategoryIds.filter((v) => v.value !== value.value),
+    );
+  };
+
   const STATUS_CLASSES = {
     [STATUS.ACTIVE]: {
       color: theme.additionalColors.activeStatusColor,
@@ -303,6 +353,12 @@ const AddQuestion = ({ qId }: QuestionProps) => {
       icon: <DoNotDisturbOnIcon fontSize="small" />,
     },
   };
+
+  useEffect(() => {
+    console.log("Answer:", answer);
+    console.log("Tolerance:", tolerence);
+    console.log("Attempts:", attempts);
+  }, [answer, tolerence, attempts]);
 
   return (
     <>
@@ -723,6 +779,13 @@ const AddQuestion = ({ qId }: QuestionProps) => {
             {/* Answers  */}
             <BoxWrapper sx={{ p: "20px" }}>
               <AnswerOptions
+                questionType={enumType?.value}
+                answerValue={answer}
+                tolerenceValue={tolerence}
+                attemptsValue={attempts}
+                onAnswerValueChange={setAnswer}
+                onTolerenceValueChange={setTolerence}
+                onAttemptsValueChange={setAttempts}
                 isEdit={qId}
                 onChange={(options) => setAnswerOptions(options)}
                 options={answerOptions}
