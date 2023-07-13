@@ -138,6 +138,9 @@ const TypeOne: React.FC<TypeOneProps> = ({
               ".MuiDataGrid-columnHeaderTitleContainer": {
                 gap: "5px",
               },
+              ".MuiGrid-root .css-1bv2lzm":{
+                cursor:"pointer",
+              },
             }}
             loading={loading}
             slots={{ pagination: customPagination }}
