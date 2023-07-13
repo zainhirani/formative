@@ -21,6 +21,8 @@ import {
 } from "providers/Students/TestYourself/QuestionByCategory";
 import { useTestQuestion } from "providers/Students/TestYourself/TestQuestions";
 import { useQueryClient } from "react-query";
+import { useSnackbar } from "notistack";
+import CloseIcon from "@mui/icons-material/Close";
 
 type Item = {
   id: number;
@@ -31,6 +33,7 @@ type Item = {
 };
 
 const TestYourself = () => {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [questionId, setQuestionId] = useState(0);
   const categoryList = useCategoryListing();
   const questionDetail = useQuestionDetail({ id: questionId });
@@ -62,10 +65,17 @@ const TestYourself = () => {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    if (!questionOption?.length) {
-      setQuestionOption(questionOptions);
+    if (questionOptions?.length > 0) {
+      setQuestionOption((prevQuestionOption) => {
+        if (
+          JSON.stringify(prevQuestionOption) !== JSON.stringify(questionOptions)
+        ) {
+          return [...questionOptions];
+        }
+        return prevQuestionOption;
+      });
     }
-  }, [questionOption, questionOptions]);
+  }, [questionOptions]);
 
   useEffect(() => {
     setQuestionListing(questionList?.data || []);
@@ -74,9 +84,11 @@ const TestYourself = () => {
   const timer = questionDetail?.data?.timelimit;
   const [remainingTime, setRemainingTime] = useState(timer);
   const [checkedStateAns, setCheckedStateAns] = useState([]);
+
   useEffect(() => {
     setCheckedStateAns(new Array(questionOption?.length).fill(false));
   }, [questionOption]);
+
   const [selectedOptionKey, setSelectedOptionKey] = useState("");
   const [show, setShow] = useState(false);
 
@@ -94,6 +106,7 @@ const TestYourself = () => {
   useEffect(() => {
     if (questionDetail?.data) {
       setRemainingTime(timer);
+      setCheckedStateAns(new Array(questionOption?.length).fill(false));
     }
   }, [questionDetail?.data]);
 
@@ -113,13 +126,19 @@ const TestYourself = () => {
 
   const [submit, setSubmit] = useState(false);
 
+  console.log(questionOptions, "questionOptions");
+
+  console.log(questionOption, "questionOption");
+
   const handleOnChange = (position: any, e: any) => {
     setSubmit(false);
-    setCheckedStateAns(new Array(questionData?.options?.length).fill(false));
+    setCheckedStateAns(new Array(questionOption?.length).fill(false));
     setQuestionId(position);
     setRemainingTime(timer);
     setShow(true);
   };
+
+  console.log(checkedStateAns, "checkedStateAns");
 
   const timeSpent =
     (questionDetail?.data?.timelimit || 0) - (remainingTime || 0);
@@ -142,6 +161,23 @@ const TestYourself = () => {
   }, [submitQuestion.isSuccess]);
 
   const isAnswerCorrect = submitQuestion?.data?.data;
+
+  useEffect(() => {
+    remainingTime === 0 &&
+      !checkedStateAns.includes(true) &&
+      (setShow(false),
+      enqueueSnackbar("Time has been finished, please try again!", {
+        variant: "error",
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)} size="small">
+            <CloseIcon sx={{ color: "#fff" }} />
+          </IconButton>
+        ),
+      }));
+    remainingTime === 0 &&
+      checkedStateAns.includes(true) &&
+      (handleQuestionSubmit(), setSubmit(true));
+  }, [remainingTime]);
 
   let configTestYourself = [
     {
