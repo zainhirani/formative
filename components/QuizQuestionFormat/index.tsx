@@ -105,19 +105,27 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
   //   setChecked(value);
   // };
   const questionImage = `${PUBLIC_IMAGE_URL}/${media}`;
-const getTimeColor = () => {
-    if (timeSpent <= 10) {
+  const integerTimeSpent = Math.floor(timeSpent);
+  const getTimeColor = () => {
+    if (integerTimeSpent <= 10) {
       return "#ff0000";
-    } else if (timeSpent <= 30) {
+    } else if (integerTimeSpent <= 30) {
       return "orange";
-    } else if (timeSpent <= 60) {
+    } else if (integerTimeSpent <= 60) {
       return "#005E84";
     } else {
       return "#225A41";
     }
   };
+  console.log(questionContext,"--------------------------------")
 
+  function removeHtmlTags(htmlString:any) {
+    const parser = new DOMParser();
+    const parsedHtml = parser.parseFromString(htmlString, 'text/html');
+    return parsedHtml.body.textContent;
+  }
 
+  const plainText = removeHtmlTags(questionContext);
 
   return (
     <SideDrawer open={isOpen} onClose={onClose} title={title} loading={loading}>
@@ -251,7 +259,7 @@ const getTimeColor = () => {
           {/* Question Section */}
 
           <Typography sx={{ mt: "30px" }} variant="body1" gutterBottom pl={2}>
-            {questionContext}
+            {plainText}
           </Typography>
 
           <Typography
@@ -311,7 +319,7 @@ const getTimeColor = () => {
                           edge="start"
                           //  checked={checked.indexOf(index) !== -1}
                           // @ts-ignore
-                           checked={quizAnswers.includes(value.value)}
+                          checked={quizAnswers.includes(value.value)}
                           // checked={isChecked}
                           tabIndex={-1}
                           disableRipple
@@ -366,7 +374,7 @@ const getTimeColor = () => {
                     component="span"
                     sx={{ marginLeft: "0.5rem", color: getTimeColor() }}
                   >
-                    {`${timeSpent} Seconds`}
+                    {`${integerTimeSpent} Seconds`}
                   </Typography>
                 </Box>
               </Box>
