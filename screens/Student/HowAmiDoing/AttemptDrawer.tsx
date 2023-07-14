@@ -6,6 +6,7 @@ import { BoxPaginate, ShowingBox } from "./Styled";
 import { Pagination } from "@material-ui/core";
 import { useAttemptQuiz } from "providers/Students/How_Am_I_Doing";
 import { useAuthContext } from "contexts/AuthContext";
+import { useRegisterDetail } from "providers/Auth";
 
 interface QuizAttemptDrawerProps {
   isOpen: boolean;
@@ -20,7 +21,8 @@ const AttemptDrawer = ({
 }: QuizAttemptDrawerProps) => {
   const [page, setPage] = useState(1);
   const attemptQuizList = useAttemptQuiz({quizId:quizId })
-  const {currentUser} = useAuthContext();
+  // const {currentUser} = useAuthContext();
+  const currentUser = useRegisterDetail();
   const totalRows = attemptQuizList?.data?.questions?.length;
   const totalPages = Math.ceil(totalRows ? totalRows / 1 : 1);
   const paginatedRows = attemptQuizList?.data?.questions?.slice((page - 1) * 1, page * 1);
@@ -56,7 +58,7 @@ const AttemptDrawer = ({
     <>
       <QuizQuestionFormat
         quizOptions={filterOptions}
-        title={`Quiz review for ${currentUser.username} on ${attemptQuizList.data?.course[0].course_name}`}
+        title={`Quiz review for ${currentUser?.data?.username} on ${attemptQuizList.data?.course[0].course_name}`}
         questionContext={paginatedRows?.[0]?.detail}
         actualQuestion={paginatedRows?.[0]?.title}
         isOpen={isOpen}

@@ -18,8 +18,10 @@ import APP_ROUTES from "constants/RouteConstants";
 import { useAuthContext } from "contexts/AuthContext";
 import { generateGreetings } from "utils";
 import Link from "next/link";
+import { useProfileDetail, useUserDetail } from "providers/Users";
 import Head from "next/head";
 import SideDrawer from "components/Drawer";
+import { useRegisterDetail } from "providers/Auth";
 
 // Teacher's Dashboard Content
 const teachersDashboardContent = [
@@ -79,8 +81,11 @@ const studentsDashboardContent = [
 ];
 
 const DashboardScreen = () => {
-  const { currentUser } = useAuthContext();
+  // const { currentUser } = useAuthContext();
+  // const currentUser = useUserDetail();
+  const currentUser = useRegisterDetail();
 
+  console.log(currentUser?.data, "currentUser");
   return (
     <>
       <Head>
@@ -99,7 +104,10 @@ const DashboardScreen = () => {
             }}
           >
             <div>
-              Welcome {currentUser.first_name + " " + currentUser.last_name}
+              Welcome{" "}
+              {currentUser?.data?.first_name +
+                " " +
+                currentUser?.data?.last_name}
             </div>
             <div>{generateGreetings()}</div>
           </Typography>
@@ -108,7 +116,7 @@ const DashboardScreen = () => {
           </Typography>
         </Box>
         <Box sx={{ display: "flex", flexWrap: "wrap", gap: "20px" }} mt={1}>
-          {currentUser?.type === "ADMIN"
+          {currentUser?.data?.type === "ADMIN"
             ? teachersDashboardContent.map((item, index) => (
                 <Link href={item.link}>
                   <Paper

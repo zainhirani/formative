@@ -76,7 +76,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
             )}
           </label>
           <input
-            accept="image/*"
+            accept=".jpg, .jpeg, .png"
             id="image-upload"
             type="file"
             style={{ display: "none" }}

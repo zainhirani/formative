@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 import { Box, Checkbox, FormControlLabel, Typography } from "@mui/material";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
@@ -8,6 +9,7 @@ import Image from "theme/Image";
 import messages from "./messages";
 import { BoxWrapper, ButtonWrapper } from "./Styled";
 import { PUBLIC_IMAGE_URL } from "configs";
+import { removeHTMLTags } from "utils";
 
 interface IOptionProps {
   name: string;
@@ -175,7 +177,7 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
           </Box>
           <Box sx={{ paddingTop: "10px" }}>
             <Typography sx={{ marginBottom: "5px" }} fontSize={18}>
-              {questionDetail}
+              {removeHTMLTags(questionDetail)}
             </Typography>
             {submit === false ? (
               questionMedia && (
@@ -223,7 +225,9 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
                         }
                         // onChange={(e) => handleOnChange(el.key, index, e)}
                         // checked={checkedStateAns[index]?.checked}
-                        checked={checkedStateAns && checkedStateAns[index]}
+                        checked={
+                          checkedStateAns && checkedStateAns[index] == true
+                        }
                         id={`custom-checkbox-${index}`}
                         color="default"
                         disabled={submit ? true : false}

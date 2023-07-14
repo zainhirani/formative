@@ -4,6 +4,7 @@ import QuizQuestionFormat from "components/QuizQuestionFormat";
 import { useAuthContext } from "contexts/AuthContext";
 import { useQuestionDetails } from "providers/Teacher_Questions";
 import { removeHTMLTags } from "utils";
+import { useRegisterDetail } from "providers/Auth";
 
 interface IQuestionDrawerProps {
   isOpen: boolean;
@@ -16,7 +17,8 @@ const ViewQuestion = ({
   onClose,
   questionId,
 }: IQuestionDrawerProps) => {
-  const { currentUser } = useAuthContext();
+  // const { currentUser } = useAuthContext();
+  const currentUser = useRegisterDetail();
   const questionDetails = useQuestionDetails({
     questionId: questionId,
   });
@@ -41,7 +43,7 @@ const ViewQuestion = ({
   return (
     <>
       <QuizQuestionFormat
-        title={` ${currentUser.name} this is how Question ${questionDetails?.data?.id} appears to student`}
+        title={` ${currentUser?.data?.name} this is how Question ${questionDetails?.data?.id} appears to student`}
         isOpen={isOpen}
         onClose={onClose}
         isShowScoreBar={false}
@@ -54,11 +56,7 @@ const ViewQuestion = ({
         questionIdNum={questionDetails?.data?.id}
         loading={questionDetails?.isFetching}
         answerStats={answerStats}
-        media={
-          questionDetails?.data?.media
-            ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${questionDetails?.data?.media}`
-            : ""
-        }
+        media={questionDetails?.data?.media ? questionDetails?.data?.media : ""}
         quizAnswers={questionDetails?.data?.answer}
       />
     </>

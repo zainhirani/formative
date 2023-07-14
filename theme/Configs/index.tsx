@@ -155,6 +155,12 @@ export let getDesignTokens = (mode: PaletteMode) => {
                 backgroundColor: theme.palette.primary.dark,
               },
             input: {
+              "&::-ms-reveal": {
+                display: "none",
+              },
+              "&::-ms-clear": {
+                display: "none",
+              },
               "&[type=number]": {
                 "-moz-appearance": "textfield",
               },
