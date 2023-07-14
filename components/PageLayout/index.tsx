@@ -21,7 +21,7 @@ interface Props {
 const PageLayout = (props: Props) => {
   const primaryDrawerWidth = 220;
   const [open, setOpen] = React.useState(true);
-  const { currentUser } = useAuthContext();
+  const currentUser = useRegisterDetail();
   const router = useRouter();
 
   const handleDrawerOpen = () => {

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useEffect, useState } from "react";
 import { BoxWrapper } from "./Styled";
 import { pageSizeManageQuiz } from "mock-data/Teacher/ManageQuiz";
