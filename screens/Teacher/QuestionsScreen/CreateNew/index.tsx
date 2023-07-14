@@ -148,7 +148,7 @@ const AddQuestion = ({ qId }: QuestionProps) => {
       setDetail(details.detail);
 
       if ([TYPES.SA, TYPES.NUM].includes(details?.type)) {
-        // setAnswer(Number(details?.answer));
+        setAnswer(Number(details?.answer));
         setAnswer(2);
         setAttempts(details?.attempt);
         if (details.type == TYPES.NUM) {
