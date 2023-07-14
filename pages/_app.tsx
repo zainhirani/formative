@@ -90,8 +90,8 @@ class MyApp extends App<{
         <ThemeProvider>
           <IntlProvider locale={locale || "en"} messages={messages}>
             <SessionProvider session={session}>
-              <AuthContextProvider>
-                <QueryClientProvider client={queryClient}>
+              <QueryClientProvider client={queryClient}>
+                <AuthContextProvider>
                   <AppStateProvider>
                     <SnackbarProvider
                       anchorOrigin={{
@@ -107,8 +107,8 @@ class MyApp extends App<{
                     </SnackbarProvider>
                   </AppStateProvider>
                   <ReactQueryDevtools initialIsOpen={false} />
-                </QueryClientProvider>
-              </AuthContextProvider>
+                </AuthContextProvider>
+              </QueryClientProvider>
             </SessionProvider>
           </IntlProvider>
         </ThemeProvider>

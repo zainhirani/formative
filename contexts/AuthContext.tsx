@@ -15,6 +15,7 @@ import { getAuthenticationToken, setAuthenticationHeader } from "services";
 import { Register } from "providers/Auth/types";
 // import { FLEET_MANAGEMENT } from "constants/routes";
 // import OverlayLoader from "theme/Loader/OverlayLoader";
+import { useRegisterDetail } from "providers/Auth";
 
 interface AuthContextType {
   currentUser: Register.Fields;
@@ -30,6 +31,7 @@ const AuthContext = createContext({} as AuthContextType);
 const AUTHENTICATION_PATH = [AUTH_LOGIN_URL, AUTH_SIGNUP_URL];
 
 const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
+  const currUser = useRegisterDetail();
   const { data: session, status } = useSession();
   const loading = status === "loading";
   const router = useRouter();
@@ -89,6 +91,10 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
         <CircularProgress />
       </Box>
     );
+  }
+
+  if (!currUser?.data) {
+    signOut();
   }
 
   if (
