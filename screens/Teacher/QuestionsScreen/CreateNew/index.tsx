@@ -148,8 +148,9 @@ const AddQuestion = ({ qId }: QuestionProps) => {
       setDetail(details.detail);
 
       if ([TYPES.SA, TYPES.NUM].includes(details?.type)) {
-        setAnswer(details?.answer);
-        setAttempts(details?.attempts);
+        // setAnswer(Number(details?.answer));
+        setAnswer(2);
+        setAttempts(details?.attempt);
         if (details.type == TYPES.NUM) {
           setTolerence(details?.acceptable_ans);
         }
@@ -223,7 +224,9 @@ const AddQuestion = ({ qId }: QuestionProps) => {
       "answer",
       `${
         [TYPES.SA, TYPES.NUM].includes(enumType.value)
-          ? answer
+          ? TYPES.NUM == enumType.value
+            ? Number(answer)
+            : answer
           : correctAnswer.join(",")
       }`,
     );
@@ -256,7 +259,41 @@ const AddQuestion = ({ qId }: QuestionProps) => {
   };
 
   const validateForm = () => {
-    let formArr = [
+    let validationsForRestQuestion = [
+      {
+        value: answerOptions.length && answerOptions.length >= 2,
+        errorMsg: "Add atleast 2 options for answer",
+      },
+      {
+        value: answerOptions.find((item) => Boolean(item.correct)),
+        errorMsg: "Select a correct answer",
+      },
+      {
+        value: !Boolean(answerOptions.find((item) => !Boolean(item.inputText))),
+        errorMsg: "Answer text is missing",
+      },
+    ];
+
+    let validationsForSAQuestionType = [
+      {
+        value: answer,
+        errorMsg: "Please enter the answer",
+      },
+      {
+        value: attempts,
+        errorMsg: "Please enter the attempts",
+      },
+    ];
+
+    let validationsForNUMQuestionType = [
+      ...validationsForSAQuestionType,
+      {
+        value: tolerence,
+        errorMsg: "Please enter the tolerance",
+      },
+    ];
+
+    let validationSchema = [
       {
         value: title,
         errorMsg: "Please enter a question title",
@@ -285,43 +322,17 @@ const AddQuestion = ({ qId }: QuestionProps) => {
         value: detail,
         errorMsg: "Please enter question details",
       },
-      // ...(![TYPES.SA, TYPES.NUM].includes(enumType.value)
-      //   ? [
-      //       {
-      //         value: answerOptions.length && answerOptions.length >= 2,
-      //         errorMsg: "Add atleast 2 options for answer",
-      //       },
-      //       {
-      //         value: answerOptions.find((item) => Boolean(item.correct)),
-      //         errorMsg: "Select a correct answer",
-      //       },
-      //       {
-      //         value: !Boolean(
-      //           answerOptions.find((item) => !Boolean(item.inputText)),
-      //         ),
-      //         errorMsg: "Answer text is missing",
-      //       },
-      //     ]
-      //   : [
-      //       {
-      //         value: answer,
-      //         errorMsg: "Please enter the answer",
-      //       },
-      //       {
-      //         value: attempts,
-      //         errorMsg: "Please enter the attempts",
-      //       },
-
-      //       ...(enumType?.value == TYPES.NUM && [
-      //         {
-      //           value: tolerence,
-      //           errorMsg: "Please enter the tolerance",
-      //         },
-      //       ]),
-      //     ]),
     ];
 
-    let notFilled = formArr.find((item) => !item.value);
+    if (TYPES.NUM == enumType.value) {
+      validationSchema.push(...validationsForNUMQuestionType);
+    } else if (TYPES.SA == enumType.value) {
+      validationSchema.push(...validationsForSAQuestionType);
+    } else {
+      validationSchema.push(...validationsForRestQuestion);
+    }
+
+    let notFilled = validationSchema.find((item) => !item.value);
     if (notFilled) {
       enqueueSnackbar(notFilled.errorMsg, {
         autoHideDuration: 2000,
@@ -353,12 +364,6 @@ const AddQuestion = ({ qId }: QuestionProps) => {
       icon: <DoNotDisturbOnIcon fontSize="small" />,
     },
   };
-
-  useEffect(() => {
-    console.log("Answer:", answer);
-    console.log("Tolerance:", tolerence);
-    console.log("Attempts:", attempts);
-  }, [answer, tolerence, attempts]);
 
   return (
     <>
