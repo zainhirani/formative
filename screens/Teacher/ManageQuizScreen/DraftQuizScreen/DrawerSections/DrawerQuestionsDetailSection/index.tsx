@@ -65,6 +65,7 @@ const DrawerQuestionsDetailSection = () => {
   return (
     <>
       <QuizQuestionFormat
+        question={questionDetails?.data}
         title={` ${currentUser?.data.name} this is how Question ${questionDetails?.data?.id} appears to student`}
         isOpen={state}
         onClose={handleDrawerCloseQuestion}

@@ -191,12 +191,14 @@ const TableSection = (props: any) => {
       headerName: "Difficulty",
       minWidth: 200,
       flex: 1,
+      renderCell: (params) => params?.row?.difficulty?.toFixed(2),
     },
     {
       field: "std_difficulty",
       headerName: "Std. Difficulty",
       minWidth: 180,
       flex: 1,
+      renderCell: (params) => params?.row?.difficulty?.toFixed(2),
     },
     {
       field: "quick_actions",
