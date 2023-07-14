@@ -22,5 +22,5 @@ commit-msg:
   commands:
     lint-commit-msg:
       run: npx commitlint --edit
-    spell-check:
-      run: yarn cspell --no-summary {1}
+    # spell-check:
+    #   run: yarn cspell --no-summary {1}

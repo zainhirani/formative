@@ -16,13 +16,11 @@ import {
   useQuizNo,
   useScoringListing,
 } from "providers/Teacher/TeacherQuiz";
-import optionsStatus from "constants/Teacher/QuizConstant";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import SaveAsIcon from "@mui/icons-material/SaveAs";
 import { Box } from "@mui/material";
 import { useRouter } from "next/router";
 import ShareIcon from "@material-ui/icons/Share";
-// import { allTeacherQuizNo } from "providers/Teacher/TeacherQuiz/api";
 
 const FiltersSection = (props: any) => {
   const { setFieldValue, values, handleChange, quizByIdData, mValuesForName } =
@@ -33,6 +31,7 @@ const FiltersSection = (props: any) => {
   const router = useRouter();
   const { id: editId } = router.query;
   const editPage = editId == undefined ? false : true;
+
   useEffect(() => {
     quizNumRefetch();
   }, []);
