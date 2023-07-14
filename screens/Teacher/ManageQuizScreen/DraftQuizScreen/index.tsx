@@ -107,7 +107,8 @@ const DraftQuizScreen: NextPage = () => {
     // onSubmit,
   });
 
-  console.log(values?.reviewable, "values?.reviewable");
+  // console.log(values?.reviewable, "values?.reviewable");
+
   function removeQuestionById(idToRemove: any) {
     setSelectedQuestions((prevQuestions: any) =>
       prevQuestions.filter((question: any) => question.id !== idToRemove),

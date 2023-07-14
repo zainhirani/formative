@@ -143,7 +143,7 @@ export function useQuizSave(
       if(data){
         enqueueSnackbar("Quiz Created Successfully", {
           variant: "success",
-          autoHideDuration: 3000,
+          autoHideDuration: 1500,
         });
         router.push(APP_ROUTES.MANAGE_QUIZ)
         // queryClient.invalidateQueries(['Students']);
@@ -152,7 +152,7 @@ export function useQuizSave(
     onError:(error) => {
       enqueueSnackbar(error?.message, {
         variant: "error",
-        autoHideDuration: 3000,
+        autoHideDuration: 1500,
       });
       // console.log(error?.message,);
       // queryClient.invalidateQueries(['Students']);
@@ -178,7 +178,7 @@ export function useQuizSaveEdit(
       if(data){
         enqueueSnackbar("Quiz Updated Successfully", {
           variant: "success",
-          autoHideDuration: 3000,
+          autoHideDuration: 1500,
         });
         router.push(APP_ROUTES.MANAGE_QUIZ);
       }
@@ -187,7 +187,7 @@ export function useQuizSaveEdit(
       // console.log(error?.message);
       enqueueSnackbar(error?.message, {
         variant: "error",
-        autoHideDuration: 3000,
+        autoHideDuration: 1500,
       });
     },
     retry: 0,

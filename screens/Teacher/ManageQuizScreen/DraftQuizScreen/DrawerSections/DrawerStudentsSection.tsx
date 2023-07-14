@@ -59,16 +59,9 @@ const DrawerStudentsSection = (props: any) => {
 
   useEffect(() => {
     if (quizDistribute?.isSuccess) {
-      enqueueSnackbar("Success", {
+      enqueueSnackbar("Success! Quizzes are in place", {
         variant: "success",
-        autoHideDuration: 3000,
-        action: (key) => (
-          <IconButton onClick={() => closeSnackbar(key)}>
-            <GridCloseIcon
-              sx={{ color: (theme) => theme.palette.primary.light }}
-            />
-          </IconButton>
-        ),
+        autoHideDuration: 1500,
       });
     }
   }, [quizDistribute?.isSuccess]);
@@ -77,14 +70,7 @@ const DrawerStudentsSection = (props: any) => {
     if (quizDistribute?.isError) {
       enqueueSnackbar("Error", {
         variant: "error",
-        autoHideDuration: 3000,
-        action: (key) => (
-          <IconButton onClick={() => closeSnackbar(key)}>
-            <GridCloseIcon
-              sx={{ color: (theme) => theme.palette.primary.light }}
-            />
-          </IconButton>
-        ),
+        autoHideDuration: 1500,
       });
     }
   }, [quizDistribute?.isError]);

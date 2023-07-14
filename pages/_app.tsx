@@ -18,6 +18,7 @@ import { AuthContextProvider } from "contexts/AuthContext";
 import ThemeContextProvider from "contexts/ThemeContext";
 import { getLocale, getMessages } from "i18n";
 import ThemeProvider from "theme/Provider";
+import { QuizAddStateProvider } from "contexts/QuizAddStateContext";
 
 const queryCache = new QueryCache();
 
@@ -25,9 +26,9 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: 0,
-      refetchOnWindowFocus: true,
+      refetchOnWindowFocus: false,
       // refetchOnMount: false,
-      keepPreviousData: true,
+      keepPreviousData: false,
       staleTime: Infinity,
     },
   },
@@ -91,20 +92,22 @@ class MyApp extends App<{
             <SessionProvider session={session}>
               <AuthContextProvider>
                 <QueryClientProvider client={queryClient}>
-                  <AppStateProvider>
-                    <SnackbarProvider
-                      anchorOrigin={{
-                        vertical: "top",
-                        horizontal: "center",
-                      }}
-                    >
-                      <Hydrate state={pageProps.dehydratedState}>
-                        <PageLayout>
-                          <Component {...pageProps} />
-                        </PageLayout>
-                      </Hydrate>
-                    </SnackbarProvider>
-                  </AppStateProvider>
+                  <QuizAddStateProvider>
+                    <AppStateProvider>
+                      <SnackbarProvider
+                        anchorOrigin={{
+                          vertical: "top",
+                          horizontal: "center",
+                        }}
+                      >
+                        <Hydrate state={pageProps.dehydratedState}>
+                          <PageLayout>
+                            <Component {...pageProps} />
+                          </PageLayout>
+                        </Hydrate>
+                      </SnackbarProvider>
+                    </AppStateProvider>
+                  </QuizAddStateProvider>
                   <ReactQueryDevtools initialIsOpen={false} />
                 </QueryClientProvider>
               </AuthContextProvider>
@@ -117,4 +120,4 @@ class MyApp extends App<{
   }
 }
 
-export default MyApp;
+export default React.memo(MyApp);
