@@ -11,6 +11,7 @@ interface TypeTwoProps {
   buttonArray?: ButtonConfig[];
   checkboxSelection?: boolean;
   onRowClick?: () => void;
+  loading?: boolean;
 }
 
 const TypeTwo: React.FC<TypeTwoProps> = ({
@@ -18,6 +19,7 @@ const TypeTwo: React.FC<TypeTwoProps> = ({
   rows,
   columns,
   buttonArray,
+  loading,
   onRowClick = () => {},
   ...props
 }) => {
@@ -41,29 +43,46 @@ const TypeTwo: React.FC<TypeTwoProps> = ({
                   disableColumnSelector
                   disableDensitySelector
                   disableRowSelectionOnClick
+                  loading={loading}
                   {...props}
+                  sx={{
+                    ".MuiDataGrid-iconButtonContainer": {
+                      visibility: "visible",
+                    },
+                    ".MuiDataGrid-sortIcon": {
+                      opacity: "inherit !important",
+                      color: (theme) => theme.palette.primary.main,
+                    },
+                    ".MuiDataGrid-columnSeparator": {
+                      visibility: "inherit !important",
+                    },
+                    ".MuiDataGrid-columnHeaderTitleContainer": {
+                      gap: "5px",
+                    },
+                  }}
+                  localeText={{
+                    noRowsLabel: "No data found",
+                  }}
                 />
               </Box>
             </Grid>
 
             <Grid item xs={3}>
               <Showed>
-                Showing {rows.length} of {rows.length}
+                Showing {rows?.length} of {rows?.length}
               </Showed>
             </Grid>
             <Grid item xs={9} className="table_row_btn">
               {buttonArray?.map((button) => {
                 return (
-                  <>
-                    <ButtonWrapper
-                      key={button?.key}
-                      onClick={button?.onClick}
-                      startIcon={button?.startIcon}
-                      className={"print_arrow_btn"}
-                    >
-                      {button?.render()}
-                    </ButtonWrapper>
-                  </>
+                  <ButtonWrapper
+                    key={button?.key}
+                    onClick={button?.onClick}
+                    startIcon={button?.startIcon}
+                    className={"print_arrow_btn"}
+                  >
+                    {button?.render()}
+                  </ButtonWrapper>
                 );
               })}
             </Grid>

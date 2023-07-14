@@ -4,8 +4,16 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { USERIMAGE } from "configs";
+import { useAuthContext } from "contexts/AuthContext";
 
 const RightMenu = () => {
+  const { currentUser } = useAuthContext();
+  const name = currentUser.first_name.concat(" ", currentUser.last_name);
+  const userImage = name
+    ?.split(" ")
+    .map((word) => word.charAt(0))
+    .join("");
+
   return (
     <>
       {/* <ThemeSwitcher /> */}
@@ -17,11 +25,26 @@ const RightMenu = () => {
           color: (theme) => theme.palette.primary.dark,
         }}
       >
-        <Avatar
-          sx={{ width: 40, height: 40, border: "1px solid #EAEAEA" }}
-          alt="Kavin"
-          src={USERIMAGE}
-        />
+        {" "}
+        {userImage && (
+          <Box
+            sx={{
+              background: (theme) => theme.palette.primary.main,
+              width: "40px",
+              height: "40px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: "50%",
+            }}
+          >
+            <Typography
+              sx={{ color: (theme) => theme.palette.background.default }}
+            >
+              {userImage}
+            </Typography>
+          </Box>
+        )}
         <Typography
           gutterBottom
           variant="h5"
@@ -33,7 +56,7 @@ const RightMenu = () => {
             fontWeight: "400",
           }}
         >
-          Hi, Kevin B.
+          Hi, {name}.
         </Typography>
       </Box>
     </>

@@ -12,12 +12,13 @@ import FormattedMessage from "theme/FormattedMessage";
 import messages from "screens/Teacher/ManageQuizScreen/messages";
 import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import Link from "next/link";
+import APP_ROUTES from "constants/RouteConstants";
 
 export const pageSizeManageQuiz = 12;
 
 export const columnsManageQuiz: GridColDef[] = [
   {
-    field: "quizNoSort",
+    field: "id",
     headerName: "Quiz No. sort",
     minWidth: 180,
     flex: 1,
@@ -26,17 +27,21 @@ export const columnsManageQuiz: GridColDef[] = [
       return (
         <Grid container spacing={3} alignItems="center">
           <Grid item xs>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: "2px",
-                color: (theme) => theme.palette.text.primary,
-                fontWeight: "700",
-              }}
-            >
-              {num} <ArrowForwardRoundedIcon style={{ fontSize: "20px" }} />
-            </Box>
+            <Link href={`${APP_ROUTES.EDIT_QUIZ.replace("[id]", params?.id)}`}>
+              <Box
+                sx={{
+                  width: "inline",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "2px",
+                  color: (theme) => theme.palette.text.primary,
+                  fontWeight: "700",
+                  cursor: "pointer",
+                }}
+              >
+                {num} <ArrowForwardRoundedIcon style={{ fontSize: "20px" }} />
+              </Box>
+            </Link>
           </Grid>
         </Grid>
       );
@@ -49,16 +54,22 @@ export const columnsManageQuiz: GridColDef[] = [
     flex: 1,
   },
   {
-    field: "course",
+    field: "courses",
     headerName: "Course",
     minWidth: 150,
     flex: 1,
+    renderCell: (params: any) => {
+      return params?.row?.courses?.course_name;
+    },
   },
   {
-    field: "folder",
+    field: "folders",
     headerName: "Folder",
     minWidth: 150,
     flex: 1,
+    renderCell: (params: any) => {
+      return params?.row?.folders?.name;
+    },
   },
   {
     field: "status",
@@ -69,7 +80,10 @@ export const columnsManageQuiz: GridColDef[] = [
       const status = params.formattedValue;
       return (
         <Grid container spacing={3} alignItems="center">
-          {status == "Draft" ? (
+          {status == "DRAFT" ||
+          status == "AVAILABLE" ||
+          status == "DISTRIBUTED" ||
+          status == "ONGOING" ? (
             <Grid item xs>
               <Box
                 sx={{
@@ -123,7 +137,7 @@ export const columnsManageQuiz: GridColDef[] = [
       return (
         <Grid container spacing={3}>
           <Grid item xs>
-            <Link href={"/teacher/quiz/draft"}>
+            <Link href={`${APP_ROUTES.EDIT_QUIZ.replace("[id]", params?.id)}`}>
               <IconButton>
                 <Image alt="quiz-logo" src={editSvg} />
               </IconButton>

@@ -14,7 +14,7 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     router.push(APP_ROUTES.DASHBOARD);
-  }, []);
+  }, [router]);
 
   return (
     <>

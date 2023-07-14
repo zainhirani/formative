@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {
   Box,
   FormHelperText,
@@ -9,19 +10,12 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import {
-  CardHeaderWrapper,
-  InputLabelWrapper,
-  IconButtonWrapper,
-  LoadingButtonWrapper,
-} from "./Styled";
+import { InputLabelWrapper, LoadingButtonWrapper } from "./Styled";
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import { genderSelect, programSelect } from "../RegisterScreen/fields/data";
 import messages from "./messages";
 import { useState, useEffect, useCallback } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
-import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
-import ArrowDropUpOutlinedIcon from "@mui/icons-material/ArrowDropUpOutlined";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { BoxWrapper, ButtonWrapper } from "./Styled";
 import { useFormik } from "formik";
@@ -31,23 +25,29 @@ import { useSnackbar } from "notistack";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import { useRouter } from "next/router";
+import CustomSelect from "components/CustomSelect/CustomSelect";
+import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { year_of_graduation } from "mock-data/Profile";
+import CloseIcon from "@mui/icons-material/Close";
+import { isEqual } from "lodash";
 
 const validationSchema = Yup.object().shape({
-  firstName: Yup.string().required().label("FirstName"),
-  lastName: Yup.string().required().label("LastName"),
-  nickName: Yup.string().required().label("NickName"),
-  gender: Yup.string().required().label("Gender"),
-  email: Yup.string().required().email().label("Email"),
-  rfuID: Yup.string().required().label("RFU ID"),
-  program: Yup.string().required().label("Program"),
-  graduation: Yup.string().required().label("Graduation Year"),
-  birthPlace: Yup.string().required().label("Birth Place"),
-  userName: Yup.string().required().label("User Name"),
-  password: Yup.string().required().min(6).label("Password"),
+  firstName: Yup.string().label("First name"),
+  lastName: Yup.string().label("Last name"),
+  nickName: Yup.string().label("Nick name"),
+  gender: Yup.string().label("Gender"),
+  email: Yup.string().email().label("Email"),
+  rfuID: Yup.string().label("RFU ID"),
+  program: Yup.string().label("Program"),
+  graduation: Yup.string().label("Graduation Year"),
+  birthPlace: Yup.string().label("Birthplace"),
+  userName: Yup.string().label("User Name"),
+  password: Yup.string().min(6).label("Password"),
   confirmPassword: Yup.string()
-    .required("Please confirm your password")
+    .label("Please confirm your password")
     .oneOf([Yup.ref("password")], "Passwords do not match"),
-  currentPassword: Yup.string().required().min(6).label("Password"),
+  currentPassword: Yup.string().required().min(6).label("Current Password"),
 });
 
 export const GeneralInfo = () => {
@@ -58,29 +58,33 @@ export const GeneralInfo = () => {
   const nickNamePlaceholder = useFormattedMessage(messages.nickNamePlaceholder);
   const emailPlaceholder = useFormattedMessage(messages.emailPlaceholder);
   const rfuIDPlaceholder = useFormattedMessage(messages.rfuPlaceholder);
-  const graduationPlaceholder = useFormattedMessage(
-    messages.graduationPlaceholder,
-  );
   const birthPlaceholder = useFormattedMessage(messages.birthPlaceholder);
   const userPlaceholder = useFormattedMessage(messages.userPlaceholder);
   const passwordPlaceholder = useFormattedMessage(messages.passwordPlaceholder);
   const confirmPasswordPlaceholder = useFormattedMessage(
     messages.confirmPasswordPlaceholder,
   );
+  const currentPasswordPlaceholder = useFormattedMessage(
+    messages.currentPasswordPlaceholder,
+  );
   const registerUpdate = useRegisterUpdate();
   const registerDetail = useRegisterDetail();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const { enqueueSnackbar } = useSnackbar();
-  const [year, setYear] = useState(
-    registerDetail.data?.year_of_graduation || 2000,
-  );
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [year, setYear] = useState(null);
+
   const router = useRouter();
 
   useEffect(() => {
     if (registerUpdate.isSuccess) {
       enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
         variant: "success",
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)} size="small">
+            <CloseIcon sx={{ color: "#fff" }} />
+          </IconButton>
+        ),
       });
     }
   }, [registerUpdate.isSuccess]);
@@ -90,6 +94,11 @@ export const GeneralInfo = () => {
       const errorMessage = registerUpdate.error.message;
       enqueueSnackbar(errorMessage, {
         variant: "error",
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)} size="small">
+            <CloseIcon sx={{ color: "#fff" }} />
+          </IconButton>
+        ),
       });
     }
   }, [registerUpdate.isError]);
@@ -97,25 +106,31 @@ export const GeneralInfo = () => {
   const onSubmit = useCallback((data: any) => {
     registerUpdate.mutate({
       email: data.email,
-      password: data.password,
+      password: data.currentPassword,
       username: data.userName,
       first_name: data.firstName,
       last_name: data.lastName,
       nick_name: data.nickName,
       gender: data.gender,
-      rfu_id: data.rfuID,
-      year_of_graduation: data.graduation,
+      rfu_id: Number(data.rfuID),
+      year_of_graduation: Number(data.graduation),
       program: data.program,
       birth_place: data.birthPlace,
+      new_password: data.password,
+      new_confirm_password: data.confirmPassword,
     });
   }, []);
-  // console.log(registerDetail.data, "registerDetail");
+  const handleSetYear = (e: Object) => {
+    setFieldValue("graduation", e?.value);
+    setYear(e);
+  };
 
   const {
     handleChange,
     handleSubmit,
     handleBlur,
     errors,
+    initialValues,
     values,
     touched,
     setFieldValue,
@@ -128,7 +143,8 @@ export const GeneralInfo = () => {
       email: registerDetail.data?.email || "",
       rfuID: registerDetail.data?.rfu_id || "",
       program: registerDetail.data?.program || "",
-      graduation: registerDetail.data?.year_of_graduation || 0,
+      // graduation: registerDetail.data?.year_of_graduation || 0,
+      graduation: registerDetail.data?.year_of_graduation || "2022",
       birthPlace: registerDetail.data?.birth_place || "",
       userName: registerDetail.data?.username || "",
       password: "",
@@ -140,17 +156,6 @@ export const GeneralInfo = () => {
     onSubmit,
   });
 
-  const increment = () => {
-    if (year < 2200) {
-      setYear((year) => year + 1);
-    }
-  };
-
-  const decrement = () => {
-    if (year > 1950) {
-      setYear((year) => year - 1);
-    }
-  };
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -271,6 +276,7 @@ export const GeneralInfo = () => {
                 onChange={handleChange}
                 error={Boolean(touched.email && errors.email)}
                 variant="standard"
+                disabled
               />
               {touched.email && errors.email && (
                 <FormHelperText error id="standard-weight-helper-text-email">
@@ -287,8 +293,15 @@ export const GeneralInfo = () => {
                 name="rfuID"
                 placeholder={rfuIDPlaceholder}
                 fullWidth
+                inputProps={{ min: 0 }}
                 type="number"
-                value={values.rfuID}
+                value={
+                  values.rfuID !== ""
+                    ? values.rfuID < 1
+                      ? 1
+                      : parseInt(values.rfuID)
+                    : ""
+                }
                 onBlur={handleBlur}
                 onChange={handleChange}
                 error={Boolean(touched.rfuID && errors.rfuID)}
@@ -339,50 +352,19 @@ export const GeneralInfo = () => {
               <InputLabelWrapper htmlFor="graduation">
                 <FormattedMessage {...messages.graduationLabel} />
               </InputLabelWrapper>
-              <TextField
-                id="graduation"
-                name="graduation"
-                placeholder={graduationPlaceholder}
-                fullWidth
-                type="number"
-                value={year || values.graduation}
-                onBlur={handleBlur}
-                onChange={(e) => {
-                  handleChange;
-                  setYear(parseInt(e.target.value));
-                }}
-                error={Boolean(touched.graduation && errors.graduation)}
-                variant="standard"
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        position: "absolute",
-                        right: 0,
-                        top: "5%",
-                      }}
-                      position="end"
-                    >
-                      <IconButtonWrapper onClick={increment}>
-                        <ArrowDropUpOutlinedIcon />
-                      </IconButtonWrapper>
-                      <IconButtonWrapper onClick={decrement}>
-                        <ArrowDropDownOutlinedIcon />
-                      </IconButtonWrapper>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              {touched.graduation && errors.graduation && (
-                <FormHelperText
-                  error
-                  id="standard-weight-helper-text-graduation"
-                >
-                  {errors.graduation}
-                </FormHelperText>
-              )}
+              <Box
+                sx={{ borderBottom: "1px solid", marginTop: "-10px" }}
+                gridColumn="span 2"
+              >
+                <CustomSelect
+                  name="graduation"
+                  onBlur={handleBlur}
+                  onChange={handleSetYear}
+                  dropdownIcon={<ExpandMoreIcon />}
+                  options={year_of_graduation}
+                  value={{ value: values.graduation, label: values.graduation }}
+                />
+              </Box>
             </Grid>
             <Grid item xs={12} md={3}>
               <InputLabelWrapper htmlFor="birth-place">
@@ -436,7 +418,7 @@ export const GeneralInfo = () => {
             mt: "40px",
             justifyContent: "start",
             width: "max-content",
-            padding: "40px",
+            padding: { md: "40px", sm: "20px", xs: "40px" },
             gap: "20px",
             flexDirection: "column",
             alignItems: "start",
@@ -543,14 +525,15 @@ export const GeneralInfo = () => {
             alignItems: "center",
             mt: "120px",
             background: "transparent",
-            width: "max-content",
+            width: { sm: "100%", xs: "max-content", md: "max-content" },
             position: "relative",
+            flexDirection: { sm: "column", xs: "row", md: "row" },
           }}
         >
           <TextField
             id="currentPassword"
             name="currentPassword"
-            placeholder={passwordPlaceholder}
+            placeholder={currentPasswordPlaceholder}
             fullWidth
             type="password"
             value={values.currentPassword}
@@ -561,7 +544,9 @@ export const GeneralInfo = () => {
             sx={{
               background: (theme) => theme.palette.primary.light,
               borderRadius: "0",
-              width: { md: "350px", xs: "250px" },
+              justifyContent: "center",
+              width: { md: "350px", sm: "100%", xs: "250px" },
+              height: { sm: "50px", xs: "100%", md: "100%" },
               position: "relative",
               px: "10px",
               ".MuiInputBase-root": {
@@ -586,6 +571,7 @@ export const GeneralInfo = () => {
             type="submit"
             loading={registerUpdate.isLoading}
             loadingPosition="start"
+            disabled={isEqual(values, initialValues)}
             sx={{
               background: (theme) => theme.palette.secondary.main,
               width: { xs: "100%", md: "max-content" },
@@ -603,6 +589,7 @@ export const GeneralInfo = () => {
             sx={{
               borderTopRightRadius: (theme) => theme.borderRadius.radius1,
               borderBottomRightRadius: (theme) => theme.borderRadius.radius1,
+              width: { sm: "100%", xs: "max-content", md: "max-content" },
             }}
             startIcon={<HighlightOffIcon />}
             variant="contained"

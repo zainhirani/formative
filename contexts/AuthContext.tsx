@@ -10,14 +10,14 @@ import {
 import { useRouter } from "next/router";
 import { Box, CircularProgress } from "@mui/material";
 import { signOut as logout, signIn, useSession } from "next-auth/react";
-import { AUTH_LOGIN_URL, TOKEN } from "configs";
+import { AUTH_LOGIN_URL, AUTH_SIGNUP_URL, TOKEN } from "configs";
 import { getAuthenticationToken, setAuthenticationHeader } from "services";
-import { register } from "services/auth";
+import { Register } from "providers/Auth/types";
 // import { FLEET_MANAGEMENT } from "constants/routes";
 // import OverlayLoader from "theme/Loader/OverlayLoader";
 
 interface AuthContextType {
-  currentUser: any;
+  currentUser: Register.Fields;
   signOut: () => void;
   signIn: (...args: any) => void;
 }
@@ -27,7 +27,7 @@ interface AuthContextProps {
 
 const AuthContext = createContext({} as AuthContextType);
 
-const AUTHENTICATION_PATH = [AUTH_LOGIN_URL];
+const AUTHENTICATION_PATH = [AUTH_LOGIN_URL, AUTH_SIGNUP_URL];
 
 const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
   const { data: session, status } = useSession();
@@ -49,18 +49,24 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
 
   const signOut = useCallback(async () => {
     logout({ callbackUrl: "/login" });
-    localStorage.clear();
     router?.replace(AUTHENTICATION_PATH[0]!);
+    localStorage.clear();
   }, [router]);
 
   const prevToken = getAuthenticationToken();
   //@ts-ignore
   const currToken: any = session?.accessToken;
 
+  if (currToken && prevToken !== `Bearer ${currToken}`) {
+    setAuthenticationHeader(currToken);
+  }
+
   async function getTokenFunction() {
     if (typeof window !== "undefined") {
-      const getToken = localStorage.getItem(TOKEN);
-      setAuthenticationHeader(getToken);
+      if (router.pathname.includes("register")) {
+        const getToken = localStorage.getItem(TOKEN);
+        setAuthenticationHeader(getToken);
+      }
     }
   }
   if (router.pathname.includes("register")) {
@@ -69,9 +75,6 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
     }, 3000);
   }
   getTokenFunction();
-
-  if (currToken && prevToken !== `Bearer ${currToken}`) {
-  }
 
   if (loading) {
     return (
@@ -86,6 +89,30 @@ const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
         <CircularProgress />
       </Box>
     );
+  }
+
+  if (
+    !!process.browser &&
+    !(AUTHENTICATION_PATH || "").includes(window?.location?.pathname) &&
+    !session?.accessToken &&
+    !loading
+  ) {
+    router.replace(AUTHENTICATION_PATH[0]!);
+    return null;
+  }
+
+  if (
+    !!process.browser &&
+    (AUTHENTICATION_PATH || "").includes(window?.location?.pathname) &&
+    session &&
+    session.accessToken &&
+    !loading
+  ) {
+    const params: { pathname: string; query?: { redirectTo: string } } = {
+      pathname: "/dashboard",
+    };
+    router.replace(params);
+    return null;
   }
 
   return (

@@ -15,17 +15,17 @@ export const AppBar = styled(MuiAppBar, {
   backgroundColor: theme.palette.background.paper,
   boxShadow: theme.shadow.boxShadow,
   backgroundImage: "none",
-  transition: theme.transitions.create(["width", "margin"], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
+  // transition: theme.transitions.create(["width", "margin"], {
+  //   easing: theme.transitions.easing.sharp,
+  //   duration: theme.transitions.duration.leavingScreen,
+  // }),
   ...(open && {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
+    // transition: theme.transitions.create(["width", "margin"], {
+    //   easing: theme.transitions.easing.sharp,
+    //   duration: theme.transitions.duration.enteringScreen,
+    // }),
   }),
 }));
 export const Toolbar = styled(MuiBox)(({ theme }) => ({

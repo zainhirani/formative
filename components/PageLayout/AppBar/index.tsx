@@ -5,6 +5,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Typography from "@mui/material/Typography";
 import RightMenu from "./RightMenu";
 import { AppBar, BoxWrapper, Toolbar } from "./Styled";
+import Breadcrumb from "components/Breadcrumb";
 
 interface BarComponentProps {
   open?: boolean;
@@ -13,6 +14,7 @@ interface BarComponentProps {
   iconAngle?: boolean;
   subText?: string;
   icon?: any;
+  onIconClick?: () => void;
 }
 
 const AppBarComponent: React.FC<BarComponentProps> = ({
@@ -22,6 +24,7 @@ const AppBarComponent: React.FC<BarComponentProps> = ({
   icon,
   iconAngle = false,
   subText,
+  onIconClick,
 }) => {
   return (
     <>
@@ -30,6 +33,7 @@ const AppBarComponent: React.FC<BarComponentProps> = ({
         open={open}
         sx={{
           boxShadow: "none",
+          paddingTop: "10px", 
         }}
       >
         <Toolbar>
@@ -42,11 +46,12 @@ const AppBarComponent: React.FC<BarComponentProps> = ({
               onClick={clickHandler}
               edge="start"
               sx={{
-                marginRight: 5,
+                marginRight: 4,
+                marginLeft: "-16px",
                 "&::before": {
                   content: '""',
                   background: (theme) => theme.palette.primary.main,
-                  width: 60,
+                  width: 54,
                   height: 66,
                   position: "absolute",
                   left: -8,
@@ -54,63 +59,13 @@ const AppBarComponent: React.FC<BarComponentProps> = ({
                   zIndex: -1,
                 },
                 ...(open && { display: "none" }),
-                ...(open && {}),
               }}
             >
               <MenuIcon
                 sx={{ color: (theme) => theme.palette.primary.light }}
               />
             </IconButton>
-            {iconAngle ? (
-              <>
-                <Typography
-                  gutterBottom
-                  variant="h4"
-                  m={0}
-                  sx={{
-                    fontSize: "18px",
-                    display: "flex",
-                    alignItems: "center",
-                    lineHeight: "21px",
-                    fontWeight: "400",
-                    color: (theme) => theme.palette.text.secondary,
-                  }}
-                >
-                  {title}
-                  <IconButton sx={{ p: 0 }}>
-                    <ChevronRightIcon fontSize="large" />
-                  </IconButton>
-                  <Typography
-                    sx={{ color: (theme) => theme.palette.primary.dark }}
-                  >
-                    {subText}
-                  </Typography>
-                  <IconButton
-                    sx={{ color: (theme) => theme.palette.primary.main }}
-                  >
-                    {icon}
-                  </IconButton>
-                </Typography>
-              </>
-            ) : (
-              <Typography
-                gutterBottom
-                variant="h4"
-                m={0}
-                sx={{
-                  fontSize: "18px",
-                  lineHeight: "21px",
-                  fontWeight: "400",
-                }}
-              >
-                {title}
-                <IconButton
-                  sx={{ color: (theme) => theme.palette.primary.main }}
-                >
-                  {icon}
-                </IconButton>
-              </Typography>
-            )}
+            <Breadcrumb />
           </BoxWrapper>
           <BoxWrapper>
             <RightMenu />

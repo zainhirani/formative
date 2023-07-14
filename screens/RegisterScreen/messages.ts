@@ -56,7 +56,7 @@ export default defineMessages({
   },
   birthLabel: {
     id: `${scope}.birthLabel`,
-    defaultMessage: "Birth Place",
+    defaultMessage: "Birthplace",
   },
   userLabel: {
     id: `${scope}.userLabel`,
@@ -167,7 +167,7 @@ export default defineMessages({
   },
   playLabel: {
     id: `${scope}.playLabel`,
-    defaultMessage: "In high school, I played",
+    defaultMessage: "In high school I played",
   },
   volunteerLabel: {
     id: `${scope}.volunteerLabel`,

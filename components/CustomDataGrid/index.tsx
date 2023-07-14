@@ -7,17 +7,25 @@ import TypeThree from "./TypeThree";
 import TypeTwo from "./TypeTwo";
 
 interface CustomDataGridProps {
-  pageSizeData: number;
-  rows: TableRow[];
-  columns: TableColumn[];
-  type: string;
+  pageSizeData?: number;
+  rows?: any[];
+  columns?: TableColumn[];
+  type?: string;
   buttonArray?: ButtonConfig[];
   isCheckbox?: boolean;
-  onRowClick?: () => void;
-  selectedIds: number[];
-  setChecked: any;
+  onRowClick?: (e?: any) => void;
+  selectedIds?: number[];
+  setChecked?: any;
   onRowSelect?: (ids: number[], details: any) => void;
   columnVisibilityModel?: any;
+  loading?: boolean;
+  getSelectedId?: (e?: any) => void;
+  onRowSelectionModelChange?: any;
+  selectionModel?: any;
+  onSelectionModelChange?: any;
+  page?: number;
+  handlePageChange?: (event: React.ChangeEvent<unknown>, value: number) => void;
+  totalRows?: number;
 }
 
 const CustomDataGrid: React.FC<CustomDataGridProps> = ({
@@ -28,8 +36,13 @@ const CustomDataGrid: React.FC<CustomDataGridProps> = ({
   type,
   buttonArray,
   isCheckbox,
-  onRowClick = () => {},
+  onRowClick = (e?: any) => {},
   setChecked,
+  loading,
+  getSelectedId,
+  handlePageChange,
+  page,
+  totalRows,
   ...props
 }) => {
   return (
@@ -44,6 +57,11 @@ const CustomDataGrid: React.FC<CustomDataGridProps> = ({
           checkboxSelection={isCheckbox}
           setChecked={setChecked}
           columnVisibilityModel={columnVisibilityModel}
+          loading={loading}
+          getSelectedId={getSelectedId}
+          page={page}
+          handlePageChange={handlePageChange}
+          totalRows={totalRows}
           {...props}
         />
       ) : type == "2" ? (
@@ -54,6 +72,7 @@ const CustomDataGrid: React.FC<CustomDataGridProps> = ({
           pageSizeData={pageSizeData}
           buttonArray={buttonArray}
           checkboxSelection={isCheckbox}
+          loading={loading}
         />
       ) : type == "3" ? (
         <TypeThree
@@ -70,6 +89,9 @@ const CustomDataGrid: React.FC<CustomDataGridProps> = ({
           pageSizeData={pageSizeData}
           buttonArray={buttonArray}
           checkboxSelection={isCheckbox}
+          onRowClick={onRowClick}
+          loading={loading}
+          {...props}
         />
       ) : (
         ""

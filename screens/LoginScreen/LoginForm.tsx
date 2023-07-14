@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
 import {
   Box,
+  CircularProgress,
   Divider,
   FormHelperText,
   Grid,
@@ -27,42 +28,62 @@ import { ButtonWrapper, LoadingButtonWrapper } from "./Styled";
 import { useAuthContext } from "contexts/AuthContext";
 import { useRouter } from "next/router";
 import { TOKEN } from "configs";
+import CloseIcon from "@mui/icons-material/Close";
 
 const validationSchema = Yup.object().shape({
-  email: Yup.string().required().label("User Name"),
-  password: Yup.string().required().min(6).label("Password"),
+  email: Yup.string().required().email().label("Email"),
+  password: Yup.string().required().label("Password"),
 });
 
 const LoginForm = () => {
   const router = useRouter();
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { signIn } = useAuthContext();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const onSubmit = useCallback(async (data: any) => {
-    try {
-      const response: any = await signIn("credentials", {
-        ...data,
-        redirect: false,
-      });
+    if (!loading) {
       setLoading(true);
-      if (!response?.ok) {
+    }
+    const resp: any = await signIn("credentials", {
+      ...data,
+      redirect: false,
+    });
+    try {
+      setLoading(true);
+      if (!resp?.ok) {
         setLoading(false);
         throw new Error("Request failed");
       }
-      // setLoading(false);
-      enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
-        variant: "success",
-      });
-      localStorage.setItem(TOKEN, response?.data.token);
+      if (!resp.error) {
+        setLoading(true);
+        router.push("/dashboard");
+        enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
+          variant: "success",
+          action: (key) => (
+            <IconButton onClick={() => closeSnackbar(key)} size="small">
+              <CloseIcon sx={{ color: "#fff" }} />
+            </IconButton>
+          ),
+        });
+        // localStorage.setItem(TOKEN, resp?.data.token);
+      }
     } catch (error: any) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      enqueueSnackbar(errorMessage, {
-        variant: "error",
-      });
+      if (resp.error) {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        enqueueSnackbar("Invalid Email or Password", {
+          variant: "error",
+          action: (key) => (
+            <IconButton onClick={() => closeSnackbar(key)} size="small">
+              <CloseIcon sx={{ color: "#fff" }} />
+            </IconButton>
+          ),
+        });
+      }
     }
+    // console.log(resp, "resp");
   }, []);
 
   // use formik
@@ -167,10 +188,10 @@ const LoginForm = () => {
       <Box sx={{ mb: 3 }}></Box>
       <Box>
         <LoadingButtonWrapper
-          disabled={(values.email && values.password) === ""}
+          disabled={(values.email && values.password) === "" || loading}
           type="submit"
           variant="contained"
-          loading={loading}
+          // loading={loading}
           loadingPosition="start"
           sx={{
             ".MuiLoadingButton-loadingIndicator": {
@@ -180,6 +201,20 @@ const LoginForm = () => {
           }}
         >
           <FormattedMessage {...messages.logIn} />
+          {loading && (
+            <CircularProgress
+              size={20}
+              sx={{
+                color: theme => theme.palette.primary.light,
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                marginTop: '-10px',
+                marginLeft: '30px',
+              }}
+            />
+          )} 
+          
         </LoadingButtonWrapper>
         <Divider
           sx={{

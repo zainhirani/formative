@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {
   Box,
   CardContent,
@@ -36,17 +37,21 @@ import * as Yup from "yup";
 import { useRegister } from "providers/Auth";
 import { useSnackbar } from "notistack";
 import { TOKEN } from "configs";
+import CustomSelect from "components/CustomSelect/CustomSelect";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { year_of_graduation } from "mock-data/Profile";
+import CloseIcon from "@mui/icons-material/Close";
 
 const validationSchema = Yup.object().shape({
-  firstName: Yup.string().required().label("FirstName"),
-  lastName: Yup.string().required().label("LastName"),
-  nickName: Yup.string().required().label("NickName"),
+  firstName: Yup.string().required().label("First name"),
+  lastName: Yup.string().required().label("Last name"),
+  nickName: Yup.string().required().label("Nick name"),
   gender: Yup.string().required().label("Gender"),
   email: Yup.string().required().email().label("Email"),
   rfuID: Yup.string().required().label("RFU ID"),
   program: Yup.string().required().label("Program"),
   graduation: Yup.string().required().label("Graduation Year"),
-  birthPlace: Yup.string().required().label("Birth Place"),
+  birthPlace: Yup.string().required().label("Birthplace"),
   userName: Yup.string().required().label("User Name"),
   password: Yup.string().required().min(6).label("Password"),
   confirmPassword: Yup.string()
@@ -60,7 +65,7 @@ interface IStepOneProps {
 
 const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
   const register = useRegister();
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const firstNamePlaceholder = useFormattedMessage(
     messages.firstNamePlaceholder,
   );
@@ -79,7 +84,7 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
   );
   const [genders, setGenders] = useState("Select from the list");
   const [programs, setPrograms] = useState("Select from the list");
-  const [year, setYear] = useState(2000);
+  const [year, setYear] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -87,6 +92,11 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
     if (register.isSuccess) {
       enqueueSnackbar(<FormattedMessage {...messages.successMessage} />, {
         variant: "success",
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)} size="small">
+            <CloseIcon sx={{ color: "#fff" }} />
+          </IconButton>
+        ),
       });
       localStorage.setItem(TOKEN, register?.data.token);
       handleNext();
@@ -98,6 +108,11 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
       const errorMessage = register.error.message;
       enqueueSnackbar(errorMessage, {
         variant: "error",
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)} size="small">
+            <CloseIcon sx={{ color: "#fff" }} />
+          </IconButton>
+        ),
       });
     }
   }, [register.isError]);
@@ -111,14 +126,17 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
       last_name: data.lastName,
       nick_name: data.nickName,
       gender: data.gender,
-      rfu_id: data.rfuID,
-      year_of_graduation: data.graduation,
+      rfu_id: Number(data.rfuID),
+      year_of_graduation: Number(data.graduation),
       program: data.program,
       birth_place: data.birthPlace,
     });
   }, []);
 
-
+  const handleSetYear = (e: Object) => {
+    setFieldValue("graduation", e?.value);
+    setYear(e);
+  };
   const {
     handleChange,
     handleSubmit,
@@ -134,9 +152,9 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
       nickName: "",
       gender: "",
       email: "",
-      rfuID: "",
+      rfuID: 1,
       program: "",
-      graduation: "",
+      graduation: 2022,
       birthPlace: "",
       userName: "",
       password: "",
@@ -145,18 +163,6 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
     validationSchema,
     onSubmit,
   });
-
-  const increment = () => {
-    if (year < 2200) {
-      setYear((year) => year + 1);
-    }
-  };
-
-  const decrement = () => {
-    if (year > 1950) {
-      setYear((year) => year - 1);
-    }
-  };
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -175,7 +181,6 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 error={Boolean(touched.firstName && errors.firstName)}
-                // disabled={disable}
                 variant="standard"
               />
               {touched.firstName && errors.firstName && (
@@ -200,7 +205,6 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 error={Boolean(touched.lastName && errors.lastName)}
-                // disabled={disable}
                 variant="standard"
               />
               {touched.lastName && errors.lastName && (
@@ -222,7 +226,6 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 error={Boolean(touched.nickName && errors.nickName)}
-                // disabled={disable}
                 variant="standard"
               />
               {touched.nickName && errors.nickName && (
@@ -245,7 +248,6 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
                   }
                   setGenders(e.target.value);
                 }}
-                // disabled={disable}
                 variant="standard"
                 fullWidth
                 IconComponent={KeyboardArrowDownIcon}
@@ -281,7 +283,6 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 error={Boolean(touched.email && errors.email)}
-                // disabled={disable}
                 variant="standard"
               />
               {touched.email && errors.email && (
@@ -299,12 +300,19 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
                 name="rfuID"
                 placeholder={rfuIDPlaceholder}
                 fullWidth
+                inputProps={{ min: 0 }}
                 type="number"
-                value={values.rfuID}
+                value={
+                  values.rfuID !== ""
+                    ? values.rfuID < 1
+                      ? 1
+                      : parseInt(values.rfuID)
+                    : ""
+                }
+                inputProps={{ min: 1 }}
                 onBlur={handleBlur}
                 onChange={handleChange}
                 error={Boolean(touched.rfuID && errors.rfuID)}
-                // disabled={disable}
                 variant="standard"
               />
               {touched.rfuID && errors.rfuID && (
@@ -328,7 +336,6 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
                     setPrograms(e.target.value);
                   }
                 }}
-                // disabled={disable}
                 variant="standard"
                 fullWidth
                 sx={{
@@ -354,48 +361,15 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
               <InputLabelWrapper htmlFor="graduation">
                 <FormattedMessage {...messages.graduationLabel} />
               </InputLabelWrapper>
-              <TextField
-                id="graduation"
-                name="graduation"
-                placeholder={graduationPlaceholder}
-                fullWidth
-                type="number"
-                value={year}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                error={Boolean(touched.graduation && errors.graduation)}
-                // disabled={disable}
-                variant="standard"
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        position: "absolute",
-                        right: 0,
-                        top: "5%",
-                      }}
-                      position="end"
-                    >
-                      <IconButtonWrapper onClick={increment}>
-                        <ArrowDropUpOutlinedIcon />
-                      </IconButtonWrapper>
-                      <IconButtonWrapper onClick={decrement}>
-                        <ArrowDropDownOutlinedIcon />
-                      </IconButtonWrapper>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              {touched.graduation && errors.graduation && (
-                <FormHelperText
-                  error
-                  id="standard-weight-helper-text-graduation"
-                >
-                  {errors.graduation}
-                </FormHelperText>
-              )}
+              <Box sx={{ borderBottom: "1px solid" }} gridColumn="span 2">
+                <CustomSelect
+                  name="graduation"
+                  onBlur={handleBlur}
+                  onChange={handleSetYear}
+                  dropdownIcon={<ExpandMoreIcon />}
+                  options={year_of_graduation}
+                />
+              </Box>
             </Grid>
             <Grid item xs={12} md={6}>
               <InputLabelWrapper htmlFor="birth-place">
@@ -410,8 +384,8 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 error={Boolean(touched.birthPlace && errors.birthPlace)}
-                // disabled={disable}
                 variant="standard"
+                sx={{ mt: "10px" }}
               />
               {touched.birthPlace && errors.birthPlace && (
                 <FormHelperText
@@ -435,7 +409,6 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 error={Boolean(touched.userName && errors.userName)}
-                // disabled={disable}
                 variant="standard"
               />
               {touched.userName && errors.userName && (
@@ -458,7 +431,6 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 error={Boolean(touched.password && errors.password)}
-                // disabled={disable}
                 variant="standard"
                 InputProps={{
                   endAdornment: (
@@ -500,7 +472,6 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
                 error={Boolean(
                   touched.confirmPassword && errors.confirmPassword,
                 )}
-                // disabled={disable}
                 variant="standard"
                 InputProps={{
                   endAdornment: (
@@ -538,16 +509,15 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
           variant="contained"
           type="submit"
           loading={register.isLoading}
-          loadingPosition="start"
+          loadingPosition="end"
           sx={{
             flex: "1 1 auto",
             marginTop: "30px",
             ".MuiLoadingButton-loadingIndicator": {
               top: "35%",
-              left: "35%",
+              right: "32%",
             },
           }}
-          // onClick={handleNext}
           disabled={
             (values.firstName &&
               values.lastName &&

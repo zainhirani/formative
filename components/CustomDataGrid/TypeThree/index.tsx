@@ -39,6 +39,25 @@ const TypeThree: React.FC<TypeThreeProps> = ({
             disableDensitySelector
             disableRowSelectionOnClick
             {...props}
+            sx={{
+              ".MuiDataGrid-iconButtonContainer": {
+                visibility: "visible",
+              },
+              ".MuiDataGrid-sortIcon": {
+                opacity: "inherit !important",
+                color: (theme) => theme.palette.primary.main,
+              },
+              ".MuiDataGrid-columnSeparator": {
+                visibility: "inherit !important",
+              },
+
+              ".MuiDataGrid-columnHeaderTitleContainer": {
+                gap: "5px",
+              },
+            }}
+            localeText={{
+              noRowsLabel: "No data found",
+            }}
           />
         </Grid>
       </Grid>

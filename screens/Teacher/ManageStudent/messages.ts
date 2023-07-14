@@ -3,7 +3,7 @@
  *
  * This contains all the text for the ManageQuizScreen
  */
-
+ 
 import { defineMessages } from "react-intl";
 
 export const scope = "app.screens.ManageQuizScreen";
@@ -40,5 +40,9 @@ export default defineMessages({
   successMessage: {
     id: `${scope}.successMessage`,
     defaultMessage: "All selected students are enrolled in the selected course.",
+  },
+  errorMessage: {
+    id: `${scope}.errorMessage`,
+    defaultMessage: "Error in enrolling student",
   },
 });

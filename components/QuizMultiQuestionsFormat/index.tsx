@@ -1,15 +1,6 @@
-import React, { FC, useState } from "react";
-import {
-  Box,
-  Button,
-  Checkbox,
-  FormControlLabel,
-  Typography,
-} from "@mui/material";
+import React, { FC, useEffect } from "react";
+import { Box, Checkbox, FormControlLabel, Typography } from "@mui/material";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-
 import messages from "screens/Student/TakeQuiz/messages";
 import {
   ButtonWrapper,
@@ -17,8 +8,11 @@ import {
 } from "screens/Student/TakeQuiz/Styled";
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
 import Image from "theme/Image";
-
 import { BoxWrapper } from "../TakeQuizFormat/Styled";
+import { PUBLIC_IMAGE_URL } from "configs";
+import { isStringNotURL, removeHTMLTags } from "utils";
+import { useQuesAttempt } from "providers/Student/TakeQuiz";
+import { useAppState } from "contexts/AppStateContext";
 
 interface IOptionProps {
   name: string;
@@ -27,49 +21,97 @@ interface IOptionProps {
 }
 
 type ITakeQuizProps = {
-  id: string;
-  QNo: string;
-  question: string;
-  image?: string;
-  options: IOptionProps[];
-  time?: number;
-  questionSelected: boolean;
+  onOptionChange?: (optionId: string) => void;
   handleNext?: () => void;
+  quesQuizByIdData?: any;
+  selectedQuizId?: number;
+  questionOptionNew?: any;
+  setQuestionOptionNew?: any;
+  remainingTime?: any;
 };
 
 const Question: FC<ITakeQuizProps> = ({
-  question,
-  image,
-  options,
-  time,
-  QNo,
-  id,
-  questionSelected,
+  quesQuizByIdData,
+  onOptionChange,
   handleNext,
+  selectedQuizId,
+  questionOptionNew,
+  setQuestionOptionNew,
+  remainingTime,
 }): JSX.Element => {
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-  const quizScore = useFormattedMessage(messages.quizScore);
+  const {
+    selectedOptions,
+    setSelectedOptions,
+    anwserCorrect,
+    setAnwserCorrect,
+  } = useAppState();
 
-  const handleOptionChange = (optionId: string) => {
-    if (selectedOptions.includes(optionId)) {
-      setSelectedOptions((prevSelectedOptions) =>
-        prevSelectedOptions.filter(
-          (selectedOption) => selectedOption !== optionId,
-        ),
+  const { mutateAsync: quesAttempt, data: quesData }: any = useQuesAttempt(
+    undefined,
+    (data: any) => {},
+  );
+
+  useEffect(() => {
+    if (selectedOptions.length > 0) {
+      const lastVal = selectedOptions[selectedOptions?.length - 1];
+
+      const tempQuestionNew: any = [...questionOptionNew];
+      const findIndex = tempQuestionNew?.findIndex(
+        (singleQuestionNew: any) => singleQuestionNew.key === lastVal,
       );
-    } else {
-      setSelectedOptions((prevSelectedOptions) => [
-        ...prevSelectedOptions,
-        optionId,
-      ]);
-      //   setOptionSet((prevOptions) =>
-      //     prevOptions.map((option) =>
-      //       option.id === optionId ? { ...option, disabled: true } : option,
-      //     ),
-      //   );
+      if (quesData?.answer) {
+        if (findIndex !== -1) {
+          tempQuestionNew[findIndex] = {
+            ...tempQuestionNew[findIndex],
+            color: "green",
+          };
+
+          tempQuestionNew?.forEach((item: any, index: number) => {
+            tempQuestionNew[index] = {
+              ...item,
+              disabled: true,
+            };
+          });
+          setAnwserCorrect(false);
+        }
+
+        setQuestionOptionNew(tempQuestionNew);
+      } else {
+        if (findIndex !== -1) {
+          tempQuestionNew[findIndex] = {
+            ...tempQuestionNew[findIndex],
+            color: "#8C2531",
+          };
+        }
+        setQuestionOptionNew(tempQuestionNew);
+        setAnwserCorrect(true);
+      }
+    }
+  }, [selectedOptions]);
+
+  const quizScore = useFormattedMessage(messages.quizScore);
+  const questionId = quesQuizByIdData?.id;
+  const questionDetail = removeHTMLTags(quesQuizByIdData?.detail);
+  const questionTimtelimit = quesQuizByIdData?.timelimit;
+  const questionImage = `${PUBLIC_IMAGE_URL}/${quesQuizByIdData?.media}`;
+
+  const isOptionSelected = (optionId: string) =>
+    selectedOptions.includes(optionId);
+  const handleOptionChange = async (optionId: any) => {
+    await quesAttempt({
+      quizId: selectedQuizId,
+      questionId: questionId,
+      payloadData: {
+        option_selected: optionId,
+        submission_duration: questionTimtelimit - remainingTime,
+      },
+    });
+
+    if (!selectedOptions.includes(optionId)) {
+      const newSelectedOptions = [...selectedOptions, optionId];
+      setSelectedOptions(newSelectedOptions);
     }
   };
-  const isSubmitDisabled = selectedOptions.length === 0;
 
   return (
     <>
@@ -82,21 +124,25 @@ const Question: FC<ITakeQuizProps> = ({
       >
         <Box sx={{ paddingTop: "10px" }}>
           <Typography sx={{ marginBottom: "30px" }} fontSize={18}>
-            {question}
+            {questionDetail}
           </Typography>
-          <Image
-            alt="quiz-image"
-            lazyLoadProps={{ height: 240 }}
-            src={image}
-            lazyLoad={true}
-            style={{ maxWidth: "100%" }}
-          />
+          {quesQuizByIdData?.media !== null ? (
+            <Image
+              alt="quiz-image"
+              lazyLoadProps={{ height: 240 }}
+              src={questionImage}
+              lazyLoad={true}
+              style={{ maxWidth: "100%" }}
+            />
+          ) : (
+            ""
+          )}
         </Box>
         <Box sx={{ marginTop: "30px" }}>
           <Typography sx={{ marginBottom: "10px" }} fontSize={14}>
             Choose the best answer
           </Typography>
-          {options?.map((el, index) => (
+          {questionOptionNew?.map((el: any, index: number) => (
             <Box
               key={index}
               sx={{
@@ -114,21 +160,16 @@ const Question: FC<ITakeQuizProps> = ({
                 control={
                   <Checkbox
                     id={`custom-checkbox-${index}`}
-                    checked={selectedOptions.includes(el.name)}
-                    onChange={() => handleOptionChange(el.name)}
-                    disabled={el.disabled}
-                    sx={{
-                      color:
-                        selectedOptions.includes(el.name) && !el.isCorrect
-                          ? (theme) => theme.palette.primary.main
-                          : selectedOptions.includes(el.name) && el.isCorrect
-                          ? (theme) => theme.additionalColors?.primaryGreen
-                          : (theme) => theme.palette.text.primary,
-                    }}
+                    checked={isOptionSelected(el.key)}
+                    onChange={() => handleOptionChange(el.key)}
+                    disabled={
+                      el?.disabled ? el?.disabled : isOptionSelected(el.key)
+                    }
+                    sx={{ color: el?.color }}
                     color="default"
                   />
                 }
-                label={el.name}
+                label={el.value}
               />
             </Box>
           ))}
@@ -142,13 +183,15 @@ const Question: FC<ITakeQuizProps> = ({
             width: "100%",
           }}
         >
-          <Box sx={{ p: "15px" }}>
-            <TypographyStyled>{quizScore}</TypographyStyled>
+          <Box sx={{ p: "15px 15px 15px 0px" }}>
+            <TypographyStyled>
+              {quizScore}: {quesData?.score}
+            </TypographyStyled>
           </Box>
           <ButtonWrapper
             startIcon={<ArrowCircleRightOutlinedIcon />}
             onClick={handleNext}
-            disabled={isSubmitDisabled}
+            disabled={anwserCorrect}
             sx={{
               ":disabled": {
                 background: (theme) => theme.palette.text.secondary,

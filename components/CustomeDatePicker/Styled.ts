@@ -4,8 +4,8 @@ import { styled } from "@mui/material/styles";
 export const SelectBoxWrapper = styled(MuiBox)<BoxProps>(
   ({ theme }) =>
     ({
-      paddingLeft: "5px",
-      borderLeft: "1px solid",
+      paddingLeft: "0px",
+      borderLeft: "0px solid",
       borderColor: theme?.additionalColors?.primaryBorderGrey,
       "& .date_picker .MuiInputLabel-shrink": {
         display: "none !Important",

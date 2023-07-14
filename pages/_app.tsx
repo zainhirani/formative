@@ -1,9 +1,9 @@
 // @ts-nocheck
 
-import React, { useContext, useState } from "react";
+import React from "react";
 import App, { AppContext } from "next/app";
 import Head from "next/head";
-import { Router, useRouter } from "next/router";
+import { Router } from "next/router";
 import { SessionProvider } from "next-auth/react";
 import { SnackbarProvider } from "notistack";
 
@@ -12,27 +12,13 @@ import { QueryCache, QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { Hydrate } from "react-query/hydration";
 
-import PageLayout from "components/PageLayout/";
+import PageLayout from "components/PageLayout";
 import { AppStateProvider } from "contexts/AppStateContext";
 import { AuthContextProvider } from "contexts/AuthContext";
 import ThemeContextProvider from "contexts/ThemeContext";
 import { getLocale, getMessages } from "i18n";
-import { initFirebase } from "platform/initFirebase";
 import ThemeProvider from "theme/Provider";
-import { initAnalytics } from "../platform/analytics";
-
-const loadSideEffects = () => {
-  // firebase initialization
-  if (typeof window !== undefined) {
-    initFirebase()
-      .then(() => {
-        initAnalytics();
-      })
-      .catch((e) => {
-        console.warn(e);
-      });
-  }
-};
+import "../styles/global.css";
 
 const queryCache = new QueryCache();
 
@@ -83,10 +69,6 @@ class MyApp extends App<{
   static async getInitialProps(context: AppContext): Promise<any> {
     const fullProps = await App.getInitialProps(context);
     return fullProps;
-  }
-
-  componentDidMount(): void {
-    loadSideEffects();
   }
 
   render() {

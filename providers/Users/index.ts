@@ -33,9 +33,7 @@ export function getFormProviderKey(
 }
 
 //profile Create / update
-export function useProfile(
-  props: Profile.CreateProps = {},
-): UseMutationResult<
+export function useProfile(props: Profile.CreateProps = {}): UseMutationResult<
   Profile.CreateResponse,
   {
     message?: string;
@@ -43,35 +41,21 @@ export function useProfile(
   Profile.CreateMutationPayload
 > {
   const queryClient = useQueryClient();
-  return useMutation((payload) => api.createProfile({ ...props, data: payload }), {
-    mutationKey: `${KEY}|Create`,
-    onSuccess: () => {
-      queryClient.invalidateQueries(getKeyFromProps(props, "LISTING"));
+  return useMutation(
+    (payload) => api.createProfile({ ...props, data: payload }),
+    {
+      mutationKey: `${KEY}|Create`,
+      onSuccess: () => {
+        // queryClient.invalidateQueries(getKeyFromProps(props, "LISTING"));
+        // onSuccess: () => {
+        console.log(getKeyFromProps(props, "LISTING"));
+        queryClient.invalidateQueries([KEY]);
+        // },
+      },
+      retry: 0,
     },
-    retry: 0,
-  });
+  );
 }
-
-
-// export function useProfile(props: Profile.CreateProps = {}): UseMutationResult<
-//   Profile.CreateResponse,
-//   {
-//     message?: string;
-//   },
-//   Profile.CreateMutationPayload
-// > {
-//   const queryClient = useQueryClient();
-//   return useMutation(
-//     (payload) => api.createProfile({ ...props, data: payload }),
-//     {
-//       mutationKey: `${KEY}|Create`,
-//       onSuccess: () => {
-//         queryClient.invalidateQueries(getKeyFromProps(props, "LISTING"));
-//       },
-//       retry: 0,
-//     },
-//   );
-// }
 
 // profile Detail
 export function useProfileDetail(
@@ -79,5 +63,13 @@ export function useProfileDetail(
 ): UseQueryResult<Profile.DetailResponse> {
   return useQuery(getKeyFromProps(props, "DETAIL"), () =>
     api.detailProfile(props),
+  );
+}
+
+export function useUserDetail(
+  props?: Profile.Userprops,
+): UseQueryResult<Profile.UserResponse> {
+  return useQuery(getKeyFromProps(props, "DETAIL"), () =>
+    api.userDetail(props),
   );
 }

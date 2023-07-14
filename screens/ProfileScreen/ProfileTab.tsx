@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {
   Box,
   Checkbox,
@@ -13,6 +14,7 @@ import {
   TextField,
   styled,
   useRadioGroup,
+  IconButton,
 } from "@mui/material";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import ArrowDropUpOutlinedIcon from "@mui/icons-material/ArrowDropUpOutlined";
@@ -21,7 +23,6 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDownOutlined
 import * as Yup from "yup";
 import {
   LoadingButtonWrapper,
-  CardHeaderWrapper,
   IconButtonWrapper,
   InputLabelWrapper,
 } from "./Styled";
@@ -34,7 +35,7 @@ import {
   mathSkillsSelect,
 } from "../RegisterScreen/fields/data";
 import messages from "./messages";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, ChangeEvent } from "react";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
 import { useProfile, useProfileDetail } from "providers/Users";
@@ -42,6 +43,11 @@ import { useSnackbar } from "notistack";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import { BoxWrapper, ButtonWrapper } from "./Styled";
+import CustomeDatePicker from "components/CustomeDatePicker";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import dayjs from "dayjs";
+import isEqual from "lodash/isEqual";
+import CloseIcon from "@mui/icons-material/Close";
 
 interface StyledFormControlLabelProps extends FormControlLabelProps {
   checked: boolean;
@@ -68,44 +74,88 @@ function MyFormControlLabel(props: FormControlLabelProps) {
 }
 
 const validationSchema = Yup.object().shape({
-  dob: Yup.string().required().label("Date of Birth"),
-  pharmacy: Yup.string().required().label("Pharmacy"),
-  partTime: Yup.string().required().label("Part Time"),
-  bioChemistry: Yup.string().required().label("Bio Chemistry"),
-  maths: Yup.string().required().label("Maths"),
-  learn: Yup.string().required().label("Learn"),
-  sequence: Yup.string().required().label("Sequence"),
-  study: Yup.string().required().label("Study"),
-  played: Yup.string().required().label("Played"),
-  volunteer: Yup.string().required().label("Volunteer"),
-  hobbies: Yup.string().required().label("Hobbies"),
-  currentPassword: Yup.string().required().min(6).label("Password"),
+  dob: Yup.string().label("Date of Birth"),
+  pharmacy: Yup.string().label("Pharmacy"),
+  partTime: Yup.string().label("Part Time"),
+  bioChemistry: Yup.string().label("Bio Chemistry"),
+  maths: Yup.string().label("Maths"),
+  learn: Yup.string().label("Learn"),
+  sequence: Yup.string().label("Sequence"),
+  study: Yup.string().label("Study"),
+  played: Yup.string().label("Played"),
+  volunteer: Yup.string().label("Volunteer"),
+  hobbies: Yup.string().label("Hobbies"),
+  currentPassword: Yup.string().required().min(6).label("Current Password"),
 });
 
 export const ProfileTab = ({}) => {
   const profileDetail = useProfileDetail();
-  const dobPlaceholder = useFormattedMessage(messages.dobPlaceholder);
   const pharmacyPlaceholder = useFormattedMessage(messages.pharmacyPlaceholder);
-  const passwordPlaceholder = useFormattedMessage(messages.passwordPlaceholder);
+  const currentPasswordPlaceholder = useFormattedMessage(
+    messages.currentPasswordPlaceholder,
+  );
   const hobbiesPlaceholder = useFormattedMessage(messages.hobbiesPlaceholder);
   const [math, setMath] = useState("Select an option for the list");
-  const [experience, setExperience] = useState(
-    profileDetail.data?.experience || 0,
-  );
+  const [dobValue, setDobValue] = useState(null);
+  const athleteArray = [];
+  const athleteSeperatedArray = profileDetail.data?.athlete?.split(", ");
+  if (athleteSeperatedArray) {
+    athleteArray.push(...athleteSeperatedArray);
+  }
+  const [checkedValues, setCheckedValues] = useState<string[]>([]);
+  const [experience, setExperience] = useState<string | undefined>(undefined);
   const profile = useProfile();
   const router = useRouter();
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   function formatDate(dateString: string): string {
     const date = new Date(dateString);
     const day = date.getDate();
-    const month = date.getMonth() + 1; // Month starts from 0, so we add 1
+    const month = date.getMonth() + 1;
     const year = date.getFullYear();
 
     return `${year}-${month.toString().padStart(2, "0")}-${day
       .toString()
       .padStart(2, "0")}`;
   }
+
+  useEffect(() => {
+    if (profileDetail.data?.experience) {
+      setExperience(profileDetail.data.experience);
+    }
+  }, [profileDetail.data?.experience]);
+
+  useEffect(() => {
+    if (athleteArray.length > 0 && checkedValues.length === 0) {
+      setCheckedValues(athleteArray);
+    }
+  }, [athleteArray, checkedValues]);
+
+  const handleExperienceChange = (event) => {
+    const newValue = event.target.value;
+    if (newValue === "" || newValue === null) {
+      setExperience("");
+    } else {
+      const parsedValue = parseInt(newValue);
+      if (!isNaN(parsedValue)) {
+        if (parsedValue < 0) {
+          setExperience(0);
+        } else if (parsedValue > 50) {
+          setExperience(50);
+        } else {
+          setExperience(parsedValue);
+        }
+      }
+    }
+  };
+
+  const handleCheckboxChange = (value) => {
+    if (checkedValues.includes(value)) {
+      setCheckedValues(checkedValues.filter((item) => item !== value));
+    } else {
+      setCheckedValues([...checkedValues, value]);
+    }
+  };
 
   const increment = () => {
     if (experience < 50) {
@@ -131,9 +181,13 @@ export const ProfileTab = ({}) => {
         <FormattedMessage {...messages.profileSuccessMessage} />,
         {
           variant: "success",
+          action: (key) => (
+            <IconButton onClick={() => closeSnackbar(key)} size="small">
+              <CloseIcon sx={{ color: "#fff" }} />
+            </IconButton>
+          ),
         },
       );
-      router.push("/dashboard");
     }
   }, [profile.isSuccess]);
 
@@ -142,25 +196,31 @@ export const ProfileTab = ({}) => {
       const errorMessage = profile.error.message;
       enqueueSnackbar(errorMessage, {
         variant: "error",
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)} size="small">
+            <CloseIcon sx={{ color: "#fff" }} />
+          </IconButton>
+        ),
       });
     }
   }, [profile.isError]);
 
-  const onSubmit = useCallback((data: any) => {
+  const onSubmit = (data: any) => {
     profile.mutate({
-      date_of_birth: data.dob,
-      experience: data.pharmacy,
-      working_part_time: data.partTime === "yes" ? true : false,
-      athlete: data.played,
+      date_of_birth: dobValue,
+      experience: experience,
+      working_part_time: data.partTime === "Yes" ? true : false,
+      athlete: checkedValues.join(", "),
       concept: data.learn,
       hobbies: data.hobbies,
       learning_sequence: data.sequence,
       math_skills: data.maths,
       study_prefer: data.study,
-      taken_biochemistry: data.bioChemistry === "yes" ? true : false,
-      volunteer: data.volunteer === "yes" ? true : false,
+      taken_biochemistry: data.bioChemistry === "Yes" ? true : false,
+      volunteer: data.volunteer === "Yes" ? true : false,
+      password: data.currentPassword,
     });
-  }, []);
+  };
 
   const {
     handleChange,
@@ -169,11 +229,12 @@ export const ProfileTab = ({}) => {
     errors,
     values,
     touched,
+    initialValues,
     setFieldValue,
   } = useFormik({
     initialValues: {
       dob: formatDate(profileDetail.data?.date_of_birth || "") || "",
-      pharmacy: profileDetail.data?.experience || "",
+      pharmacy: Number(profileDetail.data?.experience) || 0,
       partTime:
         (profileDetail.data?.working_part_time === true ? "Yes" : "No") ||
         false,
@@ -195,6 +256,10 @@ export const ProfileTab = ({}) => {
     onSubmit,
   });
 
+  const handleDateChange = (e: any) => {
+    setDobValue(e);
+  };
+
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -204,17 +269,24 @@ export const ProfileTab = ({}) => {
               <InputLabelWrapper htmlFor="dob">
                 <FormattedMessage {...messages.dobLabel} />
               </InputLabelWrapper>
-              <TextField
-                id="dob"
-                name="dob"
-                placeholder={dobPlaceholder}
-                fullWidth
-                type="date"
-                value={values.dob}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                error={Boolean(touched.dob && errors.dob)}
-                variant="standard"
+              <CustomeDatePicker
+                disableFuture={true}
+                value={dayjs(`${profileDetail.data?.date_of_birth}`)}
+                onChange={(e: any) => {
+                  handleDateChange(e);
+                  handleChange;
+                }}
+                components={{ OpenPickerIcon: CalendarMonthIcon }}
+                sx={{
+                  width: "100%",
+                  borderBottom: "1px solid",
+                  ".MuiSvgIcon-root": {
+                    color: (theme: any) => theme.palette.primary.main,
+                  },
+                  ".MuiInputBase-input": {
+                    padding: "0 10px 8px 0",
+                  },
+                }}
               />
               {touched.dob && errors.dob && (
                 <FormHelperText error id="standard-weight-helper-text-dob">
@@ -232,10 +304,11 @@ export const ProfileTab = ({}) => {
                 placeholder={pharmacyPlaceholder}
                 fullWidth
                 type="number"
-                value={values.pharmacy}
+                value={experience}
                 onBlur={handleBlur}
-                onChange={handleChange}
+                onChange={handleExperienceChange}
                 error={Boolean(touched.pharmacy && errors.pharmacy)}
+                inputProps={{ min: 0, max: 50 }}
                 variant="standard"
                 InputProps={{
                   endAdornment: (
@@ -290,9 +363,6 @@ export const ProfileTab = ({}) => {
                       marginRight: 0,
                       borderBottom: "1px solid",
                       color: (theme) => theme.palette.secondary.dark,
-                      // ".MuiFormControlLabel-label": checked && {
-                      //   color: "red",
-                      // },
                     }}
                     value={choice.name}
                     control={
@@ -566,20 +636,13 @@ export const ProfileTab = ({}) => {
                       onChange={(e) => {
                         if (setFieldValue) {
                           setFieldValue("played", e.target.value);
+                          handleCheckboxChange(e.target.value);
                         }
                       }}
-                      checked={values.played === play.name}
-                      // value={values.played}
+                      checked={checkedValues.includes(play.name)}
                     />
                   }
                   label={play.name}
-                  // sx={{
-                  //   color: Object.values(checkedItems).some(
-                  //     (isChecked) => isChecked,
-                  //   )
-                  //     ? (theme) => theme.additionalColors?.primaryBlack
-                  //     : (theme) => theme.palette.secondary.dark,
-                  // }}
                 />
               ))}
               {touched.played && errors.played && (
@@ -610,9 +673,6 @@ export const ProfileTab = ({}) => {
                       marginRight: 0,
                       borderBottom: "1px solid",
                       color: (theme) => theme.palette.secondary.dark,
-                      // ".MuiFormControlLabel-label": checked && {
-                      //   color: (theme) => theme.palette.primary.main,
-                      // },
                     }}
                     value={choice.name}
                     control={
@@ -669,14 +729,15 @@ export const ProfileTab = ({}) => {
             alignItems: "center",
             mt: "120px",
             background: "transparent",
-            width: "max-content",
+            width: { sm: "100%", xs: "max-content", md: "max-content" },
             position: "relative",
+            flexDirection: { sm: "column", xs: "row", md: "row" },
           }}
         >
           <TextField
             id="currentPassword"
             name="currentPassword"
-            placeholder={passwordPlaceholder}
+            placeholder={currentPasswordPlaceholder}
             fullWidth
             type="password"
             value={values.currentPassword}
@@ -687,7 +748,8 @@ export const ProfileTab = ({}) => {
             sx={{
               background: (theme) => theme.palette.primary.light,
               borderRadius: "0",
-              width: { md: "350px", xs: "250px" },
+              width: { md: "350px", sm: "100%", xs: "250px" },
+              height: { sm: "50px", xs: "100%", md: "100%" },
               position: "relative",
               px: "10px",
               ".MuiInputBase-root": {
@@ -712,6 +774,7 @@ export const ProfileTab = ({}) => {
             type="submit"
             loading={profile.isLoading}
             loadingPosition="start"
+            disabled={isEqual(values, initialValues)}
             sx={{
               width: { xs: "100%", md: "max-content" },
               ".MuiLoadingButton-loadingIndicator": {
@@ -726,10 +789,11 @@ export const ProfileTab = ({}) => {
             sx={{
               borderTopRightRadius: (theme) => theme.borderRadius.radius1,
               borderBottomRightRadius: (theme) => theme.borderRadius.radius1,
+              width: { sm: "100%", xs: "max-content", md: "max-content" },
             }}
             startIcon={<HighlightOffIcon />}
             variant="contained"
-            onClick={()=>router.push("/dashboard")}
+            onClick={() => router.push("/dashboard")}
           >
             <FormattedMessage {...messages.cancel} />
           </ButtonWrapper>
