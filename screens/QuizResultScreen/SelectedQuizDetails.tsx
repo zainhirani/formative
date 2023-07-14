@@ -108,6 +108,7 @@ const SelectedQuizDetails = () => {
         headerName: "Difficulty",
         minWidth: 100,
         flex: 1,
+        // renderCell: (params) => params?.row?.difficulty?.toFixed(2),
       },
       {
         field: "averageTime",

@@ -17,7 +17,7 @@ const QuestionDrawer = ({
   questionId,
 }: IQuestionDrawerProps) => {
   // const { currentUser } = useAuthContext();
-  const currentUser = useRegisterDetail()
+  const currentUser = useRegisterDetail();
   const attemptQuestionListing = useQuestionAttempQuestion({
     questionId: questionId,
   });
@@ -58,6 +58,7 @@ const QuestionDrawer = ({
         loading={attemptQuestionListing?.isFetching}
         answerStats={answerStats}
         media={attemptQuestionListing?.data?.question?.media}
+        question={attemptQuestionListing?.data?.question}
       />
     </>
   );

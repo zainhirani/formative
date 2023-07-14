@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { FC } from "react";
 import {
   Box,
@@ -23,6 +24,8 @@ import Typography from "@mui/material/Typography";
 import SideDrawer from "components/Drawer";
 import Image from "theme/Image";
 import { PUBLIC_IMAGE_URL } from "configs";
+import { removeHTMLTags } from "utils";
+import { TYPES } from "constants/Types";
 
 type QuizQuestionFormatProps = {
   title?: string;
@@ -48,6 +51,7 @@ type QuizQuestionFormatProps = {
   media?: string;
   timeUnit?: string;
   quizAnswers: unknown;
+  question?: any;
 };
 
 const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
@@ -77,12 +81,15 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
   loading,
   isChecked,
   media,
+  question,
   children,
 }): JSX.Element => {
   const [checked, setChecked] = React.useState([0]);
   const [textColors, setTextColors] = React.useState([]);
   const theme = useTheme();
   const isSmScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const isNumOrSA = [TYPES.SA, TYPES.NUM].includes(question?.type);
 
   const handleToggle = (value: number) => () => {
     const currentIndex = checked.indexOf(value);
@@ -117,15 +124,7 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
       return "#225A41";
     }
   };
-  console.log(questionContext,"--------------------------------")
-
-  function removeHtmlTags(htmlString:any) {
-    const parser = new DOMParser();
-    const parsedHtml = parser.parseFromString(htmlString, 'text/html');
-    return parsedHtml.body.textContent;
-  }
-
-  const plainText = removeHtmlTags(questionContext);
+  console.log(questionContext, "--------------------------------");
 
   return (
     <SideDrawer open={isOpen} onClose={onClose} title={title} loading={loading}>
@@ -227,7 +226,7 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
                         component="span"
                         sx={{ marginLeft: "0.5rem" }}
                       >
-                        {avgAttemps}
+                        {question?.acceptable_ans || "-"}
                       </Typography>
                     </Box>
                   </Box>
@@ -259,7 +258,7 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
           {/* Question Section */}
 
           <Typography sx={{ mt: "30px" }} variant="body1" gutterBottom pl={2}>
-            {plainText}
+            {removeHTMLTags(questionContext)}
           </Typography>
 
           <Typography
@@ -273,77 +272,129 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
 
           {/* Quiz Answers List */}
 
-          <List
-            sx={{
-              width: "100%",
-              maxWidth: { xs: 360, md: 500 },
-
-              paddingLeft: "10px",
-            }}
-          >
-            <Typography variant="caption" display="block" gutterBottom>
-              Choose the best answer
-            </Typography>
-            {media ? (
-              <Image
-                alt="quiz-image"
-                lazyLoadProps={{ height: 240 }}
-                src={questionImage}
-                lazyLoad={true}
-                style={{ maxWidth: "100%", maxHeight: "240px" }}
-              />
-            ) : null}
-            {quizOptions.map((value, index) => {
-              // @ts-ignore
-              const labelId = `checkbox-list-label-${value.id}`;
-
-              return (
-                <Paper
-                  key={index}
-                  elevation={6}
-                  sx={{
-                    borderRadius: "5px",
-                    marginBottom: "10px",
-                    boxShadow: " 0px 0px 40px rgba(0, 0, 0, 0.1)",
-                  }}
-                >
-                  <ListItem key={index} disablePadding>
-                    <ListItemButton
-                      role={undefined}
-                      onClick={handleToggle(index)}
-                      dense
+          {isNumOrSA ? (
+            <>
+              <Box sx={{ p: 2 }}>
+                <Box display="flex" alignItems="center">
+                  <Typography
+                    sx={{ color: (theme) => theme.palette.text.secondary }}
+                    variant="body1"
+                    component="span"
+                  >
+                    Answer :
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    component="span"
+                    sx={{ marginLeft: "0.5rem" }}
+                  >
+                    {question.answer || "-"}
+                  </Typography>
+                </Box>
+                {question.type == TYPES.NUM && (
+                  <Box display="flex" alignItems="center" pt={2}>
+                    <Typography
+                      sx={{ color: (theme) => theme.palette.text.secondary }}
+                      variant="body1"
+                      component="span"
                     >
-                      <ListItemIcon sx={{ minWidth: "max-content" }}>
-                        <Checkbox
-                          disabled={disable}
-                          edge="start"
-                          //  checked={checked.indexOf(index) !== -1}
+                      Tolerence :
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      component="span"
+                      sx={{ marginLeft: "0.5rem" }}
+                    >
+                      {question?.acceptable_ans || "-"}
+                    </Typography>
+                  </Box>
+                )}
+              </Box>
+            </>
+          ) : (
+            <List
+              sx={{
+                width: "100%",
+                maxWidth: { xs: 360, md: 500 },
+
+                paddingLeft: "10px",
+              }}
+            >
+              <Typography variant="caption" display="block" gutterBottom>
+                Choose the best answer
+              </Typography>
+              {media ? (
+                <Image
+                  alt="quiz-image"
+                  lazyLoadProps={{ height: 240 }}
+                  src={questionImage}
+                  lazyLoad={true}
+                  style={{ maxWidth: "100%", maxHeight: "240px" }}
+                />
+              ) : null}
+              {quizOptions.map((value, index) => {
+                // @ts-ignore
+                const labelId = `checkbox-list-label-${value.id}`;
+
+                return (
+                  <Paper
+                    key={index}
+                    elevation={6}
+                    sx={{
+                      borderRadius: "5px",
+                      marginBottom: "10px",
+                      boxShadow: " 0px 0px 40px rgba(0, 0, 0, 0.1)",
+                    }}
+                  >
+                    <ListItem key={index} disablePadding>
+                      <ListItemButton
+                        role={undefined}
+                        onClick={handleToggle(index)}
+                        dense
+                      >
+                        <ListItemIcon sx={{ minWidth: "max-content" }}>
+                          <Checkbox
+                            disabled={disable}
+                            edge="start"
+                            //  checked={checked.indexOf(index) !== -1}
+                            // @ts-ignore
+                            checked={quizAnswers.includes(value.value)}
+                            // checked={isChecked}
+                            tabIndex={-1}
+                            disableRipple
+                            inputProps={{ "aria-labelledby": labelId }}
+                            sx={{
+                              ".MuiSvgIcon-root": {
+                                color: (theme) =>
+                                  theme.additionalColors?.primaryGreen,
+                              },
+                            }}
+                          />
+                        </ListItemIcon>
+                        <ListItemText
+                          id={labelId}
                           // @ts-ignore
                           checked={quizAnswers.includes(value.value)}
                           // checked={isChecked}
                           tabIndex={-1}
                           disableRipple
                           inputProps={{ "aria-labelledby": labelId }}
-                          sx={{
-                            ".MuiSvgIcon-root": {
-                              color: (theme) =>
-                                theme.additionalColors?.primaryGreen,
-                            },
-                          }}
+                          // sx={{
+                          //   ".MuiSvgIcon-root": {
+                          //     color: (theme) =>
+                          //       theme.additionalColors?.primaryGreen,
+                          //   },
+                          // }}
+                          primary={`${value.optionText}`}
+                          sx={{ color: textColors[index] }}
                         />
-                      </ListItemIcon>
-                      <ListItemText
-                        id={labelId}
-                        // @ts-ignore
-                        primary={`${value.optionText}`}
-                        sx={{ color: textColors[index] }}
-                      />
-                    </ListItemButton>
-                  </ListItem>
-                </Paper>
-              );
-            })}
-          </List>
+                      </ListItemButton>
+                    </ListItem>
+                  </Paper>
+                );
+              })}
+            </List>
+          )}
 
           {/* Score Section */}
 

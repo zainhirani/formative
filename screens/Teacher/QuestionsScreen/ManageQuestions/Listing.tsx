@@ -91,6 +91,7 @@ const Listing: React.FC = ({
       headerName: "Difficulty",
       minWidth: 150,
       flex: 1,
+      renderCell: (params) => params?.row?.difficulty?.toFixed(2),
     },
     {
       field: "detail",

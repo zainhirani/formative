@@ -140,6 +140,7 @@ const DraftQuizScreen: NextPage = () => {
       headerName: "Difficulty",
       minWidth: 130,
       flex: 1,
+      renderCell: (params) => params?.row?.difficulty?.toFixed(2),
     },
     {
       field: "detail",
@@ -160,9 +161,9 @@ const DraftQuizScreen: NextPage = () => {
 
         return (
           <>
-          <Head>
-            <title>Add Quiz</title>
-          </Head>
+            <Head>
+              <title>Add Quiz</title>
+            </Head>
             {!selectedQuestions.includes(selectedRow) &&
             !questionIds.includes(selectedRowId) ? (
               <IconButton
