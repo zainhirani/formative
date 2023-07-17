@@ -59,6 +59,7 @@ const QuestionDrawer = ({
         answerStats={answerStats}
         media={attemptQuestionListing?.data?.question?.media}
         question={attemptQuestionListing?.data?.question}
+        quizAnswers={attemptQuestionListing?.data?.question?.answer}
       />
     </>
   );

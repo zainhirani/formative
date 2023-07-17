@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useMemo } from "react";
 import { BoxWrapper } from "./Styled";
 import {
@@ -17,6 +18,11 @@ import { GridColDef } from "@mui/x-data-grid";
 import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
 import messages from "./messages";
 
+import DoNotDisturbOnIcon from "@mui/icons-material/DoNotDisturbOn";
+import { useTheme } from "@emotion/react";
+import { QUIZ_STATUS } from "constants/QuizStatus";
+import ShareIcon from "@material-ui/icons/Share";
+
 interface TableSectionProps {
   quizName?: string;
   courseId?: number;
@@ -24,6 +30,7 @@ interface TableSectionProps {
 }
 
 const TableSection = ({ quizName, courseId, folderId }: TableSectionProps) => {
+  const theme = useTheme();
   const quizResult = useQuizResultListing({ quizName, courseId, folderId });
 
   const columnsQuizResults: GridColDef[] = useMemo(
@@ -77,40 +84,19 @@ const TableSection = ({ quizName, courseId, folderId }: TableSectionProps) => {
         headerName: "Status",
         minWidth: 150,
         flex: 1,
-        renderCell: (params: any) => {
-          const status = params?.row?.status;
+        renderCell: (params) => {
           return (
-            <Grid container spacing={3} alignItems="center">
-              {status !== "COMPLETE" ? (
-                <Grid item xs>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "2px",
-                      color: (theme) => theme.additionalColors?.primaryYellow,
-                    }}
-                  >
-                    <SaveAsIcon style={{ fontSize: "20px" }} />{" "}
-                    <FormattedMessage {...messages.statusDraft} />
-                  </Box>
-                </Grid>
-              ) : (
-                <Grid item xs>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "2px",
-                      color: (theme) => theme.additionalColors?.primaryGreen,
-                    }}
-                  >
-                    <CheckCircleIcon style={{ fontSize: "20px" }} />{" "}
-                    <FormattedMessage {...messages.statusCompleted} />
-                  </Box>
-                </Grid>
-              )}
-            </Grid>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: "2px",
+                color: [STATUS_CLASSES[params.row.status]?.color],
+              }}
+            >
+              {[STATUS_CLASSES[params.row.status]?.icon]}
+              <div>{params.row.status}</div>
+            </Box>
           );
         },
       },
@@ -158,6 +144,30 @@ const TableSection = ({ quizName, courseId, folderId }: TableSectionProps) => {
     ],
     [quizResult?.data],
   );
+
+  const STATUS_CLASSES = {
+    [QUIZ_STATUS.DRAFT]: {
+      color: theme.additionalColors.primaryYellow,
+      icon: <SaveAsIcon fontSize="small" />,
+    },
+
+    [QUIZ_STATUS.AVAILABLE]: {
+      color: "#266d5e",
+      icon: <CheckCircleIcon fontSize="small" />,
+    },
+    [QUIZ_STATUS.COMPLETED]: {
+      color: theme.additionalColors.primaryGreen,
+      icon: <CheckCircleIcon fontSize="small" />,
+    },
+    [QUIZ_STATUS.DISTRIBUTED]: {
+      color: "#d9690f",
+      icon: <ShareIcon fontSize="small" />,
+    },
+    [QUIZ_STATUS.ONGOING]: {
+      color: "#8B6508",
+      icon: <CheckCircleIcon fontSize="small" />,
+    },
+  };
 
   return (
     <BoxWrapper>
