@@ -1,13 +1,11 @@
 // @ts-nocheck
 import React, { useEffect } from "react";
-import { Box, Container } from "@mui/material";
+import { Box } from "@mui/material";
 import AppBarComponent from "./AppBar";
 import Drawer from "./Drawer";
 import DrawerContent from "./DrawerContent";
-import { DrawerHeader } from "./DrawerContent/Styled";
 import { useAuthContext } from "contexts/AuthContext";
-import { useRouter } from "next/router";
-import { useRegisterDetail } from "providers/Auth";
+
 interface Props {
   children?: JSX.Element;
   title?: any;
@@ -21,8 +19,8 @@ interface Props {
 const PageLayout = (props: Props) => {
   const primaryDrawerWidth = 220;
   const [open, setOpen] = React.useState(true);
-  const currentUser = useRegisterDetail();
-  const router = useRouter();
+  // const currentUser = useRegisterDetail();
+  const { currentUser } = useAuthContext();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -49,7 +47,7 @@ const PageLayout = (props: Props) => {
     <>
       <Box sx={{ display: "flex" }}>
         {/* Sidebar */}
-        {!currentUser?.data ? null : (
+        {!currentUser?.id ? null : (
           <>
             <Box
               sx={{
@@ -85,7 +83,7 @@ const PageLayout = (props: Props) => {
             flexGrow: 1,
             paddingLeft: { md: "24px", xs: "60px" },
             paddingRight: { md: "24px", xs: "24px" },
-            paddingTop: currentUser?.data ? "100px" : "0px",
+            paddingTop: currentUser?.id ? "100px" : "0px",
             width: { sm: `calc(100% - ${primaryDrawerWidth}px )` },
             marginBottom: "0",
             background: (theme) => theme.palette.primary.light,
