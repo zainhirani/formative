@@ -18,6 +18,7 @@ import { useQuestionsListing } from "providers/Teacher_Questions";
 import { useQuery } from "react-query";
 import { getCategories, getFolders } from "providers/Teacher_Questions/api";
 import { debounce } from "lodash";
+import DrawerCreateQuestions from "components/DrawerCreateQuestions";
 
 const TYPE_OPTIONS = [
   { value: "SA", label: "SA" },
@@ -37,6 +38,8 @@ const DrawerQuestionsSection = (props: any) => {
     selectedQuestions,
     COLUMNS_CONFIG,
   } = props;
+
+  const [drawerQuesCreateOpen, setDrawerQuesCreateOpen] = useState(false);
   const [searchChange, setSearchChange] = useState("");
   const [folder, setFolder] = useState("");
   const [facultyCategory, setFacultyCategory] = useState<any[]>([]);
@@ -115,7 +118,8 @@ const DrawerQuestionsSection = (props: any) => {
         );
       },
       onClick: () => {
-        router.push(APP_ROUTES.QUESTIONS_CREATE_NEW);
+        setDrawerQuesCreateOpen(true);
+        // router.push(APP_ROUTES.QUESTIONS_CREATE_NEW);
       },
     },
   ];
@@ -259,6 +263,10 @@ const DrawerQuestionsSection = (props: any) => {
           </BoxWrapper>
         </Box>
       </SideDrawer>
+      <DrawerCreateQuestions
+        drawerQuesCreateOpen={drawerQuesCreateOpen}
+        setDrawerQuesCreateOpen={setDrawerQuesCreateOpen}
+      />
     </>
   );
 };

@@ -62,6 +62,7 @@ const Question: FC<ITakeQuizProps> = ({
   //   setInputCaseSchema([...inputCaseSchema, initialItems]);
   // }, []);
   useEffect(() => {
+    console.log("Multipule or single case");
     if (selectedOptions.length > 0) {
       const lastVal = selectedOptions[selectedOptions?.length - 1];
 
@@ -70,6 +71,7 @@ const Question: FC<ITakeQuizProps> = ({
         (singleQuestionNew: any) => singleQuestionNew.key === lastVal,
       );
       if (quesData?.answer) {
+        console.log("quesData");
         if (findIndex !== -1) {
           tempQuestionNew[findIndex] = {
             ...tempQuestionNew[findIndex],
@@ -91,6 +93,7 @@ const Question: FC<ITakeQuizProps> = ({
 
         setQuestionOptionNew(tempQuestionNew);
       } else {
+        console.log("quesData?.answer");
         if (findIndex !== -1) {
           tempQuestionNew[findIndex] = {
             ...tempQuestionNew[findIndex],
@@ -144,6 +147,8 @@ const Question: FC<ITakeQuizProps> = ({
 
   // Input Case
   const handleInputCaseOptionChange = async (optionId: any) => {
+    console.log("SA or NUM Case");
+
     const result = inputCaseSchema?.find(({ id }: any) => id === optionId);
 
     try {
