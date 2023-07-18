@@ -19,7 +19,13 @@ import { enqueueSnackbar } from "notistack";
 import { useAppState } from "contexts/AppStateContext";
 
 const TakeQuizScreen = () => {
-  const { setSelectedOptions, setAnwserCorrect } = useAppState();
+  const questionTypeArr = ["MSN", "MSR", "MCN", "MCR"];
+  const {
+    setSelectedOptions,
+    setAnwserCorrect,
+    inputCaseSchema,
+    setInputCaseSchema,
+  } = useAppState();
   const searchQuiz = useFormattedMessage(messages.searchQuiz);
   const selectCourseText = useFormattedMessage(messages.selectCourse);
   const [remainingTime, setRemainingTime] = useState(0);
@@ -30,6 +36,7 @@ const TakeQuizScreen = () => {
   const [searchChange, setSearchChange] = useState("");
   const [selectCourse, setSelectCourse] = useState("");
   const [page, setPage] = useState(1);
+
   const { data: coursesList } = useCourseListing();
   const {
     data: quizList,
@@ -41,6 +48,7 @@ const TakeQuizScreen = () => {
     ...(selectCourse && { courseId: selectCourse }),
     ...(searchChange && { SearchBy: searchChange }),
   });
+
   const { data: quesQuizByIdData, refetch: refQuesQuizById }: any =
     useQuesQuizById(
       {
@@ -50,7 +58,10 @@ const TakeQuizScreen = () => {
         if (data?.message === "Quiz completed successfully") {
           enqueueSnackbar(data?.message, {
             variant: "success",
+            autoHideDuration: 1500,
           });
+          // setSelectedOptions([]);
+          // setInputCaseSchema()
         } else {
           setOpen(true);
         }
@@ -58,20 +69,51 @@ const TakeQuizScreen = () => {
         if (currentAllOptions?.length > 0) {
           setQuestionOptionNew(currentAllOptions);
         }
+        if (!questionTypeArr.includes(data?.type)) {
+          const updatedObject = data?.selected_before?.map(
+            (item: any, index: number) => {
+              return {
+                id: index + 1,
+                anws: item,
+                isDisabled: true,
+                isColor: "#8C2531",
+              };
+            },
+          );
+          const itemsArrg = {
+            id: updatedObject?.length + 1,
+            anws: "",
+            isCorrect: false,
+            isDisabled: false,
+          };
+
+          const itemsAddNewObj = [...updatedObject, itemsArrg];
+          setInputCaseSchema(itemsAddNewObj);
+          console.log(inputCaseSchema, "inputCaseSchema");
+        } else {
+          setSelectedOptions(data?.selected_before);
+        }
       },
-      (data: any) => {
-        enqueueSnackbar(data?.message, {
-          variant: "error",
-        });
+      (error: any) => {
+        if (error) {
+          enqueueSnackbar(error?.message, {
+            variant: "error",
+            autoHideDuration: 1500,
+          });
+        } else {
+          setOpen(false);
+        }
       },
     );
 
   useEffect(() => {
     if (checked?.length > 0) {
-      const firstFirstObject = checked?.find(Boolean);
-      refQuesQuizById({
-        id: firstFirstObject,
-      });
+      if (checked?.find(Boolean)) {
+        const firstFirstObject = checked?.find(Boolean);
+        refQuesQuizById({
+          id: firstFirstObject,
+        });
+      }
     }
   }, [checked]);
 
@@ -100,7 +142,7 @@ const TakeQuizScreen = () => {
     setAnwserCorrect(true);
     // console.log(quesQuizByIdData?.timelimit, "quesQuizByIdData?.timelimit");
     // console.log(remainingTime, "remainingTime");
-    setRemainingTime(quesQuizByIdData?.timelimit);
+    // setRemainingTime(quesQuizByIdData?.timelimit);
     // console.log(remainingTime, "set remainingTime");
   };
 

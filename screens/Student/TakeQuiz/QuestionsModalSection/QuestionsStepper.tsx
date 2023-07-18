@@ -34,6 +34,22 @@ const QuestionsStepper = (props: any) => {
   const handleOptionChange = (optionId: string) => {
     setSelectedOption(optionId);
   };
+  const calculatedVal = Math.max(
+    0,
+    Math.round((quizKeyExistScore / quizKeyExistOutof) * 100),
+  );
+
+  const getTimeColor = (): string => {
+    if (calculatedVal <= 10) {
+      return "#ff0000";
+    } else if (calculatedVal <= 30) {
+      return "orange";
+    } else if (calculatedVal <= 60) {
+      return "#005E84";
+    } else {
+      return "#225A41";
+    }
+  };
   return (
     <>
       {quizKeyExistOutof == undefined && quizKeyExistScore == undefined ? (
@@ -82,10 +98,21 @@ const QuestionsStepper = (props: any) => {
               }}
             >
               <TypographyStyled
-                sx={{ width: "50%", border: "1px solid #EAEAEA", p: "15px" }}
+                sx={{
+                  width: "50%",
+                  border: "1px solid #EAEAEA",
+                  p: "15px",
+                  display: "flex",
+                  gap: "5px",
+                }}
               >
-                {percentage}{" "}
-                {Math.round((quizKeyExistScore / quizKeyExistOutof) * 100)}%
+                {percentage}
+                <TypographyStyled
+                  variant="body1"
+                  style={{ color: getTimeColor() }}
+                >
+                  {calculatedVal}%
+                </TypographyStyled>
               </TypographyStyled>
               <TypographyStyled
                 sx={{ width: "50%", border: "1px solid #EAEAEA", p: "15px" }}

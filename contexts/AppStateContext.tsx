@@ -11,6 +11,8 @@ interface AppStateContextType {
   setSelectedOptions: (value: any) => void;
   anwserCorrect: any;
   setAnwserCorrect: (value: any) => void;
+  inputCaseSchema: any;
+  setInputCaseSchema: (value: any) => void;
 }
 
 const AppStateContext = createContext<AppStateContextType>({
@@ -24,6 +26,8 @@ const AppStateContext = createContext<AppStateContextType>({
   setSelectedOptions: () => {},
   anwserCorrect: null,
   setAnwserCorrect: () => {},
+  inputCaseSchema: [],
+  setInputCaseSchema: () => {},
 });
 
 export const useAppState = () => useContext(AppStateContext);
@@ -32,6 +36,7 @@ export const AppStateProvider: React.FC = (props: any) => {
   const [state, setState] = useState(false);
   const [quizQuesIdState, setQuizQuesIdState] = useState(null);
   const [selectedQuestions, setSelectedQuestions] = useState<any>([]);
+  const [inputCaseSchema, setInputCaseSchema] = useState<any>();
   const [selectedOptions, setSelectedOptions] = useState<any>([]);
   const [anwserCorrect, setAnwserCorrect] = useState<boolean>(true);
   const { children } = props;
@@ -49,6 +54,8 @@ export const AppStateProvider: React.FC = (props: any) => {
         setSelectedOptions,
         anwserCorrect,
         setAnwserCorrect,
+        inputCaseSchema,
+        setInputCaseSchema,
       }}
     >
       {children}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SideDrawer from "components/Drawer";
 import { Box, Typography } from "@mui/material";
 import FormattedMessage, { useFormattedMessage } from "theme/FormattedMessage";
@@ -24,6 +24,7 @@ const QuestionsModal = (props: any) => {
     remainingTime,
   } = props;
   const [showQuestionScreen, setShowQuestionScreen] = useState(false);
+  const [undertakingScreen, setUndertakingScreen] = useState(true);
   const underTakingTitle = useFormattedMessage(messages.underTakingTitle);
   const modalTitleHead = useFormattedMessage(messages.modalTitle);
   const underTakingDesc = useFormattedMessage(messages.underTakingDesc);
@@ -35,6 +36,11 @@ const QuestionsModal = (props: any) => {
   const quizKeyExistOutof = quesQuizByIdData?.outof;
   const quizKeyExistScore = quesQuizByIdData?.score;
 
+  useEffect(() => {
+    if (!drawerOpen) {
+      setUndertakingScreen(true);
+    }
+  }, [!drawerOpen]);
   const handleDrawerCloseQuestion = () => {
     setDrawerOpen(false);
     props?.onClose && props.onClose();
@@ -55,6 +61,7 @@ const QuestionsModal = (props: any) => {
       },
       onClick: () => {
         setShowQuestionScreen(true);
+        setUndertakingScreen(false);
         setModalTitle(modalTitleHead);
       },
     },
@@ -76,7 +83,9 @@ const QuestionsModal = (props: any) => {
     <>
       <SideDrawer
         title={
-          quizKeyExistOutof == undefined && quizKeyExistScore == undefined
+          undertakingScreen && quizKeyExistOutof == undefined
+            ? "Undertaking"
+            : quizKeyExistOutof == undefined && quizKeyExistScore == undefined
             ? questionTitle
             : "Quiz Score"
         }
@@ -84,7 +93,7 @@ const QuestionsModal = (props: any) => {
         onClose={handleDrawerCloseQuestion}
       >
         <Box sx={{ p: "30px 20px" }}>
-          {showQuestionScreen ? (
+          {showQuestionScreen || quizKeyExistOutof !== undefined ? (
             <Box>
               <QuestionsStepper
                 handleChangeState={handleDrawerCloseQuestion}
@@ -101,13 +110,17 @@ const QuestionsModal = (props: any) => {
             </Box>
           ) : (
             <Box>
-              <Typography color="primary" fontSize="18px">
+              <Typography
+                color="primary"
+                fontSize="18px"
+                sx={{ marginBottom: "15px" }}
+              >
                 {underTakingDesc}
               </Typography>
               <TypographyStyled sx={{ mb: "20px" }}>
                 {underTakingLongDesc}
               </TypographyStyled>
-              <TypographyStyled sx={{ mb: "15px" }}>
+              <TypographyStyled sx={{ mb: "20px" }}>
                 {confirmUnderTaking}
               </TypographyStyled>
               <GroupedButton config={config} />

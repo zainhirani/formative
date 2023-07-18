@@ -117,6 +117,11 @@ export function useQuizDistribute(
     onSuccess: () => {
       // console.log('distribute success');
       // queryClient.invalidateQueries(['Students']);
+    },onError:(error) => {
+      enqueueSnackbar(error?.message, {
+        variant: "error",
+        autoHideDuration: 1500,
+      });
     },
     retry: 0,
   });

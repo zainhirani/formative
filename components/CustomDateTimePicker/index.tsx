@@ -29,6 +29,7 @@ const CustomeDateTimePicker: FC<ICustomeDateTimePicker> = ({
     <SelectBoxWrapper gridColumn="span 3">
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DateTimePicker
+          closeOnSelect={false}
           className="datetime_picker"
           label={label}
           value={value}

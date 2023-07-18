@@ -43,20 +43,24 @@ const Question: FC<ITakeQuizProps> = ({
   setQuestionOptionNew,
   remainingTime,
 }): JSX.Element => {
-  const [inputCaseSchema, setInputCaseSchema] = useState<any>(initialItems);
+  const [inputField, setInputField] = useState<any>("");
   const [count, setCount] = useState(initialItems.length);
   const {
     selectedOptions,
     setSelectedOptions,
     anwserCorrect,
     setAnwserCorrect,
+    inputCaseSchema,
+    setInputCaseSchema,
   } = useAppState();
 
   const { mutateAsync: quesAttempt, data: quesData }: any = useQuesAttempt(
     undefined,
     (data: any) => {},
   );
-
+  // useEffect(() => {
+  //   setInputCaseSchema([...inputCaseSchema, initialItems]);
+  // }, []);
   useEffect(() => {
     if (selectedOptions.length > 0) {
       const lastVal = selectedOptions[selectedOptions?.length - 1];
@@ -71,14 +75,18 @@ const Question: FC<ITakeQuizProps> = ({
             ...tempQuestionNew[findIndex],
             color: "green",
           };
+          console.log(quesData, "quesData");
 
-          tempQuestionNew?.forEach((item: any, index: number) => {
-            tempQuestionNew[index] = {
-              ...item,
-              disabled: true,
-            };
-          });
-          setAnwserCorrect(false);
+          if (quesData?.isQuestionComplete === true) {
+            console.log("isQuestionComplete");
+            tempQuestionNew?.forEach((item: any, index: number) => {
+              tempQuestionNew[index] = {
+                ...item,
+                disabled: true,
+              };
+            });
+            setAnwserCorrect(false);
+          }
         }
 
         setQuestionOptionNew(tempQuestionNew);
@@ -104,6 +112,7 @@ const Question: FC<ITakeQuizProps> = ({
 
   const isOptionSelected = (optionId: string) =>
     selectedOptions.includes(optionId);
+
   const handleOptionChange = async (optionId: any) => {
     await quesAttempt({
       quizId: selectedQuizId,
@@ -121,9 +130,11 @@ const Question: FC<ITakeQuizProps> = ({
   };
   const questionTypesWithFormControl = ["MSN", "MSR", "MCN", "MCR"];
 
-  const handleInputChange = (val: any) => {
+  const handleInputChange = (val: any, id: number) => {
+    setInputField(val);
     const updatedItems = inputCaseSchema?.map((item: any) => {
-      if (item?.id === count) {
+      if (item?.id === id) {
+        // if (item?.id === count) {
         return { ...item, anws: val };
       }
       return item;
@@ -135,51 +146,66 @@ const Question: FC<ITakeQuizProps> = ({
   const handleInputCaseOptionChange = async (optionId: any) => {
     const result = inputCaseSchema?.find(({ id }: any) => id === optionId);
 
-    await quesAttempt(
-      {
+    try {
+      await quesAttempt({
         quizId: selectedQuizId,
         questionId: questionId,
         payloadData: {
           option_selected: result?.anws,
           submission_duration: questionTimtelimit - remainingTime,
         },
-      },
-      (data: any) => {
-        if (!data?.is_correct) {
-          const updatedItems = inputCaseSchema?.map((item: any) => {
-            if (item?.id === optionId) {
-              return { ...item, isDisabled: true };
-            }
-            return item;
-          });
-          const itemsArrg = {
-            id: count,
-            anws: "",
-            isCorrect: false,
-            isDisabled: false,
-          };
-          const itemsAddNewObj = [...updatedItems, itemsArrg];
-          setInputCaseSchema(itemsAddNewObj);
-        } else {
-          const updatedItems = inputCaseSchema?.map((item: any) => {
-            if (item?.id === optionId) {
-              return { ...item, isCorrect: true, isDisabled: true };
-            }
-            return item;
-          });
-          setInputCaseSchema(updatedItems);
-        }
-      },
-    );
+      });
+
+      //on success work
+      if (quesData?.is_correct == true) {
+        const updatedItemsCorrect = inputCaseSchema?.map((item: any) => {
+          if (item?.id === optionId) {
+            return {
+              ...item,
+              isCorrect: true,
+              isDisabled: true,
+              isColor: "green",
+            };
+          }
+          return item;
+        });
+        setInputCaseSchema(updatedItemsCorrect);
+        setAnwserCorrect(false);
+        console.log(updatedItemsCorrect, "updatedItems correct");
+        console.log(inputCaseSchema, "inputCaseSchema correct");
+      } else {
+        const updatedItems = inputCaseSchema?.map((item: any) => {
+          if (item?.id === optionId) {
+            return { ...item, isDisabled: true, isColor: "#8C2531" };
+          }
+          return item;
+        });
+        const itemsArrg = {
+          id: updatedItems?.length + 1,
+          // id: count,
+          anws: "",
+          isCorrect: false,
+          isDisabled: false,
+        };
+
+        const itemsAddNewObj = [...updatedItems, itemsArrg];
+        setInputCaseSchema(itemsAddNewObj);
+        setInputField("");
+        setAnwserCorrect(true);
+        console.log(updatedItems, "updatedItems inCorrect");
+        console.log(itemsAddNewObj, "itemsAddNewObj inCorrect");
+        console.log(inputCaseSchema, "inputCaseSchema inCorrect");
+      }
+    } catch (error) {
+      //on error work
+    }
 
     // if (!selectedOptions.includes(optionId)) {
     //   const newSelectedOptions = [...selectedOptions, optionId];
     //   setSelectedOptions(newSelectedOptions);
     // }
-    console.log(result, "result");
+    // console.log(inputCaseSchema, "inputCaseSchema");
   };
-
-  console.log(inputCaseSchema, "inputCaseSchema");
 
   // console.log(
   //   questionTypesWithFormControl.includes(questionType),
@@ -226,10 +252,19 @@ const Question: FC<ITakeQuizProps> = ({
                         <Checkbox
                           id={`custom-checkbox`}
                           // id={`custom-checkbox-${index}`}
-                          // checked={isOptionSelected(el.key)}
+                          checked={item?.isDisabled ? true : false}
+                          disabled={
+                            !item?.isDisabled
+                              ? inputField == ""
+                                ? true
+                                : false
+                              : item?.isDisabled
+                          }
                           onChange={(e) =>
                             handleInputCaseOptionChange(item?.id)
                           }
+                          color="default"
+                          sx={{ color: item?.isColor }}
                         />
                         {item?.isDisabled ? (
                           item?.anws
@@ -238,8 +273,15 @@ const Question: FC<ITakeQuizProps> = ({
                             type="text"
                             // value={el.value}
                             onChange={(e) =>
-                              handleInputChange(e?.target?.value)
+                              handleInputChange(e?.target?.value, item?.id)
                             }
+                            placeholder="Type the text"
+                            style={{
+                              border: "none",
+                              outline: "none",
+                              color: "#404040",
+                              fontSize: "16px",
+                            }}
                           />
                         )}
                       </>
