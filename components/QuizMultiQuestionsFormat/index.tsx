@@ -1,5 +1,11 @@
 import React, { FC, useEffect, useState } from "react";
-import { Box, Checkbox, FormControlLabel, Typography } from "@mui/material";
+import {
+  Box,
+  Checkbox,
+  FormControlLabel,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import messages from "screens/Student/TakeQuiz/messages";
 import {
@@ -13,6 +19,8 @@ import { PUBLIC_IMAGE_URL } from "configs";
 import { isStringNotURL, removeHTMLTags } from "utils";
 import { useQuesAttempt } from "providers/Student/TakeQuiz";
 import { useAppState } from "contexts/AppStateContext";
+import { enqueueSnackbar, useSnackbar } from "notistack";
+import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 
 interface IOptionProps {
   name: string;
@@ -43,6 +51,7 @@ const Question: FC<ITakeQuizProps> = ({
   setQuestionOptionNew,
   remainingTime,
 }): JSX.Element => {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [inputField, setInputField] = useState<any>("");
   const [count, setCount] = useState(initialItems.length);
   const {
@@ -69,7 +78,8 @@ const Question: FC<ITakeQuizProps> = ({
       const findIndex = tempQuestionNew?.findIndex(
         (singleQuestionNew: any) => singleQuestionNew.key === lastVal,
       );
-      if (quesData?.answer) {
+      if (quesData?.is_correct == true) {
+        // if (quesData?.answer) {
         if (findIndex !== -1) {
           tempQuestionNew[findIndex] = {
             ...tempQuestionNew[findIndex],
@@ -171,30 +181,51 @@ const Question: FC<ITakeQuizProps> = ({
         });
         setInputCaseSchema(updatedItemsCorrect);
         setAnwserCorrect(false);
-        console.log(updatedItemsCorrect, "updatedItems correct");
-        console.log(inputCaseSchema, "inputCaseSchema correct");
+        // console.log(updatedItemsCorrect, "updatedItems correct");
+        // console.log(inputCaseSchema, "inputCaseSchema correct");
       } else {
-        const updatedItems = inputCaseSchema?.map((item: any) => {
-          if (item?.id === optionId) {
-            return { ...item, isDisabled: true, isColor: "#8C2531" };
-          }
-          return item;
-        });
-        const itemsArrg = {
-          id: updatedItems?.length + 1,
-          // id: count,
-          anws: "",
-          isCorrect: false,
-          isDisabled: false,
-        };
+        if (!quesData?.exceed == true) {
+          const updatedItems = inputCaseSchema?.map((item: any) => {
+            if (item?.id === optionId) {
+              return { ...item, isDisabled: true, isColor: "#8C2531" };
+            }
+            return item;
+          });
+          const itemsArrg = {
+            id: updatedItems?.length + 1,
+            // id: count,
+            anws: "",
+            isCorrect: false,
+            isDisabled: false,
+          };
 
-        const itemsAddNewObj = [...updatedItems, itemsArrg];
-        setInputCaseSchema(itemsAddNewObj);
-        setInputField("");
-        setAnwserCorrect(true);
-        console.log(updatedItems, "updatedItems inCorrect");
-        console.log(itemsAddNewObj, "itemsAddNewObj inCorrect");
-        console.log(inputCaseSchema, "inputCaseSchema inCorrect");
+          const itemsAddNewObj = [...updatedItems, itemsArrg];
+          setInputCaseSchema(itemsAddNewObj);
+          setInputField("");
+          setAnwserCorrect(true);
+        } else {
+          enqueueSnackbar(quesData?.message, {
+            variant: "error",
+            action: (key) => (
+              <IconButton onClick={() => closeSnackbar(key)} size="small">
+                <HighlightOffOutlinedIcon sx={{ color: "#fff" }} />
+              </IconButton>
+            ),
+          });
+          const updatedItems = inputCaseSchema?.map((item: any) => {
+            if (item?.id === optionId) {
+              return { ...item, isDisabled: true, isColor: "#8C2531" };
+            }
+            return item;
+          });
+          setInputCaseSchema(updatedItems);
+          setInputField("");
+          setAnwserCorrect(false);
+        }
+
+        // console.log(updatedItems, "updatedItems inCorrect");
+        // console.log(itemsAddNewObj, "itemsAddNewObj inCorrect");
+        // console.log(inputCaseSchema, "inputCaseSchema inCorrect");
       }
     } catch (error) {
       //on error work
