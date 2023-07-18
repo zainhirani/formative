@@ -85,7 +85,6 @@ const DashboardScreen = () => {
   // const currentUser = useUserDetail();
   const currentUser = useRegisterDetail();
 
-  console.log(currentUser?.data, "currentUser");
   return (
     <>
       <Head>
