@@ -13,6 +13,7 @@ import { pageSizeManageQuiz } from "mock-data/Teacher/QuizResult";
 import { BoxPaginate, ShowingBox, TableWrapper } from "./Styled";
 import QuestionDrawer from "./QuestionDrawer";
 import StudentQuestionDrawer from "./StudentQuestionDrawer";
+import { removeHTMLTags } from "utils";
 
 const columnsQuizAttemptedStds: GridColDef[] = [
   {
@@ -92,6 +93,9 @@ const SelectedQuizDetails = () => {
         headerName: "Question",
         minWidth: 350,
         flex: 2,
+        renderCell: (params) => {
+          return removeHTMLTags(params?.row?.detail);
+        },
       },
       {
         field: "score",
@@ -104,6 +108,7 @@ const SelectedQuizDetails = () => {
         headerName: "Difficulty",
         minWidth: 100,
         flex: 1,
+        // renderCell: (params) => params?.row?.difficulty?.toFixed(2),
       },
       {
         field: "averageTime",

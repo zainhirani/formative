@@ -8,7 +8,7 @@ import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
 import Loader from "components/Loader";
 import DataTable from "components/DataTable";
 import TakeQuizFormat from "components/TakeQuizFormat";
-import { BoxWrapper, SelectBoxWrapper } from "./Styled";
+import { BoxWrapper, ImageWrapper, SelectBoxWrapper } from "./Styled";
 import { questionData } from "mock-data/Student/Test-Yourself";
 import CircleUnchecked from "@material-ui/icons/RadioButtonUnchecked";
 import Image from "next/image";
@@ -21,6 +21,8 @@ import {
 } from "providers/Students/TestYourself/QuestionByCategory";
 import { useTestQuestion } from "providers/Students/TestYourself/TestQuestions";
 import { useQueryClient } from "react-query";
+import { useSnackbar } from "notistack";
+import CloseIcon from "@mui/icons-material/Close";
 
 type Item = {
   id: number;
@@ -31,6 +33,7 @@ type Item = {
 };
 
 const TestYourself = () => {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [questionId, setQuestionId] = useState(0);
   const categoryList = useCategoryListing();
   const questionDetail = useQuestionDetail({ id: questionId });
@@ -38,13 +41,7 @@ const TestYourself = () => {
     value: item.id,
     label: item.name,
   }));
-  const defaultOption =
-    optionsCourse && optionsCourse.length > 0
-      ? {
-          value: optionsCourse[0]?.value,
-          label: optionsCourse[0]?.label,
-        }
-      : { value: 0, label: "" };
+  const defaultOption = { value: 0, label: "Please select a category" };
 
   const [category, setCategory] = useState({
     value: defaultOption.value,
@@ -59,13 +56,42 @@ const TestYourself = () => {
 
   const questionOptions = eval(questionDetail?.data?.option || "");
   const [questionOption, setQuestionOption] = useState([]);
+  const [textAnswer, setTextAnswer] = useState("");
+  const [isTextField, setIsTextField] = useState<boolean>(false);
   const queryClient = useQueryClient();
+  const [selectedOptionKeys, setSelectedOptionKeys] = useState("");
+
+  const handleAnswerChange = (e: React.ChangeEvent) => {
+    setTextAnswer(e.target.value);
+    setSelectedOptionKeys("");
+  };
 
   useEffect(() => {
-    if (!questionOption?.length) {
-      setQuestionOption(questionOptions);
+    if (textAnswer?.length > 0) {
+      setCheckedStateAns([]);
+      setSelectedOptionKeys("");
     }
-  }, [questionOption, questionOptions]);
+  }, [textAnswer]);
+
+  useEffect(() => {
+    questionDetail?.data?.type.includes("SA") ||
+    questionDetail?.data?.type.includes("NUM")
+      ? setIsTextField(true)
+      : setIsTextField(false);
+  }, [questionDetail?.data?.type]);
+
+  useEffect(() => {
+    if (questionOptions?.length > 0) {
+      setQuestionOption((prevQuestionOption) => {
+        if (
+          JSON.stringify(prevQuestionOption) !== JSON.stringify(questionOptions)
+        ) {
+          return [...questionOptions];
+        }
+        return prevQuestionOption;
+      });
+    }
+  }, [questionOptions]);
 
   useEffect(() => {
     setQuestionListing(questionList?.data || []);
@@ -73,11 +99,12 @@ const TestYourself = () => {
 
   const timer = questionDetail?.data?.timelimit;
   const [remainingTime, setRemainingTime] = useState(timer);
+  const [checkedStateAns, setCheckedStateAns] = useState([]);
 
-  const [checkedStateAns, setCheckedStateAns] = useState(
-    new Array(questionOption?.length).fill(false),
-  );
-  const [selectedOptionKey, setSelectedOptionKey] = useState("");
+  useEffect(() => {
+    setCheckedStateAns(new Array(questionOption?.length).fill(false));
+  }, [questionOption]);
+
   const [show, setShow] = useState(false);
 
   const handleCategoryChange = (e: any) => {
@@ -94,28 +121,44 @@ const TestYourself = () => {
   useEffect(() => {
     if (questionDetail?.data) {
       setRemainingTime(timer);
+      setCheckedStateAns(new Array(questionOption?.length).fill(false));
     }
   }, [questionDetail?.data]);
 
   const handleOptionChange = (index: number) => {
-    const updatedCheckedState = checkedStateAns.map(
-      (_, i) => i === index && !checkedStateAns[index],
-    );
+    const optionType = questionDetail?.data?.type || "";
+    const isSelected = checkedStateAns[index];
+
+    let updatedCheckedState;
+    if (optionType === "MSN" || optionType === "MSR") {
+      updatedCheckedState = checkedStateAns.map(
+        (_, i) => i === index && !isSelected,
+      );
+    } else {
+      updatedCheckedState = checkedStateAns.map((state, i) => {
+        if (i === index) {
+          return !state;
+        }
+        return state;
+      });
+    }
+
     setCheckedStateAns(updatedCheckedState);
 
-    if (updatedCheckedState[index]) {
-      const selectedOptionKey = questionOption[index]?.key || "";
-      setSelectedOptionKey(selectedOptionKey);
-    } else {
-      setSelectedOptionKey("");
-    }
+    const selectedOptions = updatedCheckedState
+      .map((state, i) => (state ? questionOption[i]?.key || "" : ""))
+      .filter(Boolean);
+
+    setSelectedOptionKeys(selectedOptions.join(","));
+    setTextAnswer("");
   };
 
   const [submit, setSubmit] = useState(false);
 
   const handleOnChange = (position: any, e: any) => {
     setSubmit(false);
-    setCheckedStateAns(new Array(questionData?.options?.length).fill(false));
+    setCheckedStateAns(new Array(questionOption?.length).fill(false));
+    setTextAnswer("");
     setQuestionId(position);
     setRemainingTime(timer);
     setShow(true);
@@ -130,7 +173,9 @@ const TestYourself = () => {
       questionId: questionId,
       start_time: 1,
       end_time: timeSpent || 0,
-      option_selected: selectedOptionKey,
+      ...(selectedOptionKeys
+        ? { option_selected: selectedOptionKeys }
+        : { option_selected: textAnswer }),
     });
   };
 
@@ -142,6 +187,24 @@ const TestYourself = () => {
   }, [submitQuestion.isSuccess]);
 
   const isAnswerCorrect = submitQuestion?.data?.data;
+
+  useEffect(() => {
+    remainingTime === 0 &&
+      (!checkedStateAns.includes(true) || !textAnswer) &&
+      (setShow(false),
+      setSelectedItemId(0),
+      enqueueSnackbar("Time has been finished, please try again!", {
+        variant: "error",
+        action: (key) => (
+          <IconButton onClick={() => closeSnackbar(key)} size="small">
+            <CloseIcon sx={{ color: "#fff" }} />
+          </IconButton>
+        ),
+      }));
+    remainingTime === 0 &&
+      (checkedStateAns.includes(true) || textAnswer) &&
+      (handleQuestionSubmit(), setSubmit(true));
+  }, [remainingTime]);
 
   let configTestYourself = [
     {
@@ -184,7 +247,12 @@ const TestYourself = () => {
               }
               checkedIcon={
                 <>
-                  <Image src="/tick.svg" width={20} height={20} alt="tick" />
+                  <ImageWrapper
+                    src="/tick.svg"
+                    width={20}
+                    height={20}
+                    alt="tick"
+                  />
                 </>
               }
               checked={selectedItemId === item.id}
@@ -202,6 +270,7 @@ const TestYourself = () => {
                 borderRadius: "50%",
                 "&.Mui-checked": {
                   borderRadius: "50%",
+                  mb: "-6px",
                 },
               }}
               onClick={(e) => {
@@ -240,6 +309,8 @@ const TestYourself = () => {
       <BoxWrapper sx={{ width: { md: "35%", xs: "100%" } }}>
         <SelectBoxWrapper>
           <CustomSelectTestYourSelf
+            placeholder="Please select a category"
+            controlText="Category:"
             value={category}
             dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
             options={optionsCourse}
@@ -276,6 +347,9 @@ const TestYourself = () => {
           handleSubmit={handleQuestionSubmit}
           answer={isAnswerCorrect}
           handleOptionChange={handleOptionChange}
+          isTextField={isTextField}
+          textAnswer={textAnswer}
+          handleAnswerChange={handleAnswerChange}
         />
       </BoxWrapper>
     </Box>

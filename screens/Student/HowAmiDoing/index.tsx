@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import SearchSection from "./searchSection";
 import TableSection from "./tableSection";
+import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
 import { useQuizResultsListing } from "providers/Students/How_Am_I_Doing";
+import Head from "next/head";
 
 const LIMIT = 10;
 const HowAmiDoingScreen = () => {
@@ -10,7 +12,6 @@ const HowAmiDoingScreen = () => {
   const [searchChange, setSearchChange] = React.useState<any>(null);
   const [page, setPage] = useState(1);
   const [course, setCourse] = useState<any>("");
-  
 
   function formatDate(dateString: string): string {
     const date = new Date(dateString);
@@ -22,30 +23,28 @@ const HowAmiDoingScreen = () => {
       .toString()
       .padStart(2, "0")}`;
   }
-  
-console.log(formatDate(beforeDatevalue || ""),"formatDateformatDate")
+
+  console.log(formatDate(beforeDatevalue || ""), "formatDateformatDate");
 
   const quizResultListing = useQuizResultsListing({
-    // ...(course?.value&&{ courseId:course?.value}),
     ...(searchChange && { quizName: searchChange }),
-    courseId:course?.value,
+    courseId: course?.value,
     Limit: LIMIT,
     Page: page,
     ...(afterDatevalue && { afterDate: formatDate(afterDatevalue || "") }),
-    // afterDate: afterDatevalue && formatDate(afterDatevalue || ""),
     ...(beforeDatevalue && { beforeDate: formatDate(beforeDatevalue || "") }),
     // beforeDate: beforeDatevalue && formatDate(beforeDatevalue || ""),
-
   });
   return (
     // <PageLayout>
     <>
+      <Head>
+        <title>How Am I doing</title>
+      </Head>
       <SearchSection
         beforeDatevalue={beforeDatevalue}
-        //@ts-ignore
         setBeforeDatevalue={setBeforeDatevalue}
         afterDatevalue={afterDatevalue}
-        //@ts-ignore
         setAfterDatevalue={setAfterDatevalue}
         course={course}
         setCourse={setCourse}

@@ -145,7 +145,7 @@ const DrawerQuestionsSection = (props: any) => {
           />
           <BoxWrapper sx={{ boxShadow: "none", mt: "0" }}>
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              <SelectBoxWrapper>
+              <SelectBoxWrapper  sx={{ zIndex: "2" }}>
                 {/* :TODO: Faculty */}
                 <CustomSelect
                   placeholder={facultyPlaceholder}

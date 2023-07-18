@@ -40,6 +40,7 @@ import { TOKEN } from "configs";
 import CustomSelect from "components/CustomSelect/CustomSelect";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { year_of_graduation } from "mock-data/Profile";
+import CloseIcon from "@mui/icons-material/Close";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required().label("First name"),
@@ -508,13 +509,13 @@ const StepOne: React.FC<IStepOneProps> = ({ handleNext }) => {
           variant="contained"
           type="submit"
           loading={register.isLoading}
-          loadingPosition="start"
+          loadingPosition="end"
           sx={{
             flex: "1 1 auto",
             marginTop: "30px",
             ".MuiLoadingButton-loadingIndicator": {
               top: "35%",
-              left: "35%",
+              right: "32%",
             },
           }}
           disabled={

@@ -56,8 +56,8 @@ const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
           style={{
             position: "relative",
             width: "100%",
-            height: 0,
-            paddingBottom: "100%",
+            height: "100%",
+            // paddingBottom: "100%",
           }}
         >
           <Image src={src} alt={"Preview"} layout="fill" objectFit="cover" />

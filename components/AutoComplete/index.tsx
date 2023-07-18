@@ -1,6 +1,5 @@
 import React, { FocusEvent, Ref } from "react";
 import Select, { Props as SelectProps, components } from "react-select";
-import Animated from "react-select/animated";
 
 interface CustomComponents {
   DropdownIndicator?: typeof components.DropdownIndicator;
@@ -20,6 +19,7 @@ interface AutoCompleteProps<OptionType = any> extends SelectProps<OptionType> {
   customComponents?: CustomComponents;
   isMulti: boolean;
   value: any;
+  classNamePrefix?: string;
   onMenuClose: () => void;
 }
 
@@ -44,6 +44,7 @@ const AutoComplete = <OptionType extends any = any>({
   isDisabled,
   closeMenuOnSelect = true,
   customComponents,
+  classNamePrefix,
   ...rest
 }: AutoCompleteProps<OptionType>) => {
   const style = {
@@ -55,6 +56,7 @@ const AutoComplete = <OptionType extends any = any>({
 
   return (
     <Select
+      classNamePrefix={classNamePrefix}
       onMenuClose={onMenuClose}
       isDisabled={isDisabled}
       onFocus={handleOnFocus}

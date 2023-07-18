@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState, useMemo } from "react";
 import SideDrawer from "components/Drawer";
 import { useAppState } from "contexts/AppStateContext";
@@ -28,11 +29,13 @@ import { UploadQuestions } from "components/UploadQuestions";
 import { useAuthContext } from "contexts/AuthContext";
 import { useQuestionDetails } from "providers/Teacher_Questions";
 import { removeHTMLTags } from "utils";
+import { useRegisterDetail } from "providers/Auth";
 // import { useQuizQuestionViewId } from "contexts/QuizQuestionViewIdContext";
 
 const DrawerQuestionsDetailSection = () => {
   const { state, setState, quizQuesIdState } = useAppState();
-  const { currentUser } = useAuthContext();
+  // const { currentUser } = useAuthContext();
+  const currentUser = useRegisterDetail();
   const questionDetails = useQuestionDetails({
     questionId: quizQuesIdState,
   });
@@ -62,7 +65,8 @@ const DrawerQuestionsDetailSection = () => {
   return (
     <>
       <QuizQuestionFormat
-        title={` ${currentUser.name} this is how Question ${questionDetails?.data?.id} appears to student`}
+        question={questionDetails?.data}
+        title={` ${currentUser?.data.name} this is how Question ${questionDetails?.data?.id} appears to student`}
         isOpen={state}
         onClose={handleDrawerCloseQuestion}
         isShowScoreBar={false}

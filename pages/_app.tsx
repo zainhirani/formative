@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import React from "react";
-import App, { AppContext } from "next/app";
+import App, { AppContext, AppInitialProps } from "next/app";
 import Head from "next/head";
 import { Router } from "next/router";
 import { SessionProvider } from "next-auth/react";
@@ -18,7 +18,9 @@ import { AuthContextProvider } from "contexts/AuthContext";
 import ThemeContextProvider from "contexts/ThemeContext";
 import { getLocale, getMessages } from "i18n";
 import ThemeProvider from "theme/Provider";
+import "../styles/global.css";
 import { QuizAddStateProvider } from "contexts/QuizAddStateContext";
+import { NextComponentType, NextPageContext } from "next";
 
 const queryCache = new QueryCache();
 
@@ -70,6 +72,29 @@ class MyApp extends App<{
     const fullProps = await App.getInitialProps(context);
     return fullProps;
   }
+
+  // componentDidMount(): void {
+  //   console.log("Mount");
+  // }
+
+  // componentDidUpdate(
+  //   prevProps: Readonly<
+  //     {
+  //       locale: string;
+  //       messages: any;
+  //       router: Router;
+  //     } & AppInitialProps<{}> & {
+  //         Component: NextComponentType<NextPageContext, any, any>;
+  //         router: Router;
+  //         __N_SSG?: boolean | undefined;
+  //         __N_SSP?: boolean | undefined;
+  //       }
+  //   >,
+  //   prevState: Readonly<{}>,
+  //   snapshot?: any,
+  // ): void {
+  //   console.log("Update");
+  // }
 
   render() {
     const {

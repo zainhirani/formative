@@ -4,6 +4,7 @@ import { Tooltip } from "@mui/material";
 import { components } from "react-select";
 import AutoComplete from "components/AutoComplete";
 import { BoxWrapper, SelectBoxWrapper } from "./Styled";
+import Head from "next/head";
 
 interface CustomSelectTestYourSelfProps {
   options?: Array<{}>;
@@ -94,22 +95,27 @@ const CustomSelectTestYourSelf: FC<CustomSelectTestYourSelfProps> = ({
   };
 
   return (
-    <BoxWrapper>
-      <AutoComplete
-        options={options}
-        onChange={onChange}
-        placeholder={placeholder}
-        customComponents={{
-          DropdownIndicator: (props) => (
-            <CustomDropdownIndicator {...props} dropdownIcon={dropdownIcon} />
-          ),
-          Control: (props) => <Control {...props} controlText={controlText} />,
-        }}
-        customStyles={style}
-        className="custom-select"
-        value={value}
-      />
-    </BoxWrapper>
+    <>
+      <Head>
+        <title>Test Yourself</title>
+      </Head>
+      <BoxWrapper>
+        <AutoComplete
+          options={options}
+          onChange={onChange}
+          placeholder={placeholder}
+          customComponents={{
+            DropdownIndicator: (props) => (
+              <CustomDropdownIndicator {...props} dropdownIcon={dropdownIcon} />
+              ),
+              Control: (props) => <Control {...props} controlText={controlText} />,
+            }}
+            customStyles={style}
+            className="custom-select"
+            value={value}
+          />
+      </BoxWrapper>
+    </>
   );
 };
 

@@ -166,7 +166,7 @@ const TableSection = (props: any) => {
       key: "addQuestion",
       startIcon: <AddCircleOutlineIcon />,
       render: () => {
-        return <Box>Add Question</Box>;
+        return <Box>Add Quiz</Box>;
       },
       onClick: () => {
         setDrawerOpen(true);

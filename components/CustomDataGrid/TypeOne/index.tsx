@@ -128,9 +128,6 @@ const TypeOne: React.FC<TypeOneProps> = ({
             {...props}
             sx={{
               minHeight: "400px",
-              ".MuiDataGrid-iconButtonContainer": {
-                visibility: "visible",
-              },
               ".MuiDataGrid-sortIcon": {
                 opacity: "inherit !important",
                 color: (theme) => theme.palette.primary.main,
@@ -140,6 +137,9 @@ const TypeOne: React.FC<TypeOneProps> = ({
               },
               ".MuiDataGrid-columnHeaderTitleContainer": {
                 gap: "5px",
+              },
+              ".MuiGrid-root .css-1bv2lzm":{
+                cursor:"pointer",
               },
             }}
             loading={loading}

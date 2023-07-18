@@ -5,9 +5,17 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { USERIMAGE } from "configs";
 import { useAuthContext } from "contexts/AuthContext";
+import { useRegisterDetail } from "providers/Auth";
 
 const RightMenu = () => {
-  const { currentUser } = useAuthContext();
+  // const { currentUser } = useAuthContext();
+  const currentUser = useRegisterDetail();
+  const name = currentUser?.data?.first_name.concat(" ", currentUser?.data?.last_name);
+  const userImage = name
+    ?.split(" ")
+    .map((word) => word.charAt(0))
+    .join("");
+
   return (
     <>
       {/* <ThemeSwitcher /> */}
@@ -19,11 +27,26 @@ const RightMenu = () => {
           color: (theme) => theme.palette.primary.dark,
         }}
       >
-        <Avatar
-          sx={{ width: 40, height: 40, border: "1px solid #EAEAEA" }}
-          alt="Kavin"
-          src={USERIMAGE}
-        />
+        {" "}
+        {userImage && (
+          <Box
+            sx={{
+              background: (theme) => theme.palette.primary.main,
+              width: "40px",
+              height: "40px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: "50%",
+            }}
+          >
+            <Typography
+              sx={{ color: (theme) => theme.palette.background.default }}
+            >
+              {userImage}
+            </Typography>
+          </Box>
+        )}
         <Typography
           gutterBottom
           variant="h5"
@@ -35,7 +58,7 @@ const RightMenu = () => {
             fontWeight: "400",
           }}
         >
-          Hi, {currentUser?.name}.
+          Hi, {name}.
         </Typography>
       </Box>
     </>

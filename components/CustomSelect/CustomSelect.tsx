@@ -20,6 +20,7 @@ interface CustomSelectProps {
   isFetching?: boolean;
   isMulti?: boolean;
   defaultValue?: any;
+  classNamePrefix?: string;
   onMenuClose?: () => void;
 }
 
@@ -60,6 +61,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
   name,
   isClearable,
   isDisabled,
+  classNamePrefix = "multi-custom-select-responsive",
   onMenuClose,
   ...rest
 }) => {
@@ -116,6 +118,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
   return (
     <BoxWrapper sx={{ zIndex: 1, width: "100%" }}>
       <AutoComplete
+        classNamePrefix={classNamePrefix}
         onMenuClose={onMenuClose}
         isMulti={isMulti}
         onBlur={onBlur}

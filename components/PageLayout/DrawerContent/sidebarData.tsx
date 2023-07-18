@@ -172,10 +172,10 @@ Menus:
     link: APP_ROUTES.TEST_YOUR_SELF,
   },
   {
-    title: "How am I doing",
+    title: "How am I doing?",
     icon: (
       <Image src={HOW_DOING} lazyLoad={true} width={16} alt="How am I doing" />
     ),
-    link: "",
+    link: APP_ROUTES.HOW_AM_I_DOING,
   },
 ];

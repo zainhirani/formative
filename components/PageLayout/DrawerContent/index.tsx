@@ -20,6 +20,7 @@ import SidebarMultiMenuItem from "./SidebarIMultiMenuItem";
 import { DrawerHeader } from "./Styled";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useAuthContext } from "contexts/AuthContext";
+import { useRegisterDetail } from "providers/Auth";
 
 interface BarComponentProps {
   open?: boolean;
@@ -28,17 +29,19 @@ interface BarComponentProps {
 
 const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
   const router = useRouter();
-  const { signOut, currentUser } = useAuthContext();
+  const { signOut } = useAuthContext();
+  const currentUser = useRegisterDetail();
 
-  let MENU_ITEMS = currentUser?.type === "ADMIN" ? TEACHER_MENU : STUDENT_MENU;
-  let COMMON_MENU_ITEMS = [COMMON_MENU.profile, COMMON_MENU.settings];
+  let MENU_ITEMS =
+    currentUser?.data?.type === "ADMIN" ? TEACHER_MENU : STUDENT_MENU;
+  let COMMON_MENU_ITEMS = [COMMON_MENU.profile];
 
   const isActiveRoute = (route: string) => {
     return router.pathname === route;
   };
   return (
     <>
-      <DrawerHeader>
+      <DrawerHeader sx={{ paddingTop: "20px" }}>
         <Box
           sx={{
             height: 50,
@@ -61,7 +64,7 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
         </IconButton>
       </DrawerHeader>
 
-      <List sx={{ height: "100%" }}>
+      <List sx={{ height: "100%", paddingTop: "45px" }}>
         {MENU_ITEMS.map((item: any, index) =>
           item?.subitems?.length ? (
             <SidebarMultiMenuItem item={item} key={index} hamOpen={open} />
@@ -73,11 +76,15 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
                 backgroundColor: isActiveRoute(item.link)
                   ? "#68151E"
                   : "initial",
+                borderLeft: isActiveRoute(item.link)
+                ? "2px solid #fff"
+                : "2px solid transparent",
                 "&:nth-of-type(7)": {
                   marginBottom: "60px",
                 },
                 "&:hover": {
                   background: "#68151E",
+                  borderColor: "#fff",
                 },
               }}
             >
@@ -127,11 +134,15 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
             disablePadding
             sx={{
               backgroundColor: isActiveRoute(item.link) ? "#68151E" : "initial",
+              borderLeft: isActiveRoute(item.link)
+                ? "2px solid #fff"
+                : "2px solid transparent",
               "&:nth-of-type(7)": {
                 marginBottom: "60px",
               },
               "&:hover": {
                 background: "#68151E",
+                borderColor: "#fff",
               },
             }}
           >
@@ -166,7 +177,22 @@ const DrawerContent: React.FC<BarComponentProps> = ({ open, clickHandler }) => {
       </List>
       {/* Logout Button */}
       <List>
-        <ListItem disablePadding>
+        <ListItem disablePadding
+          sx={{
+            backgroundColor: isActiveRoute("logout") ? "#68151E" : "initial",
+            borderLeft: isActiveRoute("logout")
+              ? "2px solid #fff"
+              : "2px solid transparent",
+            "&:hover": {
+              background: "#68151E",
+              borderColor: "#fff",
+            },
+            "&:focus": {
+              background: "#68151E",
+              borderColor: "#fff",
+            },
+          }}
+        >
           {/* <Link href="#" passHref={true}> */}
           <ListItemButton onClick={() => signOut()}>
             <ListItemIcon

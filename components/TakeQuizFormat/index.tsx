@@ -1,5 +1,12 @@
+// @ts-nocheck
 import React from "react";
-import { Box, Checkbox, FormControlLabel, Typography } from "@mui/material";
+import {
+  Box,
+  Checkbox,
+  FormControlLabel,
+  TextField,
+  Typography,
+} from "@mui/material";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
@@ -8,6 +15,7 @@ import Image from "theme/Image";
 import messages from "./messages";
 import { BoxWrapper, ButtonWrapper } from "./Styled";
 import { PUBLIC_IMAGE_URL } from "configs";
+import { removeHTMLTags } from "utils";
 
 interface IOptionProps {
   name: string;
@@ -41,6 +49,9 @@ type ITakeQuizProps = {
   answer?: boolean;
   handleOptionChange?: (index: number) => void;
   handleSubmit?: () => void;
+  isTextField?: boolean;
+  handleAnswerChange?: (e: React.ChangeEvent) => void;
+  textAnswer?: string;
 };
 
 const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
@@ -68,6 +79,9 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
   answer,
   handleOptionChange,
   handleSubmit,
+  isTextField,
+  textAnswer,
+  handleAnswerChange,
 }): JSX.Element => {
   const [ansCorrect, setAnsCorrect] = React.useState(false);
 
@@ -91,17 +105,6 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
   React.useEffect(() => {
     setRemainingTime(timer);
   }, [ansCorrect]);
-
-  const handleOnChange = (key: any, position: any, e: any) => {
-    const updatedCheckedStateAns = [...checkedStateAns];
-    updatedCheckedStateAns[position] = e.target.checked;
-    setCheckedStateAns(updatedCheckedStateAns);
-    if (e.target.checked) {
-      console.log("Selected option key:", key);
-      // You can perform further actions with the selected option key
-    }
-    // console.log(e.target.checked, "aaaaaa");
-  };
 
   const getTimeColor = () => {
     if (remainingTime <= 10) {
@@ -175,7 +178,7 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
           </Box>
           <Box sx={{ paddingTop: "10px" }}>
             <Typography sx={{ marginBottom: "5px" }} fontSize={18}>
-              {questionDetail}
+              {removeHTMLTags(questionDetail)}
             </Typography>
             {submit === false ? (
               questionMedia && (
@@ -191,63 +194,102 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
               <></>
             )}
           </Box>
-          <Box sx={{ marginTop: "30px" }}>
-            <Typography sx={{ marginBottom: "10px" }} fontSize={14}>
-              <FormattedMessage {...messages.chooseQuestion} />
-            </Typography>
-            {options?.map((el, index) => {
-              const valNew = el.valid;
-              return (
-                <Box
-                  key={index}
-                  sx={{
-                    justifyContent: "space-between",
-                    height: "56px",
-                    border: "1px solid #EAEAEA",
-                    borderRadius: "6px",
-                    paddingLeft: "20px",
-                    display: "flex",
-                    alignItems: "center",
-                    marginBottom: "10px",
-                    boxShadow:
-                      checkedStateAns[index] === true
-                        ? "0px 0px 40px rgba(0, 0, 0, 0.1)"
-                        : "",
-                  }}
-                >
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        onChange={() =>
-                          handleOptionChange && handleOptionChange(index)
-                        }
-                        // onChange={(e) => handleOnChange(el.key, index, e)}
-                        // checked={checkedStateAns[index]?.checked}
-                        checked={checkedStateAns && checkedStateAns[index]}
-                        id={`custom-checkbox-${index}`}
-                        color="default"
-                        disabled={submit ? true : false}
-                      />
-                    }
-                    label={el.value}
-                  />
-                  {submit && checkedStateAns[index] ? (
-                    answer ? (
-                      <Box sx={{ color: "#225A41", marginRight: "20px" }}>
-                        Correct Answer!
-                      </Box>
+          {isTextField ? (
+            <Box
+              sx={{
+                mt: "30px",
+                display: "flex",
+                alignItems: "center",
+                gap: "20px",
+              }}
+            >
+              <Typography
+                sx={{ my: "10px", width: "max-content" }}
+                fontSize={14}
+              >
+                Answer:
+              </Typography>
+              <TextField
+                value={textAnswer}
+                onChange={handleAnswerChange}
+                sx={{ ".MuiInputBase-input": { p: "7px 15px" } }}
+              />
+              {submit && textAnswer?.length > 0 ? (
+                answer ? (
+                  <Box sx={{ color: "#225A41", marginRight: "20px" }}>
+                    Correct Answer!
+                  </Box>
+                ) : (
+                  <Box sx={{ color: "#8C2531", marginRight: "20px" }}>
+                    Incorrect Answer!
+                  </Box>
+                )
+              ) : (
+                ""
+              )}
+            </Box>
+          ) : (
+            <Box sx={{ marginTop: "30px" }}>
+              <Typography sx={{ marginBottom: "10px" }} fontSize={14}>
+                <FormattedMessage {...messages.chooseQuestion} />
+              </Typography>
+              {options?.map((el, index) => {
+                const valNew = el.valid;
+                return (
+                  <Box
+                    key={index}
+                    sx={{
+                      justifyContent: "space-between",
+                      height: "56px",
+                      border: "1px solid #EAEAEA",
+                      borderRadius: "6px",
+                      paddingLeft: "20px",
+                      display: "flex",
+                      alignItems: "center",
+                      marginBottom: "10px",
+                      boxShadow:
+                        checkedStateAns[index] === true
+                          ? "0px 0px 40px rgba(0, 0, 0, 0.1)"
+                          : "",
+                    }}
+                  >
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          onChange={() =>
+                            handleOptionChange && handleOptionChange(index)
+                          }
+                          // onChange={(e) => handleOnChange(el.key, index, e)}
+                          // checked={checkedStateAns[index]?.checked}
+                          checked={
+                            checkedStateAns && checkedStateAns[index] == true
+                          }
+                          id={`custom-checkbox-${index}`}
+                          color="default"
+                          disabled={submit ? true : false}
+                        />
+                      }
+                      label={el.value}
+                    />
+
+                    {submit && checkedStateAns[index] ? (
+                      answer ? (
+                        <Box sx={{ color: "#225A41", marginRight: "20px" }}>
+                          Correct Answer!
+                        </Box>
+                      ) : (
+                        <Box sx={{ color: "#8C2531", marginRight: "20px" }}>
+                          Incorrect Answer!
+                        </Box>
+                      )
                     ) : (
-                      <Box sx={{ color: "#8C2531", marginRight: "20px" }}>
-                        Incorrect Answer!
-                      </Box>
-                    )
-                  ) : (
-                    ""
-                  )}
-                </Box>
-              );
-            })}
-          </Box>
+                      ""
+                    )}
+                  </Box>
+                );
+              })}
+            </Box>
+          )}
           {submit ? (
             <Box
               sx={{
@@ -315,7 +357,10 @@ const TakeQuizFormat: React.FC<ITakeQuizProps> = ({
               </BoxWrapper>
               <ButtonWrapper
                 onClick={handleSubmit}
-                disabled={!(checkedStateAns.indexOf(true) > -1)}
+                disabled={
+                  !(checkedStateAns.indexOf(true) > -1) &&
+                  !(textAnswer?.length > 0)
+                }
                 loadingPosition="start"
                 startIcon={<ArrowCircleRightOutlinedIcon />}
                 sx={{

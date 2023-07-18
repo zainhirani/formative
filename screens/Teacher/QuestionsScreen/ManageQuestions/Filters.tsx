@@ -39,12 +39,6 @@ const Filters: React.FC<FilterProps> = ({
   selectedFolder,
   selectedType,
 }) => {
-  // const [selectedFolder, setSelectedFolder] = useState(null);
-  // const [enumType, setEnumType] = useState(null);
-  // const [selectedCategory, setSelectedCategory] = useState(null);
-  // const [selectedfacultyCategoryIds, setSelectedFacultyCategoryIds] =
-  //   useState(null);
-
   const faculty = useFormattedMessage(messages.faculty);
   const facultyPlaceholder = useFormattedMessage(messages.facultyPlaceholder);
   const folder = useFormattedMessage(messages.folder);
@@ -60,7 +54,6 @@ const Filters: React.FC<FilterProps> = ({
     (arr = selectedFacultyCategory.filter(
       (obj: any) => obj?.value !== value.value,
     )),
-      // setSelectedFacultyCategoryIds([...arr]);
       (arr2 = arr.map((item) => item.value));
     onFacultyCategoryChange([...arr2]);
   };
@@ -89,7 +82,6 @@ const Filters: React.FC<FilterProps> = ({
             isFetching={categoryOptionData?.isFetching}
             onChange={(val: any) => {
               onCategoryChange(val);
-              // setSelectedCategory(val);
             }}
           />
         </SelectBoxWrapper>
@@ -107,7 +99,6 @@ const Filters: React.FC<FilterProps> = ({
             value={selectedFolder}
             onChange={(val: any) => {
               onFolderChange(val);
-              // setSelectedFolder(val);
             }}
             isFetching={folderOptionData?.isFetching}
           />
@@ -122,7 +113,6 @@ const Filters: React.FC<FilterProps> = ({
             dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
             options={typeOptionData}
             onChange={(val: any) => {
-              // setEnumType(val);
               onTypeChange(val);
             }}
           />
@@ -130,6 +120,7 @@ const Filters: React.FC<FilterProps> = ({
         <SelectBoxWrapper>
           {/* Category */}
           <CustomSelect
+            // classNamePrefix="teacher-question-faculty-select"
             isMulti
             placeholder={facultyPlaceholder}
             controlText={faculty}
@@ -139,8 +130,6 @@ const Filters: React.FC<FilterProps> = ({
               value: category.id,
             }))}
             onChange={(val) => {
-              // setSelectedFacultyCategoryIds(val);
-              // let arr = val.map((item) => item.value);
               onFacultyCategoryChange(val);
             }}
             value={selectedFacultyCategory}
