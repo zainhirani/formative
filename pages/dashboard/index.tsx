@@ -5,7 +5,7 @@ import { signOut } from "next-auth/react";
 
 const Dashboard = () => {
   const { currentUser } = useAuthContext();
-
+  // @ts-ignore
   if (!currentUser?.id) {
     signOut({ callbackUrl: "/login" });
     localStorage.clear();
