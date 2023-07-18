@@ -58,6 +58,7 @@ const ViewQuestion = ({
         answerStats={answerStats}
         media={questionDetails?.data?.media ? questionDetails?.data?.media : ""}
         quizAnswers={questionDetails?.data?.answer}
+        question={questionDetails?.data}
       />
     </>
   );

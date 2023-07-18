@@ -10,24 +10,21 @@ import { useRegisterDetail } from "providers/Auth";
 
 interface QuizAttemptDrawerProps {
   isOpen: boolean;
-  onClose: (e?:any) => void;
+  onClose: (e?: any) => void;
   quizId: number;
 }
 
-const AttemptDrawer = ({
-  isOpen,
-  onClose,
-  quizId,  
-}: QuizAttemptDrawerProps) => {
+const AttemptDrawer = ({ isOpen, onClose, quizId }: QuizAttemptDrawerProps) => {
   const [page, setPage] = useState(1);
-  const attemptQuizList = useAttemptQuiz({quizId:quizId })
+  const attemptQuizList = useAttemptQuiz({ quizId: quizId });
   // const {currentUser} = useAuthContext();
   const currentUser = useRegisterDetail();
   const totalRows = attemptQuizList?.data?.questions?.length;
   const totalPages = Math.ceil(totalRows ? totalRows / 1 : 1);
-  const paginatedRows = attemptQuizList?.data?.questions?.slice((page - 1) * 1, page * 1);
-  
-
+  const paginatedRows = attemptQuizList?.data?.questions?.slice(
+    (page - 1) * 1,
+    page * 1,
+  );
 
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
@@ -44,19 +41,21 @@ const AttemptDrawer = ({
       }));
     }
   }, [paginatedRows]);
-  console.log(filterOptions?.findIndex(
-    (item: { value: string }) =>
-      item.value ===
-      JSON.parse(
-        paginatedRows?.[0]?.answer
-          ? paginatedRows?.[0]?.answer
-          : "",
-      ),
-  ),"filterOptions")
+  console.log(
+    filterOptions?.findIndex(
+      (item: { value: string }) =>
+        item.value ===
+        JSON.parse(
+          paginatedRows?.[0]?.answer ? paginatedRows?.[0]?.answer : "",
+        ),
+    ),
+    "filterOptions",
+  );
 
   return (
     <>
       <QuizQuestionFormat
+        question={paginatedRows?.[0]?.question}
         quizOptions={filterOptions}
         title={`Quiz review for ${currentUser?.data?.username} on ${attemptQuizList.data?.course[0].course_name}`}
         questionContext={paginatedRows?.[0]?.detail}
@@ -72,7 +71,6 @@ const AttemptDrawer = ({
         disable={true}
         isShowScoreBar
         quizAnswers={paginatedRows?.[0]?.answer}
-       
       >
         <BoxPaginate>
           <Pagination

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState, useEffect } from "react";
 import { Box, Button, ButtonGroup } from "@mui/material";
 import LocalPrintshopOutlinedIcon from "@mui/icons-material/LocalPrintshopOutlined";
@@ -37,6 +38,7 @@ import {
 } from "providers/Teacher/TeacherQuiz";
 import APP_ROUTES from "constants/RouteConstants";
 import { useAppState } from "contexts/AppStateContext";
+import OverlayLoader from "components/OverlayLoader";
 
 const TableSection = (props: any) => {
   const {
@@ -221,7 +223,7 @@ const TableSection = (props: any) => {
     });
   };
 
-  const currentDate = editPage ? dayjs(`${quizByIdData?.start_time}`) : dayjs();
+  const currentDate = dayjs();
 
   const saveCondition = editPage
     ? quizByIdData?.status == "COMPLETED" ||
@@ -242,20 +244,23 @@ const TableSection = (props: any) => {
       ? true
       : false
     : true;
-  // const studentCondition = quizByIdData?.status == "COMPLETED" ? false : true;
   const studentCondition = editPage
     ? quizByIdData?.status == "COMPLETED"
       ? true
       : false
     : true;
 
-  useEffect(() => {
-    // console.log(selectedQuestions, "selectedQuestions tablesection");
-  }, [selectedQuestions]);
-
-  // console.log(studentCondition, "studentCondition");
+  // console.log(selectedQuestions, "selectedQuestions table rerender");
   return (
     <>
+      <OverlayLoader
+        isShow={
+          quizSaveEdit.isLoading ||
+          quizSave.isLoading ||
+          duplicateQuiz.isLoading ||
+          deleteQuiz.isLoading
+        }
+      />
       <BoxWrapper>
         <CustomDataGrid
           rows={[...selectedQuestions]}
@@ -272,13 +277,19 @@ const TableSection = (props: any) => {
         <Box sx={{ display: "flex" }}>
           <CustomeDateTimePicker
             label="Start Time:"
-            value={editId ? dayjs(`${quizByIdData?.start_time}`) : null}
+            value={
+              editId ? dayjs(`${quizByIdData?.start_time}`) : null
+              // editId ? dayjs(`${quizByIdData?.start_time}`) : dayjs(new Date())
+            }
             onChange={startDateHandler}
             currentDate={currentDate}
           />
           <CustomeDateTimePicker
             label="Stop Time:"
-            value={editId ? dayjs(`${quizByIdData?.end_time}`) : null}
+            value={
+              editId ? dayjs(`${quizByIdData?.end_time}`) : null
+              // : dayjs().add(1, "day")
+            }
             onChange={endDateHandler}
             currentDate={currentDate}
           />
@@ -302,8 +313,6 @@ const TableSection = (props: any) => {
             >
               Save
             </ButtonWrapper>
-            {/* {editPage ? (
-              <> */}
             <ButtonWrapper
               startIcon={<DifferenceOutlinedIcon />}
               className="btn"
@@ -327,10 +336,6 @@ const TableSection = (props: any) => {
             >
               Delete
             </ButtonWrapper>
-            {/* </>
-            ) : (
-              ""
-            )} */}
           </ButtonGroup>
         </QuizGroupButtonBox>
       </BoxButtonWrapper>

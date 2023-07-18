@@ -50,6 +50,8 @@ const StudentQuestionDrawer = ({
   return (
     <>
       <QuizQuestionFormat
+        quizAnswers={paginatedRows?.[0]?.question?.answer}
+        question={paginatedRows?.[0]?.question}
         quizOptions={filterOptions}
         title="Quiz review for Zakira Akbari on Group Final"
         questionContext={paginatedRows?.[0]?.question?.detail}

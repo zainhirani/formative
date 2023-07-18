@@ -36,7 +36,9 @@ function RemainingTimer({ seconds, onEnd, remainingTimer }: any) {
   };
   return (
     <Box sx={{ display: "flex" }}>
-      <Typography variant="body1">Time Remaining:</Typography>
+      <Typography variant="body1" sx={{ marginRight: "5px" }}>
+        Time Remaining:{" "}
+      </Typography>
       <Typography variant="body1" style={{ color: getTimeColor() }}>
         {remainingSeconds} seconds
       </Typography>

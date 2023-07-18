@@ -20,6 +20,7 @@ import { generateGreetings } from "utils";
 import Link from "next/link";
 import { useProfileDetail, useUserDetail } from "providers/Users";
 import Head from "next/head";
+import SideDrawer from "components/Drawer";
 import { useRegisterDetail } from "providers/Auth";
 
 // Teacher's Dashboard Content
@@ -84,7 +85,7 @@ const DashboardScreen = () => {
   // const currentUser = useUserDetail();
   const currentUser = useRegisterDetail();
 
-  console.log(currentUser?.data,"currentUser")
+  console.log(currentUser?.data, "currentUser");
   return (
     <>
       <Head>
@@ -103,7 +104,10 @@ const DashboardScreen = () => {
             }}
           >
             <div>
-              Welcome {currentUser?.data?.first_name + " " + currentUser?.data?.last_name}
+              Welcome{" "}
+              {currentUser?.data?.first_name +
+                " " +
+                currentUser?.data?.last_name}
             </div>
             <div>{generateGreetings()}</div>
           </Typography>

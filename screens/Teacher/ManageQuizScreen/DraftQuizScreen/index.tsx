@@ -30,6 +30,7 @@ const DraftQuizScreen: NextPage = () => {
   } = useQuizById({
     id: quizEditId,
   });
+
   const editPage = quizEditId == undefined ? false : true;
   function extractIds(arr: any) {
     var ids = [];
@@ -47,7 +48,8 @@ const DraftQuizScreen: NextPage = () => {
   useEffect(() => {
     if (editPage) {
       if (isSuccess) {
-        setSelectedQuestions(quizByIdData?.questions);
+      } else {
+        setSelectedQuestions([]);
       }
     } else {
       setSelectedQuestions([]);
@@ -103,8 +105,10 @@ const DraftQuizScreen: NextPage = () => {
       questionsId: quizEditId ? quizByIdData?.questions : null,
     },
     enableReinitialize: true,
-    onSubmit,
+    // onSubmit,
   });
+
+  // console.log(values?.reviewable, "values?.reviewable");
 
   function removeQuestionById(idToRemove: any) {
     setSelectedQuestions((prevQuestions: any) =>
@@ -136,6 +140,7 @@ const DraftQuizScreen: NextPage = () => {
       headerName: "Difficulty",
       minWidth: 130,
       flex: 1,
+      renderCell: (params) => params?.row?.difficulty?.toFixed(2),
     },
     {
       field: "detail",
@@ -156,9 +161,9 @@ const DraftQuizScreen: NextPage = () => {
 
         return (
           <>
-          <Head>
-            <title>Add Quiz</title>
-          </Head>
+            <Head>
+              <title>Add Quiz</title>
+            </Head>
             {!selectedQuestions.includes(selectedRow) &&
             !questionIds.includes(selectedRowId) ? (
               <IconButton
