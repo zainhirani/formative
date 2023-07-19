@@ -34,8 +34,8 @@ import { useRegisterDetail } from "providers/Auth";
 
 const DrawerQuestionsDetailSection = () => {
   const { state, setState, quizQuesIdState } = useAppState();
-  // const { currentUser } = useAuthContext();
-  const currentUser = useRegisterDetail();
+  const { currentUser } = useAuthContext();
+  // const currentUser = useRegisterDetail();
   const questionDetails = useQuestionDetails({
     questionId: quizQuesIdState,
   });
@@ -66,7 +66,7 @@ const DrawerQuestionsDetailSection = () => {
     <>
       <QuizQuestionFormat
         question={questionDetails?.data}
-        title={` ${currentUser?.data.name} this is how Question ${questionDetails?.data?.id} appears to student`}
+        title={` ${currentUser?.data?.name} this is how Question ${questionDetails?.data?.id} appears to student`}
         isOpen={state}
         onClose={handleDrawerCloseQuestion}
         isShowScoreBar={false}
