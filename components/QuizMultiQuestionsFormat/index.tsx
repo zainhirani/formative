@@ -21,6 +21,8 @@ import { useQuesAttempt } from "providers/Student/TakeQuiz";
 import { useAppState } from "contexts/AppStateContext";
 import { enqueueSnackbar, useSnackbar } from "notistack";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
+import DisabledByDefaultIcon from "@mui/icons-material/DisabledByDefault";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
 
 interface IOptionProps {
   name: string;
@@ -85,7 +87,7 @@ const Question: FC<ITakeQuizProps> = ({
             ...tempQuestionNew[findIndex],
             color: "green",
           };
-          console.log(quesData, "quesData");
+          // console.log(quesData, "quesData");
 
           if (quesData?.isQuestionComplete === true) {
             console.log("isQuestionComplete");
@@ -157,7 +159,7 @@ const Question: FC<ITakeQuizProps> = ({
     const result = inputCaseSchema?.find(({ id }: any) => id === optionId);
 
     try {
-      await quesAttempt({
+      const response = await quesAttempt({
         quizId: selectedQuizId,
         questionId: questionId,
         payloadData: {
@@ -167,7 +169,9 @@ const Question: FC<ITakeQuizProps> = ({
       });
 
       //on success work
-      if (quesData?.is_correct == true) {
+      // console.log(response, "quesData?.is_correct");
+
+      if (response?.is_correct == true) {
         const updatedItemsCorrect = inputCaseSchema?.map((item: any) => {
           if (item?.id === optionId) {
             return {
@@ -184,7 +188,7 @@ const Question: FC<ITakeQuizProps> = ({
         // console.log(updatedItemsCorrect, "updatedItems correct");
         // console.log(inputCaseSchema, "inputCaseSchema correct");
       } else {
-        if (!quesData?.exceed == true) {
+        if (response?.exceed == false) {
           const updatedItems = inputCaseSchema?.map((item: any) => {
             if (item?.id === optionId) {
               return { ...item, isDisabled: true, isColor: "#8C2531" };
@@ -203,8 +207,10 @@ const Question: FC<ITakeQuizProps> = ({
           setInputCaseSchema(itemsAddNewObj);
           setInputField("");
           setAnwserCorrect(true);
+
+          // console.log(inputCaseSchema, "inputCaseSchema exceed false");
         } else {
-          enqueueSnackbar(quesData?.message, {
+          enqueueSnackbar(response?.message, {
             variant: "error",
             action: (key) => (
               <IconButton onClick={() => closeSnackbar(key)} size="small">
@@ -221,6 +227,7 @@ const Question: FC<ITakeQuizProps> = ({
           setInputCaseSchema(updatedItems);
           setInputField("");
           setAnwserCorrect(false);
+          // console.log(inputCaseSchema, "inputCaseSchema exceed true");
         }
 
         // console.log(updatedItems, "updatedItems inCorrect");
@@ -279,10 +286,24 @@ const Question: FC<ITakeQuizProps> = ({
                 return (
                   <Box key={index}>
                     {quesQuizByIdData?.timelimit !== inputCaseSchema?.length ? (
-                      <>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "10px",
+                          marginBottom: "10px",
+                        }}
+                      >
                         <Checkbox
-                          id={`custom-checkbox`}
-                          // id={`custom-checkbox-${index}`}
+                          checkedIcon={
+                            item?.isColor == "green" ? (
+                              <CheckBoxIcon sx={{ color: item?.isColor }} />
+                            ) : (
+                              <DisabledByDefaultIcon
+                                sx={{ color: item?.isColor }}
+                              />
+                            )
+                          }
                           checked={item?.isDisabled ? true : false}
                           disabled={
                             !item?.isDisabled
@@ -295,7 +316,7 @@ const Question: FC<ITakeQuizProps> = ({
                             handleInputCaseOptionChange(item?.id)
                           }
                           color="default"
-                          sx={{ color: item?.isColor }}
+                          sx={{ color: item?.isColor, padding: "0px" }}
                         />
                         {item?.isDisabled ? (
                           item?.anws
@@ -315,7 +336,7 @@ const Question: FC<ITakeQuizProps> = ({
                             }}
                           />
                         )}
-                      </>
+                      </Box>
                     ) : (
                       ""
                     )}

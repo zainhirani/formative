@@ -71,26 +71,35 @@ const TakeQuizScreen = () => {
           setQuestionOptionNew(currentAllOptions);
         }
         if (!questionTypeArr.includes(data?.type)) {
-          const updatedObject = data?.selected_before?.map(
-            (item: any, index: number) => {
-              return {
-                id: index + 1,
-                anws: item,
-                isDisabled: true,
-                isColor: "#8C2531",
-              };
-            },
-          );
-          const itemsArrg = {
-            id: updatedObject?.length + 1,
-            anws: "",
-            isCorrect: false,
-            isDisabled: false,
-          };
-
-          const itemsAddNewObj = [...updatedObject, itemsArrg];
-          setInputCaseSchema(itemsAddNewObj);
-          console.log(inputCaseSchema, "inputCaseSchema");
+          if (data?.selected_before?.length > 0) {
+            const updatedObject = data?.selected_before?.map(
+              (item: any, index: number) => {
+                return {
+                  id: index + 1,
+                  anws: item,
+                  isDisabled: true,
+                  isColor: "#8C2531",
+                };
+              },
+            );
+            const itemsArrg = {
+              id: updatedObject?.length + 1,
+              anws: "",
+              isCorrect: false,
+              isDisabled: false,
+            };
+            const itemsAddNewObj = [...updatedObject, itemsArrg];
+            setInputCaseSchema(itemsAddNewObj);
+          } else {
+            const itemsArrg = {
+              id: 1,
+              anws: "",
+              isCorrect: false,
+              isDisabled: false,
+            };
+            setInputCaseSchema([itemsArrg]);
+          }
+          // console.log(inputCaseSchema, "inputCaseSchema");
         } else {
           setSelectedOptions(data?.selected_before);
         }
