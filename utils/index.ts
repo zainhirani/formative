@@ -59,7 +59,7 @@ export const formatOptions = (options, answer) => {
   const formattedOptions = [];
 
   // Iterate through each option
-  parsedOptions.forEach((option, index) => {
+  parsedOptions?.forEach((option, index) => {
     // Create an object for the formatted option
     const formattedOption = {
       correct: parsedAnswer.includes(option.key),

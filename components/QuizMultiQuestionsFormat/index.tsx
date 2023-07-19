@@ -1,5 +1,11 @@
 import React, { FC, useEffect, useState } from "react";
-import { Box, Checkbox, FormControlLabel, Typography } from "@mui/material";
+import {
+  Box,
+  Checkbox,
+  FormControlLabel,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import messages from "screens/Student/TakeQuiz/messages";
 import {
@@ -13,6 +19,10 @@ import { PUBLIC_IMAGE_URL } from "configs";
 import { isStringNotURL, removeHTMLTags } from "utils";
 import { useQuesAttempt } from "providers/Student/TakeQuiz";
 import { useAppState } from "contexts/AppStateContext";
+import { enqueueSnackbar, useSnackbar } from "notistack";
+import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
+import DisabledByDefaultIcon from "@mui/icons-material/DisabledByDefault";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
 
 interface IOptionProps {
   name: string;
@@ -43,20 +53,25 @@ const Question: FC<ITakeQuizProps> = ({
   setQuestionOptionNew,
   remainingTime,
 }): JSX.Element => {
-  const [inputCaseSchema, setInputCaseSchema] = useState<any>(initialItems);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [inputField, setInputField] = useState<any>("");
   const [count, setCount] = useState(initialItems.length);
   const {
     selectedOptions,
     setSelectedOptions,
     anwserCorrect,
     setAnwserCorrect,
+    inputCaseSchema,
+    setInputCaseSchema,
   } = useAppState();
 
   const { mutateAsync: quesAttempt, data: quesData }: any = useQuesAttempt(
     undefined,
     (data: any) => {},
   );
-
+  // useEffect(() => {
+  //   setInputCaseSchema([...inputCaseSchema, initialItems]);
+  // }, []);
   useEffect(() => {
     if (selectedOptions.length > 0) {
       const lastVal = selectedOptions[selectedOptions?.length - 1];
@@ -65,20 +80,25 @@ const Question: FC<ITakeQuizProps> = ({
       const findIndex = tempQuestionNew?.findIndex(
         (singleQuestionNew: any) => singleQuestionNew.key === lastVal,
       );
-      if (quesData?.answer) {
+      if (quesData?.is_correct == true) {
+        // if (quesData?.answer) {
         if (findIndex !== -1) {
           tempQuestionNew[findIndex] = {
             ...tempQuestionNew[findIndex],
             color: "green",
           };
+          // console.log(quesData, "quesData");
 
-          tempQuestionNew?.forEach((item: any, index: number) => {
-            tempQuestionNew[index] = {
-              ...item,
-              disabled: true,
-            };
-          });
-          setAnwserCorrect(false);
+          if (quesData?.isQuestionComplete === true) {
+            console.log("isQuestionComplete");
+            tempQuestionNew?.forEach((item: any, index: number) => {
+              tempQuestionNew[index] = {
+                ...item,
+                disabled: true,
+              };
+            });
+            setAnwserCorrect(false);
+          }
         }
 
         setQuestionOptionNew(tempQuestionNew);
@@ -104,6 +124,7 @@ const Question: FC<ITakeQuizProps> = ({
 
   const isOptionSelected = (optionId: string) =>
     selectedOptions.includes(optionId);
+
   const handleOptionChange = async (optionId: any) => {
     await quesAttempt({
       quizId: selectedQuizId,
@@ -121,9 +142,11 @@ const Question: FC<ITakeQuizProps> = ({
   };
   const questionTypesWithFormControl = ["MSN", "MSR", "MCN", "MCR"];
 
-  const handleInputChange = (val: any) => {
+  const handleInputChange = (val: any, id: number) => {
+    setInputField(val);
     const updatedItems = inputCaseSchema?.map((item: any) => {
-      if (item?.id === count) {
+      if (item?.id === id) {
+        // if (item?.id === count) {
         return { ...item, anws: val };
       }
       return item;
@@ -135,51 +158,92 @@ const Question: FC<ITakeQuizProps> = ({
   const handleInputCaseOptionChange = async (optionId: any) => {
     const result = inputCaseSchema?.find(({ id }: any) => id === optionId);
 
-    await quesAttempt(
-      {
+    try {
+      const response = await quesAttempt({
         quizId: selectedQuizId,
         questionId: questionId,
         payloadData: {
           option_selected: result?.anws,
           submission_duration: questionTimtelimit - remainingTime,
         },
-      },
-      (data: any) => {
-        if (!data?.is_correct) {
+      });
+
+      //on success work
+      // console.log(response, "quesData?.is_correct");
+
+      if (response?.is_correct == true) {
+        const updatedItemsCorrect = inputCaseSchema?.map((item: any) => {
+          if (item?.id === optionId) {
+            return {
+              ...item,
+              isCorrect: true,
+              isDisabled: true,
+              isColor: "green",
+            };
+          }
+          return item;
+        });
+        setInputCaseSchema(updatedItemsCorrect);
+        setAnwserCorrect(false);
+        // console.log(updatedItemsCorrect, "updatedItems correct");
+        // console.log(inputCaseSchema, "inputCaseSchema correct");
+      } else {
+        if (response?.exceed == false) {
           const updatedItems = inputCaseSchema?.map((item: any) => {
             if (item?.id === optionId) {
-              return { ...item, isDisabled: true };
+              return { ...item, isDisabled: true, isColor: "#8C2531" };
             }
             return item;
           });
           const itemsArrg = {
-            id: count,
+            id: updatedItems?.length + 1,
+            // id: count,
             anws: "",
             isCorrect: false,
             isDisabled: false,
           };
+
           const itemsAddNewObj = [...updatedItems, itemsArrg];
           setInputCaseSchema(itemsAddNewObj);
+          setInputField("");
+          setAnwserCorrect(true);
+
+          // console.log(inputCaseSchema, "inputCaseSchema exceed false");
         } else {
+          enqueueSnackbar(response?.message, {
+            variant: "error",
+            action: (key) => (
+              <IconButton onClick={() => closeSnackbar(key)} size="small">
+                <HighlightOffOutlinedIcon sx={{ color: "#fff" }} />
+              </IconButton>
+            ),
+          });
           const updatedItems = inputCaseSchema?.map((item: any) => {
             if (item?.id === optionId) {
-              return { ...item, isCorrect: true, isDisabled: true };
+              return { ...item, isDisabled: true, isColor: "#8C2531" };
             }
             return item;
           });
           setInputCaseSchema(updatedItems);
+          setInputField("");
+          setAnwserCorrect(false);
+          // console.log(inputCaseSchema, "inputCaseSchema exceed true");
         }
-      },
-    );
+
+        // console.log(updatedItems, "updatedItems inCorrect");
+        // console.log(itemsAddNewObj, "itemsAddNewObj inCorrect");
+        // console.log(inputCaseSchema, "inputCaseSchema inCorrect");
+      }
+    } catch (error) {
+      //on error work
+    }
 
     // if (!selectedOptions.includes(optionId)) {
     //   const newSelectedOptions = [...selectedOptions, optionId];
     //   setSelectedOptions(newSelectedOptions);
     // }
-    console.log(result, "result");
+    // console.log(inputCaseSchema, "inputCaseSchema");
   };
-
-  console.log(inputCaseSchema, "inputCaseSchema");
 
   // console.log(
   //   questionTypesWithFormControl.includes(questionType),
@@ -222,14 +286,37 @@ const Question: FC<ITakeQuizProps> = ({
                 return (
                   <Box key={index}>
                     {quesQuizByIdData?.timelimit !== inputCaseSchema?.length ? (
-                      <>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "10px",
+                          marginBottom: "10px",
+                        }}
+                      >
                         <Checkbox
-                          id={`custom-checkbox`}
-                          // id={`custom-checkbox-${index}`}
-                          // checked={isOptionSelected(el.key)}
+                          checkedIcon={
+                            item?.isColor == "green" ? (
+                              <CheckBoxIcon sx={{ color: item?.isColor }} />
+                            ) : (
+                              <DisabledByDefaultIcon
+                                sx={{ color: item?.isColor }}
+                              />
+                            )
+                          }
+                          checked={item?.isDisabled ? true : false}
+                          disabled={
+                            !item?.isDisabled
+                              ? inputField == ""
+                                ? true
+                                : false
+                              : item?.isDisabled
+                          }
                           onChange={(e) =>
                             handleInputCaseOptionChange(item?.id)
                           }
+                          color="default"
+                          sx={{ color: item?.isColor, padding: "0px" }}
                         />
                         {item?.isDisabled ? (
                           item?.anws
@@ -238,11 +325,18 @@ const Question: FC<ITakeQuizProps> = ({
                             type="text"
                             // value={el.value}
                             onChange={(e) =>
-                              handleInputChange(e?.target?.value)
+                              handleInputChange(e?.target?.value, item?.id)
                             }
+                            placeholder="Type the text"
+                            style={{
+                              border: "none",
+                              outline: "none",
+                              color: "#404040",
+                              fontSize: "16px",
+                            }}
                           />
                         )}
-                      </>
+                      </Box>
                     ) : (
                       ""
                     )}

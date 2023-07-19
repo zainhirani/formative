@@ -9,6 +9,7 @@ import {
 import * as api from "./api";
 import { Quiz } from "./types";
 import QUERY_KEYS from 'queries/QueriesKeyConstant';
+import { enqueueSnackbar } from "notistack";
 
 
 const KEY = "Take Quiz";
@@ -81,7 +82,13 @@ export function useQuesAttempt(
 > {
   const mutation = useMutation((payload) => api.questionAttempt(payload), {
     mutationKey: `${KEY} | QuestionAttempt`,
-    onSuccess,
+    onError: (error)=>{
+      enqueueSnackbar(error?.message, {
+        variant: "error",
+        autoHideDuration: 1500,
+      });
+    },
+    onSuccess: props?.onSuccess,
     retry: 0,
   });
 

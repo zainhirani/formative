@@ -110,8 +110,6 @@ export async function quizDistribute(
   props: any,
   // props: Quiz.QuizDistributeAPIPayload,
 ): Promise<Quiz.QuizDistributeResponse> {
-  
-  console.log(props,'props hook');
   const dataStd =  {
     studentsId: props?.data?.studentsId
   }

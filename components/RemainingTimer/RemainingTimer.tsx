@@ -5,6 +5,11 @@ function RemainingTimer({ seconds, onEnd, remainingTimer }: any) {
   const [remainingSeconds, setRemainingSeconds] = useState(seconds);
 
   useEffect(() => {
+    if (seconds) {
+      setRemainingSeconds(seconds);
+    }
+  }, [seconds]);
+  useEffect(() => {
     if (remainingSeconds <= 0) {
       onEnd();
       return;

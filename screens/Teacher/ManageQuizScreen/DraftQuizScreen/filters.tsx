@@ -33,8 +33,10 @@ const FiltersSection = (props: any) => {
   const editPage = editId == undefined ? false : true;
 
   useEffect(() => {
-    quizNumRefetch();
-  }, []);
+    if (!editPage) {
+      quizNumRefetch();
+    }
+  }, [!editPage]);
 
   const optionsFolder = useMemo(() => {
     return foldersList?.data?.data?.map((item: any) => ({
@@ -184,7 +186,7 @@ const FiltersSection = (props: any) => {
             Quiz No.
           </Typography>
           <Typography gutterBottom className="custom-name-2">
-            {quizNo?.count}
+            {!editPage ? quizNo?.count : quizByIdData?.id}
           </Typography>
         </QuizNoBoxWrapper>
       </SelectBoxWrapper>
