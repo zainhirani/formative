@@ -13,6 +13,8 @@ interface AppStateContextType {
   setAnwserCorrect: (value: any) => void;
   inputCaseSchema: any;
   setInputCaseSchema: (value: any) => void;
+  quesLoading: any;
+  setQuesLoading: (value: any) => void;
 }
 
 const AppStateContext = createContext<AppStateContextType>({
@@ -28,6 +30,8 @@ const AppStateContext = createContext<AppStateContextType>({
   setAnwserCorrect: () => {},
   inputCaseSchema: [],
   setInputCaseSchema: () => {},
+  quesLoading: null,
+  setQuesLoading: () => {},
 });
 
 export const useAppState = () => useContext(AppStateContext);
@@ -39,6 +43,7 @@ export const AppStateProvider: React.FC = (props: any) => {
   const [inputCaseSchema, setInputCaseSchema] = useState<any>();
   const [selectedOptions, setSelectedOptions] = useState<any>([]);
   const [anwserCorrect, setAnwserCorrect] = useState<boolean>(true);
+  const [quesLoading, setQuesLoading] = useState<boolean>(false);
   const { children } = props;
 
   return (
@@ -56,6 +61,8 @@ export const AppStateProvider: React.FC = (props: any) => {
         setAnwserCorrect,
         inputCaseSchema,
         setInputCaseSchema,
+        quesLoading,
+        setQuesLoading,
       }}
     >
       {children}

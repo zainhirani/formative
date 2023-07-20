@@ -10,10 +10,10 @@ function RemainingTimer({ seconds, onEnd, remainingTimer }: any) {
     }
   }, [seconds]);
   useEffect(() => {
-    if (remainingSeconds <= 0) {
-      onEnd();
-      return;
-    }
+    // if (remainingSeconds <= 0) {
+    //   onEnd();
+    //   return;
+    // }
 
     const timerId = setInterval(() => {
       setRemainingSeconds((prevSeconds: any) => prevSeconds - 1);

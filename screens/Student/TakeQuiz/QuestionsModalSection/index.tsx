@@ -90,7 +90,8 @@ const QuestionsModal = (props: any) => {
             : "Quiz Score"
         }
         open={drawerOpen}
-        onClose={handleDrawerCloseQuestion}
+        isClose={true}
+        // onClose={handleDrawerCloseQuestion}
       >
         <Box sx={{ p: "30px 20px" }}>
           {showQuestionScreen || quizKeyExistOutof !== undefined ? (

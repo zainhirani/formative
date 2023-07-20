@@ -23,6 +23,7 @@ import { enqueueSnackbar, useSnackbar } from "notistack";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import DisabledByDefaultIcon from "@mui/icons-material/DisabledByDefault";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import OverlayLoader from "components/OverlayLoader";
 
 interface IOptionProps {
   name: string;
@@ -63,12 +64,24 @@ const Question: FC<ITakeQuizProps> = ({
     setAnwserCorrect,
     inputCaseSchema,
     setInputCaseSchema,
+    quesLoading,
+    setQuesLoading,
   } = useAppState();
 
   const { mutateAsync: quesAttempt, data: quesData }: any = useQuesAttempt(
     undefined,
     (data: any) => {},
   );
+
+  // console.log(quesAttempt?.isloading, "quesAttempt?.isloading");
+  // useEffect(() => {
+  //   if (quesAttempt?.isloading) {
+  //     console.log(quesAttempt?.isloading, " If Inner");
+
+  //     setQuesLoading(quesAttempt?.isloading);
+  //   }
+  //   console.log(quesLoading, "quesLoading");
+  // }, quesAttempt?.isloading);
   // useEffect(() => {
   //   setInputCaseSchema([...inputCaseSchema, initialItems]);
   // }, []);
@@ -126,6 +139,7 @@ const Question: FC<ITakeQuizProps> = ({
     selectedOptions.includes(optionId);
 
   const handleOptionChange = async (optionId: any) => {
+    setQuesLoading(true);
     await quesAttempt({
       quizId: selectedQuizId,
       questionId: questionId,
@@ -139,6 +153,7 @@ const Question: FC<ITakeQuizProps> = ({
       const newSelectedOptions = [...selectedOptions, optionId];
       setSelectedOptions(newSelectedOptions);
     }
+    setQuesLoading(false);
   };
   const questionTypesWithFormControl = ["MSN", "MSR", "MCN", "MCR"];
 
@@ -156,6 +171,7 @@ const Question: FC<ITakeQuizProps> = ({
 
   // Input Case
   const handleInputCaseOptionChange = async (optionId: any) => {
+    setQuesLoading(true);
     const result = inputCaseSchema?.find(({ id }: any) => id === optionId);
 
     try {
@@ -243,6 +259,8 @@ const Question: FC<ITakeQuizProps> = ({
     //   setSelectedOptions(newSelectedOptions);
     // }
     // console.log(inputCaseSchema, "inputCaseSchema");
+
+    setQuesLoading(false);
   };
 
   // console.log(
@@ -259,6 +277,9 @@ const Question: FC<ITakeQuizProps> = ({
           height: "100%",
         }}
       >
+        {/* @ts-ignore */}
+        <OverlayLoader isShow={quesLoading} />
+        {/* @ts-ignore */}
         <Box sx={{ paddingTop: "10px" }}>
           <Typography sx={{ marginBottom: "30px" }} fontSize={18}>
             {questionDetail}
@@ -322,7 +343,11 @@ const Question: FC<ITakeQuizProps> = ({
                           item?.anws
                         ) : (
                           <input
-                            type="text"
+                            type={
+                              quesQuizByIdData?.type == "NUM"
+                                ? "number"
+                                : "text"
+                            }
                             // value={el.value}
                             onChange={(e) =>
                               handleInputChange(e?.target?.value, item?.id)

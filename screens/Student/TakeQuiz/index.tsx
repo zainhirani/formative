@@ -26,6 +26,8 @@ const TakeQuizScreen = () => {
     setAnwserCorrect,
     inputCaseSchema,
     setInputCaseSchema,
+    quesLoading,
+    setQuesLoading,
   } = useAppState();
   const searchQuiz = useFormattedMessage(messages.searchQuiz);
   const selectCourseText = useFormattedMessage(messages.selectCourse);
@@ -116,6 +118,13 @@ const TakeQuizScreen = () => {
       },
     );
 
+  // useEffect(() => {
+  //   if (refQuesQuizById?.isloading) {
+  //     console.log("Main Screen");
+  //     setQuesLoading(refQuesQuizById?.isloading);
+  //   }
+  // }, refQuesQuizById?.isloading);
+
   useEffect(() => {
     if (checked?.length > 0) {
       if (checked?.find(Boolean)) {
@@ -143,17 +152,15 @@ const TakeQuizScreen = () => {
     });
   }, [searchChange, selectCourse, page]);
 
-  const handleNext = () => {
+  const handleNext = async () => {
+    setQuesLoading(true);
     const firstFirstObject = checked?.find(Boolean);
-    refQuesQuizById({
+    const response = await refQuesQuizById({
       id: firstFirstObject,
     });
     setSelectedOptions([]);
     setAnwserCorrect(true);
-    // console.log(quesQuizByIdData?.timelimit, "quesQuizByIdData?.timelimit");
-    // console.log(remainingTime, "remainingTime");
-    // setRemainingTime(quesQuizByIdData?.timelimit);
-    // console.log(remainingTime, "set remainingTime");
+    setQuesLoading(false);
   };
 
   const courseData = useMemo(() => {
