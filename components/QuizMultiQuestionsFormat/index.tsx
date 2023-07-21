@@ -68,27 +68,12 @@ const Question: FC<ITakeQuizProps> = ({
     setInputCaseSchema,
     quesLoading,
     setQuesLoading,
-    // timerLimit,
-    // setTimerLimit,
   } = useAppState();
 
   const { mutateAsync: quesAttempt, data: quesData }: any = useQuesAttempt(
     undefined,
     (data: any) => {},
   );
-
-  // console.log(quesAttempt?.isloading, "quesAttempt?.isloading");
-  // useEffect(() => {
-  //   if (quesAttempt?.isloading) {
-  //     console.log(quesAttempt?.isloading, " If Inner");
-
-  //     setQuesLoading(quesAttempt?.isloading);
-  //   }
-  //   console.log(quesLoading, "quesLoading");
-  // }, quesAttempt?.isloading);
-  // useEffect(() => {
-  //   setInputCaseSchema([...inputCaseSchema, initialItems]);
-  // }, []);
   useEffect(() => {
     if (selectedOptions.length > 0) {
       const lastVal = selectedOptions[selectedOptions?.length - 1];
@@ -98,13 +83,11 @@ const Question: FC<ITakeQuizProps> = ({
         (singleQuestionNew: any) => singleQuestionNew.key === lastVal,
       );
       if (quesData?.is_correct == true) {
-        // if (quesData?.answer) {
         if (findIndex !== -1) {
           tempQuestionNew[findIndex] = {
             ...tempQuestionNew[findIndex],
             color: "green",
           };
-          // console.log(quesData, "quesData");
 
           if (quesData?.isQuestionComplete === true) {
             console.log("isQuestionComplete");
@@ -137,6 +120,7 @@ const Question: FC<ITakeQuizProps> = ({
   const questionType = quesQuizByIdData?.type;
   const questionDetail = removeHTMLTags(quesQuizByIdData?.detail);
   const questionTimtelimit = quesQuizByIdData?.timelimit;
+  const questionAttemptApi = quesQuizByIdData?.attempt;
   const questionImage = `${PUBLIC_IMAGE_URL}/${quesQuizByIdData?.media}`;
 
   const isOptionSelected = (optionId: string) =>
@@ -158,7 +142,6 @@ const Question: FC<ITakeQuizProps> = ({
       setSelectedOptions(newSelectedOptions);
     }
     resetTimerLimit();
-    // setTimerLimit(quesQuizByIdData?.timelimit);
     setQuesLoading(false);
   };
   const questionTypesWithFormControl = ["MSN", "MSR", "MCN", "MCR"];
@@ -167,7 +150,6 @@ const Question: FC<ITakeQuizProps> = ({
     setInputField(val);
     const updatedItems = inputCaseSchema?.map((item: any) => {
       if (item?.id === id) {
-        // if (item?.id === count) {
         return { ...item, anws: val };
       }
       return item;
@@ -191,7 +173,6 @@ const Question: FC<ITakeQuizProps> = ({
       });
 
       //on success work
-      // console.log(response, "quesData?.is_correct");
 
       if (response?.is_correct == true) {
         const updatedItemsCorrect = inputCaseSchema?.map((item: any) => {
@@ -207,10 +188,11 @@ const Question: FC<ITakeQuizProps> = ({
         });
         setInputCaseSchema(updatedItemsCorrect);
         setAnwserCorrect(false);
-        // console.log(updatedItemsCorrect, "updatedItems correct");
-        // console.log(inputCaseSchema, "inputCaseSchema correct");
       } else {
-        if (response?.exceed == false) {
+        if (
+          response?.exceed == false &&
+          questionAttemptApi !== inputCaseSchema?.length
+        ) {
           const updatedItems = inputCaseSchema?.map((item: any) => {
             if (item?.id === optionId) {
               return { ...item, isDisabled: true, isColor: "#8C2531" };
@@ -219,7 +201,6 @@ const Question: FC<ITakeQuizProps> = ({
           });
           const itemsArrg = {
             id: updatedItems?.length + 1,
-            // id: count,
             anws: "",
             isCorrect: false,
             isDisabled: false,
@@ -229,16 +210,15 @@ const Question: FC<ITakeQuizProps> = ({
           setInputCaseSchema(itemsAddNewObj);
           setInputField("");
           setAnwserCorrect(true);
-
-          // console.log(inputCaseSchema, "inputCaseSchema exceed false");
         } else {
-          enqueueSnackbar(response?.message, {
+          enqueueSnackbar("The question limit has been exceeded", {
             variant: "error",
-            action: (key) => (
-              <IconButton onClick={() => closeSnackbar(key)} size="small">
-                <HighlightOffOutlinedIcon sx={{ color: "#fff" }} />
-              </IconButton>
-            ),
+            // action: (key) => (
+            //   <IconButton onClick={() => closeSnackbar(key)} size="small">
+            //     <HighlightOffOutlinedIcon sx={{ color: "#fff" }} />
+            //   </IconButton>
+            // ),
+            autoHideDuration: 4000,
           });
           const updatedItems = inputCaseSchema?.map((item: any) => {
             if (item?.id === optionId) {
@@ -249,31 +229,15 @@ const Question: FC<ITakeQuizProps> = ({
           setInputCaseSchema(updatedItems);
           setInputField("");
           setAnwserCorrect(false);
-          // console.log(inputCaseSchema, "inputCaseSchema exceed true");
         }
-
-        // console.log(updatedItems, "updatedItems inCorrect");
-        // console.log(itemsAddNewObj, "itemsAddNewObj inCorrect");
-        // console.log(inputCaseSchema, "inputCaseSchema inCorrect");
       }
     } catch (error) {
       //on error work
     }
 
-    // if (!selectedOptions.includes(optionId)) {
-    //   const newSelectedOptions = [...selectedOptions, optionId];
-    //   setSelectedOptions(newSelectedOptions);
-    // }
-    // console.log(inputCaseSchema, "inputCaseSchema");
-    // setTimerLimit(quesQuizByIdData?.timelimit);
     resetTimerLimit();
     setQuesLoading(false);
   };
-
-  // console.log(
-  //   questionTypesWithFormControl.includes(questionType),
-  //   "questionTypesWithFormControl.includes(questionType)",
-  // );
 
   return (
     <>
