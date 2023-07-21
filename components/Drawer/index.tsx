@@ -17,8 +17,9 @@ interface SideDrawerProps extends DrawerProps {
   children?: ReactNode;
   title?: string;
   isHelp?: boolean;
-  loading?:boolean;
-  sx?:any;
+  isClose?: boolean;
+  loading?: boolean;
+  sx?: any;
 }
 
 const SideDrawer: React.FC<SideDrawerProps> = ({
@@ -27,6 +28,7 @@ const SideDrawer: React.FC<SideDrawerProps> = ({
   children,
   title,
   isHelp,
+  isClose = false,
   loading,
   sx,
   ...rest
@@ -44,25 +46,32 @@ const SideDrawer: React.FC<SideDrawerProps> = ({
       {...rest}
     >
       <HeaderWrapper>
-        {loading ? <Skeleton width={400}  /> :
-        <Typography className="text">{title}</Typography>  }
-        <CloseIconWrapper>
-          {isHelp ? (
-            <Typography className="help-text">
-              <HelpOutlineOutlinedIcon className="icon-help" /> Help
-            </Typography>
-          ) : (
-            ""
-          )}
-          <IconButtonWrapper onClick={onClose}>
-            <Image
-              src="/close-cancel.svg"
-              width={20}
-              height={20}
-              alt="cancel"
-            />
-          </IconButtonWrapper>
-        </CloseIconWrapper>
+        {loading ? (
+          <Skeleton width={400} />
+        ) : (
+          <Typography className="text">{title}</Typography>
+        )}
+        {!isClose ? (
+          <CloseIconWrapper>
+            {isHelp ? (
+              <Typography className="help-text">
+                <HelpOutlineOutlinedIcon className="icon-help" /> Help
+              </Typography>
+            ) : (
+              ""
+            )}
+            <IconButtonWrapper onClick={onClose}>
+              <Image
+                src="/close-cancel.svg"
+                width={20}
+                height={20}
+                alt="cancel"
+              />
+            </IconButtonWrapper>
+          </CloseIconWrapper>
+        ) : (
+          ""
+        )}
       </HeaderWrapper>
       {children}
     </DrawerWrapper>

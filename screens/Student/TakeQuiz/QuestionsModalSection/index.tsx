@@ -22,6 +22,11 @@ const QuestionsModal = (props: any) => {
     handleTimerEnd,
     handleRemainingTimer,
     remainingTime,
+
+    timerKey,
+    setTimerKey,
+    timerLimit,
+    setTimerLimit,
   } = props;
   const [showQuestionScreen, setShowQuestionScreen] = useState(false);
   const [undertakingScreen, setUndertakingScreen] = useState(true);
@@ -90,7 +95,8 @@ const QuestionsModal = (props: any) => {
             : "Quiz Score"
         }
         open={drawerOpen}
-        onClose={handleDrawerCloseQuestion}
+        isClose={true}
+        // onClose={handleDrawerCloseQuestion}
       >
         <Box sx={{ p: "30px 20px" }}>
           {showQuestionScreen || quizKeyExistOutof !== undefined ? (
@@ -106,6 +112,10 @@ const QuestionsModal = (props: any) => {
                 remainingTime={remainingTime}
                 handleTimerEnd={handleTimerEnd}
                 handleRemainingTimer={handleRemainingTimer}
+                timerKey={timerKey}
+                setTimerKey={setTimerKey}
+                timerLimit={timerLimit}
+                setTimerLimit={setTimerLimit}
               />
             </Box>
           ) : (
