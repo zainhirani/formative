@@ -51,7 +51,7 @@ const HowAmiDoingScreen = () => {
         setSearchChange={setSearchChange}
       />
       <TableSection
-        quizData={quizResultListing?.data || []}
+        quizData={quizResultListing?.data?.data || []}
         loading={quizResultListing.isFetching}
         page={page}
         handlePageChange={(_: any, v: React.SetStateAction<number>) =>
