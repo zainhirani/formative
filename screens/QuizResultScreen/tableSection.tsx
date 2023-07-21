@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { BoxWrapper } from "./Styled";
 import {
   rowsQuizResults,
@@ -23,6 +23,8 @@ import { useTheme } from "@emotion/react";
 import { QUIZ_STATUS } from "constants/QuizStatus";
 import ShareIcon from "@material-ui/icons/Share";
 
+const LIMIT = 10;
+
 interface TableSectionProps {
   quizName?: string;
   courseId?: number;
@@ -30,9 +32,16 @@ interface TableSectionProps {
 }
 
 const TableSection = ({ quizName, courseId, folderId }: TableSectionProps) => {
+  const [page, setPage] = useState(1);
   const theme = useTheme();
-  const quizResult = useQuizResultListing({ quizName, courseId, folderId });
-
+  const quizResult = useQuizResultListing({
+    quizName,
+    courseId,
+    folderId,
+    Limit: LIMIT,
+    Page: page,
+  });
+  console.log(quizResult, "++++++++++++++++++++++=");
   const columnsQuizResults: GridColDef[] = useMemo(
     () => [
       {
@@ -142,7 +151,7 @@ const TableSection = ({ quizName, courseId, folderId }: TableSectionProps) => {
         },
       },
     ],
-    [quizResult?.data],
+    [quizResult?.data?.data],
   );
 
   const STATUS_CLASSES = {
@@ -173,11 +182,16 @@ const TableSection = ({ quizName, courseId, folderId }: TableSectionProps) => {
     <BoxWrapper>
       {/* @ts-ignore */}
       <CustomDataGrid
-        rows={quizResult?.data || []}
+        rows={quizResult?.data?.data || []}
         columns={columnsQuizResults}
-        pageSizeData={pageSizeManageQuiz}
+        pageSizeData={10}
         type={"1"}
         loading={quizResult?.isFetching}
+        totalRows={quizResult?.data?.count}
+        handlePageChange={(_: any, v: React.SetStateAction<number>) =>
+          setPage(v)
+        }
+        page={page}
       />
     </BoxWrapper>
   );
