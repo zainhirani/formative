@@ -2,7 +2,7 @@ import { signOut } from "next-auth/react";
 import omit from "lodash/omit";
 import qs from "query-string";
 import { PUBLIC_API_URL, TOKEN } from "configs";
-
+import { AUTH_CODES } from "constants/AuthCodes";
 
 // import { logSuccess } from 'utils/logger';
 
@@ -44,8 +44,6 @@ interface IAPArgs {
 }
 
 async function service(args: IAPArgs): Promise<any> {
-
-
   const {
     url,
     method = "GET",
@@ -75,7 +73,6 @@ async function service(args: IAPArgs): Promise<any> {
 
   if (extraProps.noAuth) {
     delete props.headers.Authorization;
-
   }
   if (formData) {
     props.headers = omit(props.headers, ["Content-Type"]);
@@ -90,15 +87,20 @@ async function service(args: IAPArgs): Promise<any> {
 
   const data = await fetch(fetchUrl, props);
 
-  // logSuccess(API_URL, JSON.stringify(props));
-  if (data.status >= 400) {
+  if (
+    data.status >= AUTH_CODES.BAD_REQUEST &&
+    data.status < AUTH_CODES.CONNECTION_TIMED_OUT
+  ) {
     const error = await data.json();
+
+    if (data.status == AUTH_CODES.UNAUTHORIZED) {
+      signOut({ callbackUrl: "/login" });
+      localStorage.clear();
+    }
+
     throw error;
   }
 
-  if (data?.status === 401) {
-    signOut({ callbackUrl: "/login" });
-  }
   // logSuccess(API_URL, JSON.stringify(data));
   return parseJSON ? await data.json() : data;
 }

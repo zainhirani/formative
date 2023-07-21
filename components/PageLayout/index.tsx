@@ -1,10 +1,11 @@
 // @ts-nocheck
-import React, { useEffect } from "react";
+import React, { Children, useEffect } from "react";
 import { Box } from "@mui/material";
 import AppBarComponent from "./AppBar";
 import Drawer from "./Drawer";
 import DrawerContent from "./DrawerContent";
 import { useAuthContext } from "contexts/AuthContext";
+import { useRegisterDetail } from "providers/Auth";
 
 interface Props {
   children?: JSX.Element;
@@ -43,6 +44,7 @@ const PageLayout = (props: Props) => {
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
   return (
     <>
       <Box sx={{ display: "flex" }}>

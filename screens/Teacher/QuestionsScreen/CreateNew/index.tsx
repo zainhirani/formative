@@ -240,7 +240,7 @@ const AddQuestion = ({ qId }: QuestionProps) => {
     }
 
     if ([TYPES.SA, TYPES.NUM].includes(enumType.value)) {
-      formdata.append("attempt ", parseInt(attempts));
+      formdata.append("attempt", parseInt(attempts));
     }
 
     if (!qId && media) {

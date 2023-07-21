@@ -1,6 +1,17 @@
 import React from "react";
 import DashboardScreen from "screens/DashboardScreen";
+import { useAuthContext } from "contexts/AuthContext";
+import { signOut } from "next-auth/react";
 
-export default function Dashboard() {
+const Dashboard = () => {
+  const { currentUser } = useAuthContext();
+  // @ts-ignore
+  if (!currentUser?.id) {
+    signOut({ callbackUrl: "/login" });
+    localStorage.clear();
+  }
+
   return <DashboardScreen />;
-}
+};
+
+export default Dashboard;
