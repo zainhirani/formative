@@ -124,7 +124,7 @@ const TakeQuizScreen = () => {
 
   // const initialTimerLimit = quesQuizByIdData?.timelimit;
 
-  console.log(timerLimit, "timerLimit");
+  // console.log(timerLimit, "timerLimit");
 
   // console.log(quesQuizByIdData?.isSuccess, "quesQuizByIdData?.isSuccess");
 
