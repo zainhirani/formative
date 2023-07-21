@@ -56,7 +56,9 @@ const QuestionsStepper = (props: any) => {
 
   const calculatedVal = Math.max(
     0,
-    Math.round((quizKeyExistScore / quizKeyExistOutof) * 100),
+    quizKeyExistOutof !== 0
+      ? Math.round((quizKeyExistScore / quizKeyExistOutof) * 100)
+      : 0,
   );
 
   const getTimeColor = (): string => {
