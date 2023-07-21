@@ -29,6 +29,9 @@ const TakeQuizScreen = () => {
     quesLoading,
     setQuesLoading,
   } = useAppState();
+
+  const [timerKey, setTimerKey] = useState(0);
+  const [timerLimit, setTimerLimit] = useState();
   const searchQuiz = useFormattedMessage(messages.searchQuiz);
   const selectCourseText = useFormattedMessage(messages.selectCourse);
   const [remainingTime, setRemainingTime] = useState(0);
@@ -67,6 +70,7 @@ const TakeQuizScreen = () => {
           // setInputCaseSchema()
         } else {
           setOpen(true);
+          setTimerLimit(data?.timelimit);
         }
         const currentAllOptions = eval(data?.option || "");
         if (currentAllOptions?.length > 0) {
@@ -118,6 +122,15 @@ const TakeQuizScreen = () => {
       },
     );
 
+  // const initialTimerLimit = quesQuizByIdData?.timelimit;
+
+  console.log(timerLimit, "timerLimit");
+
+  // console.log(quesQuizByIdData?.isSuccess, "quesQuizByIdData?.isSuccess");
+
+  // useEffect(() => {
+
+  // }, [quesQuizByIdData?.isSuccess]);
   // useEffect(() => {
   //   if (refQuesQuizById?.isloading) {
   //     console.log("Main Screen");
@@ -151,7 +164,10 @@ const TakeQuizScreen = () => {
       ...(searchChange && { SearchBy: searchChange }),
     });
   }, [searchChange, selectCourse, page]);
-
+  // const resetTimerLimit = () => {
+  //   setTimerKey((prevKey: any) => prevKey + 1);
+  //   setTimerLimit(initialTimerLimit);
+  // };
   const handleNext = async () => {
     setQuesLoading(true);
     const firstFirstObject = checked?.find(Boolean);
@@ -160,6 +176,10 @@ const TakeQuizScreen = () => {
     });
     setSelectedOptions([]);
     setAnwserCorrect(true);
+    // resetTimerLimit();
+
+    setTimerKey((prevKey: any) => prevKey + 1);
+    setTimerLimit(response?.timelimit);
     setQuesLoading(false);
   };
 
@@ -235,6 +255,10 @@ const TakeQuizScreen = () => {
             handleTimerEnd={handleTimerEnd}
             handleRemainingTimer={handleRemainingTimer}
             remainingTime={remainingTime}
+            timerKey={timerKey}
+            setTimerKey={setTimerKey}
+            timerLimit={timerLimit}
+            setTimerLimit={setTimerLimit}
           />
           <Box
             sx={{

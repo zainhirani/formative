@@ -39,6 +39,7 @@ type ITakeQuizProps = {
   questionOptionNew?: any;
   setQuestionOptionNew?: any;
   remainingTime?: any;
+  resetTimerLimit?: any;
 };
 
 const initialItems: any = [
@@ -53,6 +54,7 @@ const Question: FC<ITakeQuizProps> = ({
   questionOptionNew,
   setQuestionOptionNew,
   remainingTime,
+  resetTimerLimit,
 }): JSX.Element => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [inputField, setInputField] = useState<any>("");
@@ -66,6 +68,8 @@ const Question: FC<ITakeQuizProps> = ({
     setInputCaseSchema,
     quesLoading,
     setQuesLoading,
+    // timerLimit,
+    // setTimerLimit,
   } = useAppState();
 
   const { mutateAsync: quesAttempt, data: quesData }: any = useQuesAttempt(
@@ -153,6 +157,8 @@ const Question: FC<ITakeQuizProps> = ({
       const newSelectedOptions = [...selectedOptions, optionId];
       setSelectedOptions(newSelectedOptions);
     }
+    resetTimerLimit();
+    // setTimerLimit(quesQuizByIdData?.timelimit);
     setQuesLoading(false);
   };
   const questionTypesWithFormControl = ["MSN", "MSR", "MCN", "MCR"];
@@ -259,7 +265,8 @@ const Question: FC<ITakeQuizProps> = ({
     //   setSelectedOptions(newSelectedOptions);
     // }
     // console.log(inputCaseSchema, "inputCaseSchema");
-
+    // setTimerLimit(quesQuizByIdData?.timelimit);
+    resetTimerLimit();
     setQuesLoading(false);
   };
 
@@ -277,133 +284,144 @@ const Question: FC<ITakeQuizProps> = ({
           height: "100%",
         }}
       >
-        {/* @ts-ignore */}
-        <OverlayLoader isShow={quesLoading} />
-        {/* @ts-ignore */}
-        <Box sx={{ paddingTop: "10px" }}>
-          <Typography sx={{ marginBottom: "30px" }} fontSize={18}>
-            {questionDetail}
-          </Typography>
-          {quesQuizByIdData?.media !== null ? (
-            <Image
-              alt="quiz-image"
-              lazyLoadProps={{ height: 240 }}
-              src={questionImage}
-              lazyLoad={true}
-              style={{ maxWidth: "100%" }}
-            />
-          ) : (
-            ""
-          )}
-        </Box>
-        <Box sx={{ marginTop: "30px" }}>
-          <Typography sx={{ marginBottom: "10px" }} fontSize={14}>
-            Choose the best answer
-          </Typography>
+        <Box
+          className="custom-box-w"
+          sx={{
+            overflow: "auto",
+            height: "70vh",
+          }}
+        >
+          {/* @ts-ignore */}
+          <OverlayLoader isShow={quesLoading} />
+          {/* @ts-ignore */}
+          <Box sx={{ paddingTop: "10px" }}>
+            <Typography sx={{ marginBottom: "30px" }} fontSize={18}>
+              {questionDetail}
+            </Typography>
+            {quesQuizByIdData?.media !== null ? (
+              <Image
+                alt="quiz-image"
+                lazyLoadProps={{ height: 240 }}
+                src={questionImage}
+                lazyLoad={true}
+                style={{ maxWidth: "100%" }}
+              />
+            ) : (
+              ""
+            )}
+          </Box>
+          <Box sx={{ marginTop: "30px" }}>
+            <Typography sx={{ marginBottom: "10px" }} fontSize={14}>
+              Choose the best answer
+            </Typography>
 
-          {!questionTypesWithFormControl.includes(questionType) ? (
-            <>
-              {inputCaseSchema?.map((item: any, index: number) => {
-                return (
-                  <Box key={index}>
-                    {quesQuizByIdData?.timelimit !== inputCaseSchema?.length ? (
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "10px",
-                          marginBottom: "10px",
-                        }}
-                      >
-                        <Checkbox
-                          checkedIcon={
-                            item?.isColor == "green" ? (
-                              <CheckBoxIcon sx={{ color: item?.isColor }} />
-                            ) : (
-                              <DisabledByDefaultIcon
-                                sx={{ color: item?.isColor }}
-                              />
-                            )
-                          }
-                          checked={item?.isDisabled ? true : false}
-                          disabled={
-                            !item?.isDisabled
-                              ? inputField == ""
-                                ? true
-                                : false
-                              : item?.isDisabled
-                          }
-                          onChange={(e) =>
-                            handleInputCaseOptionChange(item?.id)
-                          }
-                          color="default"
-                          sx={{ color: item?.isColor, padding: "0px" }}
-                        />
-                        {item?.isDisabled ? (
-                          item?.anws
-                        ) : (
-                          <input
-                            type={
-                              quesQuizByIdData?.type == "NUM"
-                                ? "number"
-                                : "text"
+            {!questionTypesWithFormControl.includes(questionType) ? (
+              <>
+                {inputCaseSchema?.map((item: any, index: number) => {
+                  return (
+                    <Box key={index}>
+                      {quesQuizByIdData?.timelimit !==
+                      inputCaseSchema?.length ? (
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "10px",
+                            marginBottom: "10px",
+                          }}
+                        >
+                          <Checkbox
+                            checkedIcon={
+                              item?.isColor == "green" ? (
+                                <CheckBoxIcon sx={{ color: item?.isColor }} />
+                              ) : (
+                                <DisabledByDefaultIcon
+                                  sx={{ color: item?.isColor }}
+                                />
+                              )
                             }
-                            // value={el.value}
+                            checked={item?.isDisabled ? true : false}
+                            disabled={
+                              !item?.isDisabled
+                                ? inputField == ""
+                                  ? true
+                                  : false
+                                : item?.isDisabled
+                            }
                             onChange={(e) =>
-                              handleInputChange(e?.target?.value, item?.id)
+                              handleInputCaseOptionChange(item?.id)
                             }
-                            placeholder="Type the text"
-                            style={{
-                              border: "none",
-                              outline: "none",
-                              color: "#404040",
-                              fontSize: "16px",
-                            }}
+                            color="default"
+                            sx={{ color: item?.isColor, padding: "0px" }}
                           />
-                        )}
-                      </Box>
-                    ) : (
-                      ""
-                    )}
+                          {item?.isDisabled ? (
+                            item?.anws
+                          ) : (
+                            <input
+                              type={
+                                quesQuizByIdData?.type == "NUM"
+                                  ? "number"
+                                  : "text"
+                              }
+                              // value={el.value}
+                              onChange={(e) =>
+                                handleInputChange(e?.target?.value, item?.id)
+                              }
+                              placeholder="Type the text"
+                              style={{
+                                border: "none",
+                                outline: "none",
+                                color: "#404040",
+                                fontSize: "16px",
+                              }}
+                            />
+                          )}
+                        </Box>
+                      ) : (
+                        ""
+                      )}
+                    </Box>
+                  );
+                })}
+              </>
+            ) : (
+              <>
+                {questionOptionNew?.map((el: any, index: number) => (
+                  <Box
+                    key={index}
+                    sx={{
+                      height: "56px",
+                      border: "1px solid #EAEAEA",
+                      borderRadius: "6px",
+                      paddingLeft: "20px",
+                      display: "flex",
+                      alignItems: "center",
+                      marginBottom: "10px",
+                      boxShadow: "0px 0px 40px rgba(0, 0, 0, 0.1)",
+                    }}
+                  >
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          id={`custom-checkbox-${index}`}
+                          checked={isOptionSelected(el.key)}
+                          onChange={() => handleOptionChange(el.key)}
+                          disabled={
+                            el?.disabled
+                              ? el?.disabled
+                              : isOptionSelected(el.key)
+                          }
+                          sx={{ color: el?.color }}
+                          color="default"
+                        />
+                      }
+                      label={el.value}
+                    />
                   </Box>
-                );
-              })}
-            </>
-          ) : (
-            <>
-              {questionOptionNew?.map((el: any, index: number) => (
-                <Box
-                  key={index}
-                  sx={{
-                    height: "56px",
-                    border: "1px solid #EAEAEA",
-                    borderRadius: "6px",
-                    paddingLeft: "20px",
-                    display: "flex",
-                    alignItems: "center",
-                    marginBottom: "10px",
-                    boxShadow: "0px 0px 40px rgba(0, 0, 0, 0.1)",
-                  }}
-                >
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        id={`custom-checkbox-${index}`}
-                        checked={isOptionSelected(el.key)}
-                        onChange={() => handleOptionChange(el.key)}
-                        disabled={
-                          el?.disabled ? el?.disabled : isOptionSelected(el.key)
-                        }
-                        sx={{ color: el?.color }}
-                        color="default"
-                      />
-                    }
-                    label={el.value}
-                  />
-                </Box>
-              ))}
-            </>
-          )}
+                ))}
+              </>
+            )}
+          </Box>
         </Box>
         <BoxWrapper
           sx={{
