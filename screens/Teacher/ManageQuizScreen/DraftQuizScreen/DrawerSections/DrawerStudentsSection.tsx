@@ -57,23 +57,23 @@ const DrawerStudentsSection = (props: any) => {
         },
   );
 
-  useEffect(() => {
-    if (quizDistribute?.isSuccess) {
-      enqueueSnackbar("Success! Quizzes are in place", {
-        variant: "success",
-        autoHideDuration: 1500,
-      });
-    }
-  }, [quizDistribute?.isSuccess]);
+  // useEffect(() => {
+  //   if (quizDistribute?.isSuccess) {
+  //     enqueueSnackbar("Success! Quizzes are in place", {
+  //       variant: "success",
+  //       autoHideDuration: 1500,
+  //     });
+  //   }
+  // }, [quizDistribute?.isSuccess]);
 
-  useEffect(() => {
-    if (quizDistribute?.isError) {
-      enqueueSnackbar("Error", {
-        variant: "error",
-        autoHideDuration: 1500,
-      });
-    }
-  }, [quizDistribute?.isError]);
+  // useEffect(() => {
+  //   if (quizDistribute?.isError) {
+  //     enqueueSnackbar("Error", {
+  //       variant: "error",
+  //       autoHideDuration: 1500,
+  //     });
+  //   }
+  // }, [quizDistribute?.isError]);
 
   useEffect(() => {
     const currentYear = new Date().getFullYear();

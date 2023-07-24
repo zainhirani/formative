@@ -350,39 +350,50 @@ const Question: FC<ITakeQuizProps> = ({
               </>
             ) : (
               <>
-                {questionOptionNew?.map((el: any, index: number) => (
-                  <Box
-                    key={index}
-                    sx={{
-                      height: "56px",
-                      border: "1px solid #EAEAEA",
-                      borderRadius: "6px",
-                      paddingLeft: "20px",
-                      display: "flex",
-                      alignItems: "center",
-                      marginBottom: "10px",
-                      boxShadow: "0px 0px 40px rgba(0, 0, 0, 0.1)",
-                    }}
-                  >
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          id={`custom-checkbox-${index}`}
-                          checked={isOptionSelected(el.key)}
-                          onChange={() => handleOptionChange(el.key)}
-                          disabled={
-                            el?.disabled
-                              ? el?.disabled
-                              : isOptionSelected(el.key)
-                          }
-                          sx={{ color: el?.color }}
-                          color="default"
-                        />
-                      }
-                      label={el.value}
-                    />
-                  </Box>
-                ))}
+                {questionOptionNew?.map((el: any, index: number) => {
+                  return (
+                    <Box
+                      key={index}
+                      sx={{
+                        height: "56px",
+                        border: "1px solid #EAEAEA",
+                        borderRadius: "6px",
+                        paddingLeft: "20px",
+                        display: "flex",
+                        alignItems: "center",
+                        marginBottom: "10px",
+                        boxShadow: "0px 0px 40px rgba(0, 0, 0, 0.1)",
+                      }}
+                    >
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            id={`custom-checkbox-${index}`}
+                            checked={isOptionSelected(el.key)}
+                            onChange={() => handleOptionChange(el.key)}
+                            disabled={
+                              el?.disabled
+                                ? el?.disabled
+                                : isOptionSelected(el.key)
+                            }
+                            sx={{ color: el?.color }}
+                            color="default"
+                            checkedIcon={
+                              el?.color == "green" ? (
+                                <CheckBoxIcon sx={{ color: el?.color }} />
+                              ) : (
+                                <DisabledByDefaultIcon
+                                  sx={{ color: el?.color }}
+                                />
+                              )
+                            }
+                          />
+                        }
+                        label={el.value}
+                      />
+                    </Box>
+                  );
+                })}
               </>
             )}
           </Box>
