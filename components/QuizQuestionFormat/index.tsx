@@ -124,7 +124,7 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
       return "#225A41";
     }
   };
-  console.log(questionContext, "--------------------------------");
+  console.log(integerTimeSpent, "timeSpenttimeSpenttimeSpent")
 
   return (
     <SideDrawer open={isOpen} onClose={onClose} title={title} loading={loading}>

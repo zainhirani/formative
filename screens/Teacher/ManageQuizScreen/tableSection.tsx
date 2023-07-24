@@ -38,6 +38,7 @@ const TableSection = (props: any) => {
     status: selectStatus,
     ...(searchChange && { SearchBy: searchChange }),
   });
+  
   const deleteQuiz = useQuizRemove();
   const duplicateQuiz = useQuizDuplicate();
   useEffect(() => {
@@ -58,6 +59,8 @@ const TableSection = (props: any) => {
     duplicateQuiz.isSuccess,
     page,
   ]);
+
+  
 
   const columnsManageQuiz = [
     {

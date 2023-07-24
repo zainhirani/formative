@@ -34,8 +34,8 @@ import { useRegisterDetail } from "providers/Auth";
 
 const DrawerQuestionsDetailSection = () => {
   const { state, setState, quizQuesIdState } = useAppState();
-  // const { currentUser } = useAuthContext();
-  const currentUser = useRegisterDetail();
+  const { currentUser } = useAuthContext();
+  // const currentUser = useRegisterDetail();
   const questionDetails = useQuestionDetails({
     questionId: quizQuesIdState,
   });
