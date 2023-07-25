@@ -7,6 +7,7 @@ import {
 } from "react-query";
 import * as api from "./api";
 import { TestQuestion } from "./types";
+import { enqueueSnackbar } from "notistack";
 
 const KEY = "Test";
 
@@ -35,6 +36,12 @@ export function useTestQuestion(
     onSuccess: () => {
       console.log(getKeyFromProps(props, "LISTING"));
       queryClient.invalidateQueries([KEY]);
+    },
+    onError:(error)=>{
+      enqueueSnackbar(error?.message, {
+        variant: "error",
+        autoHideDuration: 2000,
+      });
     },
     retry: 0,
   });
