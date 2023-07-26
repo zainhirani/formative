@@ -60,9 +60,22 @@ export const getFaculties = () => {
 };
 
 export const addQuestion = (payload: any) => {
+  var revisionParentId = payload.get("revisionParentId");
+
+  const customUrl: any = (payload: number) => {
+    if (revisionParentId) {
+      return `${TEACHER__ADD_QUESTION}?revisionParentId=${revisionParentId}`;
+    } else {
+      return `${TEACHER__ADD_QUESTION}`;
+    }
+  };
+  // console.log(revisionParentId, "revisionParentId");
+  // console.log(payload, "payload");
+  // console.log(customUrl(), "customUrl()");
+
   return service({
     method: "POST",
-    url: TEACHER__ADD_QUESTION,
+    url: customUrl(),
     body: payload,
     formData: true,
   });

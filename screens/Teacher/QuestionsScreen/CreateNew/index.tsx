@@ -8,6 +8,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useRouter } from "next/router";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { Delete } from "@material-ui/icons";
 import ArrowCircleRightOutlinedIcon from "@mui/icons-material/ArrowCircleRightOutlined";
@@ -58,13 +59,18 @@ import { STATUS } from "constants/Status";
 import { useTheme } from "@mui/material/styles";
 import { PUBLIC_IMAGE_URL } from "configs";
 import { useRegisterDetail } from "providers/Auth";
+import SettingsBackupRestoreIcon from "@mui/icons-material/SettingsBackupRestore";
 
 interface QuestionProps {
   qId?: any;
+  revision?: Boolean;
 }
 
-const AddQuestion = ({ qId }: QuestionProps) => {
+const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
   const [newCategory, setNewCategory] = useState();
+  const router = useRouter();
+  const routerQuery = router.query;
+
   const theme = useTheme();
   let { enqueueSnackbar } = useSnackbar();
   // const { currentUser } = useAuthContext();
@@ -82,7 +88,7 @@ const AddQuestion = ({ qId }: QuestionProps) => {
   const questionDetails = useQuestionDetails({
     questionId: qId,
   });
-  console.log(facultyCategory,"useGetFaculties")
+  console.log(facultyCategory, "useGetFaculties");
   const defaultCategory = {
     label: "New Category",
     value: 1001001,
@@ -98,10 +104,9 @@ const AddQuestion = ({ qId }: QuestionProps) => {
     return [defaultCategory];
   }, [categoriesData?.data]);
 
-  
-
   // States
   const [questionId, setQuestionId] = useState("121/1");
+  const [revisionId, setRevisionId] = useState("");
   const [title, setTitle] = useState("");
   const [authorName, setAuthorName] = useState("");
   const [detail, setDetail] = useState("");
@@ -135,7 +140,7 @@ const AddQuestion = ({ qId }: QuestionProps) => {
     messages.categoriesForFacultyValue,
   );
   const onInputChange = (e) => {
-    setNewCategory(e.target.value)
+    setNewCategory(e.target.value);
   };
   useEffect(() => {
     setAuthorName(
@@ -157,6 +162,7 @@ const AddQuestion = ({ qId }: QuestionProps) => {
       setStatus(details?.status);
       setTitle(details?.title);
       setQuestionId(details?.id);
+      setRevisionId(details?.revision);
       setEnumType({ label: details?.type, value: details?.type });
       setIsPublic(details.isPublic);
       setTimelimit(details.timelimit);
@@ -177,7 +183,7 @@ const AddQuestion = ({ qId }: QuestionProps) => {
         setAnswer(Number(details?.answer));
         setAnswer(2);
         setAttempts(details?.attempt);
-        if (details.type == TYPES.NUM) {
+        if (details?.type == TYPES.NUM) {
           setTolerence(details?.acceptable_ans);
         }
       } else {
@@ -186,6 +192,12 @@ const AddQuestion = ({ qId }: QuestionProps) => {
     }
   }, [questionDetails.data, qId]);
 
+  const handleRevision = () => {
+    router.push({
+      pathname: `/teacher/questions/revision/${routerQuery?.id}`,
+      // query: { revision: true },
+    });
+  };
   const BUTTONS_CONFIG: ButtonConfig[] = [
     {
       key: "submit",
@@ -196,12 +208,21 @@ const AddQuestion = ({ qId }: QuestionProps) => {
       onClick: () => handleSubmit(),
     },
     {
+      key: "revision",
+      startIcon: <SettingsBackupRestoreIcon />,
+      disabled: revision ? revision : !Boolean(qId),
+      render: () => {
+        return <Box>New Revision</Box>;
+      },
+      onClick: () => handleRevision(),
+    },
+    {
       key: "duplicate",
       startIcon: <ContentCopyIcon />,
       render: () => {
         return <Box>Duplicate</Box>;
       },
-      disabled: !Boolean(qId),
+      disabled: revision ? revision : !Boolean(qId),
       onClick: () => {
         duplicateQuestion.mutate(qId);
       },
@@ -209,7 +230,7 @@ const AddQuestion = ({ qId }: QuestionProps) => {
     {
       key: "delete",
       startIcon: <Delete />,
-      disabled: !Boolean(qId),
+      disabled: revision ? revision : !Boolean(qId),
       render: () => {
         return <Box>Delete</Box>;
       },
@@ -218,29 +239,34 @@ const AddQuestion = ({ qId }: QuestionProps) => {
       },
     },
   ];
-  console.log( selectedfacultyCategoryIds.map((item) =>
-  Number(item.value),
-),"formattedCategoryIds");
+  // console.log(
+  //   selectedfacultyCategoryIds.map((item) => Number(item.value)),
+  //   "formattedCategoryIds",
+  // );
   const handleSubmit = () => {
     if (!validateForm()) return;
 
     var formdata = new FormData();
     let correctAnswer = [];
 
-    let formatedOptions = answerOptions.map((item) => {
-      if (item.correct)
-        correctAnswer.push(item.text.replace("Option", "").trim());
+    let formatedOptions = answerOptions?.map((item) => {
+      if (item?.correct)
+        correctAnswer?.push(item?.text?.replace("Option", "").trim());
       return {
-        key: item.text.replace("Option", "").trim(),
-        value: item.inputText,
+        key: item?.text.replace("Option", "").trim(),
+        value: item?.inputText,
       };
     });
-    let formattedCategoryIds = selectedfacultyCategoryIds.map((item) =>
-      Number(item.value),
+    let formattedCategoryIds = selectedfacultyCategoryIds?.map((item) =>
+      Number(item?.value),
     );
-   
+
     // formdata.append("tries", "3");
-    const category = newCategory !== "" ? newCategory : selectedCategory.value
+    // const category = newCategory !== "" ? newCategory : selectedCategory.value;
+    if (revision) {
+      formdata.append("revisionParentId", routerQuery?.id);
+    }
+    const category = newCategory !== "" ? newCategory : selectedCategory.value;
     formdata.append("folder", selectedFolder.value);
     formdata.append("timelimit", timelimit);
     formdata.append("detail", detail);
@@ -253,23 +279,23 @@ const AddQuestion = ({ qId }: QuestionProps) => {
     formdata.append(
       "answer",
       `${
-        [TYPES.SA, TYPES.NUM].includes(enumType.value)
-          ? TYPES.NUM == enumType.value
+        [TYPES.SA, TYPES.NUM].includes(enumType?.value)
+          ? TYPES.NUM == enumType?.value
             ? Number(answer)
             : answer
           : correctAnswer.join(",")
       }`,
     );
 
-    if (![TYPES.SA, TYPES.NUM].includes(enumType.value)) {
+    if (![TYPES.SA, TYPES.NUM].includes(enumType?.value)) {
       formatArrayOfObjectsForFormData("option", formatedOptions, formdata);
     }
 
-    if (enumType.value == TYPES.NUM) {
+    if (enumType?.value == TYPES.NUM) {
       formdata.append("acceptable_ans", parseInt(tolerence));
     }
 
-    if ([TYPES.SA, TYPES.NUM].includes(enumType.value)) {
+    if ([TYPES.SA, TYPES.NUM].includes(enumType?.value)) {
       formdata.append("attempt", parseInt(attempts));
     }
 
@@ -281,10 +307,12 @@ const AddQuestion = ({ qId }: QuestionProps) => {
       formdata.append("img", media);
     }
 
-    if (qId) {
+    if (qId && !revision) {
       updateQuestion.mutate({ formdata, qId });
+      console.log("edit page");
     } else {
       addQuestion.mutate(formdata);
+      console.log("add and revisions page");
     }
   };
 
@@ -354,17 +382,17 @@ const AddQuestion = ({ qId }: QuestionProps) => {
       },
     ];
 
-    if (TYPES.NUM == enumType.value) {
-      validationSchema.push(...validationsForNUMQuestionType);
-    } else if (TYPES.SA == enumType.value) {
-      validationSchema.push(...validationsForSAQuestionType);
+    if (TYPES.NUM == enumType?.value) {
+      validationSchema?.push(...validationsForNUMQuestionType);
+    } else if (TYPES.SA == enumType?.value) {
+      validationSchema?.push(...validationsForSAQuestionType);
     } else {
-      validationSchema.push(...validationsForRestQuestion);
+      validationSchema?.push(...validationsForRestQuestion);
     }
 
-    let notFilled = validationSchema.find((item) => !item.value);
+    let notFilled = validationSchema?.find((item) => !item?.value);
     if (notFilled) {
-      enqueueSnackbar(notFilled.errorMsg, {
+      enqueueSnackbar(notFilled?.errorMsg, {
         autoHideDuration: 2000,
         variant: "error",
       });
@@ -376,7 +404,7 @@ const AddQuestion = ({ qId }: QuestionProps) => {
 
   const handleRemoveSelectedFacultyCategory = (value: any) => {
     setSelectedFacultyCategoryIds(
-      selectedfacultyCategoryIds.filter((v) => v.value !== value.value),
+      selectedfacultyCategoryIds?.filter((v) => v?.value !== value?.value),
     );
   };
 
@@ -393,6 +421,14 @@ const AddQuestion = ({ qId }: QuestionProps) => {
       color: theme.additionalColors.inActiveStatusColor,
       icon: <DoNotDisturbOnIcon fontSize="small" />,
     },
+  };
+
+  const handleQuesNoText = () => {
+    if (routerQuery?.id) {
+      return `${qId}/${revisionId}`;
+    } else {
+      return `${questionId}`;
+    }
   };
 
   return (
@@ -529,12 +565,14 @@ const AddQuestion = ({ qId }: QuestionProps) => {
                     id="questionId"
                     name=""
                     type="text"
-                    value={questionId}
+                    value={handleQuesNoText()}
+                    // value={`${questionId}/${revisionId}`}
                     placeholder={questionPlaceholder}
                     variant="standard"
                     fullWidth
                   />
                 </FieldBoxWrapper>
+
                 <FieldBoxWrapper
                   sx={{
                     width: "50%",
