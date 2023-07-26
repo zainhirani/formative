@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Typography, Box } from "@mui/material";
 import { useFormattedMessage } from "theme/FormattedMessage";
 import messages from "../messages";
@@ -6,6 +6,7 @@ import { BoxWrapper, ButtonWrapper, TypographyStyled } from "../Styled";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import Question from "components/QuizMultiQuestionsFormat";
 import RemainingTimer from "components/RemainingTimer/RemainingTimer";
+import { useAppState } from "contexts/AppStateContext";
 
 const QuestionsStepper = (props: any) => {
   const {
@@ -19,11 +20,24 @@ const QuestionsStepper = (props: any) => {
     handleTimerEnd,
     handleRemainingTimer,
     remainingTime,
+
+    timerKey,
+    setTimerKey,
+    timerLimit,
+    setTimerLimit,
   } = props;
+  // const {
+  //   timerLimit,
+  //   setTimerLimit,
+  // } = useAppState();
+  const initialTimerLimit = quesQuizByIdData?.timelimit;
+  // const [timerKey, setTimerKey] = useState(0);
+  // const [timerLimit, setTimerLimit] = useState(initialTimerLimit);
+
   const [selectedOption, setSelectedOption] = useState<string>("");
   const quizKeyExistOutof = quesQuizByIdData?.outof;
   const quizKeyExistScore = quesQuizByIdData?.score;
-  const timerLimit = quesQuizByIdData?.timelimit;
+  // const timerLimit = quesQuizByIdData?.timelimit;
   const questionCurrentNo = quesQuizByIdData?.current;
   const questionTotalNo = quesQuizByIdData?.total;
   const quizScore = useFormattedMessage(messages.quizScore);
@@ -31,12 +45,20 @@ const QuestionsStepper = (props: any) => {
   const quizScorePoints = useFormattedMessage(messages.quizScorePoints);
   const percentage = useFormattedMessage(messages.percentage);
   const close = useFormattedMessage(messages.close);
+
+  const resetTimerLimit = () => {
+    setTimerKey((prevKey: any) => prevKey + 1);
+    setTimerLimit(initialTimerLimit);
+  };
   const handleOptionChange = (optionId: string) => {
     setSelectedOption(optionId);
   };
+
   const calculatedVal = Math.max(
     0,
-    Math.round((quizKeyExistScore / quizKeyExistOutof) * 100),
+    quizKeyExistOutof !== 0
+      ? Math.round((quizKeyExistScore / quizKeyExistOutof) * 100)
+      : 0,
   );
 
   const getTimeColor = (): string => {
@@ -60,6 +82,7 @@ const QuestionsStepper = (props: any) => {
             </TypographyStyled>
             <Box sx={{ display: "flex" }}>
               <RemainingTimer
+                key={timerKey}
                 seconds={timerLimit}
                 onEnd={handleTimerEnd}
                 remainingTimer={handleRemainingTimer}
@@ -75,6 +98,7 @@ const QuestionsStepper = (props: any) => {
             questionOptionNew={questionOptionNew}
             setQuestionOptionNew={setQuestionOptionNew}
             remainingTime={remainingTime}
+            resetTimerLimit={resetTimerLimit}
           />
         </>
       ) : (

@@ -5,6 +5,7 @@ import {
   duplicateQuestion,
   editQuestion,
   getCategories,
+  getCategoriesFaculties,
   getFolders,
   getQuestionById,
   getQuestionCountId,

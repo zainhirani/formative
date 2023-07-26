@@ -104,7 +104,7 @@ const DashboardScreen = () => {
           >
             <div>
               Welcome{" "}
-              {currentUser?.data?.first_name +
+              {currentUser?.data && currentUser?.data?.first_name +
                 " " +
                 currentUser?.data?.last_name}
             </div>

@@ -57,6 +57,12 @@ export function useQuizById(
     enabled:Boolean(props?.id),
     onSuccess:(data)=>{
       setSelectedQuestions(data?.questions);
+    },
+    onError:(error)=>{
+      enqueueSnackbar(error?.message, {
+        variant: "error",
+        autoHideDuration: 2000,
+      });
     }
     // cacheTime: 0,
   });
@@ -115,9 +121,14 @@ export function useQuizDistribute(
   return useMutation((payload) => api.quizDistribute({ ...props,data: payload }), {
     mutationKey: QUERY_KEYS.QUIZ_DISTRIBUTE,
     onSuccess: () => {
+      enqueueSnackbar("Success! Quizzes are in place", {
+        variant: "success",
+        autoHideDuration: 1500,
+      });
       // console.log('distribute success');
       // queryClient.invalidateQueries(['Students']);
-    },onError:(error) => {
+    },
+    onError:(error) => {
       enqueueSnackbar(error?.message, {
         variant: "error",
         autoHideDuration: 1500,

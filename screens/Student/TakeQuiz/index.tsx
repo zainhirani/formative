@@ -26,7 +26,12 @@ const TakeQuizScreen = () => {
     setAnwserCorrect,
     inputCaseSchema,
     setInputCaseSchema,
+    quesLoading,
+    setQuesLoading,
   } = useAppState();
+
+  const [timerKey, setTimerKey] = useState(0);
+  const [timerLimit, setTimerLimit] = useState();
   const searchQuiz = useFormattedMessage(messages.searchQuiz);
   const selectCourseText = useFormattedMessage(messages.selectCourse);
   const [remainingTime, setRemainingTime] = useState(0);
@@ -65,6 +70,7 @@ const TakeQuizScreen = () => {
           // setInputCaseSchema()
         } else {
           setOpen(true);
+          setTimerLimit(data?.timelimit);
         }
         const currentAllOptions = eval(data?.option || "");
         if (currentAllOptions?.length > 0) {
@@ -116,6 +122,22 @@ const TakeQuizScreen = () => {
       },
     );
 
+  // const initialTimerLimit = quesQuizByIdData?.timelimit;
+
+  // console.log(timerLimit, "timerLimit");
+
+  // console.log(quesQuizByIdData?.isSuccess, "quesQuizByIdData?.isSuccess");
+
+  // useEffect(() => {
+
+  // }, [quesQuizByIdData?.isSuccess]);
+  // useEffect(() => {
+  //   if (refQuesQuizById?.isloading) {
+  //     console.log("Main Screen");
+  //     setQuesLoading(refQuesQuizById?.isloading);
+  //   }
+  // }, refQuesQuizById?.isloading);
+
   useEffect(() => {
     if (checked?.length > 0) {
       if (checked?.find(Boolean)) {
@@ -142,18 +164,23 @@ const TakeQuizScreen = () => {
       ...(searchChange && { SearchBy: searchChange }),
     });
   }, [searchChange, selectCourse, page]);
-
-  const handleNext = () => {
+  // const resetTimerLimit = () => {
+  //   setTimerKey((prevKey: any) => prevKey + 1);
+  //   setTimerLimit(initialTimerLimit);
+  // };
+  const handleNext = async () => {
+    setQuesLoading(true);
     const firstFirstObject = checked?.find(Boolean);
-    refQuesQuizById({
+    const response = await refQuesQuizById({
       id: firstFirstObject,
     });
     setSelectedOptions([]);
     setAnwserCorrect(true);
-    // console.log(quesQuizByIdData?.timelimit, "quesQuizByIdData?.timelimit");
-    // console.log(remainingTime, "remainingTime");
-    // setRemainingTime(quesQuizByIdData?.timelimit);
-    // console.log(remainingTime, "set remainingTime");
+    // resetTimerLimit();
+
+    setTimerKey((prevKey: any) => prevKey + 1);
+    setTimerLimit(response?.timelimit);
+    setQuesLoading(false);
   };
 
   const courseData = useMemo(() => {
@@ -228,6 +255,10 @@ const TakeQuizScreen = () => {
             handleTimerEnd={handleTimerEnd}
             handleRemainingTimer={handleRemainingTimer}
             remainingTime={remainingTime}
+            timerKey={timerKey}
+            setTimerKey={setTimerKey}
+            timerLimit={timerLimit}
+            setTimerLimit={setTimerLimit}
           />
           <Box
             sx={{

@@ -124,7 +124,7 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
       return "#225A41";
     }
   };
-  console.log(integerTimeSpent, "timeSpenttimeSpenttimeSpent")
+  // console.log(question, "question");
 
   return (
     <SideDrawer open={isOpen} onClose={onClose} title={title} loading={loading}>
@@ -274,6 +274,17 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
 
           {isNumOrSA ? (
             <>
+              {media ? (
+                <Box sx={{ p: 2 }}>
+                  <Image
+                    alt="quiz-image"
+                    lazyLoadProps={{ height: 240 }}
+                    src={questionImage}
+                    lazyLoad={true}
+                    style={{ maxWidth: "100%", maxHeight: "240px" }}
+                  />
+                </Box>
+              ) : null}
               <Box sx={{ p: 2 }}>
                 <Box display="flex" alignItems="center">
                   <Typography
@@ -411,7 +422,7 @@ const QuizQuestionFormat: FC<QuizQuestionFormatProps> = ({
                 boxShadow: "0px 0px 40px rgba(0, 0, 0, 0.1)",
               }}
             >
-              <Box flex="1" borderRight="1px solid lightgrey" pr={2}>
+              <Box flex="1" borderRight="1px solid lightgrey" p={2}>
                 <Box display="flex" alignItems="center">
                   <Typography
                     variant="body2"

@@ -51,11 +51,13 @@ const Filters: React.FC<FilterProps> = ({
   const handleRemoveSelectedFacultyCategory = (value: any) => {
     let arr,
       arr2 = [];
-    (arr = selectedFacultyCategory.filter(
-      (obj: any) => obj?.value !== value.value,
+    (arr = selectedCategory.filter(
+      (obj: any) => obj?.value !== value.label,
     )),
-      (arr2 = arr.map((item) => item.value));
-    onFacultyCategoryChange([...arr2]);
+      console.log(arr,"arrrrrr"),
+      (arr2 = arr.map((item) => item.label));
+      onCategoryChange([...arr2]);
+      console.log(arr2,"arr2")
   };
 
   return (
@@ -70,18 +72,18 @@ const Filters: React.FC<FilterProps> = ({
         <SelectBoxWrapper>
           {/* :TODO: Faculty */}
           <CustomSelect
-            isClearable
-            placeholder={categoryPlaceholder}
-            controlText={category}
+            
+            placeholder={facultyPlaceholder}
+            controlText={faculty}
             dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-            value={selectedCategory}
-            options={categoryOptionData?.data?.data?.map((category: any) => ({
+            value={selectedFacultyCategory}
+            options={facultyCategoryOptionData?.data?.map((category: any) => ({
               label: category.name,
               value: category.id,
             }))}
-            isFetching={categoryOptionData?.isFetching}
-            onChange={(val: any) => {
-              onCategoryChange(val);
+            isFetching={facultyCategoryOptionData?.isFetching}
+            onChange={(val) => {
+              onFacultyCategoryChange(val);
             }}
           />
         </SelectBoxWrapper>
@@ -121,19 +123,20 @@ const Filters: React.FC<FilterProps> = ({
           {/* Category */}
           <CustomSelect
             // classNamePrefix="teacher-question-faculty-select"
+            isClearable
             isMulti
-            placeholder={facultyPlaceholder}
-            controlText={faculty}
+            placeholder={categoryPlaceholder}
+            controlText={category}
             dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-            options={facultyCategoryOptionData?.data?.data?.map((category) => ({
+            options={categoryOptionData?.data?.data?.map((category) => ({
               label: category.name,
               value: category.id,
             }))}
-            onChange={(val) => {
-              onFacultyCategoryChange(val);
+            onChange={(val: any) => {
+              onCategoryChange(val);
             }}
-            value={selectedFacultyCategory}
-            isFetching={facultyCategoryOptionData?.isFetching}
+            value={selectedCategory}
+            isFetching={categoryOptionData?.isFetching}
           />
         </SelectBoxWrapper>
       </Box>
@@ -146,8 +149,8 @@ const Filters: React.FC<FilterProps> = ({
         </SelectBoxWrapper>
         <SelectBoxWrapper>
           <Box sx={{ display: "flex" }}>
-            {selectedFacultyCategory?.length ? (
-              selectedFacultyCategory.map((item, index) => (
+            {selectedCategory?.length ? (
+              selectedCategory.map((item, index) => (
                 <Box sx={{ display: "flex", alignItems: "center" }} key={index}>
                   <Typography variant="body1">{item?.label}</Typography>
                   <IconButton

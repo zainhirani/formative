@@ -166,7 +166,7 @@ const TableSection = (props: any) => {
       key: "addQuestion",
       startIcon: <AddCircleOutlineIcon />,
       render: () => {
-        return <Box>Add Quiz</Box>;
+        return <Box>Add Question</Box>;
       },
       onClick: () => {
         setDrawerOpen(true);
@@ -208,7 +208,7 @@ const TableSection = (props: any) => {
     }
     enqueueSnackbar("Quiz Deleted Successfully", {
       variant: "success",
-      autoHideDuration: 3000,
+      autoHideDuration: 2000,
     });
   };
 
@@ -219,7 +219,7 @@ const TableSection = (props: any) => {
     }
     enqueueSnackbar("Quiz Duplicate Successfully", {
       variant: "success",
-      autoHideDuration: 3000,
+      autoHideDuration: 2000,
     });
   };
 

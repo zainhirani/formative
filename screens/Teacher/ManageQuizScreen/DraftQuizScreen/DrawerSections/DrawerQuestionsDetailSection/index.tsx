@@ -73,7 +73,7 @@ const DrawerQuestionsDetailSection = () => {
         quizOptions={quizOptions}
         questionContext={removeHTMLTags(questionDetails?.data?.detail)}
         actualQuestion={questionDetails?.data?.title}
-        difficulty={questionDetails?.data?.difficulty}
+        difficulty={questionDetails?.data?.difficulty?.toFixed(2)}
         avgAttemps={questionDetails?.data?.averageAttempts}
         avgTime={questionDetails?.data?.timelimit}
         questionIdNum={questionDetails?.data?.id}

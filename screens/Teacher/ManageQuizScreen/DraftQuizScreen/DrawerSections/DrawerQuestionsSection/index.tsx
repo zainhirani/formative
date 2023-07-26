@@ -54,6 +54,7 @@ const DrawerQuestionsSection = (props: any) => {
   const { data: questions, refetch: refQuestions } = useQuestionsListing({
     Limit: pageSizeQues,
     Page: page,
+    Public: true,
     ...(facultyCategory?.length > 0 && { facultyId: facultyCategory }),
     ...(folder && { folderId: folder }),
     ...(enumType && { type: enumType }),
@@ -145,7 +146,7 @@ const DrawerQuestionsSection = (props: any) => {
           />
           <BoxWrapper sx={{ boxShadow: "none", mt: "0" }}>
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              <SelectBoxWrapper  sx={{ zIndex: "2" }}>
+              <SelectBoxWrapper sx={{ zIndex: "2" }}>
                 {/* :TODO: Faculty */}
                 <CustomSelect
                   placeholder={facultyPlaceholder}

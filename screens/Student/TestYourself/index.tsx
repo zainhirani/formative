@@ -23,6 +23,7 @@ import { useTestQuestion } from "providers/Students/TestYourself/TestQuestions";
 import { useQueryClient } from "react-query";
 import { useSnackbar } from "notistack";
 import CloseIcon from "@mui/icons-material/Close";
+import OverlayLoader from "components/OverlayLoader";
 
 type Item = {
   id: number;
@@ -35,6 +36,8 @@ type Item = {
 const TestYourself = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [questionId, setQuestionId] = useState(0);
+  const [isSubmitLoding, setIsSubmitLoding] = useState(false);
+
   const categoryList = useCategoryListing();
   const questionDetail = useQuestionDetail({ id: questionId });
   const optionsCourse = categoryList?.data?.data?.map((item) => ({
@@ -168,6 +171,7 @@ const TestYourself = () => {
     (questionDetail?.data?.timelimit || 0) - (remainingTime || 0);
 
   const handleQuestionSubmit = () => {
+    setIsSubmitLoding(true);
     setSubmit(true);
     submitQuestion.mutate({
       questionId: questionId,
@@ -177,6 +181,7 @@ const TestYourself = () => {
         ? { option_selected: selectedOptionKeys }
         : { option_selected: textAnswer }),
     });
+    setIsSubmitLoding(false);
   };
 
   useEffect(() => {
@@ -191,16 +196,15 @@ const TestYourself = () => {
   useEffect(() => {
     remainingTime === 0 &&
       (!checkedStateAns.includes(true) || !textAnswer) &&
-      (setShow(false),
-      setSelectedItemId(0),
-      enqueueSnackbar("Time has been finished, please try again!", {
-        variant: "error",
-        action: (key) => (
-          <IconButton onClick={() => closeSnackbar(key)} size="small">
-            <CloseIcon sx={{ color: "#fff" }} />
-          </IconButton>
-        ),
-      }));
+      (setShow(false), setSelectedItemId(0));
+    // enqueueSnackbar("Time has been finished, please try again!", {
+    //   variant: "error",
+    //   action: (key) => (
+    //     <IconButton onClick={() => closeSnackbar(key)} size="small">
+    //       <CloseIcon sx={{ color: "#fff" }} />
+    //     </IconButton>
+    //   ),
+    // })
     remainingTime === 0 &&
       (checkedStateAns.includes(true) || textAnswer) &&
       (handleQuestionSubmit(), setSubmit(true));
@@ -352,6 +356,7 @@ const TestYourself = () => {
           handleAnswerChange={handleAnswerChange}
         />
       </BoxWrapper>
+      <OverlayLoader isShow={submitQuestion?.isLoading} />
     </Box>
     // </PageLayout>
   );

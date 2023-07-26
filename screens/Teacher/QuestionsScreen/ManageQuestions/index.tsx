@@ -4,13 +4,14 @@ import { Box } from "@material-ui/core";
 import Listing from "./Listing";
 import Filters from "./Filters";
 import Head from "next/head";
-import { useGetCategories, useGetFolders } from "providers/Teacher_Questions";
+import { useGetCategories, useGetFaculties, useGetFolders } from "providers/Teacher_Questions";
 import { TYPE_OPTIONS_FOR_ADD_QUESTION } from "constants/Types";
 
 const ManageQuestions = () => {
   // Queries
   const foldersData = useGetFolders();
   const categoriesData = useGetCategories();
+  const facultyCategories = useGetFaculties();
 
   const [folder, setFolder] = useState(null);
   const [facultyCategory, setFacultyCategory] = useState(null);
@@ -18,7 +19,6 @@ const ManageQuestions = () => {
   const [category, setCategory] = useState(null);
 
   return (
-    
     <>
       <Head>
         <title>Manage Questions</title>
@@ -29,8 +29,8 @@ const ManageQuestions = () => {
         onCategoryChange={setCategory}
         onTypeChange={setEnumType}
         onFacultyCategoryChange={setFacultyCategory}
+        facultyCategoryOptionData={facultyCategories}
         categoryOptionData={categoriesData}
-        facultyCategoryOptionData={categoriesData}
         folderOptionData={foldersData}
         typeOptionData={TYPE_OPTIONS_FOR_ADD_QUESTION}
         selectedCategory={category}
@@ -40,13 +40,12 @@ const ManageQuestions = () => {
       />
       <Listing
         folder={folder?.value}
-        facultyCategory={facultyCategory?.map((item) => item.value) || []}
+        category={category?.map((item) => item.value) || []}
         enumType={enumType?.value}
-        category={category?.value}
+        facultyCategory={facultyCategory?.value}
       />
     </Box>
     </>
-    
   );
 };
 
