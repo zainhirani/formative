@@ -67,7 +67,7 @@ interface QuestionProps {
 }
 
 const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
-  const [newCategory, setNewCategory] = useState();
+  const [newCategory, setNewCategory] = useState("");
   const router = useRouter();
   const routerQuery = router.query;
 
@@ -94,15 +94,22 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
     value: 1001001,
   };
   const categorylist = useMemo(() => {
-    const allcategories = categoriesData?.data?.data?.map((category) => ({
-      value: category.name,
-      label: category.name,
-    }));
+    const allcategories = categoriesData?.data?.data?.map((category) => {
+      return(
+        {
+          value: category.name,
+          label: category.name,
+        }
+      )
+      });
     if (allcategories) {
       return [defaultCategory, ...allcategories];
     }
     return [defaultCategory];
   }, [categoriesData?.data]);
+
+  
+  // console.log(categorylist,'category map list');
 
   // States
   const [questionId, setQuestionId] = useState("121/1");
@@ -117,7 +124,6 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
   const [enumType, setEnumType] = useState(null);
   const [status, setStatus] = useState(STATUS.DRAFT);
   const [selectedCategory, setSelectedCategory] = useState([]);
-  console.log(selectedCategory, "selectedCategoryselectedCategory");
   const [timelimit, setTimelimit] = useState();
   const authorNamePlaceholder = useFormattedMessage(messages.authorName);
   const [selectedfacultyCategoryIds, setSelectedFacultyCategoryIds] = useState(
@@ -262,12 +268,13 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
     );
 
     // formdata.append("tries", "3");
-    // const category = newCategory !== "" ? newCategory : selectedCategory.value;
+    
+    // const category = newCategory !== "" ? newCategory : selectedCategory.value
+    const category = selectedCategory.value == 1001001 ? newCategory : selectedCategory.value
+    formdata.append("folder", selectedFolder.value);
     if (revision) {
       formdata.append("revisionParentId", routerQuery?.id);
     }
-    const category = newCategory !== "" ? newCategory : selectedCategory.value;
-    formdata.append("folder", selectedFolder.value);
     formdata.append("timelimit", timelimit);
     formdata.append("detail", detail);
     formdata.append("status", status);

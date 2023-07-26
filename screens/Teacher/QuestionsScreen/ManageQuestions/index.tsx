@@ -4,18 +4,14 @@ import { Box } from "@material-ui/core";
 import Listing from "./Listing";
 import Filters from "./Filters";
 import Head from "next/head";
-import {
-  useGetCategories,
-  useGetFolders,
-  useGetFaculties,
-} from "providers/Teacher_Questions";
+import { useGetCategories, useGetFaculties, useGetFolders } from "providers/Teacher_Questions";
 import { TYPE_OPTIONS_FOR_ADD_QUESTION } from "constants/Types";
 
 const ManageQuestions = () => {
   // Queries
   const foldersData = useGetFolders();
   const categoriesData = useGetCategories();
-  const facultiesData = useGetFaculties();
+  const facultyCategories = useGetFaculties();
 
   const [folder, setFolder] = useState(null);
   const [facultyCategory, setFacultyCategory] = useState(null);

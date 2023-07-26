@@ -30,6 +30,7 @@ interface ListingProp {
   facultyCategory: any;
   enumType: any;
   category: any;
+  facultyCategories: any;
 }
 
 const Listing: React.FC = ({
