@@ -65,3 +65,17 @@ export const SelectWrapper = styled(Select)<SelectProps>(
       },
     } as any),
 ) as (props: SelectProps) => JSX.Element;
+
+
+export const TextFieldStyled = styled(TextField)<TextFieldProps>(
+  ({ theme }) =>
+    ({
+      borderWidth: "0px",
+      borderRadius: "0px",
+      border: "0px",
+      ".MuiOutlinedInput-notchedOutline":{
+        border:"none",
+        color: theme.additionalColors?.primary999999,
+      }
+    } as any),
+) as (props: TextFieldProps) => JSX.Element;

@@ -6,10 +6,10 @@ import Filters from "./Filters";
 import Head from "next/head";
 import {
   useGetCategories,
-  useGetFaculties,
   useGetFolders,
+  useGetFaculties,
 } from "providers/Teacher_Questions";
-import { TYPE_OPTIONS } from "constants/Types";
+import { TYPE_OPTIONS_FOR_ADD_QUESTION } from "constants/Types";
 
 const ManageQuestions = () => {
   // Queries
@@ -34,9 +34,9 @@ const ManageQuestions = () => {
           onTypeChange={setEnumType}
           onFacultyCategoryChange={setFacultyCategory}
           categoryOptionData={categoriesData}
-          facultyCategoryOptionData={facultiesData}
+          facultyCategoryOptionData={categoriesData}
           folderOptionData={foldersData}
-          typeOptionData={TYPE_OPTIONS}
+          typeOptionData={TYPE_OPTIONS_FOR_ADD_QUESTION}
           selectedCategory={category}
           selectedFacultyCategory={facultyCategory}
           selectedFolder={folder}

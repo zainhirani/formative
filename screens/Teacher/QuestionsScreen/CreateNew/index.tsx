@@ -1,10 +1,11 @@
 // @ts-nocheck
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   Box,
   Checkbox,
   FormControlLabel,
   IconButton,
+  TextField,
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/router";
@@ -26,6 +27,7 @@ import {
   BoxWrapper,
   FieldBoxWrapper,
   InputLabelWrapper,
+  TextFieldStyled,
   TextFieldWrapper,
 } from "./Styled";
 import { ButtonConfig } from "components/GroupedButton/types";
@@ -42,8 +44,10 @@ import {
   useDeleteQuestion,
   useDuplicateQuestion,
   useGetCategories,
+  useGetFaculties,
   useGetFolders,
   useGetQuestionCountId,
+  usePostCategory,
   useQuestionDetails,
   useUpdateQuestion,
 } from "providers/Teacher_Questions";
@@ -63,6 +67,7 @@ interface QuestionProps {
 }
 
 const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
+  const [newCategory, setNewCategory] = useState();
   const router = useRouter();
   const routerQuery = router.query;
 
@@ -76,12 +81,28 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
   const duplicateQuestion = useDuplicateQuestion();
   const foldersData = useGetFolders();
   const categoriesData = useGetCategories();
+  const facultyCategory = useGetFaculties();
   const questionCountData = useGetQuestionCountId();
   const updateQuestion = useUpdateQuestion();
   const addQuestion = useAddQuestion();
   const questionDetails = useQuestionDetails({
     questionId: qId,
   });
+  console.log(facultyCategory, "useGetFaculties");
+  const defaultCategory = {
+    label: "New Category",
+    value: 1001001,
+  };
+  const categorylist = useMemo(() => {
+    const allcategories = categoriesData?.data?.data?.map((category) => ({
+      value: category.name,
+      label: category.name,
+    }));
+    if (allcategories) {
+      return [defaultCategory, ...allcategories];
+    }
+    return [defaultCategory];
+  }, [categoriesData?.data]);
 
   // States
   const [questionId, setQuestionId] = useState("121/1");
@@ -96,6 +117,7 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
   const [enumType, setEnumType] = useState(null);
   const [status, setStatus] = useState(STATUS.DRAFT);
   const [selectedCategory, setSelectedCategory] = useState([]);
+  console.log(selectedCategory, "selectedCategoryselectedCategory");
   const [timelimit, setTimelimit] = useState();
   const authorNamePlaceholder = useFormattedMessage(messages.authorName);
   const [selectedfacultyCategoryIds, setSelectedFacultyCategoryIds] = useState(
@@ -117,7 +139,9 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
   const facultyPlaceholder = useFormattedMessage(
     messages.categoriesForFacultyValue,
   );
-
+  const onInputChange = (e) => {
+    setNewCategory(e.target.value);
+  };
   useEffect(() => {
     setAuthorName(
       `${currentUser?.data?.first_name} ${currentUser?.data?.last_name}`,
@@ -144,11 +168,11 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
       setTimelimit(details.timelimit);
       setSelectedFolder({
         label: details?.folders.name,
-        value: details?.folders.id,
+        value: details?.folders.name,
       });
       setSelectedCategory({
         label: details?.categories.name,
-        value: details?.categories.id,
+        value: details?.categories.name,
       });
       setSelectedFacultyCategoryIds([
         { label: details?.categories.name, value: details?.categories.id },
@@ -215,7 +239,10 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
       },
     },
   ];
-
+  console.log(
+    selectedfacultyCategoryIds.map((item) => Number(item.value)),
+    "formattedCategoryIds",
+  );
   const handleSubmit = () => {
     if (!validateForm()) return;
 
@@ -233,19 +260,21 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
     let formattedCategoryIds = selectedfacultyCategoryIds?.map((item) =>
       Number(item?.value),
     );
+
     // formdata.append("tries", "3");
+    const category = newCategory !== "" ? newCategory : selectedCategory.value;
     if (revision) {
       formdata.append("revisionParentId", routerQuery?.id);
     }
-    formdata.append("folder", selectedFolder?.value);
+    formdata.append("folder", selectedFolder.value);
     formdata.append("timelimit", timelimit);
     formdata.append("detail", detail);
     formdata.append("status", status);
     formdata.append("isPublic", isPublic);
     formdata.append("title", title);
-    formdata.append("category", selectedCategory?.value);
+    formdata.append("category", category);
     formdata.append("facultyIds[]", formattedCategoryIds);
-    formdata.append("type", enumType?.value);
+    formdata.append("type", enumType.value);
     formdata.append(
       "answer",
       `${
@@ -710,16 +739,36 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
                       placeholder={categoryPlaceholder}
                       controlText={category}
                       dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-                      options={categoriesData?.data?.data?.map((category) => ({
-                        label: category.name,
-                        value: category.id,
-                      }))}
+                      options={categorylist || []}
                       onChange={(val) => setSelectedCategory(val)}
                       value={selectedCategory}
                     />
                   </Box>
                 </FieldBoxWrapper>
               </Box>
+              {selectedCategory?.value === 1001001 ? (
+                <Box>
+                  <TextFieldStyled
+                    placeholder="Enter New Category"
+                    type="text"
+                    variant="outlined"
+                    fullWidth
+                    size="small"
+                    onChange={onInputChange}
+                    value={newCategory}
+                    InputProps={{
+                      endAdornment: newCategory && (
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={() => setNewCategory("")}
+                        >
+                          <CancelIcon />
+                        </IconButton>
+                      ),
+                    }}
+                  />
+                </Box>
+              ) : null}
             </Box>
             <Box>
               <Box
@@ -746,7 +795,7 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
                       placeholder={facultyPlaceholder}
                       controlText={faculty}
                       dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-                      options={categoriesData?.data?.data?.map((category) => ({
+                      options={facultyCategory?.data?.map((category) => ({
                         label: category.name,
                         value: category.id,
                       }))}
