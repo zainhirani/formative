@@ -10,6 +10,7 @@ import {
   getQuestionCountId,
   getQuestions,
   postCategory,
+  getFaculties,
 } from "./api";
 import { useSnackbar } from "notistack";
 import { useRouter } from "next/router";
@@ -29,7 +30,8 @@ export function getKeyFromProps(
     | "GET_FOLDERS"
     | "GET_CATEGORIES"
     | "GET_QUESTION_COUNT_ID"
-    | "POST_CATEGORY",
+    | "POST_CATEGORY"
+    | "TEACHER__GET_FACULTIES",
 ): string[] {
   const key = [KEY, type];
   if (props) {
@@ -51,6 +53,14 @@ export const useGetCategories = () => {
     queryKey: getKeyFromProps(null, "GET_CATEGORIES"),
   });
 };
+
+export const useGetFaculties = () => {
+  return useQuery({
+    queryFn: getFaculties,
+    queryKey: getKeyFromProps(null, "TEACHER__GET_FACULTIES"),
+  });
+};
+
 
 export const useGetQuestionCountId = () => {
   return useQuery({

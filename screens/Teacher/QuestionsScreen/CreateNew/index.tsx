@@ -43,6 +43,7 @@ import {
   useDeleteQuestion,
   useDuplicateQuestion,
   useGetCategories,
+  useGetFaculties,
   useGetFolders,
   useGetQuestionCountId,
   usePostCategory,
@@ -74,14 +75,14 @@ const AddQuestion = ({ qId }: QuestionProps) => {
   const duplicateQuestion = useDuplicateQuestion();
   const foldersData = useGetFolders();
   const categoriesData = useGetCategories();
-  const postCategory = usePostCategory();
+  const facultyCategory = useGetFaculties();
   const questionCountData = useGetQuestionCountId();
   const updateQuestion = useUpdateQuestion();
   const addQuestion = useAddQuestion();
   const questionDetails = useQuestionDetails({
     questionId: qId,
   });
-
+  console.log(facultyCategory,"useGetFaculties")
   const defaultCategory = {
     label: "New Category",
     value: 1001001,
@@ -757,7 +758,7 @@ const AddQuestion = ({ qId }: QuestionProps) => {
                       placeholder={facultyPlaceholder}
                       controlText={faculty}
                       dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-                      options={categoriesData?.data?.data?.map((category) => ({
+                      options={facultyCategory?.data?.map((category) => ({
                         label: category.name,
                         value: category.id,
                       }))}
