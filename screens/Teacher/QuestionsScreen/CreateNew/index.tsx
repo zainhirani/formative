@@ -239,10 +239,10 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
       },
     },
   ];
-  console.log(
-    selectedfacultyCategoryIds.map((item) => Number(item.value)),
-    "formattedCategoryIds",
-  );
+  // console.log(
+  //   selectedfacultyCategoryIds.map((item) => Number(item.value)),
+  //   "formattedCategoryIds",
+  // );
   const handleSubmit = () => {
     if (!validateForm()) return;
 
@@ -262,10 +262,11 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
     );
 
     // formdata.append("tries", "3");
-    const category = newCategory !== "" ? newCategory : selectedCategory.value;
+    // const category = newCategory !== "" ? newCategory : selectedCategory.value;
     if (revision) {
       formdata.append("revisionParentId", routerQuery?.id);
     }
+    const category = newCategory !== "" ? newCategory : selectedCategory.value;
     formdata.append("folder", selectedFolder.value);
     formdata.append("timelimit", timelimit);
     formdata.append("detail", detail);
