@@ -474,13 +474,13 @@ const AddQuestion = ({ qId }: QuestionProps) => {
               }}
             >
               {/* Title */}
-              <Box sx={{ display: "flex", width: "100%" }}>
+              <Box sx={{  width: "100%" }}>
                 <FieldBoxWrapper
-                  sx={{
-                    width: { md: "57%", lg: "55%" },
-                  }}
+                  // sx={{
+                  //   width: { md: "57%", lg: "55%" },
+                  // }}
                 >
-                  <InputLabelWrapper htmlFor="questionTitle">
+                  <InputLabelWrapper htmlFor="questionTitle" sx={{width:"17%"}}>
                     <div>Title: </div>
                   </InputLabelWrapper>
 
