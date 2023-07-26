@@ -88,7 +88,7 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
   const questionDetails = useQuestionDetails({
     questionId: qId,
   });
-  
+  console.log(facultyCategory, "useGetFaculties");
   const defaultCategory = {
     label: "New Category",
     value: 1001001,
@@ -146,9 +146,7 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
     messages.categoriesForFacultyValue,
   );
   const onInputChange = (e) => {
-    console.log(e.target.value,"e.target.value");
-    
-    setNewCategory(e.target.value)
+    setNewCategory(e.target.value);
   };
   useEffect(() => {
     setAuthorName(
@@ -247,15 +245,10 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
       },
     },
   ];
-//   console.log( selectedfacultyCategoryIds.map((item) =>
-//   Number(item.value),
-// ),"formattedCategoryIds");
-
-
-// console.log(newCategory,'newCategory');
-// console.log(selectedCategory,'selectedCategory');
-console.log(newCategory,'newCategory payload');
-
+  // console.log(
+  //   selectedfacultyCategoryIds.map((item) => Number(item.value)),
+  //   "formattedCategoryIds",
+  // );
   const handleSubmit = () => {
     if (!validateForm()) return;
 
@@ -273,17 +266,11 @@ console.log(newCategory,'newCategory payload');
     let formattedCategoryIds = selectedfacultyCategoryIds?.map((item) =>
       Number(item?.value),
     );
-   
+
     // formdata.append("tries", "3");
     
     // const category = newCategory !== "" ? newCategory : selectedCategory.value
     const category = selectedCategory.value == 1001001 ? newCategory : selectedCategory.value
-
-    
-console.log(newCategory,'newCategory payload');
-console.log(selectedCategory,'selectedCategory payload');
-console.log(category,'category payload');
-// return;
     formdata.append("folder", selectedFolder.value);
     if (revision) {
       formdata.append("revisionParentId", routerQuery?.id);
@@ -443,6 +430,14 @@ console.log(category,'category payload');
     },
   };
 
+  const handleQuesNoText = () => {
+    if (routerQuery?.id) {
+      return `${qId}/${revisionId}`;
+    } else {
+      return `${questionId}`;
+    }
+  };
+
   return (
     <>
       <Head>
@@ -522,13 +517,13 @@ console.log(category,'category payload');
               }}
             >
               {/* Title */}
-              <Box sx={{ display: "flex", width: "100%" }}>
+              <Box sx={{  width: "100%" }}>
                 <FieldBoxWrapper
-                  sx={{
-                    width: { md: "57%", lg: "55%" },
-                  }}
+                  // sx={{
+                  //   width: { md: "57%", lg: "55%" },
+                  // }}
                 >
-                  <InputLabelWrapper htmlFor="questionTitle">
+                  <InputLabelWrapper htmlFor="questionTitle" sx={{width:"17%"}}>
                     <div>Title: </div>
                   </InputLabelWrapper>
 
@@ -577,7 +572,8 @@ console.log(category,'category payload');
                     id="questionId"
                     name=""
                     type="text"
-                    value={`${questionId}/${revisionId}`}
+                    value={handleQuesNoText()}
+                    // value={`${questionId}/${revisionId}`}
                     placeholder={questionPlaceholder}
                     variant="standard"
                     fullWidth

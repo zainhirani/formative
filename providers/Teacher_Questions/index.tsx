@@ -30,6 +30,7 @@ export function getKeyFromProps(
     | "ADD_QUESTION"
     | "GET_FOLDERS"
     | "GET_CATEGORIES"
+    | "GET_FACULTY"
     | "GET_QUESTION_COUNT_ID"
     | "POST_CATEGORY"
     | "TEACHER__GET_FACULTIES",
@@ -61,7 +62,6 @@ export const useGetFaculties = () => {
     queryKey: getKeyFromProps(null, "TEACHER__GET_FACULTIES"),
   });
 };
-
 
 export const useGetQuestionCountId = () => {
   return useQuery({
@@ -189,7 +189,6 @@ export const useDuplicateQuestion = (questionId: any) => {
     retry: 1,
   });
 };
-
 
 export const usePostCategory = (payload: any) => {
   const client = useQueryClient();

@@ -19,6 +19,10 @@ const AttemptDrawer = ({ isOpen, onClose, quizId }: QuizAttemptDrawerProps) => {
   const attemptQuizList = useAttemptQuiz({ quizId: quizId });
   // const {currentUser} = useAuthContext();
   const currentUser = useRegisterDetail();
+  useEffect(() => {
+    setPage(1);
+  }, [quizId]);
+
   const totalRows = attemptQuizList?.data?.questions?.length;
   const totalPages = Math.ceil(totalRows ? totalRows / 1 : 1);
   const paginatedRows = attemptQuizList?.data?.questions?.slice(

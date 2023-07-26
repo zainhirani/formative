@@ -23,28 +23,28 @@ const ManageQuestions = () => {
       <Head>
         <title>Manage Questions</title>
       </Head>
-    <Box>
-      <Filters
-        onFolderChange={setFolder}
-        onCategoryChange={setCategory}
-        onTypeChange={setEnumType}
-        onFacultyCategoryChange={setFacultyCategory}
-        facultyCategoryOptionData={facultyCategories}
-        categoryOptionData={categoriesData}
-        folderOptionData={foldersData}
-        typeOptionData={TYPE_OPTIONS_FOR_ADD_QUESTION}
-        selectedCategory={category}
-        selectedFacultyCategory={facultyCategory}
-        selectedFolder={folder}
-        selectedType={enumType}
-      />
-      <Listing
-        folder={folder?.value}
-        category={category?.map((item) => item.value) || []}
-        enumType={enumType?.value}
-        facultyCategory={facultyCategory?.value}
-      />
-    </Box>
+      <Box>
+        <Filters
+          onFolderChange={setFolder}
+          onCategoryChange={setCategory}
+          onTypeChange={setEnumType}
+          onFacultyCategoryChange={setFacultyCategory}
+          categoryOptionData={categoriesData}
+          facultyCategoryOptionData={categoriesData}
+          folderOptionData={foldersData}
+          typeOptionData={TYPE_OPTIONS_FOR_ADD_QUESTION}
+          selectedCategory={category}
+          selectedFacultyCategory={facultyCategory}
+          selectedFolder={folder}
+          selectedType={enumType}
+        />
+        <Listing
+          folder={folder?.value}
+          facultyCategory={facultyCategory?.map((item) => item.value) || []}
+          enumType={enumType?.value}
+          category={category?.value}
+        />
+      </Box>
     </>
   );
 };
