@@ -9,6 +9,7 @@ import {
   getQuestionById,
   getQuestionCountId,
   getQuestions,
+  postCategory,
 } from "./api";
 import { useSnackbar } from "notistack";
 import { useRouter } from "next/router";
@@ -27,7 +28,8 @@ export function getKeyFromProps(
     | "ADD_QUESTION"
     | "GET_FOLDERS"
     | "GET_CATEGORIES"
-    | "GET_QUESTION_COUNT_ID",
+    | "GET_QUESTION_COUNT_ID"
+    | "POST_CATEGORY",
 ): string[] {
   const key = [KEY, type];
   if (props) {
@@ -120,7 +122,6 @@ export const useAddQuestion = (payload: any) => {
     retry: 1,
   });
 };
-
 export const useUpdateQuestion = (payload: any) => {
   const client = useQueryClient();
   const { enqueueSnackbar } = useSnackbar();
@@ -173,6 +174,36 @@ export const useDuplicateQuestion = (questionId: any) => {
     },
 
     mutationKey: getKeyFromProps(questionId, "DUPLICATE_QUESTION"),
+
+    retry: 1,
+  });
+};
+
+
+export const usePostCategory = (payload: any) => {
+  const client = useQueryClient();
+  const { enqueueSnackbar } = useSnackbar();
+  const router = useRouter();
+
+  return useMutation((payload) => postCategory(payload), {
+    onSuccess: () => {
+      client.invalidateQueries({
+        queryKey: [KEY],
+      });
+      enqueueSnackbar("New Category has been Created !", {
+        autoHideDuration: 1500,
+        variant: "success",
+      });
+      router.push(APP_ROUTES.QUESTIONS_CREATE_NEW);
+    },
+    onError: (err: any) => {
+      enqueueSnackbar(err.message, {
+        autoHideDuration: 1500,
+        variant: "error",
+      });
+    },
+
+    mutationKey: getKeyFromProps(payload, "POST_CATEGORY"),
 
     retry: 1,
   });

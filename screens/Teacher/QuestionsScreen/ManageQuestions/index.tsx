@@ -5,7 +5,7 @@ import Listing from "./Listing";
 import Filters from "./Filters";
 import Head from "next/head";
 import { useGetCategories, useGetFolders } from "providers/Teacher_Questions";
-import { TYPE_OPTIONS } from "constants/Types";
+import { TYPE_OPTIONS_FOR_ADD_QUESTION } from "constants/Types";
 
 const ManageQuestions = () => {
   // Queries
@@ -32,7 +32,7 @@ const ManageQuestions = () => {
         categoryOptionData={categoriesData}
         facultyCategoryOptionData={categoriesData}
         folderOptionData={foldersData}
-        typeOptionData={TYPE_OPTIONS}
+        typeOptionData={TYPE_OPTIONS_FOR_ADD_QUESTION}
         selectedCategory={category}
         selectedFacultyCategory={facultyCategory}
         selectedFolder={folder}

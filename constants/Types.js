@@ -14,4 +14,16 @@ export const TYPE_OPTIONS = [
   { value: "MSN", label: "MSN" },
   { value: "MSR", label: "MSR" },
   { value: "NUM", label: "NUM" },
+  
+];
+
+export const TYPE_OPTIONS_FOR_ADD_QUESTION = [
+  { value: "SA", label: "SA" },
+  { value: "MCN", label: "MCN" },
+  { value: "MCR", label: "MCR" },
+  { value: "MSN", label: "MSN" },
+  { value: "MSR", label: "MSR" },
+  { value: "NUM", label: "NUM" },
+  { value: "MCx", label: "MCx" },
+  { value: "MSx", label: "MSx" },
 ];

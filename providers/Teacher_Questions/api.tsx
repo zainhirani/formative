@@ -97,3 +97,18 @@ export const getQuestionCountId = () => {
     method: "GET",
   });
 };
+
+// export const postCategory = () => {
+//   return service({
+//     url: `/categories`,
+//     method: "POST",
+//   });
+// };
+
+export const postCategory = (payload: any) => {
+  return service({
+    method: "POST",
+    url: `/categories`,
+    body: payload,
+  });
+};
