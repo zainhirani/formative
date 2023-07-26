@@ -63,14 +63,14 @@ export const addQuestion = (payload: any) => {
   var revisionParentId = payload.get("revisionParentId");
 
   const customUrl: any = (payload: number) => {
-    if (1 === 1) {
+    if (revisionParentId) {
       return `${TEACHER__ADD_QUESTION}?revisionParentId=${revisionParentId}`;
     } else {
       return `${TEACHER__ADD_QUESTION}`;
     }
   };
-  console.log(revisionParentId, "revisionParentId");
-  console.log(payload, "payload");
+  // console.log(revisionParentId, "revisionParentId");
+  // console.log(payload, "payload");
   // console.log(customUrl(), "customUrl()");
 
   return service({

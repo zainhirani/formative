@@ -237,14 +237,14 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
     if (revision) {
       formdata.append("revisionParentId", routerQuery?.id);
     }
-    formdata.append("folderId", selectedFolder?.value);
+    formdata.append("folder", selectedFolder?.value);
     formdata.append("timelimit", timelimit);
     formdata.append("detail", detail);
     formdata.append("status", status);
     formdata.append("isPublic", isPublic);
     formdata.append("title", title);
-    formdata.append("categoryId", selectedCategory?.value);
-    formdata.append("facultyId", formattedCategoryIds);
+    formdata.append("category", selectedCategory?.value);
+    formdata.append("facultyIds[]", formattedCategoryIds);
     formdata.append("type", enumType?.value);
     formdata.append(
       "answer",
@@ -393,6 +393,14 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
     },
   };
 
+  const handleQuesNoText = () => {
+    if (routerQuery?.id) {
+      return `${qId}/${revisionId}`;
+    } else {
+      return `${questionId}`;
+    }
+  };
+
   return (
     <>
       <Head>
@@ -527,7 +535,8 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
                     id="questionId"
                     name=""
                     type="text"
-                    value={`${questionId}/${revisionId}`}
+                    value={handleQuesNoText()}
+                    // value={`${questionId}/${revisionId}`}
                     placeholder={questionPlaceholder}
                     variant="standard"
                     fullWidth
