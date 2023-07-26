@@ -5,6 +5,7 @@ import {
   duplicateQuestion,
   editQuestion,
   getCategories,
+  getCategoriesFaculties,
   getFolders,
   getQuestionById,
   getQuestionCountId,
@@ -27,6 +28,7 @@ export function getKeyFromProps(
     | "ADD_QUESTION"
     | "GET_FOLDERS"
     | "GET_CATEGORIES"
+    | "GET_FACULTY"
     | "GET_QUESTION_COUNT_ID",
 ): string[] {
   const key = [KEY, type];
@@ -47,6 +49,13 @@ export const useGetCategories = () => {
   return useQuery({
     queryFn: getCategories,
     queryKey: getKeyFromProps(null, "GET_CATEGORIES"),
+  });
+};
+
+export const useGetFaculties = () => {
+  return useQuery({
+    queryFn: getCategoriesFaculties,
+    queryKey: getKeyFromProps(null, "GET_FACULTY"),
   });
 };
 

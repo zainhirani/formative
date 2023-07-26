@@ -51,11 +51,13 @@ const AttemptDrawer = ({ isOpen, onClose, quizId }: QuizAttemptDrawerProps) => {
     ),
     "filterOptions",
   );
+  // console.log(paginatedRows?.[0], "paginatedRows");
 
   return (
     <>
       <QuizQuestionFormat
-        question={paginatedRows?.[0]?.question}
+        question={paginatedRows?.[0]}
+        // question={paginatedRows?.[0]?.question}
         quizOptions={filterOptions}
         title={`Quiz review for ${currentUser?.data?.username} on ${attemptQuizList.data?.course[0].course_name}`}
         questionContext={paginatedRows?.[0]?.detail}
