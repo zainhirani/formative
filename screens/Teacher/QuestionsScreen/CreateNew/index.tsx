@@ -88,27 +88,61 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
   const questionDetails = useQuestionDetails({
     questionId: qId,
   });
-  console.log(facultyCategory, "useGetFaculties");
+  //add new category
   const defaultCategory = {
     label: "New Category",
     value: 1001001,
   };
   const categorylist = useMemo(() => {
     const allcategories = categoriesData?.data?.data?.map((category) => {
-      return(
-        {
-          value: category.name,
-          label: category.name,
-        }
-      )
-      });
+      return {
+        value: category.name,
+        label: category.name,
+      };
+    });
     if (allcategories) {
       return [defaultCategory, ...allcategories];
     }
     return [defaultCategory];
   }, [categoriesData?.data]);
 
-  
+  //add new Folder
+  const defaultFolder = {
+    label: "New Folder",
+    value: 100011,
+  };
+  const folderList = useMemo(() => {
+    const all_folders = foldersData?.data?.data?.map((folder) => {
+      return {
+        value: folder.name,
+        label: folder.name,
+      };
+    });
+    if (all_folders) {
+      return [defaultFolder, ...all_folders];
+    }
+    return [defaultFolder];
+  }, [foldersData?.data]);
+
+  // const defaultFolder = {
+  //   label: "New Folder",
+  //   value: 100011,
+  // };
+
+  // const folderList = useMemo(()=>{
+  //   const allfolders = foldersData?.data?.data.map((folder)=>{
+  //     return(
+  //       {
+  //         value:folder.name,
+  //         label:folder.name
+  //       }
+  //     )
+  //   })
+  // })
+  // if(allfolders) {
+  //   return[defaultFolder,...allfolders]
+  // }
+
   // console.log(categorylist,'category map list');
 
   // States
@@ -132,6 +166,7 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
   const [answer, setAnswer] = useState("");
   const [tolerence, setTolerence] = useState("");
   const [attempts, setAttempts] = useState("");
+  const [newFolder, setNewFolder] = useState();
 
   const question = useFormattedMessage(messages.questNo);
   const questionPlaceholder = useFormattedMessage(messages.questNoValue);
@@ -147,6 +182,9 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
   );
   const onInputChange = (e) => {
     setNewCategory(e.target.value);
+  };
+  const onFolderInputChange = (e) => {
+    setNewFolder(e.target.value);
   };
   useEffect(() => {
     setAuthorName(
@@ -268,9 +306,10 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
     );
 
     // formdata.append("tries", "3");
-    
+
     // const category = newCategory !== "" ? newCategory : selectedCategory.value
-    const category = selectedCategory.value == 1001001 ? newCategory : selectedCategory.value
+    const category =
+      selectedCategory.value == 1001001 ? newCategory : selectedCategory.value;
     formdata.append("folder", selectedFolder.value);
     if (revision) {
       formdata.append("revisionParentId", routerQuery?.id);
@@ -517,13 +556,16 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
               }}
             >
               {/* Title */}
-              <Box sx={{  width: "100%" }}>
+              <Box sx={{ width: "100%" }}>
                 <FieldBoxWrapper
-                  // sx={{
-                  //   width: { md: "57%", lg: "55%" },
-                  // }}
+                // sx={{
+                //   width: { md: "57%", lg: "55%" },
+                // }}
                 >
-                  <InputLabelWrapper htmlFor="questionTitle" sx={{width:"17%"}}>
+                  <InputLabelWrapper
+                    htmlFor="questionTitle"
+                    sx={{ width: "17%" }}
+                  >
                     <div>Title: </div>
                   </InputLabelWrapper>
 
@@ -712,10 +754,7 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
                       placeholder={folderPlaceholder}
                       controlText={folder}
                       dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-                      options={foldersData?.data?.data?.map((folder) => ({
-                        label: folder.name,
-                        value: folder.id,
-                      }))}
+                      options={folderList || []}
                       value={selectedFolder}
                       onChange={(val) => setSelectedFolder(val)}
                       isFetching={foldersData?.isFetching}
@@ -723,6 +762,26 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
                   </Box>
                 </FieldBoxWrapper>
               </Box>
+              {selectedFolder?.value === 100011 ? (
+                <Box>
+                  <TextFieldStyled
+                    placeholder="Enter New Folder"
+                    type="text"
+                    variant="outlined"
+                    fullWidth
+                    size="small"
+                    onChange={onFolderInputChange}
+                    value={newFolder}
+                    InputProps={{
+                      endAdornment: newFolder && (
+                        <IconButton onClick={() => setNewFolder("")}>
+                          <CancelIcon />
+                        </IconButton>
+                      ),
+                    }}
+                  />
+                </Box>
+              ) : null}
             </Box>
 
             <Box>
