@@ -5,13 +5,13 @@ import {
   duplicateQuestion,
   editQuestion,
   getCategories,
-  getCategoriesFaculties,
   getFolders,
   getQuestionById,
   getQuestionCountId,
   getQuestions,
   postCategory,
   getFaculties,
+  getTeachers,
 } from "./api";
 import { useSnackbar } from "notistack";
 import { useRouter } from "next/router";
@@ -33,6 +33,7 @@ export function getKeyFromProps(
     | "GET_FACULTY"
     | "GET_QUESTION_COUNT_ID"
     | "POST_CATEGORY"
+    | "GET_TEACHER"
     | "TEACHER__GET_FACULTIES",
 ): string[] {
   const key = [KEY, type];
@@ -53,6 +54,13 @@ export const useGetCategories = () => {
   return useQuery({
     queryFn: getCategories,
     queryKey: getKeyFromProps(null, "GET_CATEGORIES"),
+  });
+};
+
+export const useGetTeacher = () => {
+  return useQuery({
+    queryFn: getTeachers,
+    queryKey: getKeyFromProps(null, "GET_TEACHER"),
   });
 };
 
