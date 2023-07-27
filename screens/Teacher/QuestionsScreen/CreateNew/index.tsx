@@ -68,6 +68,8 @@ interface QuestionProps {
 
 const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
   const [newCategory, setNewCategory] = useState("");
+  const [newFolder, setNewFolder] = useState("");
+  const [newFacultyCategory, setNewFacultyCategory] = useState("");
   const router = useRouter();
   const routerQuery = router.query;
 
@@ -124,26 +126,7 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
     return [defaultFolder];
   }, [foldersData?.data]);
 
-  // const defaultFolder = {
-  //   label: "New Folder",
-  //   value: 100011,
-  // };
-
-  // const folderList = useMemo(()=>{
-  //   const allfolders = foldersData?.data?.data.map((folder)=>{
-  //     return(
-  //       {
-  //         value:folder.name,
-  //         label:folder.name
-  //       }
-  //     )
-  //   })
-  // })
-  // if(allfolders) {
-  //   return[defaultFolder,...allfolders]
-  // }
-
-  // console.log(categorylist,'category map list');
+  
 
   // States
   const [questionId, setQuestionId] = useState("121/1");
@@ -166,7 +149,7 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
   const [answer, setAnswer] = useState("");
   const [tolerence, setTolerence] = useState("");
   const [attempts, setAttempts] = useState("");
-  const [newFolder, setNewFolder] = useState();
+  
 
   const question = useFormattedMessage(messages.questNo);
   const questionPlaceholder = useFormattedMessage(messages.questNoValue);
@@ -308,9 +291,11 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
     // formdata.append("tries", "3");
 
     // const category = newCategory !== "" ? newCategory : selectedCategory.value
-    const category =
-      selectedCategory.value == 1001001 ? newCategory : selectedCategory.value;
-    formdata.append("folder", selectedFolder.value);
+    const category = selectedCategory.value == 1001001 ? newCategory : selectedCategory.value;
+    const folder = selectedFolder.value === 100011 ? newFolder : selectedFolder.value;
+    formdata.append("folder", folder);
+    console.log(folder,"folderfolderfolder")
+    // formdata.append("folder", selectedFolder.value);
     if (revision) {
       formdata.append("revisionParentId", routerQuery?.id);
     }

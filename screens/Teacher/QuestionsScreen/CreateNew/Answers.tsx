@@ -44,7 +44,7 @@ const initialItems: ListItemData[] = [
 const MAX_ANSWER_OPTIONS = 8;
 
 const AnswerOptions = (props: AnswerOptionsProps) => {
-  console.log("🚀 ~ file: Answers.tsx:33 ~ answerValue:", answerValue);
+  // console.log("🚀 ~ file: Answers.tsx:33 ~ answerValue:", answerValue);
 
   let {
     onChange = () => {},
