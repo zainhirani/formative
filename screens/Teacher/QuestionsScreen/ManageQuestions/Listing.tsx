@@ -27,25 +27,36 @@ import OverlayLoader from "components/OverlayLoader";
 
 interface ListingProp {
   folder: any;
-  facultyCategory: any;
+  teacher: any;
   enumType: any;
-  category: any;
-  facultyCategories: any;
+  facultycat1: any;
+  facultycat2: any;
+  facultycat3: any;
+  relation1: any;
+  relation2: any;
 }
 
 const Listing: React.FC = ({
-  category,
   enumType,
-  facultyCategory,
+  teacher,
   folder,
+  facultycat1,
+  facultycat2,
+  facultycat3,
+  relation1,
+  relation2
 }: ListingProp) => {
   const [page, setPage] = useState(1);
   let router = useRouter();
   let questions = useQuestionsListing({
-    ...(facultyCategory?.length > 0 && { facultyId: facultyCategory }),
+    ...(teacher && { teacherId: teacher }),
     ...(folder && { folderId: folder }),
     ...(enumType && { type: enumType }),
-    ...(category && { categories: category }),
+    ...(facultycat1 && { facultycat1: facultycat1 }),
+    ...(facultycat2 && { facultycat2: facultycat2 }),
+    ...(facultycat3 && { facultycat3: facultycat3 }),
+    ...(relation1 && { relation1: relation1 }),
+    ...(relation2 && { relation2: relation2 }),
     Limit: LIMIT,
     Page: page,
   });

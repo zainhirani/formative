@@ -116,7 +116,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
   };
 
   return (
-    <BoxWrapper sx={{ zIndex: 1, width: "100%" }}>
+    <BoxWrapper sx={{ width: "100%" }}>
       <AutoComplete
         classNamePrefix={classNamePrefix}
         onMenuClose={onMenuClose}

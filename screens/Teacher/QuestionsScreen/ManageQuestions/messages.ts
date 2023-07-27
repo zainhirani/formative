@@ -49,4 +49,20 @@ export default defineMessages({
     id: `${scope}.createNew`,
     defaultMessage: "Create New",
   },
+  relation: {
+    id: `${scope}.relation`,
+    defaultMessage: "Relation:",
+  },
+  relationPlaceholder: {
+    id: `${scope}.relationPlaceholder`,
+    defaultMessage: "Select Relation",
+  },
+  teacher: {
+    id: `${scope}.teacher`,
+    defaultMessage: "Teacher",
+  },
+  teacherPlaceholder: {
+    id: `${scope}.teacherPlaceholder`,
+    defaultMessage: "Select Teacher",
+  }
 });

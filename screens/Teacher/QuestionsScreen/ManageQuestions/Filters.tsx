@@ -9,56 +9,69 @@ import messages from "./messages";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { useQuery } from "react-query";
 import { getCategories, getFolders } from "providers/Teacher_Questions/api";
+import { OPERATOR_OPTIONS } from "constants/Types";
 
 interface FilterProps {
   onFolderChange: () => void;
-  onCategoryChange: () => void;
+  onCategoryChangeFirst: () => void;
+  onCategoryChangeSecond : () => void;
+  onCategoryChangeThird : () => void;
+  setLogicFirst: () => void;
+  setLogicSecond:() => void;
   onTypeChange: () => void;
-  onFacultyCategoryChange: () => void;
+  onTeacherChange: () => void;
   folderOptionData?: any;
   categoryOptionData?: any;
-  facultyCategoryOptionData?: any;
+  teacherOptionData?: any;
   typeOptionData?: any;
   selectedFolder?: any;
-  selectedCategory?: any;
-  selectedFacultyCategory?: any;
+  selectedCategoryFirst?: any;
+  selectedCategorySecond?: any;
+  selectedCategorySecond?: any;
+  selectedTeacher?: any;
   selectedType?: any;
+  logicFirst:any;
 }
 
 const Filters: React.FC<FilterProps> = ({
-  onCategoryChange,
-  onFacultyCategoryChange,
+  onCategoryChangeFirst,
+  onCategoryChangeSecond,
+  onCategoryChangeThird,
+  onTeacherChange,
   onFolderChange,
   onTypeChange,
+  setLogicFirst,
+  setLogicSecond,
   categoryOptionData,
-  facultyCategoryOptionData,
+  teacherOptionData,
   folderOptionData,
   typeOptionData,
-  selectedCategory,
-  selectedFacultyCategory,
+  selectedCategoryFirst,
+  selectedCategorySecond,
+  selectedCategoryThird,
+  selectedTeacher,
   selectedFolder,
   selectedType,
+  logicFirst,
+  logicSecond,
 }) => {
-  const faculty = useFormattedMessage(messages.faculty);
-  const facultyPlaceholder = useFormattedMessage(messages.facultyPlaceholder);
+  const teacher = useFormattedMessage(messages.teacher);
+  const teacherPlaceholder = useFormattedMessage(messages.teacherPlaceholder);
   const folder = useFormattedMessage(messages.folder);
   const folderPlaceholder = useFormattedMessage(messages.folderPlaceholder);
   const type = useFormattedMessage(messages.type);
   const typePlaceholder = useFormattedMessage(messages.typePlaceholder);
   const category = useFormattedMessage(messages.category);
   const categoryPlaceholder = useFormattedMessage(messages.categoryPlaceholder);
+  const relation = useFormattedMessage(messages.relation);
 
-  const handleRemoveSelectedFacultyCategory = (value: any) => {
-    let arr,
-      arr2 = [];
-    (arr = selectedCategory.filter(
-      (obj: any) => obj?.value !== value.label,
-    )),
-      console.log(arr,"arrrrrr"),
-      (arr2 = arr.map((item) => item.label));
-      onCategoryChange([...arr2]);
-      console.log(arr2,"arr2")
-  };
+  // const handleRemoveselectedTeacher = (value: any) => {
+  //   let arr,
+  //     arr2 = [];
+  //   (arr = selectedCategory.filter((obj: any) => obj?.value !== value.value)),
+  //     console.log(arr, "arrrrrr")((arr2 = arr.map((item) => item.value)));
+  //   onCategoryChange([...arr2]);
+  // };
 
   return (
     <BoxWrapper>
@@ -72,18 +85,19 @@ const Filters: React.FC<FilterProps> = ({
         <SelectBoxWrapper>
           {/* :TODO: Faculty */}
           <CustomSelect
-            
-            placeholder={facultyPlaceholder}
-            controlText={faculty}
+            placeholder={teacherPlaceholder}
+            controlText={teacher}
             dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-            value={selectedFacultyCategory}
-            options={facultyCategoryOptionData?.data?.map((category: any) => ({
-              label: category.name,
-              value: category.id,
-            }))}
-            isFetching={facultyCategoryOptionData?.isFetching}
+            value={selectedTeacher}
+            options={teacherOptionData?.data?.data.map(
+              (teacher: any) => ({
+                label: teacher.name,
+                value: teacher.id,
+              }),
+            )}
+            isFetching={teacherOptionData?.isFetching}
             onChange={(val) => {
-              onFacultyCategoryChange(val);
+              onTeacherChange(val);
             }}
           />
         </SelectBoxWrapper>
@@ -119,29 +133,100 @@ const Filters: React.FC<FilterProps> = ({
             }}
           />
         </SelectBoxWrapper>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          flexDirection: { md: "row", xs: "column" },
+        }}
+      >
         <SelectBoxWrapper>
-          {/* Category */}
+          {/* Category 1 */}
           <CustomSelect
             // classNamePrefix="teacher-question-faculty-select"
             isClearable
-            isMulti
             placeholder={categoryPlaceholder}
             controlText={category}
             dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-            options={categoryOptionData?.data?.data?.map((category) => ({
+            options={categoryOptionData?.data?.map((category: any) => ({
               label: category.name,
               value: category.id,
             }))}
             onChange={(val: any) => {
-              onCategoryChange(val);
+              onCategoryChangeFirst(val);
             }}
-            value={selectedCategory}
+            value={selectedCategoryFirst}
+            isFetching={categoryOptionData?.isFetching}
+          />
+        </SelectBoxWrapper>
+        <SelectBoxWrapper>
+          <CustomSelect
+            // classNamePrefix="teacher-question-faculty-select"
+            isClearable
+            placeholder={relation}
+            dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
+            options={OPERATOR_OPTIONS}
+            onChange={(val: any) => {
+              setLogicFirst(val);
+            }}
+            value={logicFirst}
+          />
+        </SelectBoxWrapper>
+        <SelectBoxWrapper>
+          {/* Category 2*/}
+          <CustomSelect
+            // classNamePrefix="teacher-question-faculty-select"
+            isClearable
+            placeholder={categoryPlaceholder}
+            controlText={category}
+            dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
+            options={categoryOptionData?.data?.map((category: any) => ({
+              label: category.name,
+              value: category.id,
+            }))}
+            onChange={(val: any) => {
+              onCategoryChangeSecond(val);
+            }}
+            value={selectedCategorySecond}
+            isFetching={categoryOptionData?.isFetching}
+          />
+        </SelectBoxWrapper>
+        <SelectBoxWrapper>
+          <CustomSelect
+            // classNamePrefix="teacher-question-faculty-select"
+            isClearable
+            placeholder={relation}
+            dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
+            options={OPERATOR_OPTIONS}
+            onChange={(val: any) => {
+              setLogicSecond(val);
+            }}
+            value={logicSecond}
+          />
+        </SelectBoxWrapper>
+        <SelectBoxWrapper>
+          {/* Category 3*/}
+          <CustomSelect
+            // classNamePrefix="teacher-question-faculty-select"
+            isClearable
+            placeholder={categoryPlaceholder}
+            controlText={category}
+            dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
+            options={categoryOptionData?.data?.map((category: any) => ({
+              label: category.name,
+              value: category.id,
+            }))}
+            onChange={(val: any) => {
+              onCategoryChangeThird(val);
+            }}
+            value={selectedCategoryThird}
             isFetching={categoryOptionData?.isFetching}
           />
         </SelectBoxWrapper>
       </Box>
       {/* Selected Categories */}
-      <Box sx={{ display: "flex" }}>
+      {/* <Box sx={{ display: "flex" }}>
         <SelectBoxWrapper sx={{ width: "max-content" }}>
           <Typography sx={{ color: (theme) => theme.palette.text.secondary }}>
             <FormattedMessage {...messages.categories} />
@@ -155,7 +240,7 @@ const Filters: React.FC<FilterProps> = ({
                   <Typography variant="body1">{item?.label}</Typography>
                   <IconButton
                     color="primary"
-                    onClick={() => handleRemoveSelectedFacultyCategory(item)}
+                    onClick={() => handleRemoveselectedTeacher(item)}
                   >
                     <CancelIcon />
                   </IconButton>
@@ -166,7 +251,7 @@ const Filters: React.FC<FilterProps> = ({
             )}
           </Box>
         </SelectBoxWrapper>
-      </Box>
+      </Box> */}
     </BoxWrapper>
   );
 };

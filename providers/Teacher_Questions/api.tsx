@@ -4,9 +4,9 @@ import {
   TEACHER__GET_QUESTIONS,
   TEACHER__GET_QUESTIONS_BY_ID,
   TEACHER__GET_FACULTIES,
-  TEACHER__GET_FACULTIES_CATEGORIES,
   TEACHER__GET_FOLDERS,
   TEACHER__GET_CATEGORIES,
+  TEACHER__GET,
   TEACHER__GET_QUESTION_COUNT_ID,
   TEACHER__GET_QUESTIONS_ATTEMPT_BY_ID,
 } from "providers/endpoints";
@@ -31,6 +31,14 @@ export const getQuestionById = (id: any) => {
   });
 };
 
+export const getTeachers = () => {
+  return service({
+    url: `${TEACHER__GET}`,
+    method: "GET",
+  });
+};
+
+
 export const duplicateQuestion = (id: any) => {
   return service({
     url: `/questions/${id}/duplicate`,
@@ -45,12 +53,6 @@ export const getCategories = () => {
   });
 };
 
-export const getCategoriesFaculties = () => {
-  return service({
-    url: TEACHER__GET_FACULTIES_CATEGORIES,
-    method: "GET",
-  });
-};
 
 export const getFaculties = () => {
   return service({
