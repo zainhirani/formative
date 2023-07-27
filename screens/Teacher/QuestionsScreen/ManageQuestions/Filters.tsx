@@ -43,6 +43,7 @@ const Filters: React.FC<FilterProps> = ({
   setLogicFirst,
   setLogicSecond,
   categoryOptionData,
+  categoryData,
   teacherOptionData,
   folderOptionData,
   typeOptionData,
@@ -149,7 +150,7 @@ const Filters: React.FC<FilterProps> = ({
             placeholder={categoryPlaceholder}
             controlText={category}
             dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-            options={categoryOptionData?.data?.map((category: any) => ({
+            options={categoryData?.data?.data?.map((category: any) => ({
               label: category.name,
               value: category.id,
             }))}
@@ -157,7 +158,7 @@ const Filters: React.FC<FilterProps> = ({
               onCategoryChangeFirst(val);
             }}
             value={selectedCategoryFirst}
-            isFetching={categoryOptionData?.isFetching}
+            isFetching={categoryData?.isFetching}
           />
         </SelectBoxWrapper>
         <SelectBoxWrapper>

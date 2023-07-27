@@ -15,6 +15,7 @@ import { TYPE_OPTIONS_FOR_ADD_QUESTION } from "constants/Types";
 const ManageQuestions = () => {
   // Queries
   const foldersData = useGetFolders();
+  const categoryData = useGetCategories();
   const categoriesData = useGetFaculties();
   const teacherData = useGetTeacher();
   const facultyCategories = useGetFaculties();
@@ -45,6 +46,7 @@ const ManageQuestions = () => {
           onTypeChange={setEnumType}
           onTeacherChange={setTeacher}
           categoryOptionData={categoriesData}
+          categoryData={categoryData}
           teacherOptionData={teacherData}
           folderOptionData={foldersData}
           typeOptionData={TYPE_OPTIONS_FOR_ADD_QUESTION}
