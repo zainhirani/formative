@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState,useEffect } from "react";
 import { BoxWrapper } from "./Styled";
 import {
   rowsQuizResults,
@@ -34,6 +34,10 @@ interface TableSectionProps {
 const TableSection = ({ quizName, courseId, folderId }: TableSectionProps) => {
   const [page, setPage] = useState(1);
   const theme = useTheme();
+
+
+
+
   const quizResult = useQuizResultListing({
     quizName,
     courseId,
@@ -154,6 +158,7 @@ const TableSection = ({ quizName, courseId, folderId }: TableSectionProps) => {
     [quizResult?.data?.data],
   );
 
+
   const STATUS_CLASSES = {
     [QUIZ_STATUS.DRAFT]: {
       color: theme.additionalColors.primaryYellow,
@@ -178,6 +183,19 @@ const TableSection = ({ quizName, courseId, folderId }: TableSectionProps) => {
     },
   };
 
+  useEffect(() => {
+    quizResult.refetch({
+      quizName,
+      courseId,
+      folderId,
+      Limit: LIMIT,
+      Page: page,
+    });
+  }, [
+    page,
+  ]);
+
+
   return (
     <BoxWrapper>
       {/* @ts-ignore */}
@@ -187,7 +205,7 @@ const TableSection = ({ quizName, courseId, folderId }: TableSectionProps) => {
         pageSizeData={10}
         type={"1"}
         loading={quizResult?.isFetching}
-        totalRows={quizResult?.data?.count}
+        totalRows={parseInt(quizResult?.data?.count,10)}
         handlePageChange={(_: any, v: React.SetStateAction<number>) =>
           setPage(v)
         }

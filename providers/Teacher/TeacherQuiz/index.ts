@@ -43,7 +43,7 @@ export function getFormProviderKey(
 
 //Teacher Quiz Listing
 export function useTeacherQuizListing(
-  props?:any,
+  props?:Quiz.TeacherQuizListingProps,
 ): UseQueryResult<Quiz.TeacherQuizListingResponse> {
   return useQuery(QUERY_KEYS.QUIZ, () => api.allTeacherQuiz(props));
 }

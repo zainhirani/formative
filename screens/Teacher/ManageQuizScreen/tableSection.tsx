@@ -22,16 +22,20 @@ import trashSvg from "../../../public/quiz/trash.svg";
 import { enqueueSnackbar } from "notistack";
 import ShareIcon from "@material-ui/icons/Share";
 
+
+const LIMIT = 10;
 const TableSection = (props: any) => {
   const { searchChange, selectCourse, selectFolder, selectStatus } = props;
   const [page, setPage] = useState(1);
+
+
 
   const {
     data: quizList,
     refetch,
     isFetching,
   } = useTeacherQuizListing({
-    Limit: pageSizeManageQuiz,
+    Limit: LIMIT,
     Page: page,
     courseId: selectCourse,
     folderId: selectFolder,
@@ -43,7 +47,7 @@ const TableSection = (props: any) => {
   const duplicateQuiz = useQuizDuplicate();
   useEffect(() => {
     refetch({
-      Limit: pageSizeManageQuiz,
+      Limit: LIMIT,
       Page: page,
       courseId: selectCourse,
       folder: selectFolder,
@@ -61,6 +65,8 @@ const TableSection = (props: any) => {
   ]);
 
   
+  console.log(quizList,"page")
+
 
   const columnsManageQuiz = [
     {
@@ -256,10 +262,12 @@ const TableSection = (props: any) => {
       <CustomDataGrid
         rows={quizList?.data || []}
         columns={columnsManageQuiz}
-        pageSizeData={pageSizeManageQuiz}
+        pageSizeData={10}
         type={"1"}
         isCheckbox={false}
-        handlePageChange={(_, v) => setPage(v)}
+        handlePageChange={(_: any, v: React.SetStateAction<number>) =>
+          setPage(v)
+        }
         page={page}
         loading={isFetching || deleteQuiz.isLoading || duplicateQuiz.isLoading}
         totalRows={quizList?.count}

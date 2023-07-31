@@ -9,6 +9,7 @@ import {
   Checkbox,
   Button,
   Box,
+  Typography,
 } from "@mui/material";
 import AddCircleOutlineRoundedIcon from "@mui/icons-material/AddCircleOutlineRounded";
 import React, { useState } from "react";
@@ -71,8 +72,15 @@ const AnswerOptions = (props: AnswerOptionsProps) => {
     }
   }, [options]);
 
+  const getNextOptionId = () => {
+    const lastOption = items[items.length - 1];
+    const lastOptionId = lastOption.id;
+    return lastOptionId + 1;
+  };
+
   const getNextOptionText = () => {
     const lastOption = items[items.length - 1];
+    console.log(lastOption,"lastOptionlastOption")
     const lastOptionText = lastOption.text;
     const lastOptionLetter = lastOptionText.charAt(lastOptionText.length - 1);
     const nextOptionLetter = String.fromCharCode(
@@ -125,14 +133,14 @@ const AnswerOptions = (props: AnswerOptionsProps) => {
   const handleAddItem = () => {
     if (items.length == MAX_ANSWER_OPTIONS) return;
     const newItem: ListItemData = {
-      id: counter.toString(),
+      id: getNextOptionId(),
       text: getNextOptionText(),
       correct: false,
       locked: false,
       inputText: "",
     };
     setItems([...items, newItem]);
-    setCounter(counter + 1);
+    setCounter((prevCounter) => prevCounter + 1);
   };
 
   const handleRemoveItem = (id: string) => {

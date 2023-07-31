@@ -37,7 +37,7 @@ export namespace Quiz {
   }
 
   //Teacher Quiz Listing
-  export type TeacherQuizListingProps = {};
+  export type TeacherQuizListingProps = { Limit?: number ;};
   export type TeacherQuizListingResponse = {data:[],count:number}
   export interface TeacherQuizListingAPIPayload extends TeacherQuizListingProps {}
 

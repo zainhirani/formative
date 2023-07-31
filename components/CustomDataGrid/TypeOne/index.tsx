@@ -40,10 +40,11 @@ const TypeOne: React.FC<TypeOneProps> = ({
   getSelectedId = () => {},
   page = 1,
   handlePageChange,
-  totalRows = rows?.length,
+  totalRows,
   courseText,
   ...props
 }) => {
+  //@ts-ignore
   const totalPages = Math.ceil(totalRows / pageSizeData);
 
   const handleCheck = React.useCallback((e: any, details: any) => {
