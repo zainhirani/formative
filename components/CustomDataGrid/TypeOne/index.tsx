@@ -44,6 +44,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
   courseText,
   ...props
 }) => {
+  //@ts-ignore
   const totalPages = Math.ceil(totalRows / pageSizeData);
 
   const handleCheck = React.useCallback((e: any, details: any) => {
