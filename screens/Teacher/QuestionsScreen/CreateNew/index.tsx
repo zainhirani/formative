@@ -71,7 +71,6 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
   const [selectedfacultyCategoryIds, setSelectedFacultyCategoryIds] = useState(
     [],
   );
-  console.log(selectedfacultyCategoryIds, "selectedfacultyCategoryIds");
   const [newCategory, setNewCategory] = useState("");
   const [newFolder, setNewFolder] = useState("");
   const [newFacultyCategory, setNewFacultyCategory] = useState("");
@@ -94,7 +93,6 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
   const questionDetails = useQuestionDetails({
     questionId: qId,
   });
-console.log(questionDetails,"questionDetailsquestionDetails")
 
   //add new category
   const defaultCategory = {
