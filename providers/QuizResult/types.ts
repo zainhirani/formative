@@ -40,7 +40,8 @@ export namespace QuizResult {
   export type ListingProps = {
     quizName?:string,
     courseId?:number,
-    folderId?:number
+    folderId?:number,
+    limit?:number
 
   };
   export type ListingResponse = Item[]

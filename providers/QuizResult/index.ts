@@ -7,6 +7,7 @@ import {
 } from "react-query";
 import * as api from "./api";
 import { QuizResult } from "./types";
+import QUERY_KEYS from "queries/QueriesKeyConstant";
 
 const KEY = "QuizResult";
 
@@ -23,7 +24,7 @@ export function getKeyFromProps(
 export function useQuizResultListing(
   props: QuizResult.ListingProps,
 ): UseQueryResult<QuizResult.ListingResponse> {
-  return useQuery(getKeyFromProps(props, "LISTING"), () => api.listing(props));
+  return useQuery(QUERY_KEYS.QUIZ_RESULT, () => api.listing(props));
 }
 
 //Detail

@@ -40,7 +40,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
   getSelectedId = () => {},
   page = 1,
   handlePageChange,
-  totalRows = rows?.length,
+  totalRows,
   courseText,
   ...props
 }) => {
