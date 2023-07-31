@@ -94,6 +94,8 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
   const questionDetails = useQuestionDetails({
     questionId: qId,
   });
+console.log(questionDetails,"questionDetailsquestionDetails")
+
   //add new category
   const defaultCategory = {
     label: "New Category",
@@ -225,9 +227,9 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
         label: details?.categories.name,
         value: details?.categories.name,
       });
-      setSelectedFacultyCategoryIds([
-        { label: details?.categories.name, value: details?.categories.name },
-      ]);
+      setSelectedFacultyCategoryIds(details.faculty.map((facultyitem)=>{
+        return {label:facultyitem.name,value:facultyitem.name}
+      }));
       setDetail(details.detail);
 
       if ([TYPES.SA, TYPES.NUM].includes(details?.type)) {
