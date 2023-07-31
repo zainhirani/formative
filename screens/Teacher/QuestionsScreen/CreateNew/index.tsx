@@ -8,6 +8,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 import { useRouter } from "next/router";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { Delete } from "@material-ui/icons";
@@ -67,6 +68,10 @@ interface QuestionProps {
 }
 
 const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
+  const [selectedfacultyCategoryIds, setSelectedFacultyCategoryIds] = useState(
+    [],
+  );
+  console.log(selectedfacultyCategoryIds, "selectedfacultyCategoryIds");
   const [newCategory, setNewCategory] = useState("");
   const [newFolder, setNewFolder] = useState("");
   const [newFacultyCategory, setNewFacultyCategory] = useState("");
@@ -75,7 +80,6 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
 
   const theme = useTheme();
   let { enqueueSnackbar } = useSnackbar();
-  // const { currentUser } = useAuthContext();
   const currentUser = useRegisterDetail();
 
   // Queries
@@ -126,7 +130,28 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
     return [defaultFolder];
   }, [foldersData?.data]);
 
-  
+  //add new Faculty Category
+  const defaultFacultyCategory = {
+    label: "New Faculty Category",
+    value: 100111,
+  };
+  const facultyCategories = useMemo(() => {
+    const allFacultyCategories = facultyCategory?.data?.map((faculty) => {
+      return {
+        value: faculty.name,
+        label: faculty.name,
+      };
+    });
+
+    if (allFacultyCategories) {
+      return [defaultFacultyCategory, ...allFacultyCategories];
+    }
+    return [defaultFacultyCategory];
+  }, [facultyCategory?.data]);
+
+  const conditionCheckerVal = selectedfacultyCategoryIds?.map((item) => {
+    return item?.value;
+  });
 
   // States
   const [questionId, setQuestionId] = useState("121/1");
@@ -143,13 +168,9 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
   const [selectedCategory, setSelectedCategory] = useState([]);
   const [timelimit, setTimelimit] = useState();
   const authorNamePlaceholder = useFormattedMessage(messages.authorName);
-  const [selectedfacultyCategoryIds, setSelectedFacultyCategoryIds] = useState(
-    [],
-  );
   const [answer, setAnswer] = useState("");
   const [tolerence, setTolerence] = useState("");
   const [attempts, setAttempts] = useState("");
-  
 
   const question = useFormattedMessage(messages.questNo);
   const questionPlaceholder = useFormattedMessage(messages.questNoValue);
@@ -168,6 +189,9 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
   };
   const onFolderInputChange = (e) => {
     setNewFolder(e.target.value);
+  };
+  const onFacultyCategoryInputChange = (e) => {
+    setNewFacultyCategory(e.target.value);
   };
   useEffect(() => {
     setAuthorName(
@@ -202,7 +226,7 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
         value: details?.categories.name,
       });
       setSelectedFacultyCategoryIds([
-        { label: details?.categories.name, value: details?.categories.id },
+        { label: details?.categories.name, value: details?.categories.name },
       ]);
       setDetail(details.detail);
 
@@ -266,10 +290,6 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
       },
     },
   ];
-  // console.log(
-  //   selectedfacultyCategoryIds.map((item) => Number(item.value)),
-  //   "formattedCategoryIds",
-  // );
   const handleSubmit = () => {
     if (!validateForm()) return;
 
@@ -284,17 +304,15 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
         value: item?.inputText,
       };
     });
-    let formattedCategoryIds = selectedfacultyCategoryIds?.map((item) =>
-      Number(item?.value),
-    );
 
-    // formdata.append("tries", "3");
 
-    // const category = newCategory !== "" ? newCategory : selectedCategory.value
-    const category = selectedCategory.value == 1001001 ? newCategory : selectedCategory.value;
-    const folder = selectedFolder.value === 100011 ? newFolder : selectedFolder.value;
+    let formattedCategoryIds = selectedfacultyCategoryIds;
+    const category =
+      selectedCategory.value == 1001001 ? newCategory : selectedCategory.value;
+    const folder =
+      selectedFolder.value === 100011 ? newFolder : selectedFolder.value;
     formdata.append("folder", folder);
-    console.log(folder,"folderfolderfolder")
+
     // formdata.append("folder", selectedFolder.value);
     if (revision) {
       formdata.append("revisionParentId", routerQuery?.id);
@@ -305,7 +323,9 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
     formdata.append("isPublic", isPublic);
     formdata.append("title", title);
     formdata.append("category", category);
-    formdata.append("facultyIds[]", formattedCategoryIds);
+    formattedCategoryIds.forEach((item) => {
+      formdata.append("faculties[]", item.value);
+    });
     formdata.append("type", enumType.value);
     formdata.append(
       "answer",
@@ -810,10 +830,7 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
                     value={newCategory}
                     InputProps={{
                       endAdornment: newCategory && (
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={() => setNewCategory("")}
-                        >
+                        <IconButton onClick={() => setNewCategory("")}>
                           <CancelIcon />
                         </IconButton>
                       ),
@@ -847,10 +864,7 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
                       placeholder={facultyPlaceholder}
                       controlText={faculty}
                       dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-                      options={facultyCategory?.data?.map((category) => ({
-                        label: category.name,
-                        value: category.id,
-                      }))}
+                      options={facultyCategories || []}
                       onChange={(val) => {
                         setSelectedFacultyCategoryIds(val);
                       }}
@@ -858,6 +872,50 @@ const AddQuestion = ({ qId, revision = false }: QuestionProps) => {
                     />
                   </Box>
                 </FieldBoxWrapper>
+                {conditionCheckerVal.includes(100111) ? (
+                  <Box>
+                    <TextFieldStyled
+                      placeholder="Enter New Faculty Category"
+                      type="text"
+                      variant="outlined"
+                      fullWidth
+                      size="small"
+                      onChange={onFacultyCategoryInputChange}
+                      value={newFacultyCategory}
+                      InputProps={{
+                        endAdornment: newFacultyCategory && (
+                          <>
+                            <IconButton
+                              onClick={() => {
+                                if (newFacultyCategory.trim() !== "") {
+                                  const newFacultyCategoryObj = {
+                                    label: newFacultyCategory.trim(),
+                                    value: newFacultyCategory.trim(),
+                                  };
+                                  setSelectedFacultyCategoryIds((prevIds) => [
+                                    ...prevIds,
+                                    newFacultyCategoryObj,
+                                  ]);
+                                  setNewFacultyCategory("");
+                                }
+                              }}
+                            >
+                              <AddIcon />
+                            </IconButton>
+                            <IconButton
+                              onClick={() => setNewFacultyCategory("")}
+                            >
+                              <CancelIcon />
+                            </IconButton>
+                          </>
+                        ),
+                      }}
+                    />
+                  </Box>
+                ) : (
+                  ""
+                )}
+
                 <Box sx={{ p: "0 24px" }}>
                   {selectedfacultyCategoryIds?.length > 0 ? (
                     selectedfacultyCategoryIds.map((item, index) => (
