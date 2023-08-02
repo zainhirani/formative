@@ -21,6 +21,7 @@ const DraftQuizScreen: NextPage = () => {
   const [nameInput, setNameInput] = useState("");
   const router = useRouter();
   const { id: quizEditId } = router.query;
+  console.log(quizEditId,"idddddddddddddddddddddd")
   const queryClient = useQueryClient();
   const {
     data: quizByIdData,
