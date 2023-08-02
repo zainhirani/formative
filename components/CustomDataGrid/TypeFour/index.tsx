@@ -24,6 +24,7 @@ const TypeFour: React.FC<TypeFourProps> = ({
   buttonArray,
   onRowClick,
   loading,
+  checkboxSelection,
   ...props
 }) => {
   return (

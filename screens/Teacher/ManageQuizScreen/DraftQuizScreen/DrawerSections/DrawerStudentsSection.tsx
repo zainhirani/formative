@@ -135,7 +135,22 @@ const DrawerStudentsSection = (props: any) => {
   };
 
   const renderCheckboxHeader = (params: any) => (
-    <></>
+    <>
+      <Checkbox
+        indeterminate={
+          selectedRows.length > 0 &&
+          selectedRows.length <
+            (studentListing?.data && studentListing.data.length)
+        }
+        checked={
+          selectedRows.length ===
+          (studentListing?.data && studentListing.data.length)
+        }
+        onChange={(event) =>
+          handleHeaderCheckClick(event, studentListing?.data)
+        }
+      />
+    </>
     // <Checkbox
     //   indeterminate={
     //     selectedRows?.length > 0 &&
@@ -163,13 +178,13 @@ const DrawerStudentsSection = (props: any) => {
     {
       field: "selection",
       headerName: "Select",
-      minWidth: 50,
+      minWidth: 100,
       flex: 1,
       renderHeader: renderCheckboxHeader,
       renderCell: renderCheckboxCell,
       sortable: false,
       filterable: false,
-      cellClassName: "custom-checkbox-selection",
+      // cellClassName: "custom-checkbox-selection",
     },
     {
       field: "last_name",

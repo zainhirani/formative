@@ -65,7 +65,7 @@ const TableSection = (props: any) => {
   ]);
 
   
-  console.log(quizList,"page")
+  // console.log(quizList,"page")
 
 
   const columnsManageQuiz = [
