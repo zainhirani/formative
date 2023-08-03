@@ -11,6 +11,7 @@ import { useCourseListing } from "providers/Courses";
 import messages from "./messages";
 import { selectFolderOption } from "./data";
 import { BoxWrapper, TextFieldStyled } from "./Styled";
+import { useFoldersListing } from "providers/Teacher/TeacherQuiz";
 
 interface SearchSectionProps {
   setValue: (e?: any) => void;
@@ -26,12 +27,21 @@ const SearchSection = ({
   const searchQuiz = useFormattedMessage(messages.searchQuiz);
 
   const courseListing = useCourseListing({});
+  const foldersList = useFoldersListing();
   const cousrseData = useMemo(() => {
     return courseListing?.data?.data?.map((item) => ({
       value: item.id,
       label: item.course_name,
     }));
   }, [courseListing?.data]);
+
+  const optionsFolder = useMemo(() => {
+    return foldersList?.data?.data.map((item: any) => ({
+      value: item?.id,
+      label: item?.name,
+    }));
+  }, [foldersList?.data]);
+
   const debouncedSearch = debounce((criteria) => {
     setValue(criteria);
   }, 400);
@@ -72,7 +82,7 @@ const SearchSection = ({
         <CustomSelect
           controlText="Select Folder"
           dropdownIcon={<ArrowDropDownCircleOutlinedIcon />}
-          options={selectFolderOption || []}
+          options={optionsFolder || []}
           onChange={(e: { value: any }) => setFolder(e?.value)}
         />
       </Box>
