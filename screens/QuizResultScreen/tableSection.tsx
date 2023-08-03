@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useMemo, useState,useEffect } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { BoxWrapper } from "./Styled";
 import {
   rowsQuizResults,
@@ -35,9 +35,6 @@ const TableSection = ({ quizName, courseId, folderId }: TableSectionProps) => {
   const [page, setPage] = useState(1);
   const theme = useTheme();
 
-
-
-
   const quizResult = useQuizResultListing({
     quizName,
     courseId,
@@ -45,7 +42,7 @@ const TableSection = ({ quizName, courseId, folderId }: TableSectionProps) => {
     Limit: LIMIT,
     Page: page,
   });
-  console.log(quizResult, "++++++++++++++++++++++=");
+
   const columnsQuizResults: GridColDef[] = useMemo(
     () => [
       {
@@ -158,7 +155,6 @@ const TableSection = ({ quizName, courseId, folderId }: TableSectionProps) => {
     [quizResult?.data?.data],
   );
 
-
   const STATUS_CLASSES = {
     [QUIZ_STATUS.DRAFT]: {
       color: theme.additionalColors.primaryYellow,
@@ -191,10 +187,7 @@ const TableSection = ({ quizName, courseId, folderId }: TableSectionProps) => {
       Limit: LIMIT,
       Page: page,
     });
-  }, [
-    page,
-  ]);
-
+  }, [courseId, folderId, page, quizName]);
 
   return (
     <BoxWrapper>
@@ -205,7 +198,7 @@ const TableSection = ({ quizName, courseId, folderId }: TableSectionProps) => {
         pageSizeData={10}
         type={"1"}
         loading={quizResult?.isFetching}
-        totalRows={parseInt(quizResult?.data?.count,10)}
+        totalRows={parseInt(quizResult?.data?.count, 10)}
         handlePageChange={(_: any, v: React.SetStateAction<number>) =>
           setPage(v)
         }
