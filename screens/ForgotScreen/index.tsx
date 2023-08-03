@@ -84,25 +84,25 @@ const ForgotScreen: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resetPasswordApi.isSuccess]);
 
-  function Test() {
-    let a;
+  function RenderScreen() {
+    let screen;
     switch (true) {
       case forgotToken === null:
-        a = <ForgotForm onSubmit={handleForgotPassord} />;
+       screen = <ForgotForm onSubmit={handleForgotPassord} />;
         break;
         case forgotToken !== null && resetCode !== null:
-          a = <ResetPassword onSubmit={handleResetPassword} />;
+         screen = <ResetPassword onSubmit={handleResetPassword} />;
           break;
       case forgotToken !== null:
-        a = <CodeForm onSubmit={handleVerificationPassord} />;
+       screen = <CodeForm onSubmit={handleVerificationPassord} />;
         break;
 
 
       default:
-        a = <ForgotForm onSubmit={handleForgotPassord} />;
+       screen = <ForgotForm onSubmit={handleForgotPassord} />;
     }
 
-    return <>{a}</>;
+    return <>{screen}</>;
   }
 
   return (
@@ -200,7 +200,7 @@ const ForgotScreen: React.FC = () => {
                 {forgotToken !== null && <CodeForm onSubmit={handleVerificationPassord} />}
                 {resetCode && <p>thired</p>}
                  */}
-                <Test />
+                <RenderScreen />
               </Box>
             </Box>
           </BoxWrapper>
