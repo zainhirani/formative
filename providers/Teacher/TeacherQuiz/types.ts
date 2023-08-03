@@ -48,7 +48,9 @@ export namespace Quiz {
     
   //Folder Listing
   export type FolderListingProps = {};
-  export type FolderListingResponse = []
+  export type FolderListingResponse = {
+    data:[];
+  }
   export interface FolderListingAPIPayload extends FolderListingProps {}
     
   //Scoring Listing
