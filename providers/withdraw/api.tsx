@@ -1,4 +1,3 @@
-
 import service from "services";
 
 export const quizWithdraw = (payload :any) => {

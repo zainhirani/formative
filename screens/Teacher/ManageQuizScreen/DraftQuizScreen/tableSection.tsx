@@ -218,8 +218,7 @@ console.log(quizByIdData,"quizByIdData")
   };
   
   const handleWithDraw = () =>{
-    const idAsInteger = parseInt(editId, 10);
-    withdrawlist.mutate({ id: idAsInteger });
+    withdrawlist.mutate({ id: parseInt(editId, 10) });
     setIsWithdrawing(true);
   }
 

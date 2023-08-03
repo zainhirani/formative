@@ -1,12 +1,110 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { Box, Grid, Typography } from "@mui/material";
 import FormattedMessage from "theme/FormattedMessage";
 import ForgotForm from "./ForgotForm";
 import messages from "./messages";
 import { BoxWrapper } from "./Styled";
 import { LOGINBG } from "configs";
+import {
+  useForgotPassword,
+  usePasswordVerification,
+  useResetPassword,
+} from "providers/ForgotPassword";
+import CodeForm from "./CodeForm";
+import ResetPassword from "./ResetPassword";
 
 const ForgotScreen: React.FC = () => {
+  const forgotPasswordApi = useForgotPassword();
+  const verificationCode = usePasswordVerification();
+  const resetPasswordApi = useResetPassword();
+  const router = useRouter();
+
+  const [forgotToken, setForgotToken] = useState<string | null>(null);
+  const [resetCode, setResetCode] = useState<string | null>(null);
+
+
+  //   const handleForgotPassord = useCallback(async (data: {email: string}) => {
+  //  forgotPasswordApi.mutateAsync(data);
+
+  //    setForgotToken(forgotapiresponse.token)
+  //   }, [forgotPasswordApi]);
+
+  const handleForgotPassord = useCallback(
+    (data: { email: string }) => {
+      forgotPasswordApi.mutateAsync({ email: data.email });
+    },
+    [forgotPasswordApi],
+  );
+
+  const handleVerificationPassord = useCallback(
+    (data: { code: string }) => {
+      if (forgotToken) {
+        verificationCode.mutateAsync({ token: forgotToken, code: data.code });
+      }
+    },
+    [forgotToken, verificationCode],
+  );
+  
+
+  const handleResetPassword = useCallback(
+    (data: { password: string }) => {
+      if (resetCode) {
+        resetPasswordApi.mutateAsync({
+          token: resetCode,
+          password: data.password,
+        });
+      }
+    },
+    [resetCode, resetPasswordApi],
+  );
+
+  //Forgot Form
+  useEffect(() => {
+    if (forgotPasswordApi.isSuccess) {
+      setForgotToken(forgotPasswordApi?.data?.token);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [forgotPasswordApi.isSuccess]);
+
+  //Verification Form
+
+  useEffect(() => {
+    if (verificationCode.isSuccess) {
+      setResetCode(verificationCode?.data?.token);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [verificationCode.isSuccess]);
+
+  //ResetPassword
+  useEffect(() => {
+    if (resetPasswordApi.isSuccess) {
+    router.push('/login')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resetPasswordApi.isSuccess]);
+
+  function RenderScreen() {
+    let screen;
+    switch (true) {
+      case forgotToken === null:
+       screen = <ForgotForm onSubmit={handleForgotPassord} />;
+        break;
+        case forgotToken !== null && resetCode !== null:
+         screen = <ResetPassword onSubmit={handleResetPassword} />;
+          break;
+      case forgotToken !== null:
+       screen = <CodeForm onSubmit={handleVerificationPassord} />;
+        break;
+
+
+      default:
+       screen = <ForgotForm onSubmit={handleForgotPassord} />;
+    }
+
+    return <>{screen}</>;
+  }
+
   return (
     <Box
       sx={{
@@ -98,7 +196,11 @@ const ForgotScreen: React.FC = () => {
               <Box sx={{ float: "right", mt: -4 }}></Box>
               <Box sx={{ textAlign: "center" }}></Box>
               <Box>
-                <ForgotForm />
+                {/* {forgotToken === null && <ForgotForm onSubmit={handleForgotPassord} />}
+                {forgotToken !== null && <CodeForm onSubmit={handleVerificationPassord} />}
+                {resetCode && <p>thired</p>}
+                 */}
+                <RenderScreen />
               </Box>
             </Box>
           </BoxWrapper>

@@ -11,30 +11,29 @@ import { ButtonWrapper } from "./Styled";
 import { useRouter } from "next/router";
 
 const validationSchema = Yup.object().shape({
-   email: Yup.string()
-    .email('Invalid email format')
-    .required('Email is required')
+   code: Yup.string()
+    .required('Code is required')
 });
 interface FormValues {
-  email: string;
+  code: string;
 }
 
 interface Props {
   onSubmit: (values: FormValues) => void;
 } 
 
-const ForgotForm: React.FC<Props> = ({onSubmit}) => {
+const CodeForm: React.FC<Props> = ({onSubmit}) => {
   const router = useRouter();
 
   // use formik
   const { handleChange, handleSubmit, handleBlur, errors, values, touched } =
     useFormik({
-      initialValues: { email: "" },
+      initialValues: { code: "" },
       validationSchema,
       onSubmit,
     });
 
-  const userPlaceholder = useFormattedMessage(messages.userPlaceholder);
+  const codePlaceholder = useFormattedMessage(messages.codePlaceholder);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -42,20 +41,20 @@ const ForgotForm: React.FC<Props> = ({onSubmit}) => {
         <Grid item>
           <InputLabel
             sx={{ color: (theme) => theme.palette.text.primary }}
-            htmlFor="password"
+            htmlFor="code"
           >
-            <FormattedMessage {...messages.userLabel} />
+            <FormattedMessage {...messages.codeLabel} />
           </InputLabel>
           <TextField
-            id="email"
-            name="email"
+            id="code"
+            name="code"
             type="text"
-            value={values.email}
+            value={values.code}
             onChange={handleChange}
             onBlur={handleBlur}
-            placeholder={userPlaceholder}
-            error={touched.email && Boolean(errors.email)}
-            helperText={touched.email && errors.email}
+            placeholder={codePlaceholder}
+            error={touched.code && Boolean(errors.code)}
+            helperText={touched.code && errors.code}
             autoComplete="off"
             variant="standard"
             fullWidth
@@ -64,11 +63,11 @@ const ForgotForm: React.FC<Props> = ({onSubmit}) => {
       </Grid>
       <Box>
         <ButtonWrapper
-          disabled={values.email === ""}
+          disabled={values.code === ""}
           type="submit"
           variant="contained"
         >
-          <FormattedMessage {...messages.submit} />
+          <FormattedMessage {...messages.verify} />
         </ButtonWrapper>
         <ButtonWrapper
           onClick={(e) => {
@@ -93,4 +92,4 @@ const ForgotForm: React.FC<Props> = ({onSubmit}) => {
   );
 };
 
-export default ForgotForm;
+export default CodeForm;
