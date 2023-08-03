@@ -24,11 +24,11 @@ export default defineMessages({
   },
   userLabel: {
     id: `${scope}.userLabel`,
-    defaultMessage: "User Name or E-mail Address",
+    defaultMessage: "E-mail Address",
   },
   userPlaceholder: {
     id: `${scope}.userPlaceholder`,
-    defaultMessage: "Enter your user name or e-mail address",
+    defaultMessage: "Enter your e-mail address",
   },
   submit: {
     id: `${scope}.submit`,
@@ -41,5 +41,25 @@ export default defineMessages({
   successMessage: {
     id: `${scope}.successMessage`,
     defaultMessage: "Password Changed Successfully!",
+  },
+  verify: {
+    id: `${scope}.verify`,
+    defaultMessage: "Verify",
+  },
+  codePlaceholder: {
+    id: `${scope}.codePlaceholder`,
+    defaultMessage: "Enter Code Here",
+  },
+  codeLabel: {
+    id: `${scope}.codeLabel`,
+    defaultMessage: "Your Code",
+  },
+  resetPasswordLabel: {
+    id: `${scope}.resetPasswordLabel`,
+    defaultMessage: "Password",
+  },
+  resetPlaceholder: {
+    id: `${scope}.resetPlaceholder`,
+    defaultMessage: "Enter New Password",
   },
 });
