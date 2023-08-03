@@ -17,6 +17,7 @@ export const AUTH_LOGIN_URL =
   process.env.NEXT_PUBLIC_AUTH_LOGIN_URL || "/login";
 export const AUTH_SIGNUP_URL =
   process.env.NEXT_PUBLIC_AUTH_SIGNUP_URL || "/register";
+  export const AUTH_FORGOT_URL = '/forgot'
 
 export const PUBLIC_API_URL =
   process.env.NEXT_PUBLIC_API_URL || "https://api-formative.appnofy.com/v1";

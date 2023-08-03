@@ -10,7 +10,7 @@ import {
 import { useRouter } from "next/router";
 import { Box, CircularProgress } from "@mui/material";
 import { signOut as logout, signIn, useSession } from "next-auth/react";
-import { AUTH_LOGIN_URL, AUTH_SIGNUP_URL, TOKEN } from "configs";
+import { AUTH_FORGOT_URL, AUTH_LOGIN_URL, AUTH_SIGNUP_URL, TOKEN } from "configs";
 import { getAuthenticationToken, setAuthenticationHeader } from "services";
 import { Register } from "providers/Auth/types";
 // import { FLEET_MANAGEMENT } from "constants/routes";
@@ -27,7 +27,7 @@ interface AuthContextProps {
 
 const AuthContext = createContext({} as AuthContextType);
 
-const AUTHENTICATION_PATH = [AUTH_LOGIN_URL, AUTH_SIGNUP_URL];
+const AUTHENTICATION_PATH = [AUTH_LOGIN_URL, AUTH_SIGNUP_URL,AUTH_FORGOT_URL];
 
 const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
   const { data: session, status } = useSession();
