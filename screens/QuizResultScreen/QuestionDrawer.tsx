@@ -51,7 +51,10 @@ const QuestionDrawer = ({
         quizOptions={quizOptions}
         questionContext={attemptQuestionListing?.data?.question?.detail}
         actualQuestion={attemptQuestionListing?.data?.question?.title}
-        difficulty={attemptQuestionListing?.data?.difficulty?.toFixed(2)}
+        difficulty={parseInt(
+          attemptQuestionListing?.data?.difficulty,
+          10,
+        )?.toFixed(2)}
         avgAttemps={attemptQuestionListing?.data?.averageAttempts}
         avgTime={attemptQuestionListing?.data?.averageTime}
         questionIdNum={attemptQuestionListing?.data?.question?.id}
