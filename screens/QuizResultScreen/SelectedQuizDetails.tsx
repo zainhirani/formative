@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/router";
 
 import { Grid } from "@material-ui/core";
@@ -8,7 +8,7 @@ import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
 import LocalPrintshopOutlinedIcon from "@mui/icons-material/LocalPrintshopOutlined";
 
 import CustomDataGrid from "components/CustomDataGrid";
-import { useQuizResultDetail } from "providers/QuizResult";
+import { useDownload, useQuizResultDetail } from "providers/QuizResult";
 import { pageSizeManageQuiz } from "mock-data/Teacher/QuizResult";
 import { BoxPaginate, ShowingBox, TableWrapper } from "./Styled";
 import QuestionDrawer from "./QuestionDrawer";
@@ -55,10 +55,34 @@ const SelectedQuizDetails = () => {
   const [stdId, setStdid] = useState<string | undefined>(undefined);
   const [questionId, setQuestionId] = useState<string | undefined>(undefined);
   const [questiondrawer, setQuestionDrawer] = useState(false);
+  const downloadcsv = useDownload();
+  console.log(downloadcsv,'downloadcsv')
+
+  // useEffect(() => {
+  //   const downloadCsv = () => {
+  //     if (downloadcsv?.data) {
+  //       const blob = new Blob([csvData], { type: 'text/csv' });
+  //       const url = URL.createObjectURL(blob);
+  //       const a = document.createElement('a');
+  //       a.href = url;
+  //       a.download = 'data.csv';
+  //       document.body.appendChild(a);
+  //       a.click();
+  //       document.body.removeChild(a);
+  //       URL.revokeObjectURL(url);
+  //     }
+  //   };
+  // },[])
+
 
   const id =
     router?.query?.quizId !== undefined ? router?.query?.quizId.toString() : "";
+
   const quizResultDetail = useQuizResultDetail({ id: parseInt(id, 10) });
+  // const exportQuizResult = useDownload({id: parseInt(id, 10)})
+
+
+
 
   const columnsQuizQuestions: GridColDef[] = useMemo(
     () => [
@@ -256,6 +280,8 @@ const SelectedQuizDetails = () => {
     [quizResultDetail?.data?.questions],
   );
 
+
+
   const configExport = [
     {
       key: "export",
@@ -263,9 +289,7 @@ const SelectedQuizDetails = () => {
       render: () => {
         return <Box>Export</Box>;
       },
-      onClick: () => {
-        // console.log("Export");
-      },
+      onClick:() => downloadcsv.mutateAsync({id:240}),
     },
   ];
 
