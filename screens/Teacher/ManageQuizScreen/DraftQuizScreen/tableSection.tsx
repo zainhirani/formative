@@ -50,7 +50,7 @@ const TableSection = (props: any) => {
     COLUMNS_CONFIG,
     reactToPrintContent,
   } = props;
-console.log(quizByIdData,"quizByIdData")
+  console.log(quizByIdData, "quizByIdData");
   const { selectedQuestions, setSelectedQuestions } = useAppState();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [drawerOpenStudents, setDrawerOpenStudents] = useState(false);
@@ -68,7 +68,7 @@ console.log(quizByIdData,"quizByIdData")
   const duplicateQuiz = useQuizDuplicate();
 
   const withdrawlist = useQuizWithdraw();
-  
+
   useEffect(() => {
     if ((quizSave.isSuccess, deleteQuiz.isSuccess, duplicateQuiz.isSuccess)) {
       router.push(APP_ROUTES.MANAGE_QUIZ);
@@ -216,11 +216,11 @@ console.log(quizByIdData,"quizByIdData")
       autoHideDuration: 2000,
     });
   };
-  
-  const handleWithDraw = () =>{
+
+  const handleWithDraw = () => {
     withdrawlist.mutate({ id: parseInt(editId, 10) });
     setIsWithdrawing(true);
-  }
+  };
 
   const handleDuplicateQuiz = async () => {
     const result: any = await duplicateQuiz.mutateAsync({ id: editId });
@@ -255,7 +255,7 @@ console.log(quizByIdData,"quizByIdData")
       : true
     : false;
   const studentCondition = editPage
-    ? quizByIdData?.status == "COMPLETED"
+    ? quizByIdData?.status == "COMPLETED" || quizByIdData?.status == "ONGOING"
       ? true
       : false
     : true;
@@ -338,7 +338,7 @@ console.log(quizByIdData,"quizByIdData")
               onClick={handleWithDraw}
             >
               Withdraw
-            </ButtonWrapper> 
+            </ButtonWrapper>
             <ButtonWrapper
               startIcon={<DeleteOutlineOutlinedIcon />}
               className="btn"
@@ -356,7 +356,7 @@ console.log(quizByIdData,"quizByIdData")
         open={drawerOpenStudents}
         onClose={handleDrawerCloseStudents}
       >
-        <DrawerStudentsSection  quizByIdData={quizByIdData} />
+        <DrawerStudentsSection quizByIdData={quizByIdData} />
       </SideDrawer>
 
       <DrawerQuestionsSection
