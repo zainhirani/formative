@@ -1,10 +1,11 @@
 import service from "services";
+import { Withdraw } from "./type";
 
-export const quizWithdraw = (payload :any) => {
-    console.log(payload,"payload")
+export async function quizWithdraw  (payload : Withdraw.withdrawAPIPayload ) :Promise<Withdraw.withdrawResponse> {
+
     return service({
       url: `/quiz/withdraw`,
-      body: payload,
+      body: payload.data,
       method: "POST",
     });
   };

@@ -1,14 +1,20 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/router";
 
 import { Grid } from "@material-ui/core";
 import { GridColDef } from "@mui/x-data-grid";
-import { Box, Pagination, Paper, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Pagination,
+  Paper,
+  Typography,
+} from "@mui/material";
 import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
 import LocalPrintshopOutlinedIcon from "@mui/icons-material/LocalPrintshopOutlined";
 
 import CustomDataGrid from "components/CustomDataGrid";
-import { useQuizResultDetail } from "providers/QuizResult";
+import { useDownload, useQuizResultDetail } from "providers/QuizResult";
 import { pageSizeManageQuiz } from "mock-data/Teacher/QuizResult";
 import { BoxPaginate, ShowingBox, TableWrapper } from "./Styled";
 import QuestionDrawer from "./QuestionDrawer";
@@ -55,9 +61,11 @@ const SelectedQuizDetails = () => {
   const [stdId, setStdid] = useState<string | undefined>(undefined);
   const [questionId, setQuestionId] = useState<string | undefined>(undefined);
   const [questiondrawer, setQuestionDrawer] = useState(false);
+  const downloadcsv = useDownload();
 
   const id =
     router?.query?.quizId !== undefined ? router?.query?.quizId.toString() : "";
+
   const quizResultDetail = useQuizResultDetail({ id: parseInt(id, 10) });
 
   const columnsQuizQuestions: GridColDef[] = useMemo(
@@ -260,12 +268,19 @@ const SelectedQuizDetails = () => {
     {
       key: "export",
       startIcon: <LocalPrintshopOutlinedIcon />,
+      disabled: downloadcsv?.isLoading,
       render: () => {
-        return <Box>Export</Box>;
+        return (
+          <>
+            {downloadcsv.isLoading ? (
+              <CircularProgress sx={{ ml: 2 }} size={30} />
+            ) : (
+              <Box>Export</Box>
+            )}
+          </>
+        );
       },
-      onClick: () => {
-        // console.log("Export");
-      },
+      onClick: () => downloadcsv.mutateAsync({ id: parseInt(id, 10) }),
     },
   ];
 

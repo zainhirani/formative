@@ -60,4 +60,16 @@ export namespace QuizResult {
    
     }
     export interface DetailAPIPayload extends DetailProps {}
-}
+
+    //Download
+    export type downloadProps = {}
+    export type downloadResponse = {}
+    export type downloadAPIMutationPayload = {
+      id:number
+    }
+    export interface downloadAPIPayload extends downloadProps  {
+      data:downloadAPIMutationPayload
+    }
+  }
+
+   
