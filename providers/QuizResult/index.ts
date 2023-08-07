@@ -37,15 +37,23 @@ export function useQuizResultDetail(
 
 //Download
 
-
-
-
-
+function download(blob: any, filename: any) {
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.style.display = "none";
+  a.href = url;
+  // the filename you want
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  window.URL.revokeObjectURL(url);
+}
 
 export function useDownload(
   props: QuizResult.downloadProps = {},
 ): UseMutationResult<
-QuizResult.downloadResponse,
+  QuizResult.downloadResponse,
   {
     message?: string;
   },
@@ -55,12 +63,14 @@ QuizResult.downloadResponse,
   const { enqueueSnackbar } = useSnackbar();
   return useMutation((payload) => api.download({ ...props, data: payload }), {
     mutationKey: `${KEY} | download | Create`,
+
     onSuccess: (res) => {
-      console.log(res,'ddddd')
-      enqueueSnackbar("Download successs", {
-        autoHideDuration: 1500,
-        variant: "success",
-      });
+      //@ts-ignore
+      res?.blob().then((blob: any) => download(blob, "Quiz-Result")),
+        enqueueSnackbar("Download started", {
+          autoHideDuration: 1500,
+          variant: "success",
+        });
     },
     // onError: (err: any) => {
     //   enqueueSnackbar(err.message, {

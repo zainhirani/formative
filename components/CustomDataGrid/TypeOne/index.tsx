@@ -76,14 +76,16 @@ const TypeOne: React.FC<TypeOneProps> = ({
     return (
       <BoxPaginate>
         <Grid item xs={6}>
-          <Pagination
-            count={totalPages}
-            page={page}
-            onChange={handlePageChange}
-            variant="outlined"
-            shape="rounded"
-            className="customPagination"
-          />
+          {totalPages ? (
+            <Pagination
+              count={totalPages}
+              page={page}
+              onChange={handlePageChange}
+              variant="outlined"
+              shape="rounded"
+              className="customPagination"
+            />
+          ) : null}
         </Grid>
         <Grid item xs={6} className="showing-text">
           <ShowingBox>
@@ -95,6 +97,7 @@ const TypeOne: React.FC<TypeOneProps> = ({
                 key={button?.key}
                 onClick={button?.onClick}
                 startIcon={button?.startIcon}
+                disabled={button.disabled}
                 className={`print_arrow_btn ${button?.customClass}`}
               >
                 {button?.render()}
@@ -139,8 +142,8 @@ const TypeOne: React.FC<TypeOneProps> = ({
               ".MuiDataGrid-columnHeaderTitleContainer": {
                 gap: "5px",
               },
-              ".MuiGrid-root .css-1bv2lzm":{
-                cursor:"pointer",
+              ".MuiGrid-root .css-1bv2lzm": {
+                cursor: "pointer",
               },
             }}
             loading={loading}

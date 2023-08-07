@@ -3,7 +3,13 @@ import { useRouter } from "next/router";
 
 import { Grid } from "@material-ui/core";
 import { GridColDef } from "@mui/x-data-grid";
-import { Box, Pagination, Paper, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Pagination,
+  Paper,
+  Typography,
+} from "@mui/material";
 import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
 import LocalPrintshopOutlinedIcon from "@mui/icons-material/LocalPrintshopOutlined";
 
@@ -56,33 +62,11 @@ const SelectedQuizDetails = () => {
   const [questionId, setQuestionId] = useState<string | undefined>(undefined);
   const [questiondrawer, setQuestionDrawer] = useState(false);
   const downloadcsv = useDownload();
-  console.log(downloadcsv,'downloadcsv')
-
-  // useEffect(() => {
-  //   const downloadCsv = () => {
-  //     if (downloadcsv?.data) {
-  //       const blob = new Blob([csvData], { type: 'text/csv' });
-  //       const url = URL.createObjectURL(blob);
-  //       const a = document.createElement('a');
-  //       a.href = url;
-  //       a.download = 'data.csv';
-  //       document.body.appendChild(a);
-  //       a.click();
-  //       document.body.removeChild(a);
-  //       URL.revokeObjectURL(url);
-  //     }
-  //   };
-  // },[])
-
 
   const id =
     router?.query?.quizId !== undefined ? router?.query?.quizId.toString() : "";
 
   const quizResultDetail = useQuizResultDetail({ id: parseInt(id, 10) });
-  // const exportQuizResult = useDownload({id: parseInt(id, 10)})
-
-
-
 
   const columnsQuizQuestions: GridColDef[] = useMemo(
     () => [
@@ -280,16 +264,23 @@ const SelectedQuizDetails = () => {
     [quizResultDetail?.data?.questions],
   );
 
-
-
   const configExport = [
     {
       key: "export",
       startIcon: <LocalPrintshopOutlinedIcon />,
+      disabled: downloadcsv?.isLoading,
       render: () => {
-        return <Box>Export</Box>;
+        return (
+          <>
+            {downloadcsv.isLoading ? (
+              <CircularProgress sx={{ ml: 2 }} size={30} />
+            ) : (
+              <Box>Export</Box>
+            )}
+          </>
+        );
       },
-      onClick:() => downloadcsv.mutateAsync({id:240}),
+      onClick: () => downloadcsv.mutateAsync({ id: parseInt(id, 10) }),
     },
   ];
 

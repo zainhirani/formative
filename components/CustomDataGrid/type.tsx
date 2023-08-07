@@ -16,4 +16,5 @@ export interface ButtonConfig {
   startIcon?: React.ReactElement<SvgIconProps>;
   render: () => JSX.Element;
   onClick: () => void;
+  disabled?: boolean;
 }
